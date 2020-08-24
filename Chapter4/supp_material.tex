@@ -1,0 +1,41 @@
+\documentclass{article}
+
+%\PassOptionsToPackage{numbers}{natbib}
+\usepackage{neurips_2020}
+\bibliographystyle{abbrv}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{microtype}      % microtypography
+%\usepackage[margin=1in]{geometry}
+\usepackage[autonum]{tchdr} %tcampbell style file for nice math defns
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!40!black},
+	citecolor={blue!40!black},
+	urlcolor={blue!40!black}
+}
+\usepackage{cleveref}
+\crefname{subappendix}{Supp.}{Supps.}
+
+\usepackage{xr}
+\usepackage{xr-hyper}
+\externaldocument{main}
+\usepackage{hyperref}       % hyperlinks
+
+
+
+\begin{document}
+\setcounter{figure}{4}
+\setcounter{equation}{6}
+\appendix
+\input{proof_detail}
+\input{gradient_derivations}
+\input{experiments_details}
+%\newpage
+\bibliography{sources}
+
+\end{document}

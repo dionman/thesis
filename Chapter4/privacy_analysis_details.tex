@@ -1,0 +1,189 @@
+\section{Details on Privatization}
+\label{sec:pseudocode_private_coreset_appendix}
+\allowdisplaybreaks
+
+\iffalse
+\subsection{Gaussian Mechanism for Matrix-Valued Identity Query}
+\label{sec:gaussian-mech-matrix-identity-query}
+
+Here we describe how a matrix $ x \in \reals^{d \times N} $ can be $(\veps, \delta)$-differentially privately released via elementwise additive \iid Gaussian noise. In our setting, we are interested in the following query:
+\[
+y \sim \mcQ(x) = x + \eta, 
+\label{eq:matrix_gaussian_mech}
+\]
+with $ \eta := [\eta_1, ..., \eta_N] \in \reals^{d \times N} $, $ \eta_n \distiid \distNorm(0, \sigma_2^2I) \in \reals^d $. We remind that in our setting two datasets $ x, x' $ are adjacent if they differ arbitrary in at most one of their columns. 
+
+We proceed using definition of privacy loss random variable
+\[
+\mcL_{\mcQ, x, x'} := \log \frac{\Pr_{\mcQ(x)(y)}}{\Pr_{\mcQ(x')(y)}}
+\label{eq:priv_loss_rv}
+\]
+and the corresponding sufficient condition for differentially privacy
+\bnprop~\citep{dwork14}
+A  mechanism $ \mcQ: X \rightarrow \Delta(Y)$ is ($\veps, \delta$)-differentially private if for any $ x \approx x' $ we have $ {\Pr[\mcL_{\mcQ, x, x'} \geq \veps] \leq \delta}$. 
+\enprop
+
+Without loss of generality let's say that $x, x'$ differ at their last element $N$. For mechanism of~\cref{eq:matrix_gaussian_mech} we have 
+\[
+\begin{split}
+\mcL_{\mcQ, x, x'}(y) &= \frac{||y-f(x')||_2^2 - ||y-f(x)||_2^2}{2\sigma^2}\\
+								 &= \sum_{n=1}^{N} \frac{||y_n-x'_n||_2^2 - ||y_n-x_n||_2^2}{2\sigma^2}\\
+								 &= \frac{||y_N-x'_N||_2^2 - ||y_N-x_N||_2^2}{2\sigma^2},
+\end{split}
+\] 
+where we've used the definition of Frobenius norm and adjacent datasets for our query.
+Remaining steps onwards are directly reduced to the classical proof of Gaussian mechanism for vector valued queries (e.g. see slide 57 at \href{https://borjaballe.github.io/slides/dp-tutorial-long.pdf}{Balle's tutorial}).
+Hence, it suffices to add \iid Gaussian noise calibrated to $L_2$-norm of vectors $x_n \in \reals^d$.
+\fi
+
+\subsection{Privacy Analysis}
+\label{sec:privacy_analysis_appendix}
+
+\iffalse
+In this section we provide the tools used in our analysis of differentially private pseudocoreset construction.
+
+Guarantees of adaptive composition of differentially private mechanisms can be obtained according to following theorem:
+
+\bnthm [Compositions of Differential Privacy~\citep{boosting_and_dp, dwork14, kairouz15, murtagh16}]
+\label{theorem:dp_compositions}
+Suppose that $ \mcM $ is an adaptive composition of $ K $ mechanisms $ {\mcM:\Pi_{k=1}^{K-1} \mcY_k \times X \rightarrow \mcY_K}$, i.e. $ \mcM = \mcM_K \circ \ldots \circ \mcM_1$, each satisfying $(\veps_k, \delta_k)$-differential privacy. Then $ \mcM $ is $(\veps', \sum_{k=1}^K \delta_k + \delta')$-differentially private for any $\delta'>0$, where
+$$ \veps' = \min \left\{ \sum_{k=1}^{K} \veps_k, \sum_{k=1}^K \veps_k\frac{e^{\veps_k}-1}{e^{\veps_k} + 1} + \sqrt{2\sum_{k=1}^{K}\veps_k^2\ln(1/\delta')} \right\}.$$
+\iffalse
+\begin{itemize}
+	\item $\veps' = K\veps$ and $\delta' = K\delta$. (Basic Composition) 
+	\item $\veps' = \veps\sqrt{2K\log(1/\delta'')} + \veps(e^{\veps}-1)K  $ and $ {\delta' = K\delta + \delta''}$, for every $ \delta'' > 0$. (Advanced Composition).
+\end{itemize}
+\fi
+\enthm
+\fi 
+For adaptive compositions of the subsampled Gaussian mechanism, we can achieve tight estimates of differential privacy guarantees by tracking higher moments of the \emph{privacy loss random variable}, which is defined as below:
+
+\ndefn[Privacy Loss]
+\label{def:privacy_loss}
+{Given a mechanism ${\mcM: \mcX \rightarrow \mcY}$ and adjacenct datasets $x, x'$, let $\aux$ be any auxiliary input independent of $x$ and $x'$. For an outcome $ o \in \mcY$, privacy loss at $ o $ is defined as $$ c(o; \mcM, \aux, x, x') := \log \frac{\Pr[\mcM(\aux, x)=o]}{\Pr[\mcM(\aux, x')=o]}.$$
+}
+
+We define the \emph{$\lambda$-th moment}  as the $\log$ of \emph{moment generating function} evaluated at $\lambda$, i.e. $  {\ma(\lambda; \aux, x, x') := \log \EE[\exp(\lambda c(\mcM, \mathsf{aux}, x, x'))]}$. Then privacy guarantees can be derived by bounding all possible $  \ma(\lambda; \aux, x, x')$.
+
+\ndefn[Moments Accountant~\citep{abadi16}]
+\label{def:moments_accountant}
+{Under the same setting with~\cref{def:privacy_loss}, the moments accountant parameterized  by $\lambda>0$ is defined as ${\ma(\lambda) := \underset{\aux, x, x'}{\max}\ma(\lambda; \aux, x, x')}$.
+}
+
+Moments accountant allows us to compute $(\veps, \delta)$-privacy guarantees of a mechanism $ \mcM $ according to the following theorem:
+
+\bnthm[Composability and Tail Bound of Moments Accountant]
+\label{theorem:moments_accountant_composability}
+Suppose that $ \mcM = \mcM_K \circ \ldots \circ \mcM_1$. Then for any $ \lambda $ we have 
+$$ \ma(\lambda) \leq \sum_{k=1}^{K} \mak (\lambda).$$ Moreover, for any $ \veps>0$, the mechanism $\mcM$ is $(\veps, \delta)$-differentially private for $$ \delta = \underset{\lambda>0}{\min} \exp(\ma(\lambda)-\lambda\veps).$$
+\enthm
+
+\iffalse 
+\subsection{Sensitivity of Private Potential Selection}
+\label{sec:dp_select_appendix}
+We have
+\begin{align}
+       &\left|\hcorr_u(x;\theta) - \hcorr_u(x';\theta)\right| \nonumber \\
+       =& \frac{1}{\sqrt{S}}\frac{|\sum_{s=1}^{S}g_s(u_i)\left( g_s(x_n)- g_s(x'_n) \right)|}{\sqrt{\sum_{s=1}^{S}g_s^2(u_i)}} \nonumber\\  
+ =    & \frac{1}{\sqrt{S}} \frac{\left|\langle g(u_i), g(x_n) - g(x'_n) \rangle\right|}{||g(u_i) ||} \nonumber\\ 
+\leq & \frac{1}{\sqrt{S}}  \frac{||g(u_i) || \cdot||g(x_n) - g(x'_n)||}{||g(u_i) ||} \nonumber\\ 
+= & \frac{1}{\sqrt{S}}  ||g(x_n) - g(x'_n)|| =  \sqrt{\frac{1}{S}\sum_{s=1}^{S} \left( g_s(x_n)-g_s(x'_n)\right)^2}\nonumber\\ 
+\leq &  \sqrt{ 
+	\begin{aligned}
+	\frac{1}{S}\sum_{s=1}^{S} & \left( \left|f_s(x_n) -\frac{1}{S}\sum_{s'=1}^{S} f_{s'}(x_n)\right| \right . \\
+	&\left. +\left|f_s(x'_n) -\frac{1}{S}\sum_{s'=1}^{S} f_{s'}(x'_n)\right|\right)^2
+	\end{aligned}
+}. \nonumber
+\end{align}
+
+Global $L_2$ sensitivity of potential selection function  $\Delta(\hcorr)$ amounts to maximizing the above expression.
+Hence, assuming $L = \underset{x_i, \theta}{\sup}f(x_i, \theta)$, we get
+$ \Delta(\hcorr) = \underset{u, \theta, x,x':x\approx x'}{\max}\left|\hcorr_u(x;\theta) - \hcorr_u(x';\theta)\right|  \leq  4L$.
+In the above we have used Cauchy-Schwartz and trigonometric inequality, and $ -L \leq \frac{1}{S}\sum_{s'=1}^{S} f_{s'}(x_n) \leq L$ under our assumption for boundedness of $f:\sup_{x\in\mcX, \theta \in\Theta}|f|\leq L$. 
+\fi
+
+\iffalse 
+\subsection{Pseudocode}
+\label{sec:pseudocode_private_appendix}
+
+
+\begin{algorithm*}[]
+	\caption{Differentially Private Potential Selection}
+	\label{alg:dp-greedy-selection}
+	\begin{algorithmic}[1]
+		\Procedure{DP-PotentialSelection}{$\hu, w, f, \tf,  \pi_0, S, L, \veps$}
+		\LineCommentIndent{$\text{Take} \; S \; \text{samples from current pseudocoreset posterior} \;q$}
+		\State $ (\theta)_{s=1}^{S}  \distiid  q \propto  \exp\left(w^T\tf(\theta)\right)\pi_0(\theta)$
+		\LineComment{Compute clipped potential vectors for private pseudo point initilizations, true and pseudocoreset points}
+        \State $  \hf_s \assign \clip \left(f(\theta_s), L\right),\; \hfmean \assign \frac{1}{S} \sum_{s=1}^{S} \hf_s,\;\; \hg_s \assign \hf_s - \hfmean $   for $ s\in [S] $
+		\State $ f_s \assign \clip\left(f(\theta_s), L\right),\;  \fmean  \assign \frac{1}{S} \sum_{s=1}^{S} f_s,\;\;  \mathsf{g}_s \assign f_s - \fmean $   for $ s\in [S] $
+		\State $ \tf_s \assign \clip\left(\tf(\theta_s)\right),\;  \fmean  \assign \frac{1}{S} \sum_{s=1}^{S} \tf_s,\;\; \tg_s \assign \tf_s - \fmean, \;\; \hg_s \assign \hg_s \cup \mathsf{g}_s \cup \tg_s$ for $ s \in [S]$
+		%\State $ f_s \assign \sum_{n=1}^{N} f_i(\theta_s)$  for $ s\in [S] $ 
+		\State $  {\hcorr \assign \text{diag} \left[ \frac{1}{S}\sum_{s=1}^{S} \whg_s \whg_s^T\right]^{-\frac{1}{2}} \frac{1}{S} \sum_{s=1}^{S} \whg_s \whg_s^T (a - w)}$
+		\State Sample $ n^\star $ with probability $ \propto \exp\left( \frac{\veps \hcorr_{n^{\star}}}{2L} \right) $
+		\State{\Return $n^\star$}
+		\EndProcedure
+	\end{algorithmic}	
+\end{algorithm*}
+\fi
+
+
+\iffalse
+\begin{algorithm*}[]
+	\caption{Differentially Private Stochastic Gradient Computation}
+	\label{alg:dp-sgd}
+	\begin{algorithmic}[1]
+		\Procedure{DP-Gradient}{$g, p, F(\cdot), \sigma, L, c, N$}
+		\LineCommentIndent{Take random sample $g_L$ of potentials with probability $ q=L/N $}
+		\LineCommentIndent{Evaluate and clip gradient function $ F $ corresponding to each private potential $g_\ell$ }
+		\For{$ g_\ell \in g_L$}
+		\State{$ \zeta_\ell \leftarrow F(g_\ell, p, w) $} \label{lst:line:private-gradient-expression}
+		\State{$ \bzeta_\ell \leftarrow \zeta_\ell/\left(\max\left(1, \frac{||\zeta_\ell||_2}{c}\right)\right) $}
+		\EndFor{}
+		\LineComment{Compute gradient over sample with additive Gaussian noise}
+		\State{$\tzeta \leftarrow \frac{1}{L} \left(\sum_\ell \bzeta_\ell + \distNorm(0, \sigma^2c^2I) \right)$}
+		\State{\Return{$ \tzeta $}}
+		\EndProcedure		 
+	\end{algorithmic}	
+\end{algorithm*}
+
+
+\begin{algorithm*}[]
+	\caption{Differentially Private Pseudocoreset based Variational Inference}
+	\label{alg:dp-psvi}
+	\begin{algorithmic}[1]
+		\Procedure{DP-PSVI}{$ {f, \pi_0, x, S, T,  (\gamma_t)_{t=1}^{\infty}, M}, Z, L, c, \sigma_1, \sigma_2, \veps, \delta$}
+		\State{$w \assign 0\in\reals^{N},\; u \assign \emptyset$}
+		\State{$\hu \assign \Call{DP-PseudoPointsInitialization}{x, \sigma_1}\in\reals^{N}$}
+		\For{$ m = 1, \ldots, M$}
+		\LineCommentIndent{\textbf{Select next potential, allocating some privacy cost $(\veps_1, 0)$ at this operation.}}
+		\State $ n^\star \assign \Call{DP-PotentialSelection}{\hu, w, f, \tf, \pi_0, S, L, \veps_1}$
+		\State $  u_m\assign \hu_{n^\star} $
+		\LineComment{\textbf{Privately optimize weights  and most recent potential location}}
+		\For{$ t = 1, \ldots, T$}
+		%\LineComment{Optimize weights vector with projected DP-SGD on $w \in \reals^{m}_{\geq 0}$}
+		\LineComment{\mbox{Take $ S $ samples from current pseudocoreset posterior $ q$ and approximate gradient}}
+		\State $ (\theta)_{s=1}^{S}  \distiid  q \propto  \exp\left(w^T\tf(\theta)\right)\pi_0(\theta),\; f_s \assign f(\theta_s)  \in \reals^{N}, \; \tf_s \assign \tf(\theta_s)  \in \reals^{m}\; \text{for} \; s\in [S] $ 
+		\State $ {\fmean \assign \frac{1}{S} \sum_{s=1}^{S} f_s,\;\; g_s \assign f_s - \fmean, \;\; \tfmean \assign \frac{1}{S} \sum_{s=1}^{S} \tf_s,\;\; \tg_s \assign \tf_s - \tfmean \; \text{for} \;  s\in [S]} $
+		\State $ C \assign \Call{DP-Gradient}{g, p, F_1(\cdot), \sigma_2, L, c, N} $  
+	    \For{$\; j = 1, \ldots, M $}
+              \IfThenElse{$j \leq m$}% If ...
+{$w_j \assign \max\left(w_j - \gamma_t C_j, 0 \right)$}% ...then...
+{$w_j=0$}  % ...else..
+        \EndFor{}
+		\LineComment{\mbox{Take $ S $ samples from current pseudocoreset posterior $ q$ and approximate gradient}}
+		\State $ (\theta)_{s=1}^{S}  \distiid  q \propto \exp \left(w^T\tf(\theta)\right) \pi_0(\theta),\;  f_s \assign f(\theta_s)\in\reals^{N},\;\tf_s \assign \tf(\theta_s)\in\reals^{m} \;\text{for}\; s\in [S]$  
+		\State $ \fmean \assign \frac{1}{S} \sum_{s=1}^{S}f_s,\;\; g_s \assign f_s - \fmean, \;\; \tfmean \assign \frac{1}{S} \sum_{s=1}^{S}\tf_s,\;\; \tg_s \assign \tf_s - \tfmean \;\text{for}\; s\in [S] $
+		\State {$ \thmean_s \assign (\nabla_{u}\tf)(u_m, \theta_s)\in\reals^{d},\;\; \thmean \assign  \frac{1}{S} \sum_{s=1}^{S}\tildeh_s,\; \tildeh_s \assign \thmean_s - \thmean \in\reals^{d} \;\text{for}\; s\in [S]$}
+		\State {${D \assign \Call{DP-Gradient}{g(\theta_s, x), g(\theta_s, u), h(\theta_s, u), w, F_2(\cdot), \sigma_2, L, c},\; u_{n^\star} \assign  u_{n^\star} - \beta_k D}$}
+		\EndFor
+		\State \textbf{Compose privacy cost per iteration} 
+		\EndFor
+		\State \textbf{Compute overall cost of construction}
+		\State {\Return $w, u$}
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm*}
+\fi
+
+For numerical estimation of differential privacy guarantees in our experiments for both \dpsvi~and \dpvi~we used the implementation of TensorFlow Privacy.\footnote{~\href{https://github.com/tensorflow/privacy}{https://github.com/tensorflow/privacy}}

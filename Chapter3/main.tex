@@ -1,0 +1,105 @@
+\documentclass[USenglish,oneside,twocolumn]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{soul}
+\usepackage{color}
+\usepackage[utf8]{inputenc}%(only for the pdftex engine)
+\usepackage{subcaption}
+\captionsetup{font=normalsize,labelfont={sf}}
+\captionsetup[sub]{labelfont={sf}}
+\usepackage[section]{placeins}
+\usepackage{float}
+\usepackage[big]{dgruyter_NEW}
+\usepackage{natbib}
+\usepackage{cleveref}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{dblfloatfix}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+\usepackage[all]{nowidow}
+
+
+\widowpenalty10000
+\clubpenalty10000
+
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+\let\oldfootnote\footnote
+\def\footnote{\ifhmode\unskip\fi\oldfootnote}
+
+\setlength{\footnotesep}{0.1cm}
+\setlength{\skip\footins}{0.6cm}
+
+
+
+\DOI{foobar}
+
+\cclogo{\includegraphics{by-nc-nd.pdf}}
+
+\begin{document}
+ 
+
+\author*[1]{Dionysis Manousakas}
+
+\author[2]{Cecilia Mascolo}
+
+\author[3]{Alastair R. Beresford}
+
+\author[4]{Dennis Chan}
+
+\author[5]{Nikhil Sharma}
+
+\affil[1]{\mbox {University of Cambridge}, \texttt{dm754@cam.ac.uk}.}
+
+\affil[2]{\mbox {University of Cambridge} and \mbox {the Alan Turing Institute}, \texttt{cm542@cam.ac.uk}.}
+
+\affil[3]{\mbox {University of Cambridge}, \texttt{arb33@cam.ac.uk}.}
+
+\affil[4]{\mbox {University of Cambridge}, \texttt{dc598@cam.ac.uk}.}
+
+\affil[5]{\mbox {University College London}, \texttt{nikhil.sharma@ucl.ac.uk}.}
+
+\title{\huge Quantifying Privacy Loss of \\ Human Mobility Graph Topology}
+
+\runningtitle{Quantifying Privacy Loss of Human Mobility  Graph Topology}
+
+\input{abstract}
+\keywords{Mobility privacy; De-anonymization; $k-$anonymity; Graph kernels.}
+%  \classification[PACS]{}
+ % \communicated{...}
+ % \dedication{...}
+
+  \journalname{Proceedings on Privacy Enhancing Technologies}
+\DOI{Editor to enter DOI}
+  \startpage{1}
+  \received{..}
+  \revised{..}
+  \accepted{..}
+
+  \journalyear{..}
+  \journalvolume{..}
+  \journalissue{..}
+ 
+
+\maketitle
+
+\input{introduction}
+\input{related_work}
+\input{methods}
+\input{data}
+\input{privacy_loss}
+\input{conclusion}
+\input{ethics}
+\input{acknowledgments}
+
+\bibliographystyle{ACM-Reference-Format-Journals}
+\bibliography{references}
+
+\end{document}

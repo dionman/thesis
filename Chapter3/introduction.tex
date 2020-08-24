@@ -1,0 +1,42 @@
+\section{Introduction}
+
+Our mobile devices collect a significant amount of data about us and location data of individuals are particularly privacy sensitive.
+Furthermore, previous work has shown that removing direct identifiers from mobility traces does not provide anonymity: users can easily be reidentified by a small number of unique locations that they visit frequently~\cite{DeMontjoye2013, Zang2011}.
+
+Consequently, some approaches have been proposed that protect location privacy by replacing location coordinates with encrypted identifiers, using different encryption keys for each location trace in the population.
+This preprocessing results in locations that are strictly user-specific and cannot be cross-referenced between users.
+Examples include the research track of the Nokia Mobile Data Challenge,\footnote{\url{http://www.idiap.ch/project/mdc}} where visited places were represented by random integers~\cite{Laurila}; and identifiable location information collected by the Device Analyzer dataset,\footnote{\url{https://deviceanalyzer.cl.cam.ac.uk}} including WiFi access point MAC addresses and cell tower identifiers, are mapped to a set of pseudonyms defined separately for each handset~\cite{Wagner2014}.
+Moreover, temporal resolution may also be deliberately decreased to improve anonymization~\cite{Gruteser} since previous work has demonstrated that sparsity in the temporal evolution of mobility can cause privacy breaches~\cite{DeMontjoye2013}.
+
+In this paper, \emph{we examine the degree to which mobility traces without either semantically-meaningful location labels, or fine-grained temporal information, are identifying.}
+To do so, we represent location data for an individual as a mobility network, where nodes correspond to abstract locations and edges to their connectivity, i.e.\ the respective transitions made by an individual between locations.
+We then examine whether or not these graphs reflect user-specific behavioural attributes that could act as a fingerprint, perhaps allowing the re-identification of the individual they represent.
+In particular, we show how graph kernel distance functions~\cite{Vishwanathan2010} can be used to assist reidentification of anonymous mobility networks.
+This opens up new opportunities for both attack and defense.
+For example, patterns found in mobility networks could be used to support automated user verification where the mobility network acts as a behavioural signature of the legitimate user of the device.
+However the technique could also be used to link together different user profiles which represent the same individual.
+
+Our approach differs from previous studies in location data deanonymization~\cite{Gambs2014, deMulder08, Naini2016a, Golle2009}, in that \emph{we aim to quantify the breach risk in preprocessed location data that do not disclose explicit geographic information}, and where instead locations are replaced with a set of user-specific pseudonyms.
+Moreover, we also do not assume specific timing information for the visits to abstract locations, \emph{merely ordering}.
+
+We evaluate the power of our approach over a large dataset of traces from $1\,500$ smartphones, where cell tower identifiers (\emph{cid}s) are used for localization.
+Our results show that the data contains structural information which may uniquely identify users.
+This fact then supports the development of techniques to efficiently reidentify individual mobility profiles.
+Conversely, our analysis may also support the development of techniques to cluster into larger groups with similar mobility; such an approach may then be able to offer better anonymity guarantees.
+
+A summary of our contributions is as follows:
+
+\begin{itemize}
+
+\item We show that network representations of individual longitudinal mobility display distinct topology, even for a small number of nodes corresponding to the most frequently visited locations.
+
+\item We evaluate the sizes of identifiability sets formed in a large population of mobile users for increasing network size.
+Our empirical results demonstrate that all networks become quickly uniquely identifiable with less than $20$ locations.
+
+\item We propose kernel-based distance metrics to quantify mobility network similarity in the absence of semantically meaningful spatial labels or fine-grained temporal information.
+
+\item Based on these distance metrics, we devise a probabilistic retrieval mechanism to reidentify pseudonymized mobility traces.
+
+\item We evaluate our methods over a large dataset of smartphone mobility traces. We consider an attack scenario where an adversary has access to historical mobility networks of the population she tries to deanonymize. We show that by informing her retrieval mechanism with structural similarity information computed via a deep shortest-path graph kernel, the adversary can achieve a median deanonymization probability $3.52$ times higher than a randomised mechanism using no structural information contained in the mobility networks.
+
+\end{itemize}

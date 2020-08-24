@@ -1,0 +1,49 @@
+\section{Datasets Details}
+\label{sec:data-details}
+
+The benchmark datasets used in logistic regression (including group selection) and neural linear regression experiments are detailed in Tables~\ref{table:logreg-data} and \ref{table:neurlinreg-data} respectively.\footnote{The original versions of all used datasets can be accessed by following the corresponding hyperlinks in the Tables appearing in the electronic version of the paper.}, and include: 
+\begin{itemize}
+\item a dataset used to predict whether a citizen's income exceeds $50K \$$ per year extracted from USA 1994 census data~(\textsc{Adult}),
+\item a dataset containing webpages features and a label categorizing them as phishing or not~(\textsc{Phishing}),
+\item a corpus of webpages crawled from links found in spam emails~(\textsc{WebSpam}),
+\item a set of hospitalization records for binary prediction of readmission pertaining to diabetes patients~(\textsc{HospitalReadmissions}),
+\item a set of various features from homes in the suburbs of Boston, Massachussets used to model housing price~(\textsc{Housing}), and
+\item a dataset used to predict the release year of songs from associated audio features ~(\textsc{Songs}).
+\end{itemize} 
+
+For \textsc{Adult}, \textsc{Phishing} and \textsc{HospitalReadmissions} we fit our statistical models on the first 10 principal components of the datasets, while  all logistic regression benchmark datasets are evaluated on balanced subsets of the test data between the two classes~(see~\cref{table:logreg-data}).
+	\begin{table}[!t]
+		\caption{Logistic regression datasets}
+		\centering
+		\resizebox{\columnwidth}{!}{%
+		\begin{tabular}{lrrrrr}
+			\hline
+			Dataset      &   $d$ &     $N\textsubscript{train}$ &   $N\textsubscript{test}$ &   $\#$Pos. test data 
+			 \\
+			\hline
+			\MYhref{http://archive.ics.uci.edu/ml/datasets/Adult}{\textsc{Adult}}~\citep{adult}        &  10 &  30,162 &    7,413 &             3,700  \\
+			\MYhref{https://archive.ics.uci.edu/ml/datasets/Phishing+Websites}{\textsc{Phishing}}~\citep{uci}      & 10 & 8,844 &   2,210 &             1,230  \\
+			 \MYhref{https://www.cc.gatech.edu/projects/doi/WebbSpamCorpus.html}{\textsc{WebSpam}}~\citep{webspam}      & 127 & 126,185 &   13,789 &             6,907  \\
+			\MYhref{https://archive.ics.uci.edu/ml/datasets/diabetes+130-us+hospitals+for+years+1999-2008}{\textsc{HospitalReadmissions}}~\citep{diabetes}      & 10 & 55,163 &   6,079 &             3,044  \\
+			\hline
+		\end{tabular}
+	}
+		\label{table:logreg-data}
+\end{table}
+
+	\begin{table}[!t]
+		\caption{Neural linear regression datasets}
+		\centering
+		\resizebox{0.6\columnwidth}{!}{%
+		\begin{tabular}{lrrrrr}
+			\hline
+			Dataset      &   $d$ &      $N\textsubscript{train}$  &   $N\textsubscript{test}$   \\
+			\hline
+			\MYhref{https://archive.ics.uci.edu/ml/machine-learning-databases/housing/}{\textsc{Housing}}~\citep{uci}  &  13 &  446 &    50  \\
+			%\MYhref{https://archive.ics.uci.edu/ml/datasets/online+news+popularity}{\textsc{NewsPopularity}}~\citep{newspopularity}      & 58 & 35,579 &   3,964\\
+			\MYhref{https://archive.ics.uci.edu/ml/datasets/YearPredictionMSD}{\textsc{Songs}}~\citep{uci}        &  90 &  463,711 &    51,534\\
+			\hline
+		\end{tabular}
+	}
+		\label{table:neurlinreg-data}
+	\end{table}

@@ -1,0 +1,201 @@
+\section{Bayesian Pseudocoresets}
+\label{sec:pseudocoresets}
+
+\Cref{prop:original_coreset_fails} shows that there is room 
+for improvement in coreset construction in the high-dimensional data regime.
+Indeed, consider again the same problem setting; the coreset posterior distribution
+is a Gaussian with mean $\mu_w$ and covariance $\Sigma_w$,
+\[
+\Sigma_w &=\left(1+\sum_{n=1}^N w_n\right)^{-1} I & \mu_w &= \Sigma_w \sum_{n=1}^N w_n X_n.\label{eq:gausswpost}
+\]
+Examining \cref{eq:gausswpost}, we can replicate any coreset posterior exactly by using a single synthetic \emph{pseudodata} point $U = \left(\sum_{n=1}^Nw_n\right)^{-1}\sum_{n=1}^N w_nX_n$
+with weight $\sum_{n=1}^N w_n$. In particular, the true posterior is equivalent to the posterior
+conditioned on the single pseudodata point $U = \frac{1}{N}\sum_{n=1}^N X_n$ with weight $N$ (with corresponding KL divergence equal to 0).
+This is not surprising; the mean of the data is precisely a sufficient statistic for the data in this 
+simple setting. However, it does illustrate that carefully-chosen pseudodata may be able to
+represent the overall dataset---as ``approximate sufficient statistics''---far better than any reasonably small collection of the original data.
+This intuition has been used before, e.g., for scalable Gaussian process inference \citep{snelson05,titsias09},
+privacy-preserving compression in linear regression \citep{zhou08}, herding~\citep{welling09, chen10, huszar12}, and deep generative models~\citep{tomczak18}.
+
+In this section, we extend the 
+realm of applicability of pseudopoint compression methods to the general class of Bayesian posterior 
+inference problems with conditionally independent data, resulting in \emph{Bayesian pseudocoresets}.
+Building on recent work \citep{campbell19neurips}, we formulate pseudocoreset construction 
+as a variational inference problem where both 
+the weights and pseudopoint locations are parameters of the variational posterior approximation,
+and develop a stochastic algorithm to solve the optimization. 
+
+\subsection{Pseudocoreset variational inference}\label{sec:pseudovi}
+A Bayesian pseudocoreset takes the form
+\[
+ \pi_{u,w}(\theta) = \frac{1}{Z(u, w)} \exp \left( \sum_{m=1}^{M} w_m f(u_m,\theta) \right) \pi_0(\theta),
+\label{eq:pseudo-posterior}
+\]
+where $u\defined (u_m)_{m=1}^M$ are $M$ pseudodata points $u_m\in\reals^d$, $(w_m)_{m=1}^M$ are nonnegative weights,
+$f : \reals^d \times \Theta \to \reals$ is a potential function parametrized by a pseudodata point,
+and $Z(u, w)$ is the corresponding normalization constant rendering $\pi_{u, w}$ a probability density. In the setting of Bayesian posterior inference,
+$u_m$ will take the same form as the data, while the potentials are the log-likelihood functions, i.e., $f(u_m, \theta) = \log p(u_m | \theta)$.
+We construct a coreset by minimizing the KL divergence over both the pseudodata locations and weights, 
+\[
+u^\star, w^\star = \argmin_{\substack{u\in\reals^{d \times M}}, w\in\reals^M_+}\,\, \kl{\pi_{u,w}}{\pi}. 
+\label{eq:pseudo-coreset-vi}
+\]
+As opposed to previous Bayesian coreset construction optimization problems~\citep{campbell18, campbell19jmlr, campbell19neurips}, 
+we do not need an explicit sparsity constraint; the coreset size is limited to $M$ directly through the selection of the number
+of pseudodata and weights. 
+
+Denote the vectors of original data potentials $f(\theta)\in\reals^N$ and synthetic pseudodata potentials ${\tf(\theta)\in\reals^M}$ as
+$
+f(\theta) \defined \left[
+f_1(\theta)
+\ldots
+f_N(\theta)
+\right]^T
+$
+and
+$
+\tf(\theta) \defined \left[
+f(u_1,\theta)
+\ldots
+f(u_M,\theta)
+\right]^T
+$ 
+respectively,
+where we suppress the $(\theta)$ for brevity where clear from context. 
+Denote $\EE_{u,w}$ and $\cov_{u,w}$ to be the expectation and covariance operator for the pseudocoreset posterior $\pi_{u,w}$.
+Then we may write the KL divergence in \cref{eq:pseudo-coreset-vi}  as
+\[
+  \kl{\pi_{u,w}}{\pi} = &\EE_{u,w}[\log \pi_{u,w}(\theta)] - \EE_{u,w}[\log \pi(\theta)] \\
+ = &\log Z(1) - \log Z(u, w)
+- 1^T\EE_{u,w} [f] +  w^T\EE_{u,w} [\tf],
+\label{eq:kl-expanded}
+\]
+where $1\in\reals^N$ is the vector of all 1 entries, and $w\in\reals^M$ is the vector of pseudocoreset weights.
+
+As we will employ gradient descent steps as part of our algorithm to minimize the variational objective over the parameters $u, w$,
+we need to evaluate the derivative of the KL divergence \cref{eq:kl-expanded}. Despite the presence of the 
+intractable normalization constants and expectations, we show in \cref{supp:gradient_derivations}
+that gradients can be expressed using moments of the pseudodata and original data potential vectors.
+In particular, 
+the gradients of the KL divergence with respect to the weights $ w$ and to a single pseudodata location $u_m$ are 
+\[
+& \nabla_w\mathrm{D}_{\mathrm{KL}} = - \cov_{u,w}[\tf ,f^T1 - \tf^Tw], \,\,
+&\nabla_{u_m}\mathrm{D}_{\mathrm{KL}} = -w_m\cov_{u,w}\left[h(u_m), f^T1 - \tf^Tw\right],
+\label{eq:dkl_duw}
+\]
+where $h(\cdot, \theta) \defined \nabla_u f(\cdot, \theta)$, and the $\theta$ argument is again suppressed for brevity.
+
+
+
+
+
+
+\subsection{Stochastic optimization}\label{sec:stochopt}
+
+
+The gradients in \cref{eq:dkl_duw} involve expectations of (gradient) log-likelihoods from the model.
+Although there are a few particular Bayesian models where these can be evaluated in closed-form
+(e.g.~the synthetic experiment in \cref{section:gaussian_experiment}; see also \cref{supp:gaussian_experiment_appendix}),
+this is not usually the case. In order to make the proposed pseudocoreset method broadly applicable,
+in this section we develop a black-box stochastic optimization scheme (\cref{alg:psvi}) for \cref{eq:pseudo-coreset-vi}. 
+
+
+\algnewcommand{\IfThenElse}[3]{% \IfThenElse{<if>}{<then>}{<else>}
+	\State \algorithmicif\ #1\ \algorithmicthen\ #2\ \algorithmicelse\ #3}
+\algrenewcommand{\algorithmiccomment}[1]{\hfill #1}
+%\algrenewcommand{\algorithmiccomment}[1]{\hfill$\triangleright$ #1}
+\newcommand{\Commenttriangle}[1]{\algorithmiccomment{\hfill$\triangleright$ #1}}
+
+\setlength{\textfloatsep}{10pt}% Remove \textfloatsep
+
+\begin{algorithm*}[!ht]
+	\caption{Pseudocoreset Variational Inference}
+	\label{alg:psvi}
+	\begin{algorithmic}[1]
+		\Procedure{PSVI}{$f(\cdot, \cdot), \pi_0, x, M, B, S, T, (\gamma_t)_{t=1}^{\infty}$}
+		\LineCommentIndent{Initialize the pseudocoreset using a uniformly chosen subset of the full dataset}
+		\State $N \gets $ \# datapoints in $x, \quad \mcB\dist\distUnifSubset\left([N], M\right), \quad \mcB \defined \left\{b_1, \dots, b_M\right\}$ 
+		\State $u_m \gets x_{b_m}, \quad w_m \gets \nicefrac{N}{M}, \quad m=1, \dots, M$
+		\For{$ t = 1, \ldots, T$}
+		\LineCommentIndent{\mbox{Take $S$ samples from current pseudocoreset posterior}}
+		\State $(\theta)_{s=1}^{S}  \distiid \pi_{u,w}$ where $\pi_{u,w}(\theta) \propto \exp\left(\sum_{m=1}^Mw_m f(u_m, \theta)\right)\pi_0(\theta)$
+		\State $\mcB\dist\distUnifSubset\left([N], B\right)$
+		\Commenttriangle{\mbox{Obtain a minibatch of $B$ datapoints from the full dataset}}
+		\For{$s = 1, \dots, S$} 	\Commenttriangle{\mbox{Compute (gradient) log-likelihood discretizations}}
+		\State $g_{s} \gets \left( f(x_b, \theta_s ) - \nicefrac{1}{S}\sum_{s'=1}^S f(x_b, \theta_{s'}) \right)_{b\in\mcB} \in \reals^B$ 
+		\State $\tg_s\gets \left(f(u_m, \theta_s) - \nicefrac{1}{S}\sum_{s'=1}^S f(u_m, \theta_{s'})\right)_{m=1}^M\in\reals^M$
+		\For{$m = 1, \dots, M$}
+		\State $\tildeh_{m,s} \gets \nabla_u f(u_m, \theta_s) - \nicefrac{1}{S}\sum_{s'=1}^S \nabla_u f(u_m, \theta_{s'})\in\reals^d$
+		\EndFor
+		\EndFor
+		\State $\hat\nabla_w \gets -\nicefrac{1}{S}\sum_{s=1}^S \tg_s\left(\nicefrac{N}{B} g_s^T1 - \tg_s^Tw\right)$\Commenttriangle{\mbox{Compute Monte-Carlo gradients for $w$}}
+		\For{$m = 1,\dots, M$}
+		\Comment{and $(u_m)_{m=1}^M$}
+		\State $\hat\nabla_{u_m} \gets -w_m\nicefrac{1}{S}\sum_{s=1}^S \tildeh_{m,s}\left(\nicefrac{N}{B} g_s^T1 - \tg_s^Tw\right)$
+		\EndFor
+		\State $w \gets \max(w - \gamma_t\hat\nabla_w, 0)$ \Commenttriangle{\mbox{Take stochastic gradient step in $w$}}
+		\For{$m = 1,\dots, M$} \Comment{and $(u_m)_{m=1}^M$}
+		\State $u_m \gets u_m - \gamma_t\hat\nabla_{u_m}$
+		\EndFor
+		\EndFor
+		\State\Return $w$, $(u_m)_{m=1}^M$
+		\EndProcedure		 
+	\end{algorithmic}
+\end{algorithm*}
+
+
+
+To initialize the pseudocoreset, we subsample $M$ datapoints from the large dataset and reweight them
+to match the overall weight of the full dataset,
+\[
+&u_m \gets x_{b_m}, \quad w_m \gets N/M, \quad m=1, \dots, M\\
+&\mcB\dist\distUnifSubset\left([N], M\right), \quad \mcB \defined \left\{b_1, \dots, b_M\right\}. 
+\]
+
+After initializing the pseudodata locations and weights,
+we simultaneously optimize \cref{eq:pseudo-coreset-vi} over both.
+Each optimization iteration $t\in \{1, \dots, T\}$ consists of a stochastic gradient descent step
+with a learning rate $\gamma_t \propto t^{-1}$,  
+\[
+w_m \gets \max\left(0, w_m - \gamma_t (\hat\nabla_{w})_m\right),
+\quad u_m \gets u_{m} - \gamma_t \hat\nabla_{u_{m}},
+\quad 1\leq m \leq M.
+\label{eq:gd-update}
+\]
+The stochastic gradient estimates $\hat\nabla_w \in \reals^M$ and $\hat\nabla_{u_m} \in \reals^d$
+are based on $S\in\nats$ samples $\theta_s \distiid \pi_{u,w}$ from the coreset approximation
+and a minibatch of $B\in\nats$ datapoints from the full dataset,
+\[
+\hat\nabla_w \defined -\frac{1}{S}\sum_{s=1}^{S} \tg_s \left(\frac{N}{B}g_s^T 1  -  \tg_s^Tw  \right) \label{eq:weight-optimization-mc}, \quad \\
+ \hat\nabla_{u_m} \defined - w_m \frac{1}{S}\sum_{s=1}^{S} \tildeh_{m,s}  \left(\frac{N}{B}g_s^T 1 - \tg_s^T w \right), \label{eq:location-optimization-mc-cov}
+\]
+where
+\[
+\begin{aligned}
+& \tildeh_{m,s} \defined\nabla_u f(u_m, \theta_s) - \frac{1}{S} \sum_{s'=1}^{S}\nabla_u f(u_m, \theta_{s'}),
+\quad & g_s \defined \left. \left(f(\theta_s) - \frac{1}{S} \sum_{s'=1}^{S} f(\theta_{s'})\right)\right|_{\mcB}\\
+& \tg_s \defined \tf(\theta_s) - \frac{1}{S} \sum_{s'=1}^{S} \tf(\theta_{s'}),
+\quad & \mcB \dist \distUnifSubset\left([N], B\right),
+\end{aligned}\label{eq:gradparts}
+\] 
+and $\left.(\cdot)\right|_{\mcB}$ denotes restriction of a vector to only those indices in $\mcB\subset[N]$.
+Crucially, note that this computation does not scale with $N$, but rather with the number
+of coreset points $M$, the sample and minibatch sizes $S$ and $B$, and the dimension $d$.
+Obtaining $\theta_s\distiid \pi_{u,w}$ efficiently via Markov chain Monte Carlo sampling
+algorithms~\citep{hoffman14,jacob17} is (roughly) $O(M)$ per sample, because the coreset is always of size $M$;
+and we need not compute
+the entire vector $g_s\in\reals^N$ per sample $s$, but rather only those $B\ll N$ indices in the minibatch $\mcB$,
+resulting in a cost of $O(B)$.
+Aside from that, all computations involving $\tg_s\in\reals^M$ and $\tildeh_{m,s}\in\reals^d$ are at most $O(Md)$.
+Each of these computations are repeated $S$ times over the coreset posterior samples.
+
+
+
+
+
+
+
+
+
+
+

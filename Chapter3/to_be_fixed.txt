@@ -1,0 +1,23 @@
+
+We just started processing all submissions and experienced several
+issues with yours.  First, I get the following error:
+
+! LaTeX Error: Unknown option `subsection' for package `placeins'.
+
+I looked at the latest documentation of placeins and it doesn't seem to
+support a "subsection" parameter.  All I could find is a "section"
+parameter:
+<http://mirrors.ibiblio.org/CTAN/macros/latex/contrib/placeins/placeins-doc.pdf>
+
+Once I replaced "subsection" with "section", the next issue is that you
+use the inputenc package twice, with difference encodings, which seems
+to raise another error:
+
+! LaTeX Error: Option clash for package inputenc.
+
+Finally, my LaTeX compiler tells me that subfig and subcaption are
+incompatible with each other, raising another error:
+
+! Package subcaption Error: This package can't be used in cooperation
+(subcaption)                with the subfig package.
+

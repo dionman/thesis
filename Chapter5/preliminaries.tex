@@ -1,0 +1,58 @@
+\section{Preliminaries}
+\label{sec:preliminaries}
+
+In this section, we introduce the required concepts from Bayesian inference, present robustness limitations of standard posterior on big data, and outline existing generalizations of the posterior that aim to robustify inference with respect to data mismatch.
+
+\subsection{Standard Bayesian inference and lack of robustness in the large-data regime}
+In the context of Bayesian inference, we are interested in updating our beliefs about a vector of random variables $\theta \in \Theta$, initially expressed through a prior distribution $\pi_0(\theta)$, after observing a set of datapoints $ x:=(x_n)_{n=1}^{N} \in \mcX^N$.  Posterior on $\theta$ can be computed via the application of Bayes rule 
+\[
+\pi(\theta|x) = \frac{1}{Z'}\pi(x|\theta)\pi_0(\theta),
+\label{eq:bayes-rule}
+\] 
+where $Z'$ is a (typically intractable) normalization constant, and $\pi(x|\theta)$ is the likelihood of our observations according to an assumed statistical model.
+When datapoints are conditionally independent given $\theta$---which is the primary focus of this work---likelihood gets factorized as $\pi(x|\theta) = \Pi_{n=1}^{N}\pi(x_n|\theta)$. An equivalent formulation of  the
+Bayesian posterior as a solution to an optimization problem was proposed by Zellner~\citep{zellner88}, which is written as  
+\[
+\pi(\theta|x) = \frac{1}{Z'} \exp\left(-\xent{\hpi(x)}{\pi(x|\theta)}\right)\pi_0(\theta).
+\label{eq:zellner-rule}
+\]
+In the above, $\hpi(x)$ is the empirical distribution of the observed datapoints. The exponent $\xent{\hpi(x)}{\pi(x|\theta)}:=-\sum_{n=1}^{N}\log\pi(x_n|\theta)$
+corresponds (up to a constant) to the \emph{cross-entropy}, which is  equal to the empirical average of negative log-likelihoods of the datapoints, and quantifies the expected loss incurred by our estimates for the model parameters $\theta$ over the available observations, under the \emph{Kullback-Leibler~(KL) divergence}.
+
+When $N$ is large, the Bayesian posterior is strongly affected by perturbations in the observed data space. To develop an intuition on this, assuming that the true and observed data distributions have densities $\pi_\theta$ and $\pi_\textsubscript{obs}$ respectively, we can rewrite an approximation of~\cref{eq:zellner-rule} via the KL divergence ($\plainkl$) as~\cite{miller19}
+\[
+\pi(\theta|x) 
+& \propto  \exp\left(\sum_{n=1}^{N}\log\pi(x_n|\theta)\right) \pi_0(\theta)
+\doteq	 \exp\left(N \int \pi_\textsubscript{obs} \log \pi_\theta\right) \pi_0(\theta) \\
+ &:= \exp\left(-N \kl{\pi_\textsubscript{obs}}{\pi_\theta}\right) \pi_0(\theta),
+ \label{eq:missmatch_with_N}
+\]
+where $\doteq$ denotes  agreement to first order in exponent.\footnote{i.e. $a_n \doteq b_n$ iff $(1/n)\log(a_n/b_n) \rightarrow 0$}
+Hence, due to the large $N$ in the exponent, small changes to $\pi_\textsubscript{obs}$ will have a large impact on the posterior.
+
+\subsection{Robustified posteriors}
+
+Robust inference methods aim to adapt~\cref{eq:bayes-rule} to formulations that can address the case of observations departing from model assumptions, as often happening in practice, e.g. due to misspecified shapes of data distributions and number of components, or due to the presence of outliers. In such formulations~\citep{dawid16, jewson18, fujisawa08, eguchi01}, Bayesian updates rely on utilising robust divergences instead of the KL divergence, to express the losses over the data. 
+
+A popular choice~\citep{futami18, knoblauch18} for enhancing robustness of inference is replacing the log-likelihood terms arising in~\cref{eq:zellner-rule} with the \emph{\bdiv~}(or \emph{density power divergence})~\citep{basu98, cichocki10}, which yields the following posterior for $\theta$~\citep{ghosh16,knoblauch18}
+\[
+\pi_\beta(\theta|x) \propto \exp\left(-\db{\hpi(x)}{\pi(x|\theta)}\right)\pi_0(\theta),
+\label{eq:b-posterior}
+\] 
+where 
+\[
+\db{\hpi(x)}{\pi(x|\theta)} := 
+ -\sum_{n=1}^{N}  \underbrace{\left(\frac{\beta+1}{\beta}\pi(x_n|\theta)^{\beta} + \int_{\mcX} \pi(\chi|\theta)^{1+\beta}d\chi\right)}_{:=f_n(\theta)},
+\label{eq:b-loss}
+\]
+with $\beta>0$.
+We refer to quantities defined in~\cref{eq:b-posterior,eq:b-loss} as the \emph{\bpost{}} and \emph{\blik{}} respectively. Noticeably, the individual terms $f_n(\theta)$  of the \blik{} %, which are known as the Tsallis scores~\citep{tsallis88}, are decomposed into a data-independent $c(\theta)$, and a data-dependent part $t_n(\theta)$.
+% := \frac{1}{\beta} \pi(x_n|\theta)^{\beta}$. 
+%The latter 
+allow attributing \emph{different strength of influence to each of the datapoints}, depending on their accordance with the model assumptions. As densities get raised to a suitable power $\beta$, outlying observations are exponentially downweighted. When $\beta \rightarrow 0$,~\cref{eq:zellner-rule} is recovered and all datapoints are treated equally.
+
+In the presentation above we focused on modeling observations $(x_n)_{n=1}^{N}$~(unsupervised learning). In the case of supervised learning on data pairs ${(x_n,y_n)}_{n=1}^{N} \in (\mcX \times \mcY)^N$, the respective expression for individual terms of \blik{}\footnote{In this context for simplicity we use notation $f_n(\cdot)$  to denote $f(y_n|x_n, \cdot)$.} is~\cite{basu98}
+\[
+f_n(\theta):= -\frac{\beta+1}{\beta}\pi(y_n|x_n,\theta)^{\beta} +  \int_{\mcY} \pi(\psi|x_n,\theta)^{1+\beta}d\psi.
+\label{eq:sl-lik-terms}
+\] 

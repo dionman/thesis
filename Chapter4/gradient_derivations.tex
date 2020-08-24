@@ -1,0 +1,87 @@
+\section{Gradient Derivations}
+\label{supp:gradient_derivations}
+
+Throughout, expectations and covariances over the random parameter $\theta$ with 
+no explicit subscripts are taken under pseudocoreset posterior $\piuw$. We also
+interchange differentiation and integration without explicitly verifying that 
+sufficient conditions to do so hold.
+
+\subsection{Weights gradient}
+\label{supp:weights_gradient}
+
+\setlength{\belowdisplayskip}{8pt} \setlength{\belowdisplayshortskip}{8pt}
+\setlength{\abovedisplayskip}{8pt} \setlength{\abovedisplayshortskip}{8pt}
+\allowdisplaybreaks
+
+First, we compute the gradient with respect to weights vector $ w\in\reals^{M}_{+}$, which is written as 
+\[
+&   \nabla_w\mathrm{D_{KL}}
+= -\nabla_{w}\log Z(u,w) - \nabla_{w} \EE[f(\theta)^T1]
+ + \nabla_{w}  \EE[\tf(\theta)^Tw] .
+\]
+For any function $a : \Theta \to \reals$,
+we have that
+\[
+\nabla_w\EE\left[a(\theta)\right] 
+= &\int\nabla_w\left(\exp\left(w^T\tf(\theta) - \log Z(u,w)\right)\right)a(\theta)\pi_0(\theta)\dee\theta\\
+= &\EE\left[\left(\tf(\theta)-\nabla_w\log Z(u,w)\right)a(\theta)\right].
+\]
+Next, we compute the gradient of the log normalization constant via
+\[
+\nabla_w\log Z(u,w)
+= &\int\frac{1}{Z(u,w)}\nabla_w\left(\exp\left(w^T\tf(\theta)\right)\right)\pi_0(\theta)\dee\theta\\
+= &\EE\left[\tf(\theta)\right].
+\]
+Combining, we have
+\[
+\nabla_w\EE\left[a(\theta)\right] 
+= &\EE\left[\left(\tf(\theta)-\EE\left[\tf(\theta)\right]\right)a(\theta)\right].
+\]
+Subtracting $0 = \EE\left[a(\theta)\right]\EE\left[\tf(\theta)-\EE\left[\tf(\theta)\right]\right]$
+yields 
+\[
+\nabla_w\EE\left[a(\theta)\right] &= \cov\left[\tf(\theta), a(\theta) \right].
+\]
+The gradient with respect to $w$ in \cref{eq:dkl_duw} follows by substituting
+$1^Tf(\theta)$ and $w^T\tf(\theta)$ for $a(\theta)$ and using the product rule.
+
+\subsection{Location gradients}
+\label{supp:locations_gradient}
+
+Here we take the gradient with respect to a single
+pseudopoint $u_i \in \reals^d$. First note that
+\[
+&   \nabla_{u_i}\mathrm{D_{KL}}
+= -\nabla_{u_i}\log Z(u,w) - \nabla_{u_i} \EE[f(\theta)^T1]
+ + \nabla_{u_i}  \EE[\tf(\theta)^Tw].
+\]
+For any function $a(u,\theta) : \reals^{d\times M} \times \Theta \to \reals$,
+we have
+\[
+&\nabla_{u_i}\EE\left[a(u,\theta)\right] 
+= \int\!\!\nabla_{u_i}\!\!\left(\exp\left(w^T\tf(\theta) - \log Z(u,w)\right)a(u,\theta)\right)\pi_0(\theta)\dee\theta.
+\]
+Using the product rule and
+recalling from the main text that $h(\cdot, \theta) \defined \nabla_u f(\cdot, \theta)$,
+\[
+&\nabla_{u_i}\EE\left[a(u,\theta)\right] 
+=\EE\left[\nabla_{u_i}a(u,\theta)\right]
+ + \EE\left[a(u,\theta)\left(w_i h(u_i, \theta) - \nabla_{u_i}\log Z(u,w)\right)\right].
+\]
+Taking the gradient of the log normalization constant using similar techniques,
+\[
+ \nabla_{u_i} \log Z(u, w) &= w_i \EE\left[h(u_i, \theta)\right].
+\]
+Combining,
+\[
+&\nabla_{u_i}\EE\left[a(u,\theta)\right] 
+=\EE\left[\nabla_{u_i}a(u,\theta)\right]+ w_i\EE\left[a(u,\theta)\left(h(u_i, \theta) - \EE\left[h(u_i,\theta)\right]\right)\right].
+\]
+Subtracting $0 = \EE\left[a(u,\theta)\right]\EE\left[\left(h(u_i, \theta) - \EE\left[h(u_i,\theta)\right]\right)\right]$
+yields
+\[
+&\nabla_{u_i}\EE\left[a(u,\theta)\right] = \EE\left[\nabla_{u_i}a(u,\theta)\right]+ w_i\cov\left[a(u,\theta), h(u_i,\theta)\right].
+\]
+The gradient with respect to $u_i$ in \cref{eq:dkl_duw} follows by substituting 
+$f(\theta)^T1$ and $\tf(\theta)^Tw$ for $a(u,\theta)$.
+

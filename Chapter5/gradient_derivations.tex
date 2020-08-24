@@ -1,0 +1,59 @@
+\section{Gradient derivations}
+\label{sec:gradient-derivations}
+For brevity we suppress explicit indexing for moments under coreset posterior appearing below.
+The gradient of the objective in~\cref{eq:sparsevi-obj} wrt to $w$, is written as
+\[
+\nabla_{w} \kl{\pi_{\beta,w}}{\pi} = &  \nabla_{w} \log Z(\beta, w) \\
+													   & - \nabla_w \EE\left[1^Tf'(\theta)\right] + \nabla_w \EE\left[w^Tf(\theta)\right].
+\label{eq:full-gradient}
+\]
+Using the known identity for the gradient of the log-parition function of an exponential family distribution~\citep{wainwright08}, the first term is reduced to
+\[
+\nabla_w \log Z(\beta, w) = \EE [f(\theta)].
+\]
+Via application of the product rule we get 
+\[
+\nabla_{w}\EE[w^Tf(\theta)] 
+=& \int \nabla_w\left(\exp\left(w^T f(\theta) - \log Z(\beta, w)\right)\right)  w^T f(\theta) \pi_0(\theta) d\theta\\
+  & -  \int \exp\left(w^T f(\theta) - \log Z(\beta, w)\right)  f(\theta) \pi_0(\theta) d\theta \\
+=&\EE \left[ \left(f(\theta) - \nabla_w \log Z(\beta,w)\right) w^T f(\theta) \right] - \EE[f(\theta)]\\
+=&\EE \left[ \left(f(\theta) - \EE [f(\theta)]\right) w^T f(\theta) \right] - \EE[f(\theta)].
+\label{eq:dwfdw}
+\]
+Similarly
+\[
+\nabla_{w}\EE[1^Tf'(\theta)] 
+=&\EE \left[ \left(f(\theta) - \EE [f(\theta)]\right) 1^T f'(\theta) \right].
+\]
+Substituting the derived expressions for all the terms in~\cref{eq:full-gradient}, subtracting 
+\[0 =\EE \left[f(\theta) - \EE[f(\theta)] \right]\EE\left[ 1^T f'(\theta)\right] =\EE \left[f(\theta) - \EE[f(\theta)] \right]\EE\left[ w^T f(\theta)\right], 
+\label{eq:subtract-trick}
+\]
+and using the (bi)linearity property of covariance, we get~\cref{eq:dkl-grad}. Computing an empirical estimate on a random minibatch of size $B$ is reduced to the approximation of~\cref{eq:gradw}.
+
+The gradient of the objective in~\cref{eq:sparsevi-obj} wrt to $\beta$, is written as
+\[
+\nabla_\beta \kl{\pi_{\beta,w}}{\pi} = &  \nabla_\beta \log Z(\beta, w) \\
+& - \nabla_\beta \EE\left[1^Tf'(\theta)\right] + \nabla_\beta \EE\left[w^Tf(\theta)\right].
+\label{eq:full-gradient-beta}
+\]
+Recalling that $k(\cdot, \theta):=(\nabla_\beta f_n(\cdot, \theta))_{n=1}^{N}$, we get
+\[
+\nabla_\beta \log Z(\beta, w) = w^T\EE[k(\beta, \theta)].
+\]
+Following similar steps with~\cref{eq:dwfdw}, we derive
+\[
+\nabla_\beta \EE\left[w^Tf(\theta)\right] = w^T\EE\left[\left(k(\beta, \theta)-\EE\left[k(\beta, \theta)\right]\right)w^Tf(\theta)\right] + w^T\EE[k(\beta, \theta)],
+\]
+and
+\[
+\nabla_\beta \EE\left[1^Tf'(\theta)\right] = w^T\EE\left[\left(k(\beta, \theta)-\EE\left[k(\beta, \theta)\right]\right)1^Tf'(\theta)\right].
+\]
+Applying a subtraction trick for functions $k$ as in~\cref{eq:subtract-trick}, we 
+eventually get
+\[
+\nabla_{\beta}\kl{\pi_{\beta,w}}{\pi} 
+& = -w^T\cov_{\beta,w}\left[k(\beta),1^Tf' -w^Tf\right].
+\label{eq:dkl-grad-beta}
+\]
+

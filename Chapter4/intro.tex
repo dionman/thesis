@@ -1,0 +1,46 @@
+\section{Introduction}
+\label{sec:intro}
+
+
+Large-scale data---which has become the norm in many scientific and commercial applications of statistical machine learning---creates
+an inherently difficult setting for the modern data analyst. Exploring such data is difficult because it cannot all be
+obtained and directly visualized at once; one is typically limited to accessing potentially nonrepresentative random subsets of data.
+Exploring models is similarly hard, as training even a single model can be a computationally expensive, slow, and unreliable process.
+And as many sources of large-scale data contain sensitive information about 
+individuals (e.g., electronic health records and social network data),
+these challenges are coupled with growing privacy concerns  that preclude direct access to individual datapoints completely. 
+
+Large-scale data does offer one reprieve to the analyst: it often exhibits a significant degree of redundancy. Most data are 
+not unique or particularly informative for modelling and exploration. Based on this notion, data summarization methods have been developed  
+that provide the practitioner with a compressed---but still statistically representative---version of the large dataset for analysis.
+Summarizations have been developed for a variety of purposes, e.g., reducing the cost of computing with kernel matrices via Nystr{\"o}m-type approximations~\citep{drineas05,musco17,agrawal19} or sparse pseudo-input parameterizations~\citep{snelson05},
+Bayesian inference \citep{huggins16,huggins17,campbell18,campbell19jmlr,campbell19neurips}, maximum likelihood 
+parameter estimation \citep{dumouchel99,madigan02}, 
+linear regression \citep{zhou08,guhaniyogi15},
+geometric shape approximation \citep{agarwal05},
+clustering \citep{feldman11,lucic16,bachem15,braverman16}, and dimensionality reduction \citep{feldman16}.
+
+
+A common form of summarization is that of a sparse, weighted subset of the original dataset---a \emph{coreset} \citep{agarwal05}. 
+Coresets have two distinct advantages over other possible summarization modalities: they are easily interpreted, and can often be used
+as the input to standard data analysis algorithms without modification. 
+But as the dimensionality of a dataset grows, its constituent 
+datapoints tend to become more ``unique'' and cannot represent one another well. Indeed, in the context of Bayesian inference---the focus of the
+present work---we show that the \emph{optimal} coreset posterior approximation to the true posterior has KL divergence that scales with the dimension 
+of the data in a simple problem setting (\cref{prop:original_coreset_fails}). 
+Furthermore, directly releasing a subset of the original data precludes any possibility of
+individual privacy under the current standard 
+of differential privacy \citep{dwork2006calibrating,dwork14}. Past work
+addresses this issue in the context of clustering and computational geometry \citep{feldman09,feldman17}---with
+the remarkable property that the privatized coreset may be queried \emph{ad infinitum} without
+loss of privacy---but no such method exists for Bayesian posterior inference.
+
+In this work, we develop a novel technique for data summarization in the context of Bayesian inference under the constraints that the method 
+is scalable and easy to use, creates an intuitive summarization, applies to high-dimensional data, and enables privacy control.
+Inspired by past work \citep{madigan02,zhou08,snelson05}, instead of using constituent datapoints, we use synthetic \emph{pseudodata} to summarize the large dataset, resulting in a \emph{pseudocoreset}. We show that in the high-dimensional problem setting of \cref{prop:original_coreset_fails}, 
+the optimal pseudocoreset with just one pseudodata point recovers the exact posterior, a significant improvement upon the optimal standard coreset of any size.
+As in past work on Bayesian coresets \citep{campbell19neurips}, we formulate pseudocoreset construction as variational inference, 
+and provide a stochastic optimization method. As a consequence of the use of pseudodata---as well as privacy-preserving 
+stochastic gradient descent mechanisms~\citep{abadi16,park16, jalko17}---we show that our method can easily be modified to output
+a privatized pseudocoreset. The paper concludes with experimental results demonstrating the performance of pseudocoresets on 
+real and synthetic data.

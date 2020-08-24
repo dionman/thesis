@@ -1,0 +1,42 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[symbol]{footmisc}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!40!black},
+	citecolor={blue!40!black},
+	urlcolor={blue!40!black}
+}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\providecommand{\keywords}[1]{\textbf{\textit{Index terms---}} #1}
+
+\usepackage{xcolor}
+\usepackage[]{dmhdr} %dmanousakas style file for nice math defns
+\usepackage{natbib}
+
+\bibliographystyle{abbrv}
+
+\begin{document}
+\title{\bcores: Robust Large-Scale Bayesian Data Summarization in the Presence of Outliers}
+\author{\stepcounter{footnote}Dionysis Manousakas$^{1,}$\thanks{Corresponding e-mail: \href{mailto:dm754@cam.ac.uk}{dm754@cam.ac.uk}} \and Cecilia Mascolo$^{1,2}$}
+\date{%
+		$^1$University of Cambridge\\%
+		$^2$The Alan Turing Institute\\[2ex]%
+}
+\maketitle
+\input{abstract}
+\keywords{Scalable learning; Big data summarizations; Coresets; Variational inference; Robust statistics; Noisy observations; Data valuation}
+\input{intro}
+\input{preliminaries}
+\input{method}
+\input{evaluation}
+\input{related_work}
+\input{conclusion}
+\input{acknowledgements}
+\appendix
+%\input{gradient_derivations}
+\input{models}
+\input{datasets_details}
+\clearpage
+\bibliography{sources}
+\end{document}

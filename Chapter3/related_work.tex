@@ -1,0 +1,43 @@
+\section{Related Work}
+
+
+\subsection{Mobility Deanonymization}
+
+Protecting the anonymity of personal mobility is notoriously difficult due to sparsity~\citep{aggarwal2008} and hence mobility data are often vulnerable to deanonymization attacks~\citep{Narayanan2008}.
+Numerous studies into location privacy have shown that even when an individual's data are anonymized, they continue to possess unique patterns that can be exploited by a malicious adversary with access to auxiliary information.
+Zang et al.\ analysed nationwide call-data records (\emph{CDR}s) and showed that the $N$ most frequently visited places, so called \emph{top$-N$} data, correlated with publicly released side information and resulted in privacy risks, even for small values of $N$s~\citep{Zang2011}.
+This finding underlines the need for reductions in spatial or temporal data fidelity before publication.
+De Montjoye et al. quantified the unicity of human mobility on a mobile phone dataset of approximately $1.5M$ users with intrinsic temporal resolution of one hour and a 15-month measurement period~\citep{DeMontjoye2013}.
+They found that four random spatio-temporal points suffice to uniquely identify $ 95\% $ of the traces.
+They also observe that the uniqueness of traces decreases as a power law of spatio-temporal granularity, stressing the hardness of achieving privacy via obfuscation of time and space information.
+
+Several inference attacks on longitudinal mobility are based on probabilistic models trained on individual traces and rely on the regularity of human mobility.
+Mulder et al.\ developed a re-identification technique by building a Markov model for each individual in the training set, and then using this to re-identify individuals in the test set by likelihood maximisation~\cite{deMulder08}.
+Similarly, Gambs et al.\ used Markov chains to model mobility traces in support of re-identification~\cite{Gambs2014}.
+
+Naini et al.\ explored the privacy impact of releasing statistics of individuals mobility traces in the form of histograms, instead of their actual location information~\cite{Naini2016a}. They demonstrated that even this statistical information suffices to successfully recover the identity of individuals in datasets of few hundred people, via jointly matching labeled and unlabeled histograms of a population.
+Other researchers have investigated the privacy threats from information sharing on location-based social networks, including the impact of location semantics on the difficulty of re-identification~\cite{privacyAndTheCity} and location inference~\cite{Agir}.
+
+All the above previous work assumes locations are expressed using a universal symbol or global identifier, either corresponding to (potentially obfuscated) geographic coordinates, or pseudonymous stay points.
+Hence, cross-referencing between individuals in the population is possible.
+This is inapplicable when location information is anonymised separately for each individual.
+Lin et al.\ presented a user verification method in this setting~\cite{LinMobile}.
+It is based on statistical profiles of individual indoor and outdoor mobility, including cell tower ID and WiFi access point information.
+In contrast, we employ network representations based solely on cell tower ID sequences without explicit time information.
+
+Often, studies in human mobility aim to model properties of a population, thus location data are published as aggregate statistics computed over the locations of individuals.
+This has traditionally been considered a secure way to obfuscate the sensitive information contained in individual location data, especially when released aggregates conform to $ k-$anonymity~\cite{sweeney2002k} principles.
+However, recent results have questioned this assumption.
+Xu et al.\ recovered movement trajectories of individuals with accuracy levels of between $73\%$ and $91\%$ from aggregate location information computed from cellular location information involving $100\,000$ users~\cite{xu2017trajectory}. Similarly, Pyrgelis et al.\ performed a set of inference attacks on aggregate location time-series data and detected serious privacy loss, even when individual data are perturbed by differential privacy mechanisms before aggregation~\cite{pyrgelis2017does}.
+
+\subsection{Anonymity of Graph Data }
+Most of the aforementioned data can be represented as \emph{microdata} with rows of fixed dimensionality in a table.
+Microdata can thus be embedded into a vector space.
+In other applications, datapoints are \emph{relational} and can be naturally represented as \emph{graphs}.
+Measuring the similarity of such data is significantly more challenging, since there is no definitive method.
+Deanonymization attacks on graphs have mostly been studied in the context of social networks and aimed to either align nodes between an auxiliary and an unknown targeted graph~\cite{narayanan2009anonymizing, sharad2014}, or quantify the leakage of private information of a graph node via its neighbors~\cite{zheleva09}.
+
+In the problem studied here, \emph{each individual's information is an entire graph}, rather than a node in a graph or a node attribute, and thus deanonymization is reduced to a graph matching or classification problem.
+To the best of our knowledge, this is the first attempt to deanonymize an individual's structured data by applying graph similarity metrics.
+Since we are looking at relational data, not microdata, standard theoretical results on microdata anonymization, such as differential privacy \cite{dwork2006calibrating}, are not directly applicable.
+However, metrics related to structural similiarity, including $k-$anonymity, can be generalized in this framework.

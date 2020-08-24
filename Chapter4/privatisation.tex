@@ -1,0 +1,103 @@
+\subsection{Differentially Private Scheme}
+\label{sec:dp-pseudocoresets}
+
+Beyond better summarizations of high-dimensional data, pseudocoresets enable the 
+generation of a data summarization that ensures the statistical privacy of individual datapoints under the model of (approximate) \emph{differential privacy}. In this setting, a trusted
+ curator holds an aggregate dataset of $N$ datapoints, $x\in\mcX^N$, $\mcX\subseteq \reals^d$, and 
+builds and releases a pseudocoreset $(u, w)$, $u\in\mcX^M$, $w\in\reals_+^M$ via
+a randomized mechanism satisfying \cref{def:dp-definition}~\citep{dwork06, ourdata}.
+\ndefn[($\veps, \delta$)-Differentially Private Coreset]{
+	Fix $\veps \geq 0, \delta \in [0,1]$. A pseudocoreset construction algorithm
+        $ \mcM: \mcX^N \rightarrow \reals_+^M\times\mcX^M $  is  ($\veps, \delta$)-differentially private if for every pair of 
+        adjacent datasets $ x \approx x'$ and all events $ A \subseteq \reals_+^M\times\mcX^M$, 
+	$\;\Pr[\mcM(x) \in A] \leq e^\veps \Pr[\mcM(x') \in A] + \delta$.
+	\label{def:dp-definition}
+}
+
+We consider two datasets $x, x'$ as adjacent (denoted 
+$ x \approx x' $) if $ x' $ can be obtained from $ x $ by adding or removing an
+element.  $ \veps $ controls the effect that removal or addition of an element
+can have on the output distribution of $\mcM$, while %additive term 
+$ \delta $
+captures the failure probability, 
+%that plain \mbox{$\veps$-differential} privacy is
+%allowed to be broken, 
+and is preferably $ o(1/N)$. 
+
+In this section, we develop a differentially private version of pseudocoreset construction.
+Beyond modifying our initialization scheme, private pseudocoreset
+construction comes as natural extension of \cref{alg:psvi}
+ via replacing gradient computation involving points of the
+true dataset with its differentially private counterpart. 
+
+
+\paragraph{Pseudodata points initialization}
+\label{sec:pseudo-points-initilization}
+
+In the standard (nonprivate) pseudocoreset construction (\cref{alg:psvi}), pseudopoints are initialized from the dataset itself,
+incurring a privacy penalty. In differentially private pseudocoreset construction,
+we simply initialize pseudopoints by generating synthetic data from the statistical model
+at no privacy cost.
+
+
+
+\paragraph{Optimization}
+\label{sec:private-wu-opt}
+Examining lines 4--19 of \cref{alg:psvi}, the only steps that involve
+handling the original data occur at lines 8, 12, and 14, 
+when we use the minibatch subsample to compute log-likelihoods and gradients. 
+Due to the post-processing property of differential privacy~\citep{dwork14},
+all of the other computations in \cref{alg:psvi} (e.g.~sampling from the pseudocoreset posterior, 
+computing pseudopoint log-likelihoods, etc.) incur no privacy cost.
+Therefore, we need only %to modify the gradient estimates 
+to control the influence of private data entering  the gradient computation through the vector of $ (g_s^T1)_{s=1}^{S}$ terms.
+
+To accomplish this we do repeated applications of the  \emph{subsampled
+Gaussian mechanism}, since this also allows us to use a
+\emph{moments accountant} technique
+to keep tight estimates of
+privacy parameters~\citep{abadi16, wang19}. As in the nonprivate scheme, in
+each optimization step we uniformly subsample a minibatch $\mcB = \{x_1, \dots,
+x_{B}\}$ of private datapoints. 
+We then replace the $g_s^T1$ term in lines 12 and 14
+with a randomized privatization:
+\begin{align}
+& \text{replace}\quad (g_s^T 1)_{s=1}^{S}\quad\text{with}\quad  Z+\sum_{i=1}^{B}{\frac{G_{i}}{\max\left(1,\frac{||G_{i}||_2}{C}\right)}},
+&Z \dist \distNorm(0, \sigma^2 C^2 I),\label{eq:dp_suffstats}
+\end{align}
+where $G_i:=\left( f(x_i, \theta_s) - \frac{1}{S} \sum_{s'=1}^{S} f(x_i, \theta_{s'})\right)_{s=1}^{S} \in \reals^S  \; \forall x_i \in \mcB$,
+and $C, \sigma > 0$ are parameters controlling the amount of privacy.
+This modification to \cref{alg:psvi} has been shown in past work to obtain the privacy guarantee provided in \cref{cor:dp_sgd_privacy};
+crucially, the privacy cost of our construction is independent of the pseudocoreset size.
+It also does not introduce any significant amount of additional computation.
+No sensitivity computation for privatisation noise calibration is required, as boundedness is 
+enforced via clipping in \cref{eq:dp_suffstats}. Finally, a manageable number of privacy specific 
+hyperparameters is introduced: the clipping bound $C$ and noise level $\sigma$.
+\bncor[\citep{abadi16}]
+ There exist constants $ c_1, c_2 $ such that \cref{alg:psvi} modified per \cref{eq:dp_suffstats} 
+is $(\veps, \delta)$-differentially
+private for any $ \veps < c_1q^2T$, $ \delta > 0$, and  \mbox{$ \sigma
+\geq c_2q \sqrt{T \log(1/\delta)}/\veps$}, where $ {q \defined \frac{B}{N} }$
+is the fraction of data in a minibatch and $T$ is the number of optimization
+steps. \label{cor:dp_sgd_privacy}
+\encor
+%\begin{comment}
+%gradients per single private datapoint $\tilde\nabla_{w,u}^{(i)}\in\reals^{M\times (D+1)}$
+% as follows: 
+%\[
+%\tilde\nabla_{w,u}^{(i)} \defined  & 
+%\left[
+%\begin{array}{c} 
+%-\frac{1}{S} \sum_{s=1}^{S} \tg_s(g_{s,i} - \tg^T_s w/N), \\ 
+%- w \frac{1}{S}\sum_{s=1}^{S} \tildeh_s  \left(g_{s, i} - \tg_s^T w/N \right)
+%\end{array} \right], 
+% \label{eq:dp_grad_i}
+%\]
+%where $ g_{s, i} \defined f(x_i, \theta_s) - \frac{1}{S} \sum_{s'=1}^{S} f(x_i, \theta_{s'}) \; \forall x_i \in \mcB$.
+%
+%Finally, we clip the $2$-norm of each such gradient, and release the
+%corresponding average with calibrated additive Gaussian noise:
+%\begin{align}
+%&\tilde\nabla_{w,u} =  N \left(\frac{1}{B}  \sum_{i=1}^B \left(  \frac{\tilde\nabla_{w,u}^{(i)}}{\max{\left(1,\frac{||\tilde\nabla_{w,u}^{(i)}||_2}{C}\right)}} \right) + Z\right) , &Z \dist \distNorm(0, \sigma^2 C^2 I).\label{eq:dp_grad}
+%\end{align}
+%\end{comment}
