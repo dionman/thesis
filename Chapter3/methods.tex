@@ -201,7 +201,7 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 			\draw (C0) edge[thick] (E0);
 			\draw (C0) edge[thick]  (F0);
 			\end{tikzpicture}}
-		\caption{\sffamily{$G$}} \label{fig:G}
+		\caption{$G$} \label{fig:G}
 	\end{subfigure}
 	\begin{subfigure}[t]{.19\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
@@ -230,7 +230,7 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 			\draw (D1) edge[thick]  (F1);
 			\end{tikzpicture}
 		}
-		\caption{\sffamily{$G'$}} \label{fig:G'}
+		\caption{$G'$} \label{fig:G'}
 	\end{subfigure}
 	\begin{subfigure}[t]{.19\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
@@ -258,7 +258,7 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 			\draw (C0) edge[thick] (E0);
 			\draw (C0) edge[thick]  (F0);
 			\end{tikzpicture}}
-		\caption{ \sffamily{$G$ with multiset node attributes}} \label{fig:Gmult}
+		\caption{$G$ with multiset node attributes} \label{fig:Gmult}
 	\end{subfigure}
 	\begin{subfigure}[t]{.19\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
@@ -286,7 +286,7 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 			\draw (C1) edge[thick]  (E1);
 			\draw (D1) edge[thick]  (F1);
 			\end{tikzpicture}}
-		\caption{ \sffamily{$G'$ with multiset node attributes}} \label{fig:G'mult}
+		\caption{$G'$ with multiset node attributes} \label{fig:G'mult}
 	\end{subfigure}
 	\begin{subfigure}[t]{.19\textwidth}
 		\begin{tikzpicture}[->, thick, auto,node distance=0.005cm,every node/.style={inner sep=0,outer sep=0}]
@@ -381,7 +381,7 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 			\draw (D1) edge[thick]  (F1);
 			\end{tikzpicture}
 		}
-		\caption{{$G'$ relabeled}} \label{fig:G'rel}
+		\caption{$G'$ relabeled} \label{fig:G'rel}
 	\end{subfigure}
 	\centering
 	\begin{subfigure}[t]{.57\textwidth}
@@ -429,7 +429,7 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 		\node[state0]         (I7) [below of=I6]{$1\;]$};
 		\end{scope}
 		\end{tikzpicture}
-		\caption{{extracted feature vectors}} \label{fig:feat_G}
+		\caption{extracted feature vectors} \label{fig:feat_G}
 	\end{subfigure}
 	
 	
@@ -540,7 +540,7 @@ In the case of the uninformed adversary, the true label for any user is expected
 
 In the case of the informed adversary, knowledge of $ \mathcal{G}_\text{training} $ and the use of $ K $ will induce some positive \emph{privacy loss} which will result in the expected rank of user to be smaller than $ |\mathcal{L}|/2$. The privacy loss can be quantified as follows:
 \[
-	PL\left(G';\mathcal{G}_{\text{training}}, K\right) = \frac{P\left(l_{G'}= l_{G'_\text{true}}|\mathcal{G}_{\text{training}}, K\right)}{P\left(l_{G'}= l_{G'_\text{true}}\right)} -1
+	PL\left(G';\mcG_{\text{training}}, K\right) = \frac{P\left(l_{G'}= l_{G'_\text{true}}|\mcG_{\text{training}}, K\right)}{P\left(l_{G'}= l_{G'_\text{true}}\right)} -1
 	\label{eq:privloss}
 \]
 
@@ -548,7 +548,7 @@ A privacy loss equal to zero reflects no information gain compared to an uninfor
 
 Let us assume that the users of our population generate distinct mobility networks.
 As will be supported with empirical evidence in the next section, this is often the case in real-world \emph{cid} datasets of few thousand users even for small networks sizes (e.g. for top$-20$ networks in our dataset).
-Under the above premise, the maximal privacy loss occurs when the presented test network is an identical copy of a training network of the same user which exists in the data of the adversary, i.e.\ $ G' \in \mathcal{G_\text{training}}$.
+Under the above premise, the maximal privacy loss occurs when the presented test network is an identical copy of a training network of the same user which exists in the data of the adversary, i.e.\ $ G' \in \mcG_\text{training}$.
 This corresponds to a user deterministically repeating her mobility patterns over the observation period recorded in the test network.
 In such a scenario, we could think that isomorphism tests are the most natural way to compute similarity; however, isomorphism tests will be useless in real-world scenarios, since the stochastic nature and noise inherent in the mobility networks of a user would make them non-isomorphic.
 Maximal privacy loss reflects the discriminative ability of the kernel and cannot be exceeded in real-world datasets, where the test networks are expected to be noisy copies of the training networks existing in our system.

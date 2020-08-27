@@ -16,8 +16,6 @@ This allowed us to study the various attributes of individual mobility affecting
 As mentioned in the previous section, the cost of computing the adversarial posterior probability for the deanonymization of a given unlabeled network scales linearly with the population size.
 
 
-
-
 \subsection{Mobility Networks Construction\label{sec:mobility-net-construct}}
 
 We began by selecting the optimal order of the network representations derived from the mobility trajectories of the $1,500$ handsets selected from the Device Analyzer dataset.
@@ -127,8 +125,6 @@ Before presenting our findings on the Device Analyzer dataset, we will perform a
 This corresponds to the number of non-isomorphic graphs with $ N $ nodes.
 
 
-
-
 \begin{table}[!]
 	\begin{center}
 	\resizebox{0.7\textwidth}{!}
@@ -152,7 +148,6 @@ Table 2 presents the enumeration for undirected and directed non-isomorphic grap
 We observe that there exist $12,346$ undirected graphs with $8$ nodes and $9,608$ directed graphs with $5$ nodes.
 In other words, finding the top$-8$ places for each person is the smallest number which could produce unique graphs for each person in our sample of $1,500$ individuals; this reduces to $5$ when directionality is taken into account.
 Moreover, we find that top$-12$ undirected and top$-8$ directed networks are sufficient to enable each human on the planet to be represented by a different graph, assuming world population of $7.6$B.
-
 
 Next we present the results of our analysis on the Device Analyzer data.
 As observed in Figure \ref{fig:k_an}, \emph{sparsity arises in a mobility network even for very small $ N $}.
@@ -201,11 +196,9 @@ This can be attributed to patterns that are widely shared (e.g.\ the trip from w
 	\label{fig:k_an_stats}
 \end{figure*}
 
-
  Figure~\ref{fig:k_an_stats} shows some additional statistics of the anonymous isomorphic clusters formed for varying network sizes.
  Median anonymity becomes one for network sizes of five and eight in directed and undirected networks respectively; see Figure~\ref{fig:k_an_med}.
  In Figure~\ref{fig:anon_distribution} we observe that the population arranges into clusters with small anonymity even for very small network sizes: around $5\%$  of the users have at most $10$-anonymity when considering only five locations in their network, while this percentage increases to $80\%$ and $100\% $ for networks with $10$ and $15$ locations.
  This result confirms that anonymity is even harder when the directionality of edges are provided, since the space of directed networks is much larger than the space of the undirected networks with the same number of nodes.
 
  The above empirical results indicate that the diversity of individuals mobility is reflected in the network representations we use, thus we can meaningfully proceed to discriminative tasks on the population of mobility networks.
-
