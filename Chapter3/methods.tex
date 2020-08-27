@@ -24,10 +24,11 @@ We leave such analysis as future work.
 
 Anonymity among networks refers to topological (or structural) equivalence. In our analysis we adopt the privacy framework of $k-$anonymity~\cite{sweeney2002k} which we summarize as follows:
 
-\ndefn[(\textbf{$k-$anonymity})]{
+\ndefn[\textbf{$k-$anonymity}]{
 	A microdata release of statistics containing separate entries for a number of individuals in the population satisfies the $k-$anonymity property if the information for each individual contained in the release is indistinguishable from at least $k-1$ other individuals whose information also appears in the release.
 }
 
+\vspace{.4cm}
 Therefore we interpret $k-$anonymity in this paper to mean that the mobility network of an individual in a population should be identical to the mobility network of at least $k-1$ other individuals.
 Recent work casts doubt on the protection guarantees offered by \mbox{$k-$anonymity} in location privacy~\cite{shokri2010}, motivating the definition of $l-$diversity \cite{Machanavajjhala2007} and $t-$closeness \cite{li2007}.
 Although $k-$anonymity may be insufficient to ensure privacy in the presence of adversarial knowledge, \mbox{$k-$anonymity} is a good metric to use to measure the uniqueness of an individual in the data.
@@ -43,6 +44,7 @@ Structural equivalence in the space of graphs corresponds to isomorphism and, ba
  \emph{Graph} \mbox{$k-$\emph{anonymity}} is the minimum cardinality of isomorphism classes within a population of graphs.
 }
 
+\vspace{.4cm}
 After clustering our population of graphs into isomorphism classes, we can also define the \emph{identifiability set} and \emph{anonymity size}~\cite{anon_terminology} as follows:
 
 \ndefn[\textbf{Identifiability Set}]{
@@ -61,7 +63,7 @@ A preliminary step is to check whether a first-order network is a reasonable rep
 First-order network representations of mobility traces are built on the assumption of a \emph{first-order temporal correlation} among their states.
 In the case of mobility data, this means that the transition by an individual to the next location in the mobility network can be accurately modelled by considering only their current location.
 For example, the probability that an individual visits the shops or work next depends only on where they are located now, and a more detailed past history of places recently visited does not offer significant improvements to the model.
-The alternative is that a sequences of the states are better modelled by higher-order Markov chains, namely that transitions depend on the current state and one or more previously visited states.
+The alternative is that a sequence of the states is better modelled by higher-order Markov chains, namely that transitions depend on the current state and one or more previously visited states.
 For example, the probability that an individual visits the shops or work next depends not only on where they are now, but where they were earlier in the day or week.
 If higher-order Markov chains are required, we should assume a larger state-space and use these states as the nodes of our individual mobility networks.
 Recently proposed methods on optimal order selection of sequential data \cite{xu2016representing, scholtes2017network} can be directly applied at this step.
@@ -78,10 +80,11 @@ A \textbf{mobility network} for $ u $ is a weighted and directed
 graph $G^{u}=\big(V^{u}, E^{u}, W^{u}\big)  \in \mathcal{G}$, with the same topology as the state connectivity network and additionally an edge weight function $ W^{u} : E^{u} \rightarrow \mathbb{R}^{+}$. The weight function assigns a frequency $ w_{ij}^u $ to each edge $ e_{ij}^u $, which corresponds to the number of transitions from $ v_i^u  $ to $ v_j^u $ recorded throughout the observation period.
 }
 
+\vspace{.4cm}
 To facilitate comparisons of frequencies across networks of different sizes in our experiments, we normalize edge weights on each mobility network to sum \mbox{to 1}.
 
 In first-order networks, nodes correspond to distinct places the user visits.
-Given a high-frequency, timestamped, sequence of location events for a user, distinct places can be extracted as small geographic regions where a user stays longer than a defined time interval, using existing clustering algorithms~\cite{kang2005extracting}.
+Given a high-frequency, timestamped sequence of location events for a user, distinct places can be extracted as small geographic regions where a user stays longer than a defined time interval, using existing clustering algorithms~\cite{kang2005extracting}.
 Nodes in the mobility network have no geographic or timing information associated with them.
 Nodes may have \emph{attributes} attached to them reflecting additional side information.
 For example, in this paper we consider whether attaching the frequency of visits a user makes to a specific node aids an attacker attempting to deanonymize the user.
@@ -97,14 +100,14 @@ Distance functions decompose the graph into feature vectors (smaller substructur
 In the following, we introduce the notion of graph kernels and describe the graph similarity metrics used later in our experiments.
 
 We wish to compute the similarity between two graphs $ G, G' \in \mathcal{G} $. Kernel functions~\cite{Vishwanathan2010}, or \emph{kernels}, are symmetric positive semidefinite functions, where  $ K(G, G') : \mathcal{G} \times \mathcal{G} \rightarrow \mathcal{R}^{+} $, meaning
-that for all $ n > 1 $,  $ G_1, . . . , G_n \in \mathcal{G} $, and $ c_1, . . . , c_n \in \mathcal{R}$, we have $ \sum_{i,j=1}^{n} c_ic_jK(G_i, G_j ) \geq 0 $.
+that for all $ n > 1 $,  $ G_1, . . . , G_n \in \mathcal{G} $, and $ c_1, . . . , c_n \in \mathcal{R}$, we have $ {\sum_{i,j=1}^{n} c_ic_jK(G_i, G_j ) \geq 0} $.
 Each kernel function corresponds to some feature map $ \phi(G) $, where the
 kernel function can be expressed as the inner product between feature maps, i.e., $ K(G, G') = \big \langle \phi(G), \phi(G') \big \rangle $.
 
-In order to ensure the result from the kernel lies in the range from $-1$ to $1$ inclusive, we apply \emph{cosine normalization} as follows:
-\begin{equation}
-K({G}, {G}')=\bigg   \langle \frac{\phi({G})}{||\phi({G})||}, \frac{\phi(G')}{||\phi(G')||} \bigg  \rangle.
-\end{equation}
+In order to ensure the result from the kernel lies in the interval $[-1, 1]$, we apply \emph{cosine normalization} as follows:
+\[
+K({G}, {G}')=\left  \langle \frac{\phi({G})}{||\phi({G})||}, \frac{\phi(G')}{||\phi(G')||} \right  \rangle.
+\]
 One interpretation of this function is as the \emph{cosine similarity of the graphs in the feature space} defined by the map of the kernel.
 
 In our experiments we apply a number of scalable kernel functions on our mobility datasets and assess their suitability for deanonymization applications on mobility networks.
@@ -129,16 +132,13 @@ This family of kernels are called \emph{$R-$convolution graph kernels}~\cite{hau
 In this way, graphs are represented as vectors with elements corresponding to the frequency of each such substructure over the graph.
 Hence, if
 $ s_1, s_2, ... \in \mathcal{S}$ are the substructures of interest and $ \#\big(s_i \in G\big)$ the counts of $ s_i $ in graph $ G $, we get as feature map vectors
-
-\begin{equation}
-\phi(G) = [\#\big(s_1 \in G\big), \#\big(s_2 \in G\big), ...]^T
-\end{equation}
-
- with dimension $ |\mathcal{S}| $  and kernel
-
-\begin{equation}
-K(G, G') = \sum_{s \in \mathcal{S}} \#\big(s \in G\big) \#\big(s \in G'\big).
-\end{equation}
+\[ 
+\phi(G) = \left[\#\big(s_1 \in G\big), \#\left(s_2 \in G\right), \dots\right]^T
+\]
+with dimension $ |\mathcal{S}| $  and kernel
+\[
+K(G, G') = \sum_{s \in \mathcal{S}} \#\left(s \in G\right) \#\left(s \in G'\right).
+\]
 
 In the following, we briefly present some kernels in this category and explain how they are adapted in our experiments.
 
@@ -152,7 +152,7 @@ The shortest path set is computable in polynomial time using, for example, the F
 \vspace{1em}
 \noindent\textbf{Weisfeiler-Lehman Subtree Kernel}
 
-Shervashidze et al.\ proposed an efficient method~\cite{Shervashidze2011} to construct a graph kernel utilizing the \mbox{Weisfeiler-Lehman} (\emph{WL}) test of isomorphism~\cite{weisfeiler1968reduction}.
+Shervashidze \emph{et~al.} proposed an efficient method~\cite{Shervashidze2011} to construct a graph kernel utilizing the \mbox{Weisfeiler-Lehman} (\emph{WL}) test of isomorphism~\cite{weisfeiler1968reduction}.
 The idea of the \emph{WL} kernel is to measure co-occurences of subtree patterns across node attributed graphs.
 
 Computation progresses over iterations as follows:
@@ -169,7 +169,7 @@ If $ G $ and $ G' $ are the two graphs, the \emph{WL} subtree kernel is defined 
 \[
 K^{h}_{WL}(G, G') = \big \langle \phi_h(G), \phi_h(G') \big \rangle,
 \]
-where $ \phi_h(G) $ and $ \phi_h(G') $ are the vectors of labels extracted after running $ h $ steps of the computation (Figure~\ref{fig:feat_G}). They consist of $ h $ blocks, where the $i-$th component of the $j-$th block corresponds to the frequency of label $ i $ at the $j-$th iteration of the computation.
+where $ \phi_h(G) $ and $ \phi_h(G') $ are the vectors of labels extracted after running $ h $ steps of the computation (Figure~\ref{fig:feat_G}). They consist of $ h $ blocks, where the $i$-th component of the $j$-th block corresponds to the frequency of label $ i $ at the $j$-th iteration of the computation.
 The computational complexity of the kernel scales \emph{linearly} with the number of edges $ |E| $ and the length $ h $ of the WL graph sequence.
 
 
@@ -178,15 +178,15 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 	\begin{subfigure}[t]{.19\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
 			\begin{tikzpicture}[shorten >=1pt, thick, auto,node distance=1.5cm,font=\small]
-			\tikzstyle{state1}=[circle,draw=black,text=red!50, font=\small]
-			\tikzstyle{state2}=[circle,draw=black,text=blue!50!, font=\small]
-			\tikzstyle{state3}=[circle,draw=black, text=black!50,  font=\small]
+			\tikzstyle{state1}=[circle,draw=black,text=red!90, font=\small]
+			\tikzstyle{state2}=[circle,draw=black,text=blue!90!, font=\small]
+			\tikzstyle{state3}=[circle,draw=black, text=black!90,  font=\small]
 			\tikzstyle{state4}=[circle,draw=black, text={rgb:red,1;green,2;blue,3},  maximum size=0.5cm,font=\small]
 			\tikzstyle{state5}=[circle,draw=black, text=green!90!black!,  maximum size=0.5cm,font=\small]
 			\tikzstyle{state6}=[circle,draw=black, text=black!90,  maximum size=0.5cm,font=\small]
 			\tikzstyle{state7}=[circle,draw=black, text=red!,  maximum size=0.5cm, font=\small]
 			\tikzstyle{state8}=[circle,draw=black,text=black!50!blue!,  maximum size=0.5cm,font=\small]
-			\tikzstyle{state9}=[circle, draw=black,text=orange!80,  maximum size=0.5cm,font=\small]
+			\tikzstyle{state9}=[circle, draw=black,text=orange!90,  maximum size=0.5cm,font=\small]
 			\node[state3] 		 (A0)                    {$3$};
 			\node[state2]         (B0) [right of=A0 ] {$2$};
 			\node[state3]         (C0) [below left of=A0] {$3$};
@@ -206,15 +206,15 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 	\begin{subfigure}[t]{.19\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
 			\begin{tikzpicture}[shorten >=1pt, thick, auto,node distance=1.5cm]
-			\tikzstyle{state1}=[circle,draw=black,text=red!50, font=\small]
-			\tikzstyle{state2}=[circle,draw=black,text=blue!50!, font=\small]
-			\tikzstyle{state3}=[circle,draw=black, text=black!50,  font=\small]
+			\tikzstyle{state1}=[circle,draw=black,text=red!90, font=\small]
+			\tikzstyle{state2}=[circle,draw=black,text=blue!90!, font=\small]
+			\tikzstyle{state3}=[circle,draw=black, text=black!90,  font=\small]
 			\tikzstyle{state4}=[circle,draw=black, text={rgb:red,1;green,2;blue,3},  maximum size=0.5cm,font=\small]
 			\tikzstyle{state5}=[circle,draw=black, text=green!90!black!,  maximum size=0.5cm,font=\small]
 			\tikzstyle{state6}=[circle,draw=black, text=black!90,  maximum size=0.5cm,font=\small]
 			\tikzstyle{state7}=[circle,draw=black, text=red!,  maximum size=0.5cm, font=\small]
 			\tikzstyle{state8}=[circle,draw=black,text=black!50!blue!,  maximum size=0.5cm,font=\small]
-			\tikzstyle{state9}=[circle, draw=black,text=orange!80,  maximum size=0.5cm,font=\small]
+			\tikzstyle{state9}=[circle, draw=black,text=orange!90,  maximum size=0.5cm,font=\small]
 			\node[state2] 		  (A1)                   {$2$};
 			\node[state3]         (B1) [right of=A1] {$3$};
 			\node[state3]         (C1) [below left of=A1]{$3$};
@@ -235,15 +235,15 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 	\begin{subfigure}[t]{.19\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
 			\begin{tikzpicture}[shorten >=1pt, thick, auto,node distance=1.5cm,font=\small]
-			\tikzstyle{state1}=[circle,draw=black,text=red!50,scale=0.8, font=\small]
-			\tikzstyle{state2}=[circle,draw=black,text=blue!50!,scale=0.8, font=\small]
-			\tikzstyle{state3}=[circle,draw=black, text=black!50,  scale=0.8,font=\small]
+			\tikzstyle{state1}=[circle,draw=black,text=red!90,scale=0.8, font=\small]
+			\tikzstyle{state2}=[circle,draw=black,text=blue!90!,scale=0.8, font=\small]
+			\tikzstyle{state3}=[circle,draw=black, text=black!90,  scale=0.8,font=\small]
 			\tikzstyle{state4}=[circle,draw=black, text={rgb:red,1;green,2;blue,3},  maximum size=0.5cm,scale=0.8,font=\small]
 			\tikzstyle{state5}=[circle,draw=black, text=green!90!black!,  maximum size=0.5cm,scale=0.8,font=\small]
 			\tikzstyle{state6}=[circle,draw=black, text=black!90,  maximum size=0.5cm,scale=0.8,font=\small]
 			\tikzstyle{state7}=[circle,draw=black, text=red!,  maximum size=0.5cm, scale=0.8,font=\small]
 			\tikzstyle{state8}=[circle,draw=black,text=black!50!blue!,  maximum size=0.5cm,scale=0.8,font=\small]
-			\tikzstyle{state9}=[circle, draw=black,text=orange!80,  maximum size=0.5cm,scale=0.8,font=\small]
+			\tikzstyle{state9}=[circle, draw=black,text=orange!90,  maximum size=0.5cm,scale=0.8,font=\small]
 			\node[state3] 		 (A0)                    {$3,233$};
 			\node[state2]         (B0) [right of=A0 ] {$2,33$};
 			\node[state3]         (C0) [below left of=A0] {$3,1133$};
@@ -263,15 +263,15 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 	\begin{subfigure}[t]{.19\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
 			\begin{tikzpicture}[shorten >=1pt, thick, auto,node distance=1.5cm]
-			\tikzstyle{state1}=[circle,draw=black,text=red!50,scale=0.8, font=\small]
-			\tikzstyle{state2}=[circle,draw=black,text=blue!50!,scale=0.8, font=\small]
-			\tikzstyle{state3}=[circle,draw=black, text=black!50,  scale=0.8,font=\small]
+			\tikzstyle{state1}=[circle,draw=black,text=red!90,scale=0.8, font=\small]
+			\tikzstyle{state2}=[circle,draw=black,text=blue!90!,scale=0.8, font=\small]
+			\tikzstyle{state3}=[circle,draw=black, text=black!90,  scale=0.8,font=\small]
 			\tikzstyle{state4}=[circle,draw=black, text={rgb:red,1;green,2;blue,3},  maximum size=0.5cm,scale=0.8,font=\small]
 			\tikzstyle{state5}=[circle,draw=black, text=green!90!black!,  maximum size=0.5cm,scale=0.8,font=\small]
 			\tikzstyle{state6}=[circle,draw=black, text=black!90,  maximum size=0.5cm,scale=0.8,font=\small]
 			\tikzstyle{state7}=[circle,draw=black, text=red!,  maximum size=0.5cm, scale=0.8,font=\small]
 			\tikzstyle{state8}=[circle,draw=black,text=black!50!blue!,  maximum size=0.5cm,scale=0.8,font=\small]
-			\tikzstyle{state9}=[circle, draw=black,text=orange!80,  maximum size=0.5cm,scale=0.8,font=\small]
+			\tikzstyle{state9}=[circle, draw=black,text=orange!90,  maximum size=0.5cm,scale=0.8,font=\small]
 			\node[state2] 		  (A1)                   {$2,33$};
 			\node[state3]         (B1) [right of=A1] {$3,233$};
 			\node[state3]         (C1) [below left of=A1]{$3,1233$};
@@ -290,15 +290,15 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 	\end{subfigure}
 	\begin{subfigure}[t]{.19\textwidth}
 		\begin{tikzpicture}[->, thick, auto,node distance=0.005cm,every node/.style={inner sep=0,outer sep=0}]
-		\tikzstyle{state1}=[draw=white,text=red!50, font=\small]
-		\tikzstyle{state2}=[draw=white,text=blue!50!, font=\small]
-		\tikzstyle{state3}=[draw=white, text=black!50,  font=\small]
+		\tikzstyle{state1}=[draw=white,text=red!90, font=\small]
+		\tikzstyle{state2}=[draw=white,text=blue!90!, font=\small]
+		\tikzstyle{state3}=[draw=white, text=black!90,  font=\small]
 		\tikzstyle{state4}=[draw=white, text={rgb:red,1;green,2;blue,3},font=\small]
 		\tikzstyle{state5}=[draw=white, text=green!90!black!,font=\small]
 		\tikzstyle{state6}=[draw=white, text=black!90,  font=\small]
 		\tikzstyle{state7}=[draw=white, text=red!,   font=\small]
 		\tikzstyle{state8}=[draw=white,text=black!50!blue!,  font=\small]
-		\tikzstyle{state9}=[ draw=white,text=orange!80,  font=\small]
+		\tikzstyle{state9}=[ draw=white,text=orange!90,  font=\small]
 		\begin{scope}[node distance=9.5mm and 0.1mm]
 		\node[state1] 		  (A3)        {$1,3$};
 		\node[state4] 		  (A4) [right  of = A3]   {$ 4 $};
@@ -320,7 +320,7 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 		\draw (F3) edge[thick]  (F4);
 		\end{scope}
 		\end{tikzpicture}
-		\caption{{Label Compression}} \label{fig:mapping}
+		\caption{\mbox{Label Compression}} \label{fig:mapping}
 	\end{subfigure}
 	
 	\medskip
@@ -328,15 +328,15 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 	\begin{subfigure}[t]{.2\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
 			\begin{tikzpicture}[shorten >=1pt, thick, auto,node distance=1.5cm,font=\small]
-			\tikzstyle{state1}=[circle,draw=black,text=red!50, font=\small]
-			\tikzstyle{state2}=[circle,draw=black,text=blue!50!, font=\small]
-			\tikzstyle{state3}=[circle,draw=black, text=black!50,  font=\small]
+			\tikzstyle{state1}=[circle,draw=black,text=red!90, font=\small]
+			\tikzstyle{state2}=[circle,draw=black,text=blue!90!, font=\small]
+			\tikzstyle{state3}=[circle,draw=black, text=black!90,  font=\small]
 			\tikzstyle{state4}=[circle,draw=black, text={rgb:red,1;green,2;blue,3},  font=\small]
 			\tikzstyle{state5}=[circle,draw=black, text=green!90!black!,  font=\small]
 			\tikzstyle{state6}=[circle,draw=black, text=black!90,  font=\small]
 			\tikzstyle{state7}=[circle,draw=black, text=red!, font=\small]
 			\tikzstyle{state8}=[circle,draw=black,text=black!50!blue!,  font=\small]
-			\tikzstyle{state9}=[circle, draw=black,text=orange!80,  font=\small]
+			\tikzstyle{state9}=[circle, draw=black,text=orange!90,  font=\small]
 			\node[state7] 		 (A0)                    {$7$};
 			\node[state5]         (B0) [right of=A0 ] {$5$};
 			\node[state8]         (C0) [below left of=A0] {$8$};
@@ -357,15 +357,15 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 	\begin{subfigure}[t]{.2\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
 			\begin{tikzpicture}[shorten >=1pt, thick, auto,node distance=1.5cm]
-			\tikzstyle{state1}=[circle,draw=black,text=red!50, font=\small]
-			\tikzstyle{state2}=[circle,draw=black,text=blue!50!, font=\small]
-			\tikzstyle{state3}=[circle,draw=black, text=black!50,  font=\small]
+			\tikzstyle{state1}=[circle,draw=black,text=red!90, font=\small]
+			\tikzstyle{state2}=[circle,draw=black,text=blue!90!, font=\small]
+			\tikzstyle{state3}=[circle,draw=black, text=black!90,  font=\small]
 			\tikzstyle{state4}=[circle,draw=black, text={rgb:red,1;green,2;blue,3},  font=\small]
 			\tikzstyle{state5}=[circle,draw=black, text=green!90!black!, font=\small]
 			\tikzstyle{state6}=[circle,draw=black, text=black!90,  font=\small]
 			\tikzstyle{state7}=[circle,draw=black, text=red!,   font=\small]
 			\tikzstyle{state8}=[circle,draw=black,text=black!50!blue!,  font=\small]
-			\tikzstyle{state9}=[circle, draw=black,text=orange!80,  font=\small]
+			\tikzstyle{state9}=[circle, draw=black,text=orange!90,  font=\small]
 			\node[state5] 		  (A1)                   {$5$};
 			\node[state7]         (B1) [right of=A1] {$7$};
 			\node[state9]         (C1) [below left of=A1]{$9$};
@@ -387,15 +387,15 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 	\begin{subfigure}[t]{.57\textwidth}
 		\begin{tikzpicture}[->, thick, auto,node distance=0.9cm,every node/.style={inner sep=0,outer sep=0}]
 		\tikzstyle{state0}=[draw=white,text=black!, font=\small]
-		\tikzstyle{state1}=[draw=white,text=red!50, font=\small]
-		\tikzstyle{state2}=[draw=white,text=blue!50!, font=\small]
-		\tikzstyle{state3}=[draw=white, text=black!50,  font=\small]
+		\tikzstyle{state1}=[draw=white,text=red!90, font=\small]
+		\tikzstyle{state2}=[draw=white,text=blue!90!, font=\small]
+		\tikzstyle{state3}=[draw=white, text=black!90,  font=\small]
 		\tikzstyle{state4}=[draw=white, text={rgb:red,1;green,2;blue,3},  font=\small]
 		\tikzstyle{state5}=[draw=white, text=green!90!black!,  font=\small]
 		\tikzstyle{state6}=[draw=white, text=black!90,  font=\small]
 		\tikzstyle{state7}=[draw=white, text=red!,   font=\small]
 		\tikzstyle{state8}=[draw=white,text=black!50!blue!,  font=\small]
-		\tikzstyle{state9}=[ draw=white,text=orange!80,  font=\small]
+		\tikzstyle{state9}=[ draw=white,text=orange!90,  font=\small]
 		\begin{scope}[node distance=5.5mm and 3mm]
 		\node[state0] 		  (O5)        {$  \mbox{features}$};
 		\node[state1] 		  (A5)     [right=of  O5]    {$     1$};
@@ -458,28 +458,28 @@ Here, $ M $ can be defined using the edit distance of the substructures, i.e.\ t
 
 \begin{figure}[!h]
 	\centering
-	\begin{subfigure}[]{0.4\textwidth}
+	\begin{subfigure}[]{0.49\textwidth}
 		\centering		\includegraphics[height=4cm]{\MyPath/fig/1_firsthalf_.pdf}
-		\caption{{\textbf{user 1}: first half of the observation period}}
+		\caption{{\textbf{user 1}: first half of the \mbox{observation period}}}
 		\label{fig:evidence11}
 	\end{subfigure}%
-	\begin{subfigure}[]{0.4\textwidth}
+	\begin{subfigure}[]{0.49\textwidth}
 		\centering
 		\includegraphics[height=4cm]{\MyPath/fig/1_secondhalf_.pdf}
-		\caption{{\textbf{user 1}: second half of the observation period}}
+		\caption{{\textbf{user 1}: second half of the \mbox{observation period}}}
 		\label{fig:evidence12}
 	\end{subfigure}%
 	\\
-	\begin{subfigure}[]{0.4\textwidth}
+	\begin{subfigure}[]{0.49\textwidth}
 		\centering
 		\includegraphics[height=4cm]{\MyPath/fig/2_firsthalf_.pdf}
-		\caption{{\textbf{user 2}: first half of the observation period}}
+		\caption{{\textbf{user 2}: first half of the \mbox{observation period}}}
 		\label{fig:evidence21}
 	\end{subfigure}
-	\begin{subfigure}[]{0.4\textwidth}
+	\begin{subfigure}[]{0.49\textwidth}
 		\centering
 		\includegraphics[height=4cm]{\MyPath/fig/2_secondhalf_.pdf}
-		\caption{{\textbf{user 2}: second half of the observation period}}
+		\caption{{\textbf{user 2}: second half of the \mbox{observation period}}}
 		\label{fig:evidence22}
 	\end{subfigure}
 	\caption{{Top$-20$ networks for two random users from the Device Analyzer dataset.
@@ -493,8 +493,10 @@ Here, $ M $ can be defined using the edit distance of the substructures, i.e.\ t
 
 The basic premise of our deanonymization approach can be postulated as follows:
 
+\begin{tcolorbox}
 \emph{
 	The mobility of a person across different time periods is stochastic, but largely recurrent and stationary, and its expression at the level of the individual mobility network is discriminative enough to reduce a person's privacy within a population.}
+\end{tcolorbox}
 
 For example, the daily commute to work corresponds to a relatively stable sequence of cell towers.
 This can be expressed in the mobility network of the user as a persistent subgraph and forms a characteristic behavioural pattern that can be exploited for deanonymization of mobility traces.
@@ -506,7 +508,8 @@ For ease of presentation, in the figure, nodes between the disparate observation
 We assume an adversary has access to a \emph{set of mobility networks} $ G \in \mathcal{G}_{\text{training}} $ \emph{with disclosed identities (or labels)} $l_{G} \in \mathcal{L}$
 and a \emph{set of mobility networks} $ G' \in \mathcal{G}_{\text{test}} $ \emph{with undisclosed identities}
 $ l_{G'} \in \mathcal{L}$.%
-\footnote{Generally we can think of $ l_{G'} \in \mathcal{J} \supset \mathcal{L}$ and assign some fixed probability mass to the labels $ l_{G'} \in \mathcal{J} \setminus \mathcal{L}$.
+
+{Generally we can think of $ l_{G'} \in \mathcal{J} \supset \mathcal{L}$ and assign some fixed probability mass to the labels $ l_{G'} \in \mathcal{J} \setminus \mathcal{L}$.
 However, here we make the \emph{closed world assumption} that the training and test networks come from the same population.
 We make this assumption for two reasons: first, it is a common assumption in works on deanonymization and, second, we cannot directly update our beliefs on $ l_{G'} \in \mathcal{J} \setminus \mathcal{L}$ by observing samples from $ \mathcal{L}$. }
 
@@ -516,21 +519,17 @@ We hypothesize that a training and test mobility network belonging to the same p
 The intention of an adversary is to deanonymize a given test network $ G' \in \mathcal{G}_{\text{test}} $, by appropriately defining a vector of probabilities over the possible identities in $ \mathcal{L}$.
 
 An \textbf{uninformed adversary} has \emph{no information} about the networks of the population and in the absence of any other side knowledge, the prior belief of the adversary about the identity of $ G' $ is a uniform distribution over all possible identities:
-\begin{equation}
-	P\big(l_{G'}= l_{G_i}\big) = 1/|\mathcal{L}|, \mbox{ for every }  G_i \in \mathcal{G}_{\text{training}}.
-\end{equation}
+\[
+	P\left(l_{G'}= l_{G_i}\right) = 1/|\mathcal{L}|, \mbox{ for every }  G_i \in \mathcal{G}_{\text{training}}.
+\]
 
 An \textbf{informed adversary} has \emph{access to the population of training networks} and can compute the pairwise similarities of $ G' $ with each $ G_{i} \in \mathcal{G}_{\text{training}} $ using a kernel function $K$. Hence the adversary can update her belief for the possible identities in $ \mathcal{L} $ according to the values of $K$.
 Therefore, when the adversary attempts to deanonymize identities in the data, she assigns probabilities that follow a \emph{non-decreasing function} {of the computed pairwise similarity} of each label.
 Denoting this function by $f$, we can write the updated adversarial probability estimate for each identity as follows:
-%
-
-	\begin{align}
-	\begin{split}
-	P\big(l_{G'} =l_{G_i}| \mathcal{G}_{\text{training}}, K\big)& =  \frac{f\big(K(G_i, G')\big)}{\displaystyle \sum_{j\in \mathcal{L}}  f\big(K(G_j, G')\big)},\\  & \text{for every }  G_i \in \mathcal{G}_{\text{training}}.
-	\end{split}
+\[
+	P\left(l_{G'} =l_{G_i}| \mathcal{G}_{\text{training}}, K\right) =  \frac{f\left(K(G_i, G')\right)}{\displaystyle \sum_{j\in \mathcal{L}}  f\left(K(G_j, G')\right)},   \mbox{ for every }  G_i \in \mathcal{G}_{\text{training}}.
 	\label{eq:adversarial_rule}
-	\end{align}
+\]
 
 
 
@@ -540,13 +539,10 @@ Denoting this function by $f$, we can write the updated adversarial probability 
 In the case of the uninformed adversary, the true label for any user is expected to have rank $ |\mathcal{L}|/2$. Under this policy, the amount of privacy for each user is proportional to the size of the population.
 
 In the case of the informed adversary, knowledge of $ \mathcal{G}_\text{training} $ and the use of $ K $ will induce some positive \emph{privacy loss} which will result in the expected rank of user to be smaller than $ |\mathcal{L}|/2$. The privacy loss can be quantified as follows:
-
-\begin{equation} 
-\begin{split}
-PL\big(G';\mathcal{G}_{\text{training}}, K\big) = \frac{ P\big(l_{G'}= l_{G'_\text{true}}|\mathcal{G}_{\text{training}}, K\big)}{P\big(l_{G'}= l_{G'_\text{true}}\big)} -1
-\end{split}
-\label{eq:privloss}
-\end{equation}
+\[
+	PL\left(G';\mathcal{G}_{\text{training}}, K\right) = \frac{P\left(l_{G'}= l_{G'_\text{true}}|\mathcal{G}_{\text{training}}, K\right)}{P\left(l_{G'}= l_{G'_\text{true}}\right)} -1
+	\label{eq:privloss}
+\]
 
 A privacy loss equal to zero reflects no information gain compared to an uninformed adversary with no access to graphs with disclosed identities.
 

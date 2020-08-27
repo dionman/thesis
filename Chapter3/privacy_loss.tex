@@ -24,8 +24,8 @@ Concretely, we computed the distribution of users' visits to locations and added
 \begin{equation*}
 	a_{c=3}\left(v_i^u\right)=
 	\begin{cases}
-		 3, &  \mbox{if} v_i^u \in \mbox{top-20\% locations of } u  \\
-		 2, &  \mbox{if} v_i^u  \notin \mbox{top-20}\% \mbox{locations of }  u   \mbox{and }  v_i^u \in \mbox{top}-80\% \mbox{locations}\\
+		 3, &  \mbox{if } v_i^u \in \mbox{top-20\% locations of } u  \\
+		 2, &  \mbox{if } v_i^u  \notin \mbox{top-20}\% \mbox{locations of }  u   \mbox{ and }  v_i^u \in \mbox{top}-80\% \mbox{locations}\\
 		 1, &  \mbox{otherwise}.
 	\end{cases}
 \end{equation*}
@@ -59,7 +59,7 @@ We observe that atomic structure based kernels significantly outperform the rand
 
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=\linewidth]{\MyPath/fig/kernels_evaluation.pdf}
+	\includegraphics[width=0.8\linewidth]{\MyPath/fig/kernels_evaluation.pdf}
 	\caption{\emph{CDF} of true rank over the population according to different kernels.}
 	\label{fig:kernels_evaluation}
 \end{figure}
@@ -76,7 +76,7 @@ Taking into account the steps of the \emph{WL} test, it is clear that these topo
 Thus local structural patterns will be described by few features produced in the first iterations of the test.
 Furthermore, the feature space of the kernel increases very quickly as a function of $ h $, which leads to sparsity and low levels of similarity over the population of networks.
 
-Histograms of length $1\,000$ were also computed for the unweighted and weighted degree distributions and passed through a Gaussian RBF kernel.
+Histograms of length $1,000$ were also computed for the unweighted and weighted degree distributions and passed through a Gaussian RBF kernel.
 We can see that the degree distribution gives almost a random ranking, as it is heavily dependent on the network size.
 When including the normalized edge weights, the \emph{WD} kernel only barely outperforms a rand\label{key}om ranking.
 Repetitions on pruned versions did not improve the performance and are not presented for brevity.
@@ -135,10 +135,10 @@ In addition, the variance is much smaller: approximately $ 218 $, instead of $ 4
 The obtained ordering implies a significant decrease in user privacy, since the ranking can be leveraged by an adversary to determine the most likely matches between a training mobility network and a test mobility network.
 The adversary can estimate the true identity of a given test network $ G' $, as suggested in Section~\ref{sec:threat-model}, applying some simple probabilistic policy that uses pairwise similarity information. For example, let us examine the privacy loss implied by update rule in~\eqref{eq:adversarial_rule} for  \mbox{function $ f$}:
 
-\begin{equation}
-f\big(K_{\text{DSP}}(G_i, G')\big) =\frac{1}{rank\big(K_{DSP}(G_i, G')\big)}.
+\[
+f\left(K_{\text{DSP}}(G_i, G')\right) =\frac{1}{\text{rank}\left(K_{DSP}(G_i, G')\right)}.
 \label{eq:inverse_rank}
-\end{equation}
+\]
 
 %\begin{align}
 %\begin{split}
