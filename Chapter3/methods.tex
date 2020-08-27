@@ -1,21 +1,11 @@
-
 \section{Proposed Methodology\label{sec:methodology}}
-%; an overview of our approach is depicted in Figure~\ref{fig:methodology}.
-
-%\begin{figure*}[!t]
-%	\centering
-%	\includegraphics[totalheight=8cm, width=0.8\textwidth]{fig/methodology_diagram.eps}
-%	\caption{An overview of our approach. All mobility information starts as a sequence of pseudonymous locations. In the first step, we assume the attacker has access to some mobility information for one or more individuals, and this is parsed into mobility networks, one per individual. Then, the mobility networks are projected into a feature space, where we compute their pairwise similarities. In the second step, the attacker attempts to deanonymize unlabelled mobility information; this can be done by projecting the mobility information into the same feature space as before and minimising the pairwise distance in the feature space to identify the unlabelled mobility information.
-%	}
-%	\label{fig:methodology}
-%\end{figure*}
 
  In this section, we first adapt the privacy framework of $k-$anonymity to the case of graph data (Section~\ref{sec:graph-k-anonymity}). Next we introduce our methodology: We assume that all mobility data are initially represented as a sequence of pseudonymous locations.
 We also assume the pseudonymisation process is distinct per user, and therefore locations cannot be compared between individuals.
 In other words, it is not possible to determine whether pseudonymous location $l_u$ for user $u$ is the same as (or different from) location $l_v$ for user $v$.
-We convert a location sequence for each user into a mobility network (Section \ref{sec:mobility-networks}). %, the details of which are described later in Section~\ref{sec:mobility-net-construct}.
+We convert a location sequence for each user into a mobility network (Section \ref{sec:mobility-networks}). 
 We then extract feature representations of these networks and embed them into a vector space.
-Finally, in the vector space, we can define pairwise distances between the network embeddings (Section~\ref{sec:graph-kernels}) and use them in a deanonymization scenario (Section~\ref{sec:deanon-leakage}).  %as described in Section~\ref{sec:deanon-leakage}.
+Finally, in the vector space, we can define pairwise distances between the network embeddings (Section~\ref{sec:graph-kernels}) and use them in a deanonymization scenario (Section~\ref{sec:deanon-leakage}).  
 
 Our methodology is, in principle, applicable to many other categories of recurrent behavioural trajectories that can be abstracted as graphs, such web browsing sessions~\cite{olejnik14, yen12} or smartphone application usage sequences~\cite{Welke2016}.
 We leave such analysis as future work.
@@ -72,12 +62,12 @@ Let us assume a mobility dataset from a population of users $ u \in U$.
 We introduce two network representations of user's mobility.
 
 \ndefn[\textbf{State Connectivity Network}]{ 
-A \textbf{state connectivity network} for $ u $ is an unweighted directed graph $ C^{u}=\big(V^{u}, E^{u}\big) $. Nodes $ v_i \in V^{u} $ correspond to states visited by the user throughout the observation period.  An edge $ e_{ij} = \big(v_i^u, v_j^u\big) \in E^{u} $ represents the information that $ u $ had at least one recorded transition from $ v_i^u $ to $ v_j^u $.
+A \textbf{state connectivity network} for $ u $ is an unweighted directed graph $ C^{u}=\left(V^{u}, E^{u}\right) $. Nodes $ v_i \in V^{u} $ correspond to states visited by the user throughout the observation period.  An edge $ e_{ij} = \left(v_i^u, v_j^u\right) \in E^{u} $ represents the information that $ u $ had at least one recorded transition from $ v_i^u $ to $ v_j^u $.
 }
 
 \ndefn[\textbf{Mobility Network}]{ 
 A \textbf{mobility network} for $ u $ is a weighted and directed
-graph $G^{u}=\big(V^{u}, E^{u}, W^{u}\big)  \in \mathcal{G}$, with the same topology as the state connectivity network and additionally an edge weight function $ W^{u} : E^{u} \rightarrow \mathbb{R}^{+}$. The weight function assigns a frequency $ w_{ij}^u $ to each edge $ e_{ij}^u $, which corresponds to the number of transitions from $ v_i^u  $ to $ v_j^u $ recorded throughout the observation period.
+graph $G^{u}=\left(V^{u}, E^{u}, W^{u}\right)  \in \mcG$, with the same topology as the state connectivity network and additionally an edge weight function $ W^{u} : E^{u} \rightarrow \mathbb{R}^{+}$. The weight function assigns a frequency $ w_{ij}^u $ to each edge $ e_{ij}^u $, which corresponds to the number of transitions from $ v_i^u  $ to $ v_j^u $ recorded throughout the observation period.
 }
 
 \vspace{.4cm}
@@ -99,10 +89,10 @@ Therefore we need distance functions that can measure the degree of similarity b
 Distance functions decompose the graph into feature vectors (smaller substructures and pattern counts), or histograms of graph statistics, and express similarity as the distance between those feature representations.
 In the following, we introduce the notion of graph kernels and describe the graph similarity metrics used later in our experiments.
 
-We wish to compute the similarity between two graphs $ G, G' \in \mathcal{G} $. Kernel functions~\cite{Vishwanathan2010}, or \emph{kernels}, are symmetric positive semidefinite functions, where  $ K(G, G') : \mathcal{G} \times \mathcal{G} \rightarrow \mathcal{R}^{+} $, meaning
-that for all $ n > 1 $,  $ G_1, . . . , G_n \in \mathcal{G} $, and $ c_1, . . . , c_n \in \mathcal{R}$, we have $ {\sum_{i,j=1}^{n} c_ic_jK(G_i, G_j ) \geq 0} $.
+We wish to compute the similarity between two graphs $ G, G' \in \mcG$. Kernel functions~\cite{Vishwanathan2010}, or \emph{kernels}, are symmetric positive semidefinite functions, where  $ K(G, G') : \mcG \times \mcG \rightarrow \mcR^{+} $, meaning
+that for all $ n > 1 $,  $ G_1, . . . , G_n \in \mathcal{G} $, and $ c_1, . . . , c_n \in \mcR$, we have $ {\sum_{i,j=1}^{n} c_ic_jK(G_i, G_j ) \geq 0} $.
 Each kernel function corresponds to some feature map $ \phi(G) $, where the
-kernel function can be expressed as the inner product between feature maps, i.e., $ K(G, G') = \big \langle \phi(G), \phi(G') \big \rangle $.
+kernel function can be expressed as the inner product between feature maps, i.e., $ K(G, G') = \left \langle \phi(G), \phi(G') \right \rangle$.
 
 In order to ensure the result from the kernel lies in the interval $[-1, 1]$, we apply \emph{cosine normalization} as follows:
 \[
@@ -115,14 +105,12 @@ We note in advance that as the degree distribution and all substructure counts o
 We briefly introduce these kernels in the remainder of the section.
 
 
-
-
 \subsubsection{Kernels on degree distribution }
 
 The degree distribution of nodes in the graph can be used to quantify the similarity between two graphs.
 For example, we can use a histogram of weighted or unweighted node degree as a feature vector.
 We can then compute the pairwise distance of two graphs by taking either the inner product of the feature vectors or passing them through a Gaussian radial basis function (RBF) kernel:
-\[ K(G,G') =\exp\bigg( -\frac{||\phi(G) - \phi(G')||^2}{2\sigma^2} \bigg).\]
+\[ K(G,G') =\exp\left( -\frac{||\phi(G) - \phi(G')||^2}{2\sigma^2} \right).\]
 Here, the parameters of the kernel are the variance $ \sigma $ (in case RBF is used) and the number of bins in the histogram.
 
 \subsubsection{Kernel on graph atomic substructures}
@@ -131,11 +119,11 @@ Kernels can use counts on substructures, such as subtree patterns, shortest path
 This family of kernels are called \emph{$R-$convolution graph kernels}~\cite{haussler}.
 In this way, graphs are represented as vectors with elements corresponding to the frequency of each such substructure over the graph.
 Hence, if
-$ s_1, s_2, ... \in \mathcal{S}$ are the substructures of interest and $ \#\big(s_i \in G\big)$ the counts of $ s_i $ in graph $ G $, we get as feature map vectors
+$ s_1, s_2, ... \in \mcS$ are the substructures of interest and $ \#\left(s_i \in G\right)$ the counts of $ s_i $ in graph $ G $, we get as feature map vectors
 \[ 
-\phi(G) = \left[\#\big(s_1 \in G\big), \#\left(s_2 \in G\right), \dots\right]^T
+\phi(G) = \left[\#\left(s_1 \in G\right), \#\left(s_2 \in G\right), \dots\right]^T
 \]
-with dimension $ |\mathcal{S}| $  and kernel
+with dimension $ |\mcS| $  and kernel
 \[
 K(G, G') = \sum_{s \in \mathcal{S}} \#\left(s \in G\right) \#\left(s \in G'\right).
 \]
@@ -146,7 +134,7 @@ In the following, we briefly present some kernels in this category and explain h
 \noindent\textbf{Shortest-Path Kernel}
 
 The Shortest-Path (\emph{SP}) graph kernel \cite{borgwardt2005} expresses the similarity between two graphs by counting the co-occuring shortest paths in the graphs.
-It can be written in the form of equation (3) where each element $ s_i \in \mathcal{S} $ is a triplet $\big(a_{\text{start}}^i, a_{\text{end}}^i, n\big)$, where $ n $ is the length of the path and $ a_{\text{start}}^i, a_{\text{end}}^i $ the attributes of the starting and ending nodes.
+It can be written in the form of equation (3) where each element $ s_i \in \mcS $ is a triplet $\big(a_{\text{start}}^i, a_{\text{end}}^i, n\big)$, where $ n $ is the length of the path and $ a_{\text{start}}^i, a_{\text{end}}^i $ the attributes of the starting and ending nodes.
 The shortest path set is computable in polynomial time using, for example, the Floyd-Warshall algorithm, with complexity $ O(|V|^4)$, where $ |V| $ is number of nodes in the network.
 
 \vspace{1em}
@@ -445,11 +433,11 @@ Deep graph kernels (\emph{DK}s) are a unified framework that takes into account 
 Hence, these kernels can quantify \emph{similar substructure} co-occurence, offering more robust feature representations.
 DKs are based on computing the following inner product:
 \[
-K(G, G') = \phi\big(G\big)^T M \phi\big(G'\big),
+K(G, G') = \phi\left(G\right)^T M \phi\left(G'\right),
 \]
 where $ \phi $ is the feature mapping of a classical R-convolution graph kernel.
 
-In the above, $M : |\mathcal{V}| \times |\mathcal{V}|$ is a positive-definitive matrix encoding the relationships between the atomic substructures and $ \mathcal{V} $ is the vocabulary of the observed substructures in the dataset.
+In the above, $M : |\mcV| \times |\mcV|$ is a positive-definitive matrix encoding the relationships between the atomic substructures and $ \mcV $ is the vocabulary of the observed substructures in the dataset.
 Here, $ M $ can be defined using the edit distance of the substructures, i.e.\ the number of elementary operations to transform one substructure to another; or $ M $ can be learnt from the data, applying relevant neural language modeling methods \cite{mikolov2013efficient}.
 
 \subsection{Deanonymization of User Mobility Networks and Privacy Leakage Evaluation\label{sec:deanon-leakage}}
@@ -505,29 +493,29 @@ For ease of presentation, in the figure, nodes between the disparate observation
 
 \subsubsection{Threat Model \label{sec:threat-model}}
 
-We assume an adversary has access to a \emph{set of mobility networks} $ G \in \mathcal{G}_{\text{training}} $ \emph{with disclosed identities (or labels)} $l_{G} \in \mathcal{L}$
-and a \emph{set of mobility networks} $ G' \in \mathcal{G}_{\text{test}} $ \emph{with undisclosed identities}
-$ l_{G'} \in \mathcal{L}$.%
+We assume an adversary has access to a \emph{set of mobility networks} $ G \in \mcG_{\text{training}} $ \emph{with disclosed identities (or labels)} $l_{G} \in \mcL$
+and a \emph{set of mobility networks} $ G' \in \mcG_{\text{test}} $ \emph{with undisclosed identities}
+$ l_{G'} \in \mcL$.%
 
-{Generally we can think of $ l_{G'} \in \mathcal{J} \supset \mathcal{L}$ and assign some fixed probability mass to the labels $ l_{G'} \in \mathcal{J} \setminus \mathcal{L}$.
+{Generally we can think of $ l_{G'} \in \mcJ \supset \mcL$ and assign some fixed probability mass to the labels $ l_{G'} \in \mcJ \setminus \mcL$.
 However, here we make the \emph{closed world assumption} that the training and test networks come from the same population.
-We make this assumption for two reasons: first, it is a common assumption in works on deanonymization and, second, we cannot directly update our beliefs on $ l_{G'} \in \mathcal{J} \setminus \mathcal{L}$ by observing samples from $ \mathcal{L}$. }
+We make this assumption for two reasons: first, it is a common assumption in works on deanonymization and, second, we cannot directly update our beliefs on $ l_{G'} \in \mcJ \setminus \mcL$ by observing samples from $ \mcL$. }
 
-We define a normalised similarity metric among the networks $ K: \mathcal{G}_{\text{training}} \times \mathcal{G}_{\text{test}} \rightarrow \mathcal{R}^+ $.
+We define a normalised similarity metric among the networks $ K: \mcG_{\text{training}} \times \mcG_{\text{test}} \rightarrow \mcR^+ $.
 We hypothesize that a training and test mobility network belonging to the same person have common or similar connectivity patterns, thus a high degree of similarity.
 
-The intention of an adversary is to deanonymize a given test network $ G' \in \mathcal{G}_{\text{test}} $, by appropriately defining a vector of probabilities over the possible identities in $ \mathcal{L}$.
+The intention of an adversary is to deanonymize a given test network $ G' \in \mcG_{\text{test}} $, by appropriately defining a vector of probabilities over the possible identities in $ \mcL$.
 
 An \textbf{uninformed adversary} has \emph{no information} about the networks of the population and in the absence of any other side knowledge, the prior belief of the adversary about the identity of $ G' $ is a uniform distribution over all possible identities:
 \[
-	P\left(l_{G'}= l_{G_i}\right) = 1/|\mathcal{L}|, \mbox{ for every }  G_i \in \mathcal{G}_{\text{training}}.
+	P\left(l_{G'}= l_{G_i}\right) = 1/|\mcL|, \mbox{ for every }  G_i \in \mcG_{\text{training}}.
 \]
 
 An \textbf{informed adversary} has \emph{access to the population of training networks} and can compute the pairwise similarities of $ G' $ with each $ G_{i} \in \mathcal{G}_{\text{training}} $ using a kernel function $K$. Hence the adversary can update her belief for the possible identities in $ \mathcal{L} $ according to the values of $K$.
 Therefore, when the adversary attempts to deanonymize identities in the data, she assigns probabilities that follow a \emph{non-decreasing function} {of the computed pairwise similarity} of each label.
 Denoting this function by $f$, we can write the updated adversarial probability estimate for each identity as follows:
 \[
-	P\left(l_{G'} =l_{G_i}| \mathcal{G}_{\text{training}}, K\right) =  \frac{f\left(K(G_i, G')\right)}{\displaystyle \sum_{j\in \mathcal{L}}  f\left(K(G_j, G')\right)},   \mbox{ for every }  G_i \in \mathcal{G}_{\text{training}}.
+	P\left(l_{G'} =l_{G_i}| \mcG_{\text{training}}, K\right) =  \frac{f\left(K(G_i, G')\right)}{\displaystyle \sum_{j\in \mcL}  f\left(K(G_j, G')\right)},   \mbox{ for every }  G_i \in \mcG_{\text{training}}.
 	\label{eq:adversarial_rule}
 \]
 
@@ -536,9 +524,9 @@ Denoting this function by $f$, we can write the updated adversarial probability 
 
 \subsubsection{Privacy Loss}
 
-In the case of the uninformed adversary, the true label for any user is expected to have rank $ |\mathcal{L}|/2$. Under this policy, the amount of privacy for each user is proportional to the size of the population.
+In the case of the uninformed adversary, the true label for any user is expected to have rank $ |\mcL|/2$. Under this policy, the amount of privacy for each user is proportional to the size of the population.
 
-In the case of the informed adversary, knowledge of $ \mathcal{G}_\text{training} $ and the use of $ K $ will induce some positive \emph{privacy loss} which will result in the expected rank of user to be smaller than $ |\mathcal{L}|/2$. The privacy loss can be quantified as follows:
+In the case of the informed adversary, knowledge of $ \mcG_\text{training} $ and the use of $ K $ will induce some positive \emph{privacy loss} which will result in the expected rank of user to be smaller than $ |\mcL|/2$. The privacy loss can be quantified as follows:
 \[
 	PL\left(G';\mcG_{\text{training}}, K\right) = \frac{P\left(l_{G'}= l_{G'_\text{true}}|\mcG_{\text{training}}, K\right)}{P\left(l_{G'}= l_{G'_\text{true}}\right)} -1
 	\label{eq:privloss}
@@ -552,7 +540,7 @@ Under the above premise, the maximal privacy loss occurs when the presented test
 This corresponds to a user deterministically repeating her mobility patterns over the observation period recorded in the test network.
 In such a scenario, we could think that isomorphism tests are the most natural way to compute similarity; however, isomorphism tests will be useless in real-world scenarios, since the stochastic nature and noise inherent in the mobility networks of a user would make them non-isomorphic.
 Maximal privacy loss reflects the discriminative ability of the kernel and cannot be exceeded in real-world datasets, where the test networks are expected to be noisy copies of the training networks existing in our system.
-The step of comparing with the set of training networks adds computational complexity of $\mathcal{O}(|\mathcal{G}_{\text{training}}|)$ to the similarity metric cost.
+The step of comparing with the set of training networks adds computational complexity of $O(|\mcG_{\text{training}}|)$ to the similarity metric cost.
 
 Moreover, our framework can naturally facilitate incorporating new data to our beliefs when multiple examples per individual exist in the training dataset.
 For example, when multiple instances of mobility networks per user are available, we can use $k-$nearest neighbors techniques in the comparison of distances with the test graph.

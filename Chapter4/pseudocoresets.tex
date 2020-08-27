@@ -108,7 +108,7 @@ in this section we develop a black-box stochastic optimization scheme (\cref{alg
 
 \setlength{\textfloatsep}{10pt}% Remove \textfloatsep
 
-\begin{algorithm*}[!ht]
+\begin{algorithm}[!ht]
 	\caption{Pseudocoreset Variational Inference}
 	\label{alg:psvi}
 	\begin{algorithmic}[1]
@@ -119,8 +119,7 @@ in this section we develop a black-box stochastic optimization scheme (\cref{alg
 		\For{$ t = 1, \ldots, T$}
 		\LineCommentIndent{\mbox{Take $S$ samples from current pseudocoreset posterior}}
 		\State $(\theta)_{s=1}^{S}  \distiid \pi_{u,w}$ where $\pi_{u,w}(\theta) \propto \exp\left(\sum_{m=1}^Mw_m f(u_m, \theta)\right)\pi_0(\theta)$
-		\State $\mcB\dist\distUnifSubset\left([N], B\right)$
-		\Commenttriangle{\mbox{Obtain a minibatch of $B$ datapoints from the full dataset}}
+		\State $\mcB\dist\distUnifSubset\left([N], B\right)$ \Commenttriangle{\mbox{Obtain a minibatch of $B$ points from the full dataset}}
 		\For{$s = 1, \dots, S$} 	\Commenttriangle{\mbox{Compute (gradient) log-likelihood discretizations}}
 		\State $g_{s} \gets \left( f(x_b, \theta_s ) - \nicefrac{1}{S}\sum_{s'=1}^S f(x_b, \theta_{s'}) \right)_{b\in\mcB} \in \reals^B$ 
 		\State $\tg_s\gets \left(f(u_m, \theta_s) - \nicefrac{1}{S}\sum_{s'=1}^S f(u_m, \theta_{s'})\right)_{m=1}^M\in\reals^M$
@@ -141,7 +140,7 @@ in this section we develop a black-box stochastic optimization scheme (\cref{alg
 		\State\Return $w$, $(u_m)_{m=1}^M$
 		\EndProcedure		 
 	\end{algorithmic}
-\end{algorithm*}
+\end{algorithm}
 
 
 
