@@ -4,7 +4,14 @@
 \definecolor{oxfordblue}{rgb}{0.0, 0.13, 0.28}
 \newcommand{\MYhref}[3][oxfordblue]{\href{#2}{\color{#1}{#3}}}%
 
-We examine the inferential results achieved by our method under 3 statistical models, in scenarios capturing different types of data mismatch with reality. \bcores{} is compared against a uniformly random sampling baseline, and stochastic batch implementations of two existing Riemannian coreset methods: (i)~\sparsevi~\cite{campbell19neurips}, which builds up a coreset according to an incremental scheme similar to ours, considering the standard likelihood function terms evaluated on the dataset points, and (ii)~\psvi~\cite{psvi}, which runs a batch optimization on a set of pseudopoints, and uses standard likelihood evaluations to jointly learn the pseudopoints weights and locations so that the extracted summary resembles the statistics of the full dataset. 
+We examine the inferential results achieved by our method under 3 statistical models, in scenarios capturing different types of data mismatch with reality. The data contamination models used in following experiments are reminiscent of \emph{Huber's $\eps$-contamination model}~\citep{huber92}, which postulates that observed data are generated from a mixture of distributions of the form $(1-\eps)\cdot G+ \eps\cdot Q$, where $\eps \in (0,1)$,  $G$ is a distribution of inliers captured by the assumed statistical model, and $Q$ is an arbitrary distribution of outliers. This model has found use in several recent studies on robust statistical estimators suitable for underlying distributions with minimal assumptions~\citep{wei17, chen18}.
+
+\bcores{} is compared against a uniformly random sampling baseline, and stochastic batch implementations of two existing Riemannian coreset methods: 
+\benum[label={(\roman*)}]
+	\item \sparsevi~\cite{campbell19neurips}, which builds up a coreset according to an incremental scheme similar to ours, considering the standard likelihood function terms evaluated on the dataset points, and 
+	\item \psvi~\cite{psvi}, which runs a batch optimization on a set of pseudopoints, and uses standard likelihood evaluations to jointly learn the pseudopoints weights and locations so that the extracted summary resembles the statistics of the full dataset. 
+\eenum
+
 
 We default the number of iterations in the optimization loop over gradient-based coreset constructions to $ T = 500$, using a learning rate $ \gamma_t \propto t^{-1}$ and $S=100$ random projections per gradient computation. For consistency with the compared baselines, we evaluate inference results obtained by \bcores{} using the classical Bayesian posterior from~\cref{eq:bayes-rule} conditioned on the corresponding robustified data summary. Additional details on used benchmark datasets are presented in~\cref{sec:data-details}. Code is available at 	\MYhref{https://github.com/dionman/beta-cores}{https://github.com/dionman/beta-cores}.
 
@@ -23,7 +30,7 @@ n = 1, \ldots, N.
 \]
 In the presented results, we use priors $\mu_0=\mathbf{0}$ and $\Sigma_0=I$,  dimensionality $d=20$ and dataset size $N=5,000$.
  
-We consider the case of structured data corruption existing in the observations, simulated as follows: Observed datapoints are typically sampled from a Gaussian $ \distNorm(\mathbf{1}, I)$. At a percentage $F\%$,  data collection fails; in this case, datapoints are collected from a shifted Gaussian $ \distNorm(\mathbf{10}, I)$. Consequently, the observed dataset forms a Gaussian mixture with two components; however, our statistical model assumes only a single Gaussian. 
+We consider the case of structured data corruption existing in the observations, simulated as follows: Observed datapoints are typically sampled from a Gaussian $ \distNorm(\mathbf{1}, I)$. At a percentage $F\%$,  data collection fails; in this case, datapoints are collected from a shifted Gaussian $ \distNorm(\mathbf{10}, I)$. Consequently, the observed dataset forms a Gaussian mixture with two components; however, our statistical model assumes only a single Gaussian.
 
 All computations involved in the coreset construction and posterior evaluation in this experiment can be performed in closed form~\cite{campbell19neurips}. We apply the batch scheme of~\cref{alg:bcores}, sampling from the exact coreset posterior over gradient estimation. The used \mbox{($\beta$-)}likelihood equations are outlined in~\cref{sec:gauss-lik}. For all coreset methods, constructions are repeated for up to $M=200$ iterations, with $\gamma_t = t^{-1}$. Notice that our setting does not imply that maximum summary size contains 200 datapoints: often over the iterations an already existing summary point may be selected again, resulting in smaller coresets.
 
@@ -61,29 +68,6 @@ We can however notice that, for coreset sizes growing beyond 60 points---despite
 \subsection{Bayesian Logistic Regression under Mislabeling and Feature Noise}
 \label{subsec:logreg-expt}
 
-\begin{figure}[t!]
-	\begin{subfigure}[b]{0.9\textwidth} 
-		\centering
-		\includegraphics[width=.325\textwidth]{\MyPath/figs/adult07_10_25_False_False_ACCvssz.png}
-		\centering
-		\hfill
-		\includegraphics[width=.325\textwidth]{\MyPath/figs/phish09_10_15_False_False_ACCvssz.png}
-		\centering
-		\hfill
-		\includegraphics[width=.325\textwidth]{\MyPath/figs/webspam09_10_15_True_False_ACCvssz.png}
-				\centering
-		\includegraphics[width=.325\textwidth]{\MyPath/figs/adult07_10_0_False_False_ACCvssz.png}
-		\centering
-		\hfill
-		\includegraphics[width=.325\textwidth]{\MyPath/figs/phish07_10_0_False_False_ACCvssz.png}
-		\centering
-		\hfill
-		\includegraphics[width=.325\textwidth]{\MyPath/figs/webspam09_10_0_True_False_ACCvssz.png}
-	\end{subfigure}	
-	\centering
-	\caption{Predictive accuracy vs coreset size for logistic regression experiments over $10$ trials on $3$ large-scale datasets. Solid lines display the median accuracy, with shaded areas showing $25\textsuperscript{th}$ and $75\textsuperscript{th}$ percentiles. Dataset corruption rate $F$, and $\beta$ value used in \bcores{} for each experiment are shown on the figures. The bottom row plots illustrate the achieved predictive performance under no contamination.}
-	\label{fig:logreg_plot}
-\end{figure}
 
 In this section, we study the robustness achieved by~\bcores{} on the problem of binary classification  under unreliable measurements and labeling. We test our methods on 3 benchmark datasets with varying dimensionality~($10$-$127$ dimensions, more details on the data are provided in~\cref{sec:data-details}). We observe data pairs $(x_n, y_n)_{n=1}^{N}$, where $x\in\reals^{d}$, $y_n \in \{-1,1\}$, and use the Bayesian logistic regression model to describe them,
 \[
@@ -104,6 +88,29 @@ The values for hyperparameter $\beta$ and learning rates $\gamma_t$ were chosen 
 %\footnote{For~\textsc{WebSpam} we notice that coresets performance in uncontaminated data for the displayed summary sizes is comparable to uniform sampling: this is a side effect of the high-dimensionality of this dataset examined in more depth at~\citep{psvi}, which out of scope for the purposes of this work.},
 
 
+\begin{figure}[t!]
+	\begin{subfigure}[b]{0.9\textwidth} 
+		\centering
+		\includegraphics[width=.325\textwidth]{\MyPath/figs/adult07_10_25_False_False_ACCvssz.png}
+		\centering
+		\hfill
+		\includegraphics[width=.325\textwidth]{\MyPath/figs/phish09_10_15_False_False_ACCvssz.png}
+		\centering
+		\hfill
+		\includegraphics[width=.325\textwidth]{\MyPath/figs/webspam09_10_15_True_False_ACCvssz.png}
+		\centering
+		\includegraphics[width=.325\textwidth]{\MyPath/figs/adult07_10_0_False_False_ACCvssz.png}
+		\centering
+		\hfill
+		\includegraphics[width=.325\textwidth]{\MyPath/figs/phish07_10_0_False_False_ACCvssz.png}
+		\centering
+		\hfill
+		\includegraphics[width=.325\textwidth]{\MyPath/figs/webspam09_10_0_True_False_ACCvssz.png}
+	\end{subfigure}	
+	\centering
+	\caption{Predictive accuracy vs coreset size for logistic regression experiments over $10$ trials on $3$ large-scale datasets. Solid lines display the median accuracy, with shaded areas showing $25\textsuperscript{th}$ and $75\textsuperscript{th}$ percentiles. Dataset corruption rate $F$, and $\beta$ value used in \bcores{} for each experiment are shown on the figures. The bottom row plots illustrate the achieved predictive performance under no contamination.}
+	\label{fig:logreg_plot}
+\end{figure}
 
 
 \subsection{Neural Linear Regression on Noisy Data Batches}
@@ -186,7 +193,7 @@ In this study we use a subset of more than $60K$ datapoints from the \textsc{Hos
 	\label{fig:selected_groups}
 \end{figure}
 
-We evaluate the predictive accuracy achieved by doing inference on the data subset obtained after running $10$ iterations of the \bcores{} extension for groups (which gives a maximum of $10$ selected groups). We compare against (\emph{i}) a random sampler, and (\emph{ii}) a baseline which ranks all groups according to their Shapley value and selects the groups with the highest values. Shapley value is a concept originating in cooperative game theory~\citep{shapley53}, which has recently found applications in data valuation and outliers detection~\cite{ghorbani19}. In the context of our experiment, it quantifies what is the marginal contribution of each group to the predictive accuracy of the model at all possible group coalitions that can be formed. As this quantity is notoriously expensive to be computed in large datasets, we use a Monte Carlo estimator which samples $5K$ possible permutations of groups and for each permutation it computes marginals for coalitions formed by the first $20$ groups.\footnote{The latter truncation is supported by the observation that marginal contributions to the predictive accuracy are diminishing as the dataset size increases.}
+We evaluate the predictive accuracy achieved by doing inference on the data subset obtained after running $10$ iterations of the \bcores{} extension for groups (which gives a maximum of $10$ selected groups). We compare against (\emph{i}) a \emph{random sampler}, and (\emph{ii}) a baseline which ranks all groups according to their \emph{Shapley value} and selects the groups with the highest values. Shapley value is a concept originating in cooperative game theory~\citep{shapley53}, which has recently found applications in data valuation and outliers detection~\cite{ghorbani19}. In the context of our experiment, it quantifies what is the marginal contribution of each group to the predictive accuracy of the model at all possible group coalitions that can be formed. As this quantity is notoriously expensive to be computed in large datasets, we use a Monte Carlo estimator which samples $5K$ possible permutations of groups and for each permutation it computes marginals for coalitions formed by the first $20$ groups.\footnote{The latter truncation is supported by the observation that marginal contributions to the predictive accuracy are diminishing as the dataset size increases.}
 
 As illustrated in~\cref{fig:group_plot}, \bcores{} with $\beta=0.6$ offers the best solution to our problem, and is able to reach predictive accuracy exceeding $75\%$ by fitting a coreset on no more than $2$ groups. ~\cref{fig:selected_groups} displays the demographic information of selected groups. We can notice that subpopulations of female and older patients are more informative for the classification task, while Caucasian and African-American groups are preferred to smaller racial minorities. Importantly, \bcores{} is able to distill clean from contaminated groups. For used $\beta$ value we can see than over the set of trials only one group with outliers level of $10\%$ is allowed to enter a summary, which already contains $3$ uncontaminated groups.
 
