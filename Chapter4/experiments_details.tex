@@ -83,9 +83,9 @@ f_m(\theta) = -\frac{1}{2\sigma^2}\left(y_m - \theta^T u_m\right)^2.
 Hence, we obtain for the pseudocoreset posterior
 \[
   &\pi_{u,w} = \distNorm(\mu_{u,w}, \Sigma_{u,w}), \quad \text{where} \\
- \quad  \Sigma_{u,w} = (\sigma_0^{-2}I + \sigma^{-2}&\sum_{m=1}^{M}w_m u_m u_m^T)^{-1},
+ \quad  \Sigma_{u,w} = \left(\sigma_0^{-2}I + \sigma^{-2}\right.&\left.\sum_{m=1}^{M}w_m u_m u_m^T \right)^{-1},
 \quad
-  \mu_{u,w} = \Sigma_{u,w}(\sigma_{0}^{-2}I\mu_0 + \sigma^{-2}\sum_{m=1}^{M}w_m y_m u_m).
+  \mu_{u,w} = \Sigma_{u,w}\left(\sigma_{0}^{-2}I\mu_0 + \sigma^{-2}\sum_{m=1}^{M}w_m y_m u_m\right).
 \]
 To scale up computation on large datasets, in our experiment we made use of stochastic gradients for black-box construction of \psvi~and \sparsevi. Beyond the expressions for individual log-likelihood and (pseudo)coreset posteriors presented above, for pseudocoreset construction we also need the expression for log-likelihood gradient with respect to the pseudodata points, for which we can immediately see that $\nabla_{u_m} f(u_m, \theta) = \frac{1}{\sigma^2}(y_m - \theta^Tu_m)\theta$. Over our experiment, we optimized initial learning rates for \sparsevi~and \psvi~via a grid search over ${\{0.1, 1, 10\}}$.
 
@@ -113,9 +113,6 @@ To scale up computation on large datasets, in our experiment we made use of stoc
 \end{figure}
 
 Here we present some more plots demonstating the dependence of Hilbert coresets approximation quality on the number of random dimensions in the Bayesian linear regression setting presented in~\cref{fig:linreg_300}. We remind that dimension used at this experiment and throughout the entire experiments section was set to 100. Increasing this number is typically expensive to obtain in practice. As demonstrated in~\cref{fig:hilbert_varying_projdim}, getting higher projection dimension enables better posterior approximation in the problem, while \gigao~starts offering better quality of approximation than \gigar. However, \psvi~remains competitive in the small coreset regime even for Hilbert coresets with extremely large projection dimensionality, demonstrating the information-geometric limitations that Hilbert coreset constructions are known to face~\cite{campbell19neurips}.
-
-
-
 
 
 

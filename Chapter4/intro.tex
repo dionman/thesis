@@ -40,7 +40,9 @@ is scalable and easy to use, creates an intuitive summarization, applies to high
 Inspired by past work \citep{madigan02,zhou08,snelson05}, instead of using constituent datapoints, we use synthetic \emph{pseudodata} to summarize the large dataset, resulting in a \emph{pseudocoreset}. We show that in the high-dimensional problem setting of \cref{prop:original_coreset_fails}, 
 the optimal pseudocoreset with just one pseudodata point recovers the exact posterior, a significant improvement upon the optimal standard coreset of any size.
 As in past work on Bayesian coresets \citep{campbell19neurips}, we formulate pseudocoreset construction as variational inference, 
-and provide a stochastic optimization method. As a consequence of the use of pseudodata---as well as privacy-preserving 
+and provide a stochastic optimization method~(\cref{sec:pseudocoresets}). As a consequence of the use of pseudodata---as well as privacy-preserving 
 stochastic gradient descent mechanisms~\citep{abadi16,park16, jalko17}---we show that our method can easily be modified to output
-a privatized pseudocoreset. The paper concludes with experimental results demonstrating the performance of pseudocoresets on 
-real and synthetic data.
+a privatized pseudocoreset. The chapter concludes with experimental results demonstrating the performance of pseudocoresets on 
+real and synthetic data~(\cref{sec:experiments}).
+
+This chapter is based on~\citep{psvi}.

@@ -16,9 +16,9 @@ additive relative noise~(\realistic). Notably, Hilbert coresets and
 batch optimization with random initialization~(\cref{alg:psvi}), and does not
 use any information from pseudocoresets of smaller size. An incremental scheme
 for \sparsevi~is included in~\cref{supp:experiments_appendix}. Code for the
-presented experiments is available at~\href{code_url}{anonymous\_public\_repo}. 
+presented experiments is available at~\href{https://github.com/dionman/psvi}{https://github.com/dionman/psvi}. 
 
-\paragraph{Gaussian mean inference}
+\subsection{Gaussian mean inference}
 \label{section:gaussian_experiment}
 
 We first evaluate the performance of \psvi~on a synthetic dataset of ${N =10^3}$ datapoints, where we aim
@@ -52,21 +52,17 @@ $\tv_m := Q^{-1}(u_m - \mu_{u,w})$.
 	\centering
 	\begin{subfigure}[c]{.29\textwidth}
 			\centerline{\scalebox{1}{\includegraphics[ width=1.15\columnwidth]{\MyPath/figs/d200_KLDvsCstSize.png}}}%
-                       \caption{(a) Gauss. mean inf., $d=200$\label{fig:gauss_mean_200}}
+                       \caption{(a) Gaussian mean inference,\\ $d=200$\label{fig:gauss_mean_200}}
 	\end{subfigure}\hfill\qquad
 	\begin{subfigure}[c]{.29\textwidth}
 			\centerline{\scalebox{1}{\includegraphics[ width=1.15\columnwidth]{\MyPath/figs/d500_KLDvsCstSize.png}}}%
-				\caption{(b) Gauss. mean inf., $d=500$\label{fig:gauss_mean_500}}
+				\caption{(b) Gaussian mean inference,\\ $d=500$\label{fig:gauss_mean_500}}
 	\end{subfigure}\hfill\qquad
 	\begin{subfigure}[c]{.29\textwidth}
 			\centerline{\scalebox{1}{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/linregTT_KLDvssz.png}}}%
-				\caption{(c) Bayes. lin. regr., $d=100$\label{fig:linreg_300}}
+				\caption{(c) Bayesian linear regression,\\ $d=100$\label{fig:linreg_300}}
   \end{subfigure}
-	\caption{Comparison of coreset approximate posterior quality for experiments on synthetic datasets over {10 trials}. %\cref{fig:gauss_mean_200,fig:gauss_mean_500}: Gaussian mean inference experiments on $10^3$~datapoints.  \cref{fig:gauss_cov_100}: Bayesian linear regression on $2\times10^3$~datapoints.  
-		Solid lines
-display the median KL divergence, with shaded areas showing~$25^{\text{th}}$
-and~$75^{\text{th}}$ percentiles of KL divergence. In \cref{fig:linreg_300},
-KL divergence is normalized by the prior.}
+	\caption{Comparison of coreset approximate posterior quality for experiments on synthetic datasets over {10 trials}. Solid lines display the median KL divergence, with shaded areas showing~$25^{\text{th}}$ and~$75^{\text{th}}$ percentiles of KL divergence. In \cref{fig:linreg_300}, KL divergence is normalized by the prior.}
 	\label{fig:gaussian_dkl}
 \end{figure*}
 %
@@ -87,13 +83,13 @@ shown earlier in~\cref{fig:gaussian_coreset_points}, \psvi~has the capacity to m
 pseudodata points in order to capture the
 true posterior very efficiently. 
 
-\paragraph{Bayesian linear regression}
+\subsection{Bayesian linear regression}
 \label{section:linreg_experiment}
 In the second experiment, we use a set of ${N=2,000}$ 
 $101$-dimensional datapoints $(x_n,y_n)_{n=1}^{N}$ generated as follows: $(x_n)_{n=1}^N  \distiid \distNorm(0, I),\; (y_n)_{n=1}^N  \dist [1, x_n]^T\theta + \epsilon_n,\;  (\epsilon_n)_{n=1}^{N} \distiid \distNorm(0, \sigma^2)$, and aim to infer $\theta \in \reals^{101}$. We assume a prior $\theta \dist \distNorm(\mu_0,\sigma_0^2 I)$, where $ \mu_0, \sigma_0^2$ are the dataset empirical mean and second moment, and set the noise parameter $ \sigma$ to the variance of $(y_n)_{n=1}^{N}$. We apply stochastic optimization for \psvi~construction~(also see~\cref{supp:linreg_model_appendix}). We use learning rates $\gamma_t = t^{-1}$ for \sparsevi, and $\gamma_t = 0.1t^{-1}$ for \psvi, $B=200$, $T=1000$, while selection step for \sparsevi~is carried out over the full dataset. \cref{fig:linreg_300} shows that Hilbert coresets cannot improve posterior approximation in this setting with 100 random projections (see~\cref{supp:linreg_plots_appendix}), 
 while \psvi~achieves the fastest decay rate over sizes $ 100 \leq M \lessapprox 250$, surpassing \sparsevi.
 
-\paragraph{Bayesian logistic regression}
+\subsection{Bayesian logistic regression}
 \label{section:logreg_experiment}
 
 Finally, we compare (pseudo)coreset construction methods on Bayesian logistic

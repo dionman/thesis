@@ -4,7 +4,7 @@
 \definecolor{oxfordblue}{rgb}{0.0, 0.13, 0.28}
 \newcommand{\MYhref}[3][oxfordblue]{\href{#2}{\color{#1}{#3}}}%
 
-We examine the inferential results achieved by our method under 3 statistical models, in scenarios capturing different types of data mismatch with reality. The data contamination models used in following experiments are reminiscent of \emph{Huber's $\eps$-contamination model}~\citep{huber92}, which postulates that observed data are generated from a mixture of distributions of the form $(1-\eps)\cdot G+ \eps\cdot Q$, where $\eps \in (0,1)$,  $G$ is a distribution of inliers captured by the assumed statistical model, and $Q$ is an arbitrary distribution of outliers. This model has found use in several recent studies on robust statistical estimators suitable for underlying distributions with minimal assumptions~\citep{wei17, chen18}.
+We examine the inferential results achieved by our method under 3 statistical models, in scenarios capturing different types of data mismatch with reality. The data contamination models used in following experiments are reminiscent of \emph{Huber's $\eps$-contamination model}~\citep{huber92}, which postulates that observed data are generated from a mixture of distributions of the form $(1-\eps)\cdot G+ \eps\cdot Q$, where $\eps \in (0,1)$,  $G$ is a distribution of inliers captured by the assumed statistical model, and $Q$ is an arbitrary distribution of outliers. This model has found use in several recent studies on robust statistical estimators suitable for underlying data distributions with minimal assumptions~\citep{wei17, chen18}.
 
 \bcores{} is compared against a uniformly random sampling baseline, and stochastic batch implementations of two existing Riemannian coreset methods: 
 \benum[label={(\roman*)}]
@@ -183,6 +183,9 @@ In this study we use a subset of more than $60K$ datapoints from the \textsc{Hos
 	\label{fig:group_plot}
 \end{figure}
 
+
+We evaluate the predictive accuracy achieved by doing inference on the data subset obtained after running $10$ iterations of the \bcores{} extension for groups (which gives a maximum of $10$ selected groups). We compare against (\emph{i}) a \emph{random sampler}, and (\emph{ii}) a baseline which ranks all groups according to their \emph{Shapley value} and selects the groups with the highest values. Shapley value is a concept originating in cooperative game theory~\citep{shapley53}, which has recently found applications in data valuation and outliers detection~\cite{ghorbani19}. In the context of our experiment, it quantifies what is the marginal contribution of each group to the predictive accuracy of the model at all possible group coalitions that can be formed. As this quantity is notoriously expensive to be computed in large datasets, we use a Monte Carlo estimator which samples $5K$ possible permutations of groups and for each permutation it computes marginals for coalitions formed by the first $20$ groups.\footnote{The latter truncation is supported by the observation that marginal contributions to the predictive accuracy are diminishing as the dataset size increases.}
+
 \begin{figure}[t!]
 	\begin{subfigure}[b]{.8\textwidth} 
 		\centering
@@ -192,8 +195,6 @@ In this study we use a subset of more than $60K$ datapoints from the \textsc{Hos
 	\caption{Attributes of selected groups after running $10$ iterations of \bcores{} with $\beta=0.6$ on the contaminated \textsc{HospitalReadmissions} dataset (repeated over $5$ random trials).}
 	\label{fig:selected_groups}
 \end{figure}
-
-We evaluate the predictive accuracy achieved by doing inference on the data subset obtained after running $10$ iterations of the \bcores{} extension for groups (which gives a maximum of $10$ selected groups). We compare against (\emph{i}) a \emph{random sampler}, and (\emph{ii}) a baseline which ranks all groups according to their \emph{Shapley value} and selects the groups with the highest values. Shapley value is a concept originating in cooperative game theory~\citep{shapley53}, which has recently found applications in data valuation and outliers detection~\cite{ghorbani19}. In the context of our experiment, it quantifies what is the marginal contribution of each group to the predictive accuracy of the model at all possible group coalitions that can be formed. As this quantity is notoriously expensive to be computed in large datasets, we use a Monte Carlo estimator which samples $5K$ possible permutations of groups and for each permutation it computes marginals for coalitions formed by the first $20$ groups.\footnote{The latter truncation is supported by the observation that marginal contributions to the predictive accuracy are diminishing as the dataset size increases.}
 
 As illustrated in~\cref{fig:group_plot}, \bcores{} with $\beta=0.6$ offers the best solution to our problem, and is able to reach predictive accuracy exceeding $75\%$ by fitting a coreset on no more than $2$ groups. ~\cref{fig:selected_groups} displays the demographic information of selected groups. We can notice that subpopulations of female and older patients are more informative for the classification task, while Caucasian and African-American groups are preferred to smaller racial minorities. Importantly, \bcores{} is able to distill clean from contaminated groups. For used $\beta$ value we can see than over the set of trials only one group with outliers level of $10\%$ is allowed to enter a summary, which already contains $3$ uncontaminated groups.
 
