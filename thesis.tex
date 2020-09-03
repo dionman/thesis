@@ -1,6 +1,4 @@
 % ******************************* PhD Thesis Template **************************
-% Please have a look at the README.md file for info on how to use the template
-
 \documentclass[a4paper,11pt,print,index]{PhDThesisPSnPDF}
 
 
@@ -23,7 +21,6 @@
 \fi
 
 
-\bibliographystyle{abbrv}
 
 % ******************************** Front Matter ********************************
 \begin{document}
@@ -45,9 +42,6 @@
 
 \listoftables
 
-% \printnomenclature[space] space can be set as 2em between symbol and description
-%\printnomenclature[3em]
-
 \printnomenclature
 
 % ******************************** Main Matter *********************************
@@ -55,13 +49,11 @@
 
 \input{Chapter1/chapter1}
 \input{Chapter2/chapter2}
-%
 \input{Chapter3/chapter3}
 \input{Chapter4/chapter4}
 \input{Chapter5/chapter5}
 \input{Chapter6/chapter6}
 %
-
 
 
 % ********************************** Back Matter *******************************
@@ -79,8 +71,8 @@
 %\bibliographystyle{unsrt} % Use for unsorted references  
 %\bibliographystyle{plainnat} % use this to have URLs listed in References
 \cleardoublepage
+\bibliographystyle{abbrv}
 \bibliography{References/references} % Path to your References.bib file
-
 
 % If you would like to use BibLaTeX for your references, pass `custombib' as
 % an option in the document class. The location of 'reference.bib' should be
@@ -89,16 +81,11 @@
 
 %\printbibliography[heading=bibintoc, title={References}, notcategory=ignore]
 
-
 \end{spacing}
 
 % ********************************** Appendices ********************************
 
 \begin{appendices} % Using appendices environment for more functunality
-
-%\include{Appendix3/appendix3}
-%\include{Appendix2/appendix2}
-%\include{Appendix1/appendix1}
 
 \end{appendices}
 
