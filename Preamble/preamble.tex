@@ -26,10 +26,20 @@
 \usepackage{caption,subcaption} %package for sub-environments (figs, tables, etc)
 \usepackage{microtype} %microtypesetting improvements for latex
 \usepackage{booktabs} %professional quality tables
-\usepackage{natbib}
 \usepackage{epigraph}
 \usepackage{tcolorbox}
 \usepackage{enumitem}
+\usepackage{bibentry}
+%\usepackage[style=numeric]{biblatex}
+%\bibliographystyle{abbrv}
+\usepackage{natbib}
+% To use the conventional natbib style referencing
+% Bibliography style previews: http://nodonn.tipido.net/bibstyle.php
+% Reference styles: http://sites.stat.psu.edu/~surajit/present/bib.htm
+
+%\bibliographystyle{apalike}
+%\bibliographystyle{unsrt} % Use for unsorted references  
+%\bibliographystyle{plainnat} % use this to have URLs listed in References
 
 %\usepackage{times}
 %\usepackage{mathptmx}
@@ -138,6 +148,21 @@
 \def \<#1\>{\begin{aligned}#1\end{aligned}}
 \def\(#1\){\begin{align*}#1\end{align*}} 	% unnumbered
 }
+
+
+% ******************************* Nomenclature *********************************
+
+% To change the name of the Nomenclature section, uncomment the following line
+
+%\renewcommand{\nomname}{Symbols}
+
+\renewcommand\nomgroup[1]{%
+	\item[\bfseries
+	\ifstrequal{#1}{A}{General Abbreviations}{%
+		\ifstrequal{#1}{F}{$f$-divergence Abbreviations}{%
+			\ifstrequal{#1}{M}{Mathematical Notation}{}}}%
+	]}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%
@@ -1271,8 +1296,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\assign}{\leftarrow}
 
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%% Paper specific shortcut %%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
@@ -1338,3 +1361,8 @@
 \newcommand{\psvi}{PSVI}
 \newcommand{\sparsevi}{SparseVI}
 \newcommand{\randomcoreset}{RANDOM}
+
+
+
+
+
