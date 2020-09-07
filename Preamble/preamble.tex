@@ -12,7 +12,9 @@
 \usepackage[mathscr]{eucal} %use euler script instead of mathcal
 \usepackage{dsfont} %doublestroke fonts (for things like reals, nats, complex numbers, etc)
 \usepackage[nice]{nicefrac} %nice fraction typesetting, compact symbols for 1/2, etc
-\usepackage{hyperref} %typical linking package
+
+%\usepackage[backref=page]{hyperref} %typical linking package
+
 \usepackage{amsmath,amssymb,amsthm,bm,bbm,amsfonts,mathtools} %math
 \usepackage[capitalize,sort,compress]{cleveref} %nice reference package for automatically choosing names for references
 \DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
@@ -29,10 +31,23 @@
 \usepackage{epigraph}
 \usepackage{tcolorbox}
 \usepackage{enumitem}
-\usepackage{bibentry}
-%\usepackage[style=numeric]{biblatex}
+
+
 %\bibliographystyle{abbrv}
-\usepackage{natbib}
+%\usepackage{natbib}
+\bibliography{dotbibfile}
+%\usepackage[english,hyperpageref]{backref}
+
+%\renewcommand*{\backref}[1]{}
+%\renewcommand*{\backrefalt}[4]{({%
+%		\ifcase #1 Not cited.%
+%		\or cit. on p.~#2.%
+%		\else cit. on pp.~#2.%
+%		\fi%
+%	})}
+
+
+
 % To use the conventional natbib style referencing
 % Bibliography style previews: http://nodonn.tipido.net/bibstyle.php
 % Reference styles: http://sites.stat.psu.edu/~surajit/present/bib.htm
@@ -1363,6 +1378,38 @@
 \newcommand{\sparsevi}{SparseVI}
 \newcommand{\randomcoreset}{RANDOM}
 
+
+
+% *****************************************************************************
+% *************************** Bibliography  and References ********************
+
+
+% Add `custombib' in the document class option to use this section
+\ifuseCustomBib
+%   \RequirePackage[square, sort, numbers, authoryear]{natbib} % CustomBib
+
+% If you would like to use biblatex for your reference management, as opposed to the default `natbibpackage` pass the option `custombib` in the document class. Comment out the previous line to make sure you don't load the natbib package. Uncomment the following lines and specify the location of references.bib file
+
+\RequirePackage[backend=biber, style=numeric, sorting=nty, natbib=true, maxbibnames=99, uniquelist=false, uniquename=false, backref=true]{biblatex}
+\addbibresource{References/references.bib} %Location of references.bib only for biblatex, Do not omit the .bib extension from the filename.
+
+\usepackage{csquotes}
+\renewcommand\nameyeardelim{, }
+%\DeclareNameAlias{sortname}{last-first}
+\DeclareNameAlias{sortname}{first-last}
+\renewcommand*{\multinamedelim}{\addcomma\space}
+%\renewcommand*{\finalnamedelim}{\addcomma\space}
+\renewcommand*{\finalnamedelim}{ and }
+\setlength{\bibitemsep}{\baselineskip}
+\renewbibmacro{in:}{}
+
+\preto\fullcite{\AtNextCite{\defcounter{maxnames}{99}}}
+
+\fi
+
+
+
+\usepackage{hyperref}
 
 
 

@@ -464,7 +464,7 @@ supported!}
 \ifPHD@authoryear
   \ifPHD@biblatex
     \RequirePackage[backend=biber, style=authoryear, citestyle=alphabetic, 
-      sorting=nty, natbib=true]{biblatex}
+      sorting=nty, natbib=true, hyperref=true, backref=true]{biblatex}
     \setBiBLaTeXtrue
   \else
     \RequirePackage[round, sort, numbers, authoryear]{natbib} %author year
@@ -599,7 +599,9 @@ supported!}
 % Moved below other usepackage definitions to fix PDFLaTeX footnote warning
 % Based on the suggestion by John Plaice
 
-\RequirePackage[unicode=true]{hyperref}
+\usepackage[pagebackref=true]{hyperref}
+\hypersetup{pdffitwindow=true,linkcolor=LightSkyBlue,citecolor=Sienna,urlcolor=Navy,menucolor=black}
+
 
 \if@print
   % For Print version
@@ -619,6 +621,8 @@ supported!}
     citecolor=black,
     anchorcolor=black
   }
+
+
   \ifsetCustomMargin
   % Margin to be define in preamble using geometry package
   \else
