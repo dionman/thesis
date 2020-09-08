@@ -1,6 +1,203 @@
-\chapter{Conclusions}
+\chapter{Supplement for \bcores{}}
+\label{app:app2}
 
-\section{Summary}
+\renewcommand*{\MyPath}{../Appendix2}%
 
-\section{Future Research Directions}
 
+\section{Models}
+\label{sec:models}
+In this section we present the derivations of \blik{} terms~\cref{eq:b-loss,eq:sl-lik-terms} required over the \bcores{} constructions for the statistical models of our experiments.
+
+\subsection{Gaussian likelihoods}
+\label{sec:gauss-lik}
+
+For the \blik{} terms of a multivariate normal distribution, we have 
+\[
+\pi(x|\mu, \Sigma)^{\beta} = \left((2\pi)^{-\frac{d}{2}}|\Sigma|^{-\frac{1}{2}}\right)^{\beta} \exp\left(-\frac{\beta}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)\right),
+\]
+and, by simple calculus (see also~\citep{samek13}),
+\[
+\int_{\mcX}\pi(\chi|\mu, \Sigma)^{1+\beta}d\chi = \left((2\pi)^{-\frac{d}{2}}|\Sigma|^{-\frac{1}{2}}\right)^{\beta}(1+\beta)^{-\frac{d}{2}}.
+\]
+Hence
+\[
+f_n(\mu) 
+\propto &  \frac{1}{\beta}\left((2\pi)^{-\frac{d}{2}}|\Sigma|^{-\frac{1}{2}}\right)^{\beta} \exp\left(-\frac{\beta}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)\right) \\
+&-\left((2\pi)^{-\frac{d}{2}}|\Sigma|^{-\frac{1}{2}}\right)^{\beta}(1+\beta)^{-\frac{d}{2}-1}\\
+\propto &
+\frac{1}{\beta} \exp\left(-\frac{\beta}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)\right) 
+-(1+\beta)^{-\frac{d}{2}-1}
+\label{eq:gaussian-beta-lik}.
+\]
+\begin{comment}
+and
+\[
+k_n(\mu) =& \left((2\pi)^{-\frac{d}{2}}|\Sigma|^{-\frac{1}{2}}\right)^{\beta}  
+\times \left[\log\left((2\pi)^{-\frac{d}{2}}|\Sigma|^{-\frac{1}{2}}\right) \right. \\
+&\left. \times \left( \frac{1}{\beta} \exp\left(-\frac{\beta}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)\right) -(1+\beta)^{-\frac{d}{2}-1}\right) \right.
+\\ &  \left. -  \frac{1}{\beta^2} \exp\left(-\frac{\beta}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)\right) \right.
+\\&- \left. \frac{1}{2\beta}  (x-\mu)^T\Sigma^{-1}(x-\mu)\exp\left(-\frac{\beta}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)\right) \right.
+\\& \left. - (1+\beta)^{-\frac{d}{2}-1} \log(1+\beta) \right]. 
+\label{eq:gaussian-grad-beta}
+\]
+\end{comment}
+
+\subsection{Logistic regression likelihoods}
+\label{sec:logreg-lik}
+Log-likelihood terms of individual datapoints are given as follows
+\[
+\log \pi(y_n|x_n, \theta) = -\log\left(1+e^{-y_n z_n^T \theta}\right).
+\]
+Substituting to~\cref{eq:sl-lik-terms}, for the  \blik{} terms we get
+\[
+f_n(\theta)& \propto -\frac{1}{\beta}\left(1+e^{-y_n z_n^T \theta}\right)^{-\beta} \\
+&+ \frac{1}{\beta+1} \left( \left(1+e^{- z_n^T \theta}\right)^{-(\beta+1)} + \left(1+e^{z_n^T \theta}\right)^{-(\beta+1)} \right).
+\label{eq:logreg-blik}
+\]
+
+\subsection{Neural linear regression likelihoods and predictive posterior}
+\label{sec:neurlinr-lik}
+Recall that in the neural linear regression model, $ \left(y_n - \theta^T z(x_n)\right) \sim \distNorm(0, \sigma^2), \; n=1,\ldots,N$. %for a generic deterministic feature extractor ${z(\cdot): \mcX \rightarrow \reals^{d}}$ learned from the data $(x,y):=\left( x_n, y_n\right)_{n=1}^{N}$. 
+Then the Gaussian log-likelihoods corresponding to individual observations (after dropping normalization constants),  are written as 
+\[
+f_n(\theta) = - \frac{1}{2\sigma^2}\left(y_n - \theta^T z(x_n)\right)^2.
+\label{eq:neurlinr-logliks}
+\]
+Assuming a prior $\theta \dist \distNorm(\mu_0, \sigma_0^2 I)$, the coreset posterior can be computed in closed form as follows
+\[
+\pi_w(\theta) = \distNorm\left(\mu_w, \Sigma_w\right),
+\label{eq:neurlinr-coreset-posterior}
+\]
+where 
+\[
+&\Sigma_w := \left(\sigma_0^{-2}I + \sigma^{-2} \sum_{m=1}^{M}w_m z(x_m) z(x_m)^T \right)^{-1},\\
+&\mu_w := \Sigma_w \left( \sigma_0^{-2} I \mu_0 + \sigma^{-2} \sum_{m=1}^{M} w_m y_m z(x_m) \right).
+\label{eq:neurlinr-corest-posterior-params}
+\]
+By substitution to~\cref{eq:sl-lik-terms},
+the \blik{} terms for our adaptive basis linear regression are written as 
+\[
+f_n(\theta) \propto  \frac{1}{(2\pi)^{\beta/2}\sigma^{\beta}} \left(-\frac{\beta+1}{\beta}e^{-\beta\left(y_n-\theta^Tz(x_n)\right)^2/(2\sigma^2)} + \frac{1}{\sqrt{1+\beta}}\right).
+\label{eq:linreg-blik}
+\]
+%To simplify notation 
+Let $\mcC$ be the output of the coreset applied on a dataset $\mcD$. Hence, in regression problems, the predictive posterior on a test data pair $(x_t, y_t)$ via a coreset is approximated as follows
+\[
+\pi(y_t|x_t, \mcD) & \approx \pi(y_t|x_t, \mcC)  \\
+&= \int \pi(y_t|x_t,  \theta) \pi(\theta|\mcC) d\theta.  
+\label{eq:coreset-postpred}
+\]
+In the neural linear experiment, 
+the predictive posterior is a Gaussian given by the following formula
+\[
+\pi(y_t|x_t, \mcC) 
+& = \distNorm \left(y_t; \mu_w^T z(x_t), \sigma^2 + z(x_t)^T \Sigma_w z(x_t)\right).
+\label{eq:neurlinr-pred-posterior}
+\]
+%with $\mu_w, \Sigma_w$, defined as in~\cref{sec:neurlinr-lik}.
+
+
+\begin{comment}
+\subsection{Poisson likelihoods}
+\label{sec:poisson-lik}
+
+Our Poisson factorization model is defined as follows~\cite{cemgil09, gopalan15, wang17}
+\[
+&\phi_{uk} \distiid \distExp(10^{3}),  &(u,k) \in [U] \times [K],\\
+& \psi_{ik} \distiid \distExp(10^{3}),  &(i,k) \in [I] \times [K],\\
+& x_{ui} \sim \distPoiss(\phi_u^T\psi_i),  &(u,i) \in [U] \times[I].
+\label{eq:pmf-model}
+\]
+Hence, the likelihood of a single observation and the log-likelihood over the full matrix of observations can be written as 
+\[
+p(x_{ui}|\phi_{u}, \psi_{i}) = (\phi_u^T \psi_i)^{x_{ui}} \exp\left(-\phi_u^T \psi_i\right)/x_{ui}!,
+\label{eq:pmf-single-lik}
+\]
+and
+\[
+\log p(x|\phi, \psi) = \sum_{x_{ui}>0} \left(x_{ui} \log \left(\phi_u^T \psi_i\right) - \log \Gamma(x_{ui}+1)\right)  - (1^T\phi)(1^T \psi),
+\label{eq:pmf-loglik}
+\]
+where $ \Gamma(s+1):=s! $ is the gamma function.
+
+For the \blik-terms, we get
+\[
+t_{ui}(\phi_u, \psi_i) = \frac{1}{\beta} (\phi_u^T \psi_i)^{\beta x_{ui}}
+\exp\left(-\beta \phi_u^T \psi_i\right)/\left(x_{ui}!\right)^\beta,
+\label{eq:pmf-blik}
+\]
+and
+\[
+c(\phi_u, \psi_i)=-\frac{1}{\beta+1} \sum_{\chi \geq 0} \left((\phi_u^T \psi_i)^{\chi} \exp\left(-\phi_u^T \psi_i\right)/\chi!  \right)^{\beta+1}.
+\]
+The last term can be computed approximatelly by numerical evaluation of the rapidly converging infinite sum.
+\end{comment}
+
+\begin{comment}
+\subsection{Coreset posterior predictive distributions}
+\label{sec:pred-post}
+To simplify notation let's denote by $\mcC$ the output of the coreset applied on a dataset $\mcD$. Hence, in regression problems, the posterior predictive on a test data pair $(x_t, y_t)$ via a coreset is approximated as follows
+\[
+\pi(y_t|x_t, \mcD)  \approx \pi(y_t|x_t, \mcC) 
+&= \int \pi(y_t|x_t,  \theta) \pi(\theta|\mcC) d\theta.  
+\label{eq:coreset-postpred}
+\]
+
+In the logistic regression experiment, presented results follow the MC approximation of the above (intractable) integral is
+\[
+\pi(y_t=1|x_t, \mcC) 
+\approx \frac{1}{S} \sum_{s=1}^{S} \frac{1}{1+\exp(\theta_s^T x_t)}, \qquad \theta_s \sim \pi(\theta| \mcC).
+\label{eq:logreg-predpost-mc}
+\]
+\end{comment}
+
+
+\section{Datasets Details}
+\label{sec:data-details}
+
+The benchmark datasets used in logistic regression (including group selection) and neural linear regression experiments are detailed in Tables~\ref{table:logreg-data} and \ref{table:neurlinreg-data} respectively.\footnote{The original versions of all used datasets can be accessed by following the corresponding hyperlinks in the Tables appearing in the electronic version of the paper.}, and include: 
+\begin{itemize}
+	\item a dataset used to predict whether a citizen's income exceeds $50K \$$ per year extracted from USA 1994 census data~(\textsc{Adult}),
+	\item a dataset containing webpages features and a label categorizing them as phishing or not~(\textsc{Phishing}),
+	\item a corpus of webpages crawled from links found in spam emails~(\textsc{WebSpam}),
+	\item a set of hospitalization records for binary prediction of readmission pertaining to diabetes patients~(\textsc{HospitalReadmissions}),
+	\item a set of various features from homes in the suburbs of Boston, Massachussets used to model housing price~(\textsc{Housing}), and
+	\item a dataset used to predict the release year of songs from associated audio features ~(\textsc{Songs}).
+\end{itemize} 
+
+For \textsc{Adult}, \textsc{Phishing} and \textsc{HospitalReadmissions} we fit our statistical models on the first 10 principal components of the datasets, while  all logistic regression benchmark datasets are evaluated on balanced subsets of the test data between the two classes~(see~\cref{table:logreg-data}).
+\begin{table}[!t]
+	\caption{Logistic regression datasets}
+	\centering
+	\resizebox{0.85\columnwidth}{!}{%
+		\begin{tabular}{lrrrrr}
+			\hline
+			Dataset      &   $d$ &     $N\textsubscript{train}$ &   $N\textsubscript{test}$ &   $\#$Pos. test data 
+			\\
+			\hline
+			\MYhref{http://archive.ics.uci.edu/ml/datasets/Adult}{\textsc{Adult}}~\citep{adult}        &  10 &  30,162 &    7,413 &             3,700  \\
+			\MYhref{https://archive.ics.uci.edu/ml/datasets/Phishing+Websites}{\textsc{Phishing}}~\citep{uci}      & 10 & 8,844 &   2,210 &             1,230  \\
+			\MYhref{https://www.cc.gatech.edu/projects/doi/WebbSpamCorpus.html}{\textsc{WebSpam}}~\citep{webspam}      & 127 & 126,185 &   13,789 &             6,907  \\
+			\MYhref{https://archive.ics.uci.edu/ml/datasets/diabetes+130-us+hospitals+for+years+1999-2008}{\textsc{HospitalReadmissions}}~\citep{diabetes}      & 10 & 55,163 &   6,079 &             3,044  \\
+			\hline
+		\end{tabular}
+	}
+	\label{table:logreg-data}
+\end{table}
+
+\begin{table}[!t]
+	\caption{Neural linear regression datasets}
+	\centering
+	\resizebox{0.5\columnwidth}{!}{%
+		\begin{tabular}{lrrrrr}
+			\hline
+			Dataset      &   $d$ &      $N\textsubscript{train}$  &   $N\textsubscript{test}$   \\
+			\hline
+			\MYhref{https://archive.ics.uci.edu/ml/machine-learning-databases/housing/}{\textsc{Housing}}~\citep{uci}  &  13 &  446 &    50  \\
+			%\MYhref{https://archive.ics.uci.edu/ml/datasets/online+news+popularity}{\textsc{NewsPopularity}}~\citep{newspopularity}      & 58 & 35,579 &   3,964\\
+			\MYhref{https://archive.ics.uci.edu/ml/datasets/YearPredictionMSD}{\textsc{Songs}}~\citep{uci}        &  90 &  463,711 &    51,534\\
+			\hline
+		\end{tabular}
+	}
+	\label{table:neurlinreg-data}
+\end{table}

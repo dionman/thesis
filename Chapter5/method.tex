@@ -36,12 +36,12 @@ w \geq 0,\; ||w||_0 \leq M,
 %where $\plainkl$ is the KL divergence. 
 In the following we denote expectations and covariances under $\theta \sim \pi_{\beta,w}(\theta|x)$ as $\EE_{\beta,w}$ and $\cov_{\beta,w}$ respectively. Then the KL divergence is written as
 \[
-\kl{\pi_{\beta,w}}{\pi}:=\EE_{\beta, w} \left[\log\frac{\pi_{\beta,w}}{\pi_\beta}\right].
+\kl{\pi_{\beta,w}}{\pi_{\beta}}:=\EE_{\beta, w} \left[\log\frac{\pi_{\beta,w}}{\pi_\beta}\right].
 \label{eq:kld}
 \]
 In our formulation it is easy to observe that posteriors of~\cref{eq:bcore-posterior} form a set of \emph{exponential family distributions}~\cite{wainwright08}, with natural parameters $w \in \reals_{\geq 0}^N$, sufficient statistics $(f_n(\theta))_{n=1}^{N}$, and log-partition function $\log Z(\beta, w)$. Following~\citep{campbell19neurips}, the objective can be expanded as 
 \[
-\kl{\pi_{\beta,w}}{\pi} =& \log Z(\beta) - \log Z(\beta, w) \\
+\kl{\pi_{\beta,w}}{\pi_{\beta}} =& \log Z(\beta) - \log Z(\beta, w) \\
                                     &- \sum_{n=1}^{N}\EE_{\beta,w}\left[f_n(\theta)- w_n f_n(\theta)\right],
 \label{eq:sparsevi-obj}
 \]
