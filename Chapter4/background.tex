@@ -37,7 +37,19 @@ original datapoints themselves to summarize the whole dataset.
 summarizing high-dimensional data; in the common setting of posterior inference
 for a Gaussian mean, the KL divergence $\kl{\pi_{w^\star}}{\pi_1}$ of the
 \emph{optimal} coreset of any size scales with the dimension of the data.  The
-proof may be found in~\cref{supp:proofs}.
+proof found in~\cref{supp:proofs}.
+\bnprop \label{prop:original_coreset_fails}
+Suppose we use $(X_n)_{n=1}^N \distiid \distNorm(0, I)$ in $\reals^d$ to perform posterior inference in a Bayesian model
+with prior 
+$\mu \dist \distNorm(0, I)$ and likelihood
+$(X_n)_{n=1}^N  \distiid \distNorm(\mu, I).$
+Then $\forall M < d$ and $\delta \in[0, 1]$, 
+with probability at least $1-\delta$ the optimal size-$M$ coreset $w^\star$ satisfies
+\[
+\kl{\pi_{w^\star}}{\pi_1} \geq \frac{1}{2}\frac{N-M}{1+N}F_{d-M}^{-1}\left(\delta{N\choose M}^{-1}\right),
+\]
+where $F_{k}$ is the CDF of a $\chi^2$ random variable with $k$ degrees of freedom.
+\enprop
 
 The bound in \cref{prop:original_coreset_fails} depends on $d$ through the
 $\chi^2$ distribution inverse CDF. Although difficult to see directly, the
