@@ -39,7 +39,7 @@ All computations involved in the coreset construction and posterior evaluation i
 	\centering 
 	\begin{subfigure}[b]{0.9\textwidth} 
 		\includegraphics[width=1.\textwidth]{\MyPath/figs/gauss_scatterplot.png}
-		\caption{\label{fig:gaussian_coreset_points}}
+		\caption{\label{fig:beta_gaussian_coreset_points}}
 	\end{subfigure}
 	\hfill\qquad
 	\begin{subfigure}[b]{0.9\textwidth} 
@@ -58,7 +58,7 @@ All computations involved in the coreset construction and posterior evaluation i
 \end{figure}
 
 
-\cref{fig:gaussian_coreset_points}~presents the results obtained by the different coreset methods. We stress-test their performance under varying amounts of data corruption~(from top to bottom, 0\%, 15\%, and 30\% of the datapoints get replaced by outliers). We can verify that \bcores{} with $\beta=0.01$ is on par with existing Riemannian coresets in an uncontaminated dataset. Noticeably, \bcores{} remains robust to high levels of structured corruption~(even up to $30\%$ of the dataset), giving reliable posterior estimates; KL divergence plots in~\cref{fig:gauss_kld} reconfirm the superiority of inference via~\bcores{}. On the other hand, in the presence of outliers, previous Riemannian coresets performance degrades quickly, offering similar posterior inference quality with random sampling. The KL divergence from the cleansed data posterior for existing summarizations and uniform sampling increases with observations failure probability, as it asymptotically converges to the Bayesian posterior computed on the corrupted dataset. 
+\cref{fig:beta_gaussian_coreset_points}~presents the results obtained by the different coreset methods. We stress-test their performance under varying amounts of data corruption~(from top to bottom, 0\%, 15\%, and 30\% of the datapoints get replaced by outliers). We can verify that \bcores{} with $\beta=0.01$ is on par with existing Riemannian coresets in an uncontaminated dataset. Noticeably, \bcores{} remains robust to high levels of structured corruption~(even up to $30\%$ of the dataset), giving reliable posterior estimates; KL divergence plots in~\cref{fig:gauss_kld} reconfirm the superiority of inference via~\bcores{}. On the other hand, in the presence of outliers, previous Riemannian coresets performance degrades quickly, offering similar posterior inference quality with random sampling. The KL divergence from the cleansed data posterior for existing summarizations and uniform sampling increases with observations failure probability, as it asymptotically converges to the Bayesian posterior computed on the corrupted dataset. 
 
 Moreover, in the case of contaminated datasets, baseline coresets are quite confident in their wrong predictive posteriors: they keep assigning the same weight to all observations and hence do not adjust their posterior uncertainty estimates, in spite of having to describe contradicting data. In contrast,~\bcores{} discards samples from the outlying group and can confidently explain the inliers, despite the smaller effective sample size: indeed,~\cref{fig:gauss_kld} shows that the achieved KL divergence from the exact posterior is at same order of magnitude regardless of failure probability. 
 
@@ -77,7 +77,6 @@ z_n:=\begin{bmatrix}
 x_n \\
 1
 \end{bmatrix}.
-\label{eq:logreg-model}
 \]
 \blik{} terms required in our construction are computed in~\cref{sec:logreg-lik}. 
 
