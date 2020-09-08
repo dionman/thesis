@@ -571,7 +571,8 @@ supported!}
 \else
   % default: pdfLaTeX
   \RequirePackage[utf8]{inputenc}
-  \RequirePackage[T1]{fontenc}
+  \RequirePackage[T1, T2A]{fontenc}
+  \usepackage{textcomp}
   
   % If building with PDFLaTeX, use microtype spacing adjustments
   \RequirePackage[final]{microtype}

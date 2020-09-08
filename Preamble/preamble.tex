@@ -38,14 +38,6 @@
 \bibliography{dotbibfile}
 %\usepackage[english,hyperpageref]{backref}
 
-%\renewcommand*{\backref}[1]{}
-%\renewcommand*{\backrefalt}[4]{({%
-%		\ifcase #1 Not cited.%
-%		\or cit. on p.~#2.%
-%		\else cit. on pp.~#2.%
-%		\fi%
-%	})}
-
 
 
 % To use the conventional natbib style referencing
@@ -1390,7 +1382,7 @@
 
 % If you would like to use biblatex for your reference management, as opposed to the default `natbibpackage` pass the option `custombib` in the document class. Comment out the previous line to make sure you don't load the natbib package. Uncomment the following lines and specify the location of references.bib file
 
-\RequirePackage[backend=biber, style=numeric, sorting=nty, natbib=true, maxbibnames=99, uniquelist=false, uniquename=false, backref=true]{biblatex}
+\RequirePackage[backend=biber, style=numeric, sorting=nty, natbib=true, uniquelist=false, uniquename=false, backref=true]{biblatex}
 \addbibresource{References/references.bib} %Location of references.bib only for biblatex, Do not omit the .bib extension from the filename.
 
 \usepackage{csquotes}
@@ -1404,13 +1396,7 @@
 \renewbibmacro{in:}{}
 
 \preto\fullcite{\AtNextCite{\defcounter{maxnames}{99}}}
-
 \fi
 
-
-
 \usepackage{hyperref}
-
-
-
 
