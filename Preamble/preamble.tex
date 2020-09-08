@@ -1,19 +1,9 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%  Latex Shortcuts and Redefinitions
-%%
-%%  Original by Jonathan Huggins, with thanks to Dan Roy and Ryan Adams for allowing the use many of their definitions.
-%%
-%%  Adapted by Trevor Campbell for personal use.
-%%  Adapted by Dionysis Manousakas for personal use.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{tikz}
 \usepackage{xifthen}
 \usepackage{xspace} %used at the end of macros to automatically determine whether spaces should be eaten or not
 \usepackage[mathscr]{eucal} %use euler script instead of mathcal
 \usepackage{dsfont} %doublestroke fonts (for things like reals, nats, complex numbers, etc)
 \usepackage[nice]{nicefrac} %nice fraction typesetting, compact symbols for 1/2, etc
-
-%\usepackage[backref=page]{hyperref} %typical linking package
 
 \usepackage{amsmath,amssymb,amsthm,bm,bbm,amsfonts,mathtools} %math
 \usepackage[capitalize,sort,compress]{cleveref} %nice reference package for automatically choosing names for references
@@ -31,22 +21,6 @@
 \usepackage{epigraph}
 \usepackage{tcolorbox}
 \usepackage{enumitem}
-
-
-%\bibliographystyle{abbrv}
-%\usepackage{natbib}
-\bibliography{dotbibfile}
-%\usepackage[english,hyperpageref]{backref}
-
-
-
-% To use the conventional natbib style referencing
-% Bibliography style previews: http://nodonn.tipido.net/bibstyle.php
-% Reference styles: http://sites.stat.psu.edu/~surajit/present/bib.htm
-
-%\bibliographystyle{apalike}
-%\bibliographystyle{unsrt} % Use for unsorted references  
-%\bibliographystyle{plainnat} % use this to have URLs listed in References
 
 %\usepackage{times}
 %\usepackage{mathptmx}
@@ -1370,8 +1344,6 @@
 \newcommand{\sparsevi}{SparseVI}
 \newcommand{\randomcoreset}{RANDOM}
 
-
-
 % *****************************************************************************
 % *************************** Bibliography  and References ********************
 
@@ -1382,7 +1354,7 @@
 
 % If you would like to use biblatex for your reference management, as opposed to the default `natbibpackage` pass the option `custombib` in the document class. Comment out the previous line to make sure you don't load the natbib package. Uncomment the following lines and specify the location of references.bib file
 
-\RequirePackage[backend=biber, style=numeric, sorting=nty, natbib=true, uniquelist=false, uniquename=false, backref=true]{biblatex}
+\RequirePackage[backend=biber,  citestyle=numeric, style=numeric, sorting=nty, natbib=true, maxbibnames=99,maxcitenames=2, uniquelist=false, uniquename=false]{biblatex}
 \addbibresource{References/references.bib} %Location of references.bib only for biblatex, Do not omit the .bib extension from the filename.
 
 \usepackage{csquotes}
@@ -1398,5 +1370,22 @@
 \preto\fullcite{\AtNextCite{\defcounter{maxnames}{99}}}
 \fi
 
+
+%\bibliographystyle{abbrv}
+%\usepackage{natbib}
+%\bibliography{dotbibfile}
+%\usepackage[english,hyperpageref]{backref}
+
+% To use the conventional natbib style referencing
+% Bibliography style previews: http://nodonn.tipido.net/bibstyle.php
+% Reference styles: http://sites.stat.psu.edu/~surajit/present/bib.htm
+
+%\bibliographystyle{apalike}
+%\bibliographystyle{unsrt} % Use for unsorted references  
+%\bibliographystyle{plainnat} % use this to have URLs listed in References
+
 \usepackage{hyperref}
 
+% debugging for non-unicode characters
+\DeclareUnicodeCharacter{0301}{*************************************}
+\DeclareUnicodeCharacter{0302}{*************************************}
