@@ -19,36 +19,6 @@ and
 \mu_{w}\!=\!\Sigma_{w}\left( \sum_{n=1}^{N} w_n X_{n}\right).
 \]
 
-
-\bnprop \label{prop:original_coreset_fails}
-Suppose we use $(X_n)_{n=1}^N \distiid \distNorm(0, I)$ in $\reals^d$ to perform posterior inference in a Bayesian model
-with prior 
-$\mu \dist \distNorm(0, I)$ and likelihood
-$(X_n)_{n=1}^N  \distiid \distNorm(\mu, I).$
-Then $\forall M < d$ and $\delta \in[0, 1]$, 
-with probability at least $1-\delta$ the optimal size-$M$ coreset $w^\star$ satisfies
-\[
-\kl{\pi_{w^\star}}{\pi_1} \geq \frac{1}{2}\frac{N-M}{1+N}F_{d-M}^{-1}\left(\delta{N\choose M}^{-1}\right),
-\]
-where $F_{k}$ is the CDF of a $\chi^2$ random variable with $k$ degrees of freedom.
-\enprop
-
-In the setting of~\cref{prop:original_coreset_fails}, both the exact posterior and the coreset posterior 
-are multivariate Gaussian distributions, denoted as $\distNorm{\left(\mu_1, \Sigma_1\right)}$ and 
-$\distNorm{\left(\mu_{w}, \Sigma_{w}\right)}$ respectively. 
-The mean and covariance are
-\[
-\Sigma_{1}=\frac{1}{1+ N} I_d, \quad \mu_{1}=\Sigma_{1}\left( \sum_{n=1}^{N} X_{n}\right), 
-\label{eq:exact_post}
-\]
-and
-\[
-\label{eq:coreset_post}
-\hspace{-.3cm}\Sigma_{w}\!=\!\frac{I_d}{1+ \left(\sum_{n=1}^N w_n\right)}, 
-\quad
-\mu_{w}\!=\!\Sigma_{w}\left( \sum_{n=1}^{N} w_n X_{n}\right).
-\]
-
 \begin{proof}[Proof of~\cref{prop:original_coreset_fails}]
 	By~\cref{eq:exact_post,eq:coreset_post}, 
 	\begin{equation} \label{eq:KL_from_coreset_post_to_exact}
