@@ -1,5 +1,14 @@
 % ************************** Thesis Abstract *****************************
 % Use `abstract' as an option in the document class to print only the titlepage and the abstract.
 \begin{abstract}
-	\dots 
+	\label{sec:abstract} 
+   In this thesis we present a family of data reduction algorithms that enable scalable learning on privacy-sensitive large datasets, via extracting an informative task-specific compact representation that summarizes the full data---a \emph{coreset}. Our methods can be used for general purpose Bayesian inference, allowing several uncertainty-aware data analysis tasks, including density estimation, classification and regression, and support by design datasets of arbitrary dimensionality and size.
+   
+    We motivate the necessity for novel data reduction techniques in the first place by developing a reidentification attack on coarsified representations of private behavioural data. Analysing longitudinal records of human mobility, we detect privacy-revealing structural patterns, that remain preserved in reduced graph representations of individuals information with manageable size. These unique patterns enable linkage attacks on individuals information via structural similarity computation on longitudinal mobility traces, revealing an existing privacy threat.
+    
+    We then propose a scheme for constructing summaries of large datasets via weighted pseudodata, termed pseudocoresets. We prove that the use of pseudodata enables overcoming the constraints on minimum summary size for given approximation quality, that are imposed on all classical coreset constructions due to data dimensionality. Moreover, we develop a scheme for pseudocoresets-based summarization that satisfies the standard framework of differential privacy by construction. In this way we can release privacy-preserving dataset representations of reduced size that can be arbitrarily post-processed.
+    
+    Subsequently, we consider summarizations for large-scale Bayesian inference in scenarios when observed datapoints depart from the  assumptions of our statistical model. Using robust divergences, we develop a method for constructing cleansed coresets, which is able to automatically remove outliers from the generated data summaries. In this way we deliver robustified scalable representations for inference, that are suitable for applications involving contaminated and unreliable data sources.
+    
+    We demonstrate the performance of proposed summarization techniques on multiple statistical models and diverse simulated and real-world datasets, from music features to hospital readmission records, considering a wide range of data dimensionalities, from 2 to 500.
 \end{abstract}
