@@ -4,26 +4,28 @@
 \newcommand{\etal}{\textit{et al}.}
 \newcommand{\ie}{\textit{i}.\textit{e}.}
 
-In this thesis, we have presented three original pieces of work drawing on the importance of dataset reductions for learning in the massive data scale: Our premise has been that principled dataset summarization methods can be harsenessed to enable scalable approximations for the purposes of inference on large data without compromising privacy and robustness of learning.
-In this section, we briefly summarize our key contributions and suggest directions for future research.
+In this thesis, we have presented three original pieces of work drawing on the importance of dataset reductions for learning in the massive data regime under constraints commonly arising in real-world applications: Our premise has been that principled dataset summarization methods can be harsenessed to enable efficient approximations for the purposes of large-scale data analysis without compromising privacy and robustness. In this section, we briefly recap our key contributions and suggest directions for future research.
 
 \section{Summary}
 \label{sec:summary}
 
-\subsection{Privacy Loss of Coarsified Structured Data}
-\label{subsec:ch3-summary}
 
+\subsection{Privacy Loss of Coarsened Structured Data}
+\label{subsec:ch3-summary}
+Reducing the information content and removing identifiers from sensitive datasets prior to public release offers an illusion of privacy. In~\cref{chap:chap3} we examined a large collection of longitudinal mobility traces recorded by smartphone devices. We converted each pseudonymised user trace data to a truncated graph, which retained transition patterns among user's most frequent locations, and generated such representations over two different time windows across the period of tracking. Computing structural similarities via graph kernels allowed us to delevop a linkage attack that was able to reidentify the anonymised mobility graphs at a $3.5\times$ higher success rate compared to random guessing. Our finding stressed that pseudonymisation and coarsening of data cannot protect data subjects against adversaries with access to the infomation of uniquely identifying substructures---hence, further elaborating on data reduction techniques that adhere to formal privacy guarantees is required.
 
 \subsection{Privacy-Preserving Bayesian Coresets in High-dimensions}
 \label{subsec:ch4-summary}
+In~\cref{chap:chap4} we developed a novel construction for Bayesian coresets. We extended the existing sparse variational inference framework by specifying a richer family of scalable posterior approximations which, instead of points of the original dataset, make use of learnable pseudodata that are able to summarize the full data likelihood. Our variational approximation enabled effective summarization that is not limited by data dimensionality. Moreover, our coreset construction is amenable both to an incremental, as well as a batch black-box optimization scheme, offering computational time savings compared to state-of-the-art sparse VI methods. Finally, the use of synthetic data, combined with the subsampled Gaussian mechanism, allowed us to yield differentially private dataset summarization. We demonstrated applications of inference over a diverse set of Bayesian models, including Gaussian mean estimation, linear and logistic regression, showing the advantages in data posterior approximation offered by our approach.
 
-\subsection{Robust Bayesian Coresets on Contaminated Datasets}
+\subsection{Robust Bayesian Coresets under Misspecification}
 \label{subsec:ch4-summary}
+In~\cref{chap:chap5} we designed a Bayesian coresets construction suitable for summarizing datasets that depart from our statistical assumptions, due to containing outliers, and/or being subjected to contamination. We proposed an incremental scheme for attaining a sparse variational posterior, that can scalably approximate robust pseudo-Bayesian posteriors, computed on the full data via the~\bdiv. Further to reducing data redundancy, our scheme offered a unified and highly-automated solution to the important question of detecting and removing harmful datapoints prior to inference. We evaluated our technique on clean and contaminated data over a range of applications, including Gaussian mean inference, Bayesian linear regression, neural linear regression and valuation of data subpopulation combinations, demonstrating reliable posteriors and predictive performance in all examined test cases.
 
 
 \section{Future Research Directions}
 \label{sec:future-research-directions}
-The summarization frameworks presented in this thesis allow numerous probabilistic models to be tractably and reliably deployed in practice. Yet they allude to a realm of so far unexplored research questions, some of which we overiew in the remainder of this section, thus concluding the thesis.
+The summarization frameworks presented in this dissertation allow numerous probabilistic models to be tractably and reliably deployed in practice. Yet they allude to a realm of so far unexplored research questions, some of which we overiew in the remainder of this section, thus concluding the thesis.
 
 \subsection{Coresets for Models with Structured Likelihoods}
 \label{subsec:structure-liks}
@@ -41,4 +43,4 @@ In~\cref{chap:chap4} we presented an optimization scheme that yields Bayesian co
 
 In~\cref{chap:chap4} we presented a method utilising learnable batches of pseudodata to summarize a much larger dataset. Naturally this coreset construction bears the potential of reducing the interpretability of learned pseudodata, since summarizing datapoints are now not a subset of the original dataset but rather the result of a task-specific optimization routine. To remedy potential interpretability issues, further interpretability constraints can be explicitly incorporated in the optimization formulation of pseudocoreset variational inference of~\cref{eq:pseudo-coreset-vi}.
 
-Beyond the quest of interpretability, further research is required on examining other desiderata in human-oriented inference. To name a few, deletion-robustness is often sought or imposed on methods for large-scale data analysis~\citep{mirzasoleiman17, ginart19}: user's \emph{right-to-be-forgotten} is related to imposing bounds on the effects of removing an individual datapoint from an existing dataset and can be approximately satisfied under differential privacy. Moreover, group \emph{fairness} is one more topic that necessitates further investigation: without special treatment, reducing datasets will potentially transfer existing inequalities between groups in the summary, hence a different construction may be sought when aiming to ameliorate unfairness in scalable inference.  
+Beyond the quest of interpretability, additional research is required on examining other desiderata in human-oriented inference. To name a few, deletion-robustness is often sought or imposed on methods for large-scale data analysis~\citep{mirzasoleiman17, ginart19}: user's \emph{right-to-be-forgotten} is related to imposing bounds on the effects of removing an individual datapoint from an existing dataset and can be approximately satisfied under differential privacy. Moreover, group \emph{fairness} is one more topic that necessitates further investigation: without special treatment, reducing datasets will potentially transfer existing inequalities across groups in the extracted summary, hence a different construction may be sought when aiming to ameliorate unfairness in scalable inference.  
