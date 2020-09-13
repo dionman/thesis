@@ -49,8 +49,24 @@
 
 When faced with a data set too large to be processed all at once, an obvious solution is to retain only part of it. 
 
-\section{Overview and Summary of Contributions}
-\label{sec:overview}
+\par{Data Summarization and Differential Privacy}
+
+\par{Data Summarization and Outliers Detection}
+
+\section{Thesis Organization}
+\label{sec:thesis_organization}
+The remainder of the dissertation is organized as follows. \cref{chap:chap2} introduces relevant background and concepts used throughout the thesis. \cref{chap:chap3} sheds light into the anonymity properties of a large-scale longitudinal mobility dataset, revealing a realistic privacy threat that survives in private structured datasets after coarsening individual records. \cref{chap:chap4} presents a general-purpose sparse variational inference algorithm that allows scaling up Bayesian inference in big and high-dimensional datasets via a coreset representation that relies on learnable synthetic datapoints, and introduces a differentially private construction for this coreset:~\psvi~and ~\dpsvi~respectively. \cref{chap:chap5} proposes a sparse variational approximation for robust pseudo-Bayesian posteriors using \bdiv, that can yield reliable summarizations for large-scale datasets in the presence of extensive contamination:~\bcores. Finally, \cref{chap:chap6} concludes the thesis by summarizing our results and discussing future research directions.
+
+
+This thesis covers material from the following papers:
+
+\begin{quote}
+	\fullcite{manousakas2018quantifying}~(\cref{chap:chap3})
+	
+	\fullcite{psvi}~(\cref{chap:chap4})
+	
+	\fullcite{beta-cores}~(\cref{chap:chap5})
+\end{quote}
 
 
 In addition, the following paper was written during my PhD but is not discussed in this thesis.
