@@ -2,47 +2,107 @@
 \label{chap:chap1}
 
 
+\iffalse
+\renewcommand\nomgroup[1]{%
+	\item[\bfseries
+	\ifstrequal{#1}{A}{Acronyms/Abbreviations}{
+		\ifstrequal{#1}{B}{Roman Symbols}{%
+			\ifstrequal{#1}{C}{Greek Symbols}{%
+				\ifstrequal{#1}{D}{Other Symbols}{
+					\ifstrequal{#1}{E}{Superscripts}{
+						\ifstrequal{#1}{F}{Subscripts}{
+							\ifstrequal{#1}{G}{Distributions}{
+								\ifstrequal{#1}{H}{Operators}{
+									\ifstrequal{#1}{I}{Mobile Data Abbreviations}{
+										\ifstrequal{#1}{J}{Graphs}{
+	}}}}}}}}}}]}
+\fi
+
+% Abbreviations
+\nomenclature[A]{e.g.}{Exempli gratia}
+\nomenclature[A]{i.e.}{Id est}
+\nomenclature[A]{s.t.}{Such that}
+\nomenclature[A]{w.r.t.}{With respect to}
 \nomenclature[A]{\iid}{Independent and identically distributed}
 \nomenclature[A]{ELBO}{Evidence Lower Bound}
 \nomenclature[A]{DP}{Differentially Private}
+\nomenclature[A]{KL}{Kullback-Leibler}
 \nomenclature[A]{MC}{Monte Carlo}
+\nomenclature[A]{HMC}{Hamiltonian Monte Carlo}
+\nomenclature[A]{NUTS}{No U-Turn Sampling}
 \nomenclature[A]{CDF}{Cumulative Density Function}
 \nomenclature[A]{CDF}{Complementary Cumulative Density Function}
+\nomenclature[A]{VI}{Variational Inference}
+\nomenclature[A]{\psvi}{Pseudocoresets Sparse VI}
+%\nomenclature[A]{\sparsevi}{Sparse VI}
+\nomenclature[A]{\randomcoreset}{Random Sampling Coreset}
+\nomenclature[A]{PL}{Privacy Loss}
+\nomenclature[A]{RBF}{Radial Basis Function}
 
-\nomenclature[A]{\reals}{Real numbers}
-\nomenclature[A]{\ints}{Integer numbers}
-\nomenclature[A]{\nats}{Natural numbers}
+% Roman symbols
+\nomenclature[B]{$\mcD$}{Dataset}
 
-\nomenclature[A]{$\plainxent$}{Cross-entropy}
-\nomenclature[A]{$\plainkl$}{Kullback-Leibler divergence}
-\nomenclature[A]{$\plaindb$}{$\beta$-divergence}
+% Greek symbols
+\nomenclature[C]{$\Theta$}{Space of model random variables}
+\nomenclature[C]{$\eps$}{a random variable}
+\nomenclature[C]{$\veps$}{a very small non-negative constant}
+\nomenclature[C]{$O$}{asymptotic upper bound}
 
-\nomenclature[A]{$\operatorname{diag}$}{Matrix diagonal opertator}
-\nomenclature[A]{$\operatorname{tr}$}{Matrix trace operator}
-\nomenclature[A]{$\mathbb{P}$}{Probability operator}
-\nomenclature[A]{$\mathbb{E}$}{Expectation operator}
 
-\nomenclature[A]{$\operatorname{Var}$}{Variance}
-\nomenclature[A]{$\operatorname{Cov}$}{Covariance}
-\nomenclature[A]{$\operatorname{Corr}$}{Correlation}
-\nomenclature[A]{$\sim$}{Distributed as}
+% Others
+\nomenclature[D]{$\mcX^N$ / $(\mcX \times \mcY)^N$}{Data space of $N$ unlabeled/labeled observations}
+\nomenclature[D]{$[N]$}{$[1,\ldots,N]$}
+\nomenclature[D]{\reals}{Real numbers}
+\nomenclature[D]{\ints}{Integer numbers}
+\nomenclature[D]{\nats}{Natural numbers}
+\nomenclature[D]{$\#$}{Number of}
+\nomenclature[D]{$\plainxent$}{Cross-entropy}
+\nomenclature[D]{$\plainkl$}{Kullback-Leibler divergence}
+\nomenclature[D]{$\plaindb$}{$\beta$-divergence}
+\nomenclature[D]{$\operatorname{Var}$}{Variance}
+\nomenclature[D]{$\operatorname{Cov}$}{Covariance}
+\nomenclature[D]{$\operatorname{Corr}$}{Correlation}
+\nomenclature[D]{$\sim$}{Distributed as}
+\nomenclature[D]{$\langle, \rangle$}{Inner product}
+% Superscripts
 
-\nomenclature[A]{$\mathcal{N}$}{Normal distribution}
-\nomenclature[A]{$\mathcal{T}$}{Student's t-distribution}
-\nomenclature[A]{\distNamed{Unif}}{Uniform distribution}
-\nomenclature[A]{\distNamed{Gam}}{Gamma distribution}
-\nomenclature[A]{\distNamed{Poiss}}{Poission distribution}
-\nomenclature[A]{\distNamed{Exp}}{Exponential distribution}
-\nomenclature[A]{\distNamed{Beta}}{Beta distribution}
-\nomenclature[A]{\distNamed{Dir}}{Dirichlet distribution}
-\nomenclature[A]{\distNamed{Bern}}{Bernoulli distribution}
-\nomenclature[A]{$\chisq$}{Chi-square distribution}
-\nomenclature[A]{$\distUnifSubset$}{Uniform subset distribution}
+% Subscripts
 
-%\nomenclature[A]{$X$}{Random variable over data space}
-\nomenclature[A]{$\Theta$}{Space of model random variables}
-\nomenclature[A]{$\mcX^N$ / $(\mcX \times \mcY)^N$}{Data space of $N$ unlabeled/labeled observations}
-\nomenclature[A]{$[N]$}{$[1,\ldots,N]$}
+% Distributions
+\nomenclature[G]{$\mathcal{N}$}{Normal distribution}
+\nomenclature[G]{$\mathcal{T}$}{Student's t-distribution}
+\nomenclature[G]{\distNamed{Unif}}{Uniform distribution}
+\nomenclature[G]{\distNamed{Gam}}{Gamma distribution}
+\nomenclature[G]{\distNamed{Poiss}}{Poisson distribution}
+\nomenclature[G]{\distNamed{Exp}}{Exponential distribution}
+\nomenclature[G]{\distNamed{Beta}}{Beta distribution}
+\nomenclature[G]{\distNamed{Dir}}{Dirichlet distribution}
+\nomenclature[G]{\distNamed{Bern}}{Bernoulli distribution}
+\nomenclature[G]{$\chisq$}{Chi-square distribution}
+\nomenclature[G]{$\distUnifSubset$}{Uniform subset distribution}
+
+
+% Operators
+\nomenclature[H]{$\operatorname{diag}$}{Matrix diagonal opertator}
+\nomenclature[H]{$\operatorname{tr}$}{Matrix trace operator}
+\nomenclature[H]{$\mathbb{P}$}{Probability operator}
+\nomenclature[H]{$\mathbb{E}$}{Expectation operator}
+
+
+% Mobility data
+\nomenclature[I]{MAC}{Media Access Control}
+\nomenclature[I]{cid}{Cell tower identifier}
+\nomenclature[I]{ID}{Identifier}
+\nomenclature[I]{CDR}{Call Data Record}
+
+% Graphs
+\nomenclature[J]{$\mcG$, $G$, $V$, $E$}{Space of graphs, Graph, Vertices, Edges}
+\nomenclature[J]{SP}{Shortest Path}
+\nomenclature[J]{WL}{Weisfeiler-Lehman}
+\nomenclature[J]{DK}{Deep graph kernels}
+
+
+
 
 \section{Prelude}
 \label{sec:prelude}
