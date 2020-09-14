@@ -53,9 +53,36 @@ When faced with a data set too large to be processed all at once, an obvious sol
 
 \par{Data Summarization and Outliers Detection}
 
+\section{Thesis Goals and Contributions}
+\label{sec:thesis-goals}
+
+The focus of this thesis is to develop scalable tools for data analysis on privacy-sensitive and vulnerable to contamination big data. Relying on the use of coreset-based dataset summarization methods as our fundamental framework for scalability, we adopt a two-pronged approach to tackle each of the aforementioned challenges, and propose efficient algorithms that outperform state-of-the-art solutions to the posed problems. 
+
+In particular, the goals of this dissertation are to
+
+\begin{enumerate}
+	\item Identify threats in commonly adopted practices for releasing privacy-sensitive datasets via coarsened and anonymised representations of the data.
+	\item Propose novel principled methods that can directly address real-word considerations of privacy and robustness when applying summarization for scalable inference, without altering the complexity footprint of the methods.
+\end{enumerate}
+
+The central constributions of the thesis are the following:
+
+\begin{itemize}
+	\item We analyse the anonymity of individual data in a large-scale behavioural study, and develop a \emph{reidentification attack that exploits structural patterns similarity} to link users records in the absence of identifiers in their state-space.
+	\item We introduce a novel \emph{family of sparse variational distributions} that can approximate inference on massive datasets using learnable \emph{pseudodata}.
+	\item We theoretically show that the use of learnable pseudodata enables more efficient summarization for high-dimensional datapoints, compared to existing coreset constructions that are constrained to use points from the original dataset.
+	\item We provide an efficient black-box batch optimization scheme that can attain a good approximate posterior within the above-mentioned variational family, and use standard randomization tools to yield differentially private versions of this posterior for privacy-preserving data analysis.
+	\item We review Bayesian coresets behaviour in corrupted datasets and show deficiencies of standard constructions when dealing with outliers and poisoning.
+	\item Using tools from robust divergences, we propose a \emph{robustified family of sparse variational approximations} for reliable summarization in the presence of data contamination.
+	\item We develop a black-box incremental optimization scheme for constructing such an approximation.
+\end{itemize}
+
+A recurring theme in our approach is to exploit inherent data redudancy in order to simultaneously achieve efficient data analysis and satisfy the objectives of privacy and robustness. Importantly, redudancy computation is adapted to the statistical model used to describe the data---allowing our methods to preserve good \emph{approximate sufficient statistics} of the full data---thus offering more efficiency compared to model-agnostic methods of summarization. For the purposes of privacy, directly adding noise over the data statistics computation addresses the protection of confidentiality, while using the sufficient statistics information (instead of the full data information) enables us to avoid adding more noise than necessary. In the robustness case, our framework identifies datapoints that deviate from our statistical assumptions and downweights their contribution to inference, removing them in this way from the extracted summary. Overall, our methods indicate that privacy and robustness are just two facets of the fundamental problem that data summarization puts forth.
+
+
 \section{Thesis Organization}
-\label{sec:thesis_organization}
-The remainder of the dissertation is organized as follows. \cref{chap:chap2} introduces relevant background and concepts used throughout the thesis. \cref{chap:chap3} sheds light into the anonymity properties of a large-scale longitudinal mobility dataset, revealing a realistic privacy threat that survives in private structured datasets after coarsening individual records. \cref{chap:chap4} presents a general-purpose sparse variational inference algorithm that allows scaling up Bayesian inference in big and high-dimensional datasets via a coreset representation that relies on learnable synthetic datapoints, and introduces a differentially private construction for this coreset:~\psvi~and ~\dpsvi~respectively. \cref{chap:chap5} proposes a sparse variational approximation for robust pseudo-Bayesian posteriors using \bdiv, that can yield reliable summarizations for large-scale datasets in the presence of extensive contamination:~\bcores. Finally, \cref{chap:chap6} concludes the thesis by summarizing our results and discussing future research directions.
+\label{sec:thesis-organization}
+The remainder of the dissertation is organized as follows. \cref{chap:chap2} introduces relevant background and concepts used throughout the thesis. \cref{chap:chap3} sheds light into the anonymity properties of a large-scale longitudinal mobility dataset, revealing a realistic privacy threat that survives in private structured datasets after coarsening individual behavioural records. \cref{chap:chap4} presents a general-purpose sparse variational inference algorithm that allows scaling up Bayesian inference in big and high-dimensional datasets via a coreset representation that relies on learnable synthetic datapoints, and introduces a differentially private construction for this coreset:~\psvi~and ~\dpsvi~respectively. \cref{chap:chap5} proposes a sparse variational approximation for robust pseudo-Bayesian posteriors using \bdiv, that can yield reliable summarizations for large-scale datasets in the presence of extensive contamination:~\bcores. Finally, \cref{chap:chap6} concludes the thesis by summarizing our results and discussing future research directions.
 
 
 This thesis covers material from the following papers:
