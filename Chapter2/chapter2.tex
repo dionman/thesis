@@ -1,12 +1,12 @@
 \chapter{Background Material}
 \label{chap:chap2}
 
-This chapter aims to set the context for the remainder of this thesis. Various concepts pertaining to this thesis including Bayesian inference and differential privacy are briefly introduced in the following.
+This chapter aims to set the context for the remainder of this thesis. Various concepts pertaining to this thesis, including Bayesian inference, exponential family distributions and differential privacy, are briefly introduced in the following.
 
 \section{Probabilistic Learning at  a Glance}
 \label{sec:b-bayesian-inference}
 
-In (parametric) probabilistic learning problems we are generally given a set of observations $x = \{x_1,...,x_N\}$ and aim to find the parameters $\theta$ of a probabilistic model that \emph{are likely to} explain them. In the Bayesian paradigm we first assume a \emph{prior} distribution over the parameters $\pi_0(\theta)$, that encodes our beliefs about $\theta$ before observing any data. Once the observations are taken into account our beliefs shoud be updated in order to better describe the observed datapoints. For this purpose a \emph{likelihood} distribution $\pi(x|\theta)$ needs to be defined. The likelihood quantifies the probability of the observations under the assumed statistical model for parameters set to $\theta$. Combining the above distributions we are ready to formulate Bayes' theorem, the fundamental rule which gives the \emph{posterior} beliefs for our parameters updated in light of the observed data
+In (parametric) Bayesian learning settings we are generally given a set of observations $x = \{x_1,...,x_N\}$ and aim to find a vector $\theta $ parameterising an assumed probabilistic model that \emph{is likely to} explain them. In the Bayesian paradigm we first assume a \emph{prior} distribution over the parameters $\pi_0(\theta)$, that encodes our beliefs about $\theta$ before observing any data. Once the observations are taken into account, our beliefs shoud be updated accordingly, in order to better describe the observed datapoints. For this purpose a \emph{likelihood} distribution $\pi(x|\theta)$ needs to be defined. The likelihood quantifies the probability of the observations under the assumed statistical model for parameters set to $\theta$. Combining the above distributions we are ready to formulate Bayes' theorem, the fundamental rule which gives the \emph{posterior} beliefs for our parameters updated in light of the observed data
 \[
 \pi(\theta|x) = \frac{\pi(x|\theta)\pi_0(\theta)}{\pi(x)}.
 \label{eq:bbayes-rule}
@@ -17,7 +17,7 @@ A key computational challenge in~\cref{eq:bbayes-rule} is evaluating the normali
 \pi(x) = \int \pi(x|\theta) \pi_0(\theta) d\theta.
 \label{eq:bmarginal-likelihood}
 \]
-\emph{Marginalising}, \ie~computing the integral of~\cref{eq:bmarginal-likelihood} can be done in closed form for a number of simple Bayesian models---some of which will be discussed in the remainder, including Gaussian mean inference, Bayesian and neural linear regression---where the likelihood is conjugate to the prior. However, for the vast majority of interesting probabilistic models marginalization cannot be done analytically and should be approximated instead. Approximate Bayesian inference has been an active research area for many decades. In the following section we present an overview of classic sampling-based and variational approaches allowing approximate computations of~\cref{eq:bbayes-rule}. 
+\emph{Marginalising}, \ie~computing the integral of~\cref{eq:bmarginal-likelihood}, can be done in closed form for a number of simple Bayesian models---some of which will be discussed in the remainder, including Gaussian mean inference, Bayesian and neural linear regression---where the likelihood is conjugate to the prior. However, for the vast majority of interesting probabilistic models marginalization cannot be done analytically and should be approximated instead. Aiming to address such cases approximate Bayesian inference has been an active research area for many decades. In the following section we present an overview of classic sampling-based and variational approaches allowing approximate computations of~\cref{eq:bbayes-rule}. For a more detailed exposure cf.~\citep{bishop06,murphy12,angelino16}.
 
 \subsection{Sampling Methods}
 \label{subsec:b-sampling-methods}
@@ -28,8 +28,42 @@ A key computational challenge in~\cref{eq:bbayes-rule} is evaluating the normali
 \subsection{Laplace's Method}
 \label{subsec:b-laplace-method}
 
-\subsection{Exponential Family of Distributions}
-\label{subsec:b-expfam}
+\section{Exponential Families}
+\label{sec:b-expfam}
+
+The variational approximation schemes presented in this thesis belong to the exponential family of distributions~\citep{wainwright08}, which we shortly present here.
+
+\begin{ndefn}[Exponential family] \label{def:bexpfam}
+A family of densities $\pi$ with respect to a base measure $\nu$ indexed by a parameter vector $\theta$ is an \emph{exponential family} of densities if it can be written as
+\[
+\pi(x|\theta) = h(x) \exp\left( \langle \eta(\theta), t(x) \rangle - Z(\eta(\theta)) \right).
+\label{eq:bexpfam}
+\]
+We call $\eta(\theta)$ the \emph{natural parameters} vector, $t(x)$ the \emph{sufficient statistics}, $h(x)$ the \emph{base density} and 
+\[
+Z(\eta)\defined \log \int e^{\langle \eta(\theta), t(x) \rangle } h(x) \nu(dx)
+\label{eq:b-logpartition}
+\]
+the \emph{log-partition function}.
+\end{ndefn}
+
+An important property of exponential family densities is that the derivatives of the log-partition function $Z$ are related to the moments of the sufficient statistics as follows
+
+\begin{nprop}[Closed form derivatives of the log-partition function] \label{prop:bgradZ}
+For an exponential family density in the form of~\cref{eq:bexpfam}, we have 
+\[
+\grad Z(\eta) = \EE[t(x)]
+\label{eq:bgradZ}
+\] 	
+and 
+\[
+\grad^2Z(\eta) = \EE[t(x)t(x)^T] - \EE[t(x)]\EE[t(x)]^T.
+\label{eq:bhessZ}
+\]
+\end{nprop}
+
+\cref{prop:bgradZ} allows efficient approximations for the gradients using empirical estimates of the moments of the sufficient statistics, which we will heavily make use of in the optimization schemes for variational inference introduced in~\cref{chap:chap4,chap:chap5}.
+
 
 \subsection{Divergence Measures}
 \label{subsec:b-divergences}
