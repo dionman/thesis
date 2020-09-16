@@ -29,42 +29,48 @@
 \nomenclature[A]{KL}{Kullback-Leibler}
 \nomenclature[A]{MC}{Monte Carlo}
 \nomenclature[A]{HMC}{Hamiltonian Monte Carlo}
-\nomenclature[A]{NUTS}{No U-Turn Sampling}
+\nomenclature[A]{NUTS}{No-U-Turn Sampler}
 \nomenclature[A]{CDF}{Cumulative Density Function}
-\nomenclature[A]{CDF}{Complementary Cumulative Density Function}
+\nomenclature[A]{CCDF}{Complementary Cumulative Density Function}
 \nomenclature[A]{VI}{Variational Inference}
-\nomenclature[A]{\psvi}{Pseudocoresets Sparse VI}
+\nomenclature[A]{PSVI}{Pseudocoresets Sparse Variational Inference}
 %\nomenclature[A]{\sparsevi}{Sparse VI}
-\nomenclature[A]{\randomcoreset}{Random Sampling Coreset}
+\nomenclature[A]{RANDOM}{Random Sampling Coreset}
 \nomenclature[A]{PL}{Privacy Loss}
 \nomenclature[A]{RBF}{Radial Basis Function}
+\nomenclature[A]{RMSE}{Root-Mean-Square Error}
+\nomenclature[A]{PCA}{Principal Components Analysis}
 
 % Roman symbols
 \nomenclature[B]{$\mcD$}{Dataset}
+\nomenclature[B]{$\mcX^N$ / $(\mcX \times \mcY)^N$}{Data space of $N$ unlabeled/labeled observations}
+\nomenclature[D]{$[N]$}{$[1,\ldots,N]$}
 
 % Greek symbols
-\nomenclature[C]{$\Theta$}{Space of model random variables}
+%\nomenclature[C]{$\Theta$}{Space of model random variables}
 \nomenclature[C]{$\eps$}{a random variable}
 \nomenclature[C]{$\veps$}{a very small non-negative constant}
-\nomenclature[C]{$O$}{asymptotic upper bound}
+\nomenclature[C]{$O$}{Upper bound of complexity}
+\nomenclature[C]{$\Theta$}{Asymptotically tight upper and lower bound of complexity}
 
 
 % Others
-\nomenclature[D]{$\mcX^N$ / $(\mcX \times \mcY)^N$}{Data space of $N$ unlabeled/labeled observations}
-\nomenclature[D]{$[N]$}{$[1,\ldots,N]$}
 \nomenclature[D]{\reals}{Real numbers}
 \nomenclature[D]{\ints}{Integer numbers}
 \nomenclature[D]{\nats}{Natural numbers}
 \nomenclature[D]{$\#$}{Number of}
+\nomenclature[D]{$\mathbb{P}$}{Probability}
 \nomenclature[D]{$\plainxent$}{Cross-entropy}
 \nomenclature[D]{$\plainkl$}{Kullback-Leibler divergence}
-\nomenclature[D]{$\plaindb$}{$\beta$-divergence}
-\nomenclature[D]{$\operatorname{Var}$}{Variance}
-\nomenclature[D]{$\operatorname{Cov}$}{Covariance}
-\nomenclature[D]{$\operatorname{Corr}$}{Correlation}
+\nomenclature[D]{$\plainCapdb$}{$\beta$-divergence}
+\nomenclature[D]{$\plaindb$}{$\beta$-cross-entropy}
 \nomenclature[D]{$\sim$}{Distributed as}
-\nomenclature[D]{$\langle, \rangle$}{Inner product}
+\nomenclature[D]{$\propto$}{Proportional to}
+\nomenclature[D]{$\langle , \rangle$}{Inner product}
+
 % Superscripts
+\nomenclature[E]{$\widetilde{\phantom{X}}$}{Computed on pseudodata}
+\nomenclature[E]{$\widehat{\phantom{X}}$}{Empirical estimate}
 
 % Subscripts
 
@@ -72,22 +78,23 @@
 \nomenclature[G]{$\mathcal{N}$}{Normal distribution}
 \nomenclature[G]{$\mathcal{T}$}{Student's t-distribution}
 \nomenclature[G]{\distNamed{Unif}}{Uniform distribution}
-\nomenclature[G]{\distNamed{Gam}}{Gamma distribution}
-\nomenclature[G]{\distNamed{Poiss}}{Poisson distribution}
-\nomenclature[G]{\distNamed{Exp}}{Exponential distribution}
-\nomenclature[G]{\distNamed{Beta}}{Beta distribution}
-\nomenclature[G]{\distNamed{Dir}}{Dirichlet distribution}
+%\nomenclature[G]{\distNamed{Gam}}{Gamma distribution}
+%\nomenclature[G]{\distNamed{Poiss}}{Poisson distribution}
+%\nomenclature[G]{\distNamed{Exp}}{Exponential distribution}
+%\nomenclature[G]{\distNamed{Beta}}{Beta distribution}
+%\nomenclature[G]{\distNamed{Dir}}{Dirichlet distribution}
 \nomenclature[G]{\distNamed{Bern}}{Bernoulli distribution}
 \nomenclature[G]{$\chisq$}{Chi-square distribution}
 \nomenclature[G]{$\distUnifSubset$}{Uniform subset distribution}
 
 
 % Operators
-\nomenclature[H]{$\operatorname{diag}$}{Matrix diagonal opertator}
-\nomenclature[H]{$\operatorname{tr}$}{Matrix trace operator}
-\nomenclature[H]{$\mathbb{P}$}{Probability operator}
-\nomenclature[H]{$\mathbb{E}$}{Expectation operator}
-
+\nomenclature[H]{$\operatorname{diag}$}{Matrix diagonal}
+\nomenclature[H]{$\operatorname{tr}$}{Matrix trace}
+\nomenclature[H]{$\mathbb{E}$}{Expectation}
+\nomenclature[H]{$\operatorname{Var}$}{Variance}
+\nomenclature[H]{$\operatorname{Cov}$}{Covariance}
+\nomenclature[H]{$\operatorname{Corr}$}{Correlation}
 
 % Mobility data
 \nomenclature[I]{MAC}{Media Access Control}
