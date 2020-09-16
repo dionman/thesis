@@ -17,16 +17,31 @@ A key computational challenge in~\cref{eq:bbayes-rule} is evaluating the normali
 \pi(x) = \int \pi(x|\theta) \pi_0(\theta) d\theta.
 \label{eq:bmarginal-likelihood}
 \]
-\emph{Marginalising}, \ie~computing the integral of~\cref{eq:bmarginal-likelihood}, can be done in closed form for a number of simple Bayesian models---some of which will be discussed in the remainder, including Gaussian mean inference, Bayesian and neural linear regression---where the likelihood is conjugate to the prior. However, for the vast majority of interesting probabilistic models marginalization cannot be done analytically and should be approximated instead. Aiming to address such cases approximate Bayesian inference has been an active research area for many decades. In the following section we present an overview of classic sampling-based and variational approaches allowing approximate computations of~\cref{eq:bbayes-rule}. For a more detailed exposure cf.~\citep{bishop06,murphy12,angelino16}.
+\emph{Marginalising}, \ie~computing the integral of~\cref{eq:bmarginal-likelihood}, can be done in closed form for a number of simple Bayesian models---some of which will be discussed in the remainder, including Gaussian mean inference, Bayesian and neural linear regression---where the likelihood is conjugate to the prior. However, for the vast majority of interesting probabilistic models marginalization cannot be done analytically and should be approximated instead. Aiming to address such cases approximate Bayesian inference has been an active research area for many decades. In the following section we present an overview of classic sampling-based and variational approaches allowing approximate computations of~\cref{eq:bbayes-rule}. For a more detailed exposure of approximate inference cf.~\citep{bishop06,murphy12,angelino16}.
+
+\subsection{Laplace's Method}
+\label{subsec:b-laplace-method}
+
+Point estimates of $\theta$, obtained for example via \emph{maximum a posteriori~(MAP)} or \emph{maximum likelihood estimation~(MLE)}, are cheap to compute, as they correspond to solutions of optimization problems involving only the unnormalised rhs of~\cref{eq:bbayes-rule}---on the other hand, they cannot capture the uncertainty of our posterior beliefs. Laplace's method~\citep{mackay03} is an approximate inference scheme that makes a first step towards uncertainty awareness, offering a non-degenerate, yet inexpensive to compute, approximate posterior for $\theta$.
+
+Let us write the posterior of~\cref{eq:bbayes-rule} in the following equivalent form
+\[
+\pi(\theta|x) = \frac{1}{Z} e^{-E(\theta)},
+\]
+where $E(\theta) \defined - \log \pi(\theta, x)$ is called the \emph{energy function}, and $ Z $ is the unknown normalization constant. Taking the Taylor series expansion of $\theta$ (up to order 2) around the mode $ {\htheta \defined \arg \underset{\theta}{\min} \;E(\theta)}$ we obtain the approximation 
+$ \hpi(\theta, x) = e^{-E(\htheta)}\exp\left((\theta - \htheta)^T\Lambda (\theta - \htheta)\right)$ where  $ \Lambda \defined -\grad^2 E(\theta)\Big|_{\theta = \htheta}$.
+Hence we have
+\[
+\pi(\theta|X) \approx \frac{1}{Z}   \hpi(\theta, x)  \propto \mcN(\htheta, \Lambda^{-1}), 
+\label{eq:blaplace-approx}
+\]  
+\ie~the posterior can be approximated by a univariate Gaussian, where the mean corresponds to the minimum of the energy function and the covariance is the negative Hessian of the energy function evaluated on the mean. Clearly, using standard numerical optimization routines, e.g. quasi-Newton methods, we can achieve efficient convergence to $\htheta$. 
 
 \subsection{Sampling Methods}
 \label{subsec:b-sampling-methods}
 
 \subsection{Variational Inference}
 \label{subsec:b-variational-inference}
-
-\subsection{Laplace's Method}
-\label{subsec:b-laplace-method}
 
 \section{Exponential Families}
 \label{sec:b-expfam}
