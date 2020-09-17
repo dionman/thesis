@@ -6,7 +6,7 @@ This chapter aims to set the context for the remainder of this thesis. Various c
 \section{Probabilistic Learning at  a Glance}
 \label{sec:b-bayesian-inference}
 
-In (parametric) Bayesian learning settings we are generally given a set of observations $x = \{x_1,...,x_N\}$ and aim to find a vector $\theta $ parameterising an assumed probabilistic model that \emph{is likely to} explain them. In the Bayesian paradigm we first assume a \emph{prior} distribution over the parameters $\pi_0(\theta)$, that encodes our beliefs about $\theta$ before observing any data. Once the observations are taken into account, our beliefs shoud be updated accordingly, in order to better describe the observed datapoints. For this purpose a \emph{likelihood} distribution $\pi(x|\theta)$ needs to be defined. The likelihood quantifies the probability of the observations under the assumed statistical model for parameters set to $\theta$. Combining the above distributions we are ready to formulate Bayes' theorem, the fundamental rule which gives the \emph{posterior} beliefs for our parameters updated in light of the observed data
+In (parametric) Bayesian learning settings we are generally given a set of observations $x = \{x_1,...,x_N\} \subseteq \mcX$ and aim to find a vector $\theta $ parameterising an assumed probabilistic model that \emph{is likely to} explain them. In the Bayesian paradigm we first assume a \emph{prior} distribution over the parameters $\pi_0(\theta)$, that encodes our beliefs about $\theta$ before observing any data. Once the data are taken into account, our beliefs shoud be updated accordingly, in order to better describe the observed distribution. For this purpose a \emph{likelihood} distribution $\pi(x|\theta)$ needs to be defined; the likelihood quantifies the probability of the observations under the assumed statistical model for parameters set to $\theta$. Combining the above distributions we are ready to formulate Bayes' theorem, the fundamental rule which gives the \emph{posterior} beliefs for our parameters updated in light of the observed data
 \[
 \pi(\theta|x) = \frac{\pi(x|\theta)\pi_0(\theta)}{\pi(x)}.
 \label{eq:bbayes-rule}
@@ -17,7 +17,7 @@ A key computational challenge in~\cref{eq:bbayes-rule} is evaluating the normali
 \pi(x) = \int \pi(x|\theta) \pi_0(\theta) d\theta.
 \label{eq:bmarginal-likelihood}
 \]
-\emph{Marginalising}, \ie~computing the integral of~\cref{eq:bmarginal-likelihood}, can be done in closed form for a number of simple Bayesian models---some of which will be discussed in the remainder, including Gaussian mean inference, Bayesian and neural linear regression---where the likelihood is conjugate to the prior. However, for the vast majority of interesting probabilistic models marginalization cannot be done analytically and should be approximated instead. Aiming to address such cases approximate Bayesian inference has been an active research area for many decades. In the following section we present an overview of classic sampling-based and variational approaches allowing approximate computations of~\cref{eq:bbayes-rule}. For a more detailed exposure of approximate inference cf.~\citep{bishop06,murphy12,angelino16}.
+\emph{Marginalising}, \ie~computing the integral of~\cref{eq:bmarginal-likelihood}, can be done using analytical tools for a number of simple Bayesian models---some of which will be discussed in the remainder, including Gaussian mean inference, Bayesian and neural linear regression---where the likelihood is conjugate to the prior. However, for the vast majority of interesting statistical models marginalization cannot be done in closed form and should be approximated instead. Aiming to address such cases approximate Bayesian inference has been an active research area for many decades. In the following section we present an overview of classic approaches allowing approximate computations of~\cref{eq:bbayes-rule}. For a more detailed exposure of approximate inference methods cf.~\citep{bishop06,murphy12,angelino16}.
 
 \subsection{Laplace's Method}
 \label{subsec:b-laplace-method}
@@ -28,14 +28,14 @@ Let us write the posterior of~\cref{eq:bbayes-rule} in the following equivalent 
 \[
 \pi(\theta|x) = \frac{1}{Z} e^{-E(\theta)},
 \]
-where $E(\theta) \defined - \log \pi(\theta, x)$ is called the \emph{energy function}, and $ Z $ is the unknown normalization constant. Taking the Taylor series expansion of $\theta$ (up to order 2) around the mode $ {\htheta \defined \arg \underset{\theta}{\min} \;E(\theta)}$ we obtain the approximation 
+where $E(\theta) \defined - \log \pi(\theta, x)$ is called the \emph{energy function}, and $ Z $ is the unknown normalization constant. Taking the Taylor series expansion of $\theta$ (up to order 2) around the mode $ {\htheta \defined \arg \underset{\theta}{\min} \;E(\theta)}$, we obtain the approximation 
 $ \hpi(\theta, x) = e^{-E(\htheta)}\exp\left((\theta - \htheta)^T\Lambda (\theta - \htheta)\right)$ where  $ \Lambda \defined -\grad^2 E(\theta)\Big|_{\theta = \htheta}$.
 Hence we have
 \[
 \pi(\theta|X) \approx \frac{1}{Z}   \hpi(\theta, x)  \propto \mcN(\htheta, \Lambda^{-1}), 
 \label{eq:blaplace-approx}
 \]  
-\ie~the posterior can be approximated by a univariate Gaussian, where the mean corresponds to the minimum of the energy function and the covariance is the negative Hessian of the energy function evaluated on the mean. Clearly, using standard numerical optimization routines, e.g. quasi-Newton methods, we can achieve efficient convergence to $\htheta$. 
+\ie~the posterior can be approximated by a univariate Gaussian, where the mean corresponds to the minimum of the energy function and the covariance is the negative Hessian of the energy function evaluated on the mean. Clearly, using standard numerical optimization routines, e.g. quasi-Newton methods, we can achieve fast convergence to $\htheta$. 
 
 \subsection{Sampling Methods}
 \label{subsec:b-sampling-methods}
@@ -46,39 +46,40 @@ Hence we have
 \section{Exponential Families}
 \label{sec:b-expfam}
 
-The variational approximation schemes presented in this thesis belong to the exponential family of distributions~\citep{wainwright08}, which we shortly present here.
+The exponential family~\citep{wainwright08} is a broad class of probability distributions, sharing a set of important properties that facilitate tractable inference. Exponential family members include numerous well-known distributions, such as the Poisson distribution, the Gamma distribution, and the Gaussian or normal distribution. 
 
 \begin{ndefn}[Exponential family] \label{def:bexpfam}
-A family of densities $\pi$ with respect to a base measure $\nu$ indexed by a parameter vector $\theta$ is an \emph{exponential family} of densities if it can be written as
+A collection of densities $\pi$, with respect to a base measure $\nu$ indexed by a vector of parameters $\theta$, is an \emph{exponential family} of densities if it can be written as
 \[
-\pi(x|\theta) = h(x) \exp\left( \langle \eta(\theta), t(x) \rangle - Z(\eta(\theta)) \right).
+\pi_{\theta}(x) = h(x) \exp\left( \langle \theta, t(x) \rangle - Z(\theta) \right).
 \label{eq:bexpfam}
 \]
-We call $\eta(\theta)$ the \emph{natural parameters} vector, $t(x)$ the \emph{sufficient statistics}, $h(x)$ the \emph{base density} and 
+We call $t(x): \mcX \rightarrow \reals^{d}$ the \emph{sufficient statistics} of the data, $h(x)$ the \emph{base density} and 
 \[
-Z(\eta)\defined \log \int e^{\langle \eta(\theta), t(x) \rangle } h(x) \nu(dx)
+Z(\theta)\defined \log \int e^{\langle \theta, t(x) \rangle } h(x) \nu(dx)
 \label{eq:b-logpartition}
 \]
 the \emph{log-partition function}.
 \end{ndefn}
 
-An important property of exponential family densities is that the derivatives of the log-partition function $Z$ are related to the moments of the sufficient statistics as follows
+The parameters space of interest, referred to as the \emph{natural parameter space}, is the space $\Omega \subseteq \reals^d $ that contains all $\theta$ such that $Z(\theta)$ is finite. We say a family is \emph{regular} if $\Omega$ is open.
 
-\begin{nprop}[Closed form derivatives of the log-partition function] \label{prop:bgradZ}
-For an exponential family density in the form of~\cref{eq:bexpfam}, we have 
+An important property of exponential family densities is that the derivatives of the log-partition function $Z$ are related to the moments of the sufficient statistics as follows.
+
+\begin{nprop}[Derivatives of the log-partition function via expected statistics] \label{prop:bgradZ}
+For a regular exponential family of densities in the form of~\cref{eq:bexpfam}, the log-partition function has derivatives of all orders on its domain $\Omega$, while for the first two derivatives hold the following
 \[
-\grad Z(\eta) = \EE[t(x)]
+\grad Z(\theta) = \EE_{\theta}[t(x)]
 \label{eq:bgradZ}
 \] 	
 and 
 \[
-\grad^2Z(\eta) = \EE[t(x)t(x)^T] - \EE[t(x)]\EE[t(x)]^T.
+\grad^2Z(\theta) = \cov_{\theta}[t(x)] \defined \EE_{\theta}[t(x)t(x)^T] - \EE_{\theta}[t(x)]\EE_{\theta}[t(x)]^T.
 \label{eq:bhessZ}
 \]
 \end{nprop}
 
-\cref{prop:bgradZ} allows efficient approximations for the gradients using empirical estimates of the moments of the sufficient statistics, which we will heavily make use of in the optimization schemes for variational inference introduced in~\cref{chap:chap4,chap:chap5}.
-
+\cref{prop:bgradZ} allows efficient approximations for the gradient and Hessian of $ Z $ using empirical estimates of the first two moments of the sufficient statistic, which we take advantage of in the variational approximation schemes to be introduced in~\cref{chap:chap4,chap:chap5}.
 
 \subsection{Divergence Measures}
 \label{subsec:b-divergences}
@@ -91,12 +92,48 @@ and
 
 \section{Representing Data}
 \label{sec:b-representing-data}
+Extracting a relevant feature representation is an important step in the context of statistical pattern recognition. For this purpose a feature map 
+\[
+\phi: \mcX \rightarrow \mcH,
+\]
+is sought which transforms the datapoints from the original data space $\{x_n\}_{n=1}^{N}$, $x_n \in \mcX$, into \emph{feature representations} in a Hilbert space $\{\phi(x_n)\}_{n=1}^{N}$, $\phi(x_n) \in \mcH$. Then the patterns of interest can be revealed via applications of inner products in the Hilbert space $\langle A, \phi(x) \rangle_{\mcH}$. There is an extensive literature on constructing data representations; for the purposes of this thesis, in the remainder of the section we focus on two of them: kernel methods and random features.
+
 
 \subsection{Kernels}
 \label{subsec:b-kernels}
 
+The main tool in kernel methods~\cite{scholkopf02} is the \emph{kernel function} defined below
+
+\begin{ndefn}[Kernel function] \label{def:bkernelfun}
+	A symmetric function $k: \mcX \times \mcX \rightarrow \reals $ is a positive definite kernel function, or kernel, if for all $N>1$, $x_1, \ldots, x_n \in \reals$, and $c_1, \ldots, c_n \in \reals$ 
+	\[
+	\sum_{i,j=1}^{N} c_ic_j k(x_i, x_j) \geq 0.
+	\]
+\end{ndefn}
+
+Each kernel is associated with a feature map $\phi$.
+\begin{ndefn}[Kernel representation] \label{def:bkernelrepr}
+	 A function $k: \mcX \times \mcX \rightarrow \reals$ is a kernel if and only if there exists a Hilbert space $\mcH$ and a feature map $\phi: \mcX \rightarrow \mcH$ such that for all $x, x' \in \mcX$
+	 \[
+	 \label{eq:bkernelrep}
+	 k(x,x') = \langle \phi(x), \phi(x') \rangle_\mcH.
+	 \]
+	 Feature map $\phi$ endows each datapoint $x \in \mcX$ with a kernel representation $\phi(x)$.
+\end{ndefn}
+
+A kernel representation might be lacking an explicit closed form, but can always be accessed via the inner product of~\cref{eq:bkernelrep} which is the central object of interest in learning with kernels.
+
+Examples of widely-used kernel functions include
+\begin{itemize}
+	\item The polynomial kernel $k(x,x') = \left(\langle x, x'\rangle + c\right)^d$.
+	\item The Gaussian kernel $k(x,x') = \exp(-\gamma||x-x'||_{2}^2)$.
+	\item The Sigmoid kernel $k(x,x') = \tanh(\beta\langle x, x'\rangle + c)$.
+\end{itemize}
+
 \subsection{Random Features}
 \label{subsec:b-random-features}
+
+
 
 
 
