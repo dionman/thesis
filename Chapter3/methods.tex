@@ -19,7 +19,7 @@ Anonymity among networks refers to topological (or structural) equivalence. In o
 }
 
 \vspace{.4cm}
-Therefore we interpret $k-$anonymity in this paper to mean that the mobility network of an individual in a population should be identical to the mobility network of at least $k-1$ other individuals.
+Therefore we interpret $k-$anonymity in this chapter to mean that the mobility network of an individual in a population should be identical to the mobility network of at least $k-1$ other individuals.
 Recent work casts doubt on the protection guarantees offered by \mbox{$k-$anonymity} in location privacy~\cite{shokri2010}, motivating the definition of $l-$diversity \cite{Machanavajjhala2007} and $t-$closeness \cite{li2007}.
 Although $k-$anonymity may be insufficient to ensure privacy in the presence of adversarial knowledge, \mbox{$k-$anonymity} is a good metric to use to measure the uniqueness of an individual in the data.
 Moreover, this framework is straightforwardly generalizable to the case of graph data.
@@ -77,7 +77,7 @@ In first-order networks, nodes correspond to distinct places the user visits.
 Given a high-frequency, timestamped sequence of location events for a user, distinct places can be extracted as small geographic regions where a user stays longer than a defined time interval, using existing clustering algorithms~\cite{kang2005extracting}.
 Nodes in the mobility network have no geographic or timing information associated with them.
 Nodes may have \emph{attributes} attached to them reflecting additional side information.
-For example, in this paper we consider whether attaching the frequency of visits a user makes to a specific node aids an attacker attempting to deanonymize the user.
+For example, in this work we consider whether attaching the frequency of visits a user makes to a specific node aids an attacker attempting to deanonymize the user.
 
 In some of our experiments, we prune the mobility networks of users by reducing the size of the mobility network to the $ N $ most frequent places and rearranging the edges in the network accordingly.
 We refer to these networks as \textbf{top$-N $ mobility networks}.

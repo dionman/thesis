@@ -39,9 +39,11 @@ Hence we have
 
 \subsection{Sampling Methods}
 \label{subsec:b-sampling-methods}
+Markov Chain Monte Carlo~(MCMC) is the workhorse of approximate Bayesian inference. MCMC offers approximations to expectations \wrt intractable probability distributions via simulating an ergodic random walk which admits the target distribution as its stationary distribution; this property makes MCMC methods theoretically appealing, as it endows the estimators with strong \emph{asymptotic exactness} guarantees.
 
 \subsection{Variational Inference}
 \label{subsec:b-variational-inference}
+The fundamental idea underpinning all variational inference~(VI) methods~\citep{wainwright08,blei17} is to reduce Bayesian posterior inference into an optimization problem; hence, ideas allowing scaling up optimization can in principle be applied in VI, enabling scalable inference of approximate posteriors.
 
 \section{Exponential Families}
 \label{sec:b-expfam}

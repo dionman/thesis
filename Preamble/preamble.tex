@@ -1366,6 +1366,8 @@
 \newcommand{\sparsevi}{\textsc{SparseVI}}
 \newcommand{\randomcoreset}{\textsc{RANDOM}}
 
+\newcommand{\wrt}{\textrm{wrt}\@\xspace}
+
 % *****************************************************************************
 % *************************** Bibliography  and References ********************
 
@@ -1376,7 +1378,8 @@
 
 % If you would like to use biblatex for your reference management, as opposed to the default `natbibpackage` pass the option `custombib` in the document class. Comment out the previous line to make sure you don't load the natbib package. Uncomment the following lines and specify the location of references.bib file
 
-\RequirePackage[backend=biber,  citestyle=numeric, style=numeric, sorting=nty, natbib=true, maxbibnames=99,maxcitenames=2, uniquelist=false, uniquename=false,backref=true]{biblatex}
+\RequirePackage[backend=biber, style=numeric,citestyle=numeric, sorting=nty, natbib=true, maxbibnames=99,maxcitenames=2, uniquelist=false, uniquename=false,backref=true]{biblatex}
+%citestyle=authoryear, style=authoryear,
 \addbibresource{References/references.bib} %Location of references.bib only for biblatex, Do not omit the .bib extension from the filename.
 
 \usepackage{csquotes}
