@@ -111,7 +111,7 @@ The main tool in kernel methods~\cite{scholkopf02} is the \emph{kernel function}
 	\]
 \end{ndefn}
 
-Each kernel is associated with a feature map $\phi$.
+Every kernel is associated with a feature map $\phi$ as follows.
 \begin{ndefn}[Kernel representation] \label{def:bkernelrepr}
 	 A function $k: \mcX \times \mcX \rightarrow \reals$ is a kernel if and only if there exists a Hilbert space $\mcH$ and a feature map $\phi: \mcX \rightarrow \mcH$ such that for all $x, x' \in \mcX$
 	 \[
@@ -130,12 +130,31 @@ Examples of widely-used kernel functions include
 	\item The Sigmoid kernel $k(x,x') = \tanh(\beta\langle x, x'\rangle + c)$.
 \end{itemize}
 
-Kernel methods induce \emph{non-parameteric} representations on the data, \ie~when given a set with $ n $ datapoints of dimension $d$, kernels effectively map each datapoint to an $n$-dimensional representation. Although allowing representation power scaling with the number of datapoints, such methods often reach prohibitive computational cost.
+Kernel methods induce \emph{non-parameteric} representations on the data, \ie~when given a set with $ N $ datapoints of dimension $d$, kernels effectively map each datapoint to an $N$-dimensional representation. %Although allowing representation power scaling with the number of datapoints, such methods often reach prohibitive computational cost.
 
 \subsection{Finite-dimensional Random Projections}
 \label{subsec:b-random-features}
 
-Kernel methods appeal to large-scale learning as they are non-parameteric and able to learn complex non-linear structure from the data; however, their time and memory cost scales adversely with the dataset size. Random features~\citep{rahimi08} remedy poor scaling issues via utilising \emph{$m$-dimensional parametric} data representations.
+Kernel methods appeal to large-scale learning as they are non-parametric: their representation power scales with the number of datapoints, hence they can learn complex, highly non-linear structure from the data; however, their time and memory cost scales adversely with the dataset size. Random features~\citep{rahimi08} remedy poor complexity scaling issues via utilising \emph{parametric finite-dimensional} data representations. We introduce this concept via an application arising in Hilbert coreset constructions~\cite{campbell19jmlr}.
+
+Denote by $ f(\theta) \defined \sum_{n=1}^{N} \log\pi(x_n|\theta) $ the log-likelihood function of a dataset $x \defined {(x_n)}_{n=1}^{N}$, and by $ f(\theta,w) \defined \sum_{n=1}^{N} w_n\log\pi(x_n|\theta) $ the corresponding log-likelihood of a Hilbert coreset $\{(w_n, x_n)\}_{n=1}^{N} : ||w||_0 \ll N$ constructed on the data. The quality of posterior approximation that this coreset offers can be quantified by using an $L^2$ norm on the log-likelihoods under a weighting distribution $\hpi$ that has the same support with the posterior $\pi$ 
+\[
+||f(\theta, w) - f(\theta)||_{\hpi,2} \defined \EE_{\hpi} \left[ (f(\theta) - f(\theta, w))^2\right],
+\]
+and induced inner product
+\[
+\label{eq:binner-prod-hc}
+\langle f(x_n), f(x_m) \rangle_{\hpi, 2} \defined \EE_{\hpi}\left[f(x_n, \theta), f(x_m, \theta)\right].
+\]
+The weighting distribution $\hpi$ can be selected from a set of cheap posterior approximations, for example using Laplace's method, or running a few rounds of an MCMC algorithm. In the general case the norm of~\cref{eq:binner-prod-hc} is not available in closed form, hence a random projection can be used instead to approximate it according to the following steps:
+\begin{enumerate}
+	\item Sample $J$ values for $\theta$ from the weighting distribution $(\htheta_j)_{j=1}^{J} \distiid \hpi$.
+	\item For $n=1 \ldots N$ compute a $J$-dimensional projection $ \hf(x_n) \defined \sqrt{\frac{1}{J}}[f(x_n, \htheta_1) \ldots f(x_n, \htheta_J)]$.
+\end{enumerate}
+In this way we get an unbiased finite-dimensional estimator of the inner products
+\[
+\langle f(x_n), f(x_m) \rangle_{\hpi, 2}  \approx \hf(x_n)^T \hf(x_m).
+\]
 
 
 
