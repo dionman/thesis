@@ -43,7 +43,18 @@ Markov Chain Monte Carlo~(MCMC) is the workhorse of approximate Bayesian inferen
 
 \subsection{Variational Inference}
 \label{subsec:b-variational-inference}
-The fundamental idea underpinning all variational inference~(VI) methods~\citep{wainwright08,blei17} is to reduce Bayesian posterior inference into an optimization problem; hence, ideas allowing scaling up optimization can in principle be applied in VI, enabling scalable inference of approximate posteriors.
+The fundamental idea underpinning all variational inference~(VI) methods~\citep{jordan99,blei17} is to reduce Bayesian posterior inference into an optimization problem; hence, ideas allowing scaling up optimization can in principle be applied in VI, enabling scalable inference of approximate posteriors.
+
+\subsection{Coresets}
+\label{subsec:b-coresets}
+Owing to their requirement for multiple evaluations of the data (log-)likelihood---a computation scaling at $\Omega(N)$---MCMC and VI methods are often prohibitively expensive in the large-data regime. Various stochastic schemes have been proposed to circumvent this computation, evaluating the likelihood on random data samples: despite achieving computational savings and being straightforward to implement, such schemes rarely offer guarantees on posterior approximation quality, and lack a rigorous principle over datapoints selection step, hence retaining part of the redundancy of the full data collection in the extracted samples.
+
+Bayesian coresets~\citep{huggins16,campbell18,campbell19jmlr,campbell19neurips} pursue the idea of scaling up inference via the application of a preprocessing step where \emph{part of the data gets retained under the criterion of likelihood approximation}. In the spirit of the first coresets proposed in the filed of computational geometry, initial construction schemes for coreset-based inference~\citep{huggins16,lucic17training} utilize \emph{importance sampling} according to the datapoints sensitivity, \ie~a non-negative quantity measuring the redundancy of each of the datapoints for the statistical model of interest. Although giving theoretical gurantees for the approximation quality achieved by the coreset, importance sampling based constructions have typically two shortcomings: (\emph{i}) they rely on efficiently computable upper bounds of the sensitivity, and (\emph{ii}) they do not have a sense of a residual posterior error, hence are limited by common MC rates in approximating data likelihood, offering error $\eps = O(\frac{1}{\sqrt{M}})$ for coreset size $M$.
+
+Reformulating coreset construction as sparse function approximation in a Hilbert space~(\emph{Hilbert coresets}), Campbell and Broderick~\citep{campbell18,campbell19jmlr} introduced alternative optimization formulations for the problem. They showed that using inner-product inducing norms can lead to faster incremental construction schemes that critically can be guided by the direction of greatest impovement. Moreover, they made use of a coarse posterior approximation and random projections to efficiently compute Hilbert norms that capture the divergence between the coreset and the true posterior, and proposed faster sparse constructions under polytope and hypersphere constraints.
+
+In more recent work, Campbell and Beronov~\citep{campbell19neurips} casted Bayesian coresets to a problem of sparse variational inference within an exponential family, named \emph{Riemannian coresets}. Riemannian coresets raised the requirement for fixing a coarse posterior that appears in Hilbert coreset, offering full automation and improvement of approximation in KL over a larger range of summary sizes.
+
 
 \section{Exponential Families}
 \label{sec:b-expfam}
