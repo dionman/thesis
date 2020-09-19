@@ -114,14 +114,26 @@ When working in data setups that are likely to be contaminated by outliers, we g
 One can easily show that \bdiv{} converges to KL divergence when $\beta \rightarrow 0$.
 
 \section{Differential Privacy}
+
+Differential privacy~(DP)~\citep{dwork06} requires that if we perturb a database by a single data point the output of an algorithm should not differ much. To define distance between two databases $x, x'$ of size $ N $ we use the Hamming distance
+\[
+D_{H}(x, x') \defined \#\{n=1,\ldots,N: x_n \neq x'_n \}.
+\]
+We call the databases adjacent, denoted $ x \approx x'$ iff $D_{H}(x, x')=1$.
+
+
 \label{sec:b-differential-privacy}
-\ndefn[($\veps, \delta$)-Differential Privacy]{
-	Fix $\veps \geq 0, \delta \in [0,1]$. A randomised algorithm
-	$ \mcM: \mcX^N \rightarrow \mcX^M $  is  ($\veps, \delta$)-differentially private if for every pair of 
-	adjacent datasets $ x \approx x'$ and all events $ A \subseteq \mcX^M$, 
-	$\;\Pr[\mcM(x) \in A] \leq e^\veps \Pr[\mcM(x') \in A] + \delta$.
+\ndefn[Differential Privacy]{
+	Fix $\veps \geq 0$. A randomised algorithm
+	$ \mcM: \mcX \rightarrow \mcY$  is $\veps$-differentially private if for every pair of 
+	adjacent datasets $ x \approx x'$ and all events $ A \subseteq \mcY$, 
+	$\;\Pr[\mcM(x) \in A] \leq e^\veps \Pr[\mcM(x') \in A]$.
 	\label{def:b-dp-definition}
 }
+
+A weaker definition of DP allows that the guarantee of~\cref{def:b-dp-definition} gets broken with probability $\delta$. This definition is called \emph{($\veps, \delta$)-approximate differential privacy} and will be further discussed in~\cref{chap:chap4}.
+
+DP is equipped with a suite of properties that facilitate reasoning about privacy guarantees over complicated analysis tasks on sensitive databases.
 
 \section{Representing Data}
 \label{sec:b-representing-data}
