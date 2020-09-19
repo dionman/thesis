@@ -15,8 +15,7 @@ additive relative noise~(\realistic). Notably, Hilbert coresets and
 \sparsevi~develop incremental schemes for construction, while \psvi~relies on
 batch optimization with random initialization~(\cref{alg:psvi}), and does not
 use any information from pseudocoresets of smaller size. An incremental scheme
-for \sparsevi~is included in~\cref{supp:experiments_appendix}. Code for the
-presented experiments is available at~\href{https://github.com/dionman/psvi}{https://github.com/dionman/psvi}. 
+for \sparsevi~is included in~\cref{supp:experiments_appendix}. %Code for the presented experiments is available at~\href{https://github.com/dionman/psvi}{https://github.com/dionman/psvi}. 
 
 \subsection{Gaussian mean inference}
 \label{section:gaussian_experiment}
@@ -52,15 +51,15 @@ $\tv_m := Q^{-1}(u_m - \mu_{u,w})$.
 	\centering
 	\begin{subfigure}[c]{.29\textwidth}
 			\centerline{\scalebox{1}{\includegraphics[ width=1.15\columnwidth]{\MyPath/figs/d200_KLDvsCstSize.png}}}%
-                       \caption{(a) Gaussian mean inference,\\ $d=200$\label{fig:gauss_mean_200}}
+                       \caption{(a) Gaussian mean inference, $d=200$\label{fig:gauss_mean_200}}
 	\end{subfigure}\hfill\qquad
 	\begin{subfigure}[c]{.29\textwidth}
 			\centerline{\scalebox{1}{\includegraphics[ width=1.15\columnwidth]{\MyPath/figs/d500_KLDvsCstSize.png}}}%
-				\caption{(b) Gaussian mean inference,\\ $d=500$\label{fig:gauss_mean_500}}
+				\caption{(b) Gaussian mean inference, $d=500$\label{fig:gauss_mean_500}}
 	\end{subfigure}\hfill\qquad
 	\begin{subfigure}[c]{.29\textwidth}
 			\centerline{\scalebox{1}{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/linregTT_KLDvssz.png}}}%
-				\caption{(c) Bayesian linear regression,\\ $d=100$\label{fig:linreg_300}}
+				\caption{(c) Bayesian linear regression, $d=100$\label{fig:linreg_300}}
   \end{subfigure}
 	\caption{Comparison of coreset approximate posterior quality for experiments on synthetic datasets over {10 trials}. Solid lines display the median KL divergence, with shaded areas showing~$25^{\text{th}}$ and~$75^{\text{th}}$ percentiles of KL divergence. In \cref{fig:linreg_300}, KL divergence is normalized by the prior.}
 	\label{fig:gaussian_dkl}

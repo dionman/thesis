@@ -203,8 +203,7 @@ by explicitly evaluating the log likelihood gradient and its expectation,
 h(u_i) &= - \Sigma^{-1}(u_i-\theta)\\
 \EE\left[h(u_i)\right] &= - \Sigma^{-1}(u_i-\mu_{u,w}),
 \]
-and again following \citep{campbell19neurips},
-we have (up to a constant) that
+We have (up to a constant) that
 \[
 f_n &= -\frac{1}{2}(x_n-\theta)^T\Sigma^{-1}(x_n-\theta)\\
 \EE\left[f_n\right] &= -\frac{1}{2}\tr\Psi - \frac{1}{2}\|v_n\|^2.\label{eq:gaussmeanloglike}

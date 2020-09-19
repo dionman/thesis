@@ -94,14 +94,34 @@ and
 
 \cref{prop:bgradZ} allows efficient approximations for the gradient and Hessian of $ Z $ using empirical estimates of the first two moments of the sufficient statistic, which we take advantage of in the variational approximation schemes to be introduced in~\cref{chap:chap4,chap:chap5}.
 
-\subsection{Divergence Measures}
+\section{Comparing Probability Distributions}
 \label{subsec:b-divergences}
+A critical component in constructing and evaluating inference algorithm is having a divergence measure, that captures informatively how similar two probabilities are. Statistical divergences are relaxations of distance measures, that are always non-negative and equal zero iff their arguments are identical---albeit without the requirements of being symmetric in their arguments, or satisfying the triangle inequality. The most commonly used divergence measure in approximate inference---which will directly serve as the objective quantifying the quality of our summaries in ~\cref{chap:chap4}---is the Kullback-Leibler~(KL) divergence, also named relative entropy~\citep{kullback51,kullback59}. For continuous densities $\pi_1(\theta)$ and $\pi_2(\theta)$, KL divergence is defined as 
+\[
+\kl{\pi_1(\theta)}{\pi_2(\theta)} \defined \int \pi_1(\theta) \log\frac{\pi_1(\theta)}{\pi_2(\theta)} d\theta.
+\]
+For two Gaussian distributions $\mcN_1(\mu_1, \Sigma_1)$ and $\mcN_1(\mu_1, \Sigma_1)$ the KL divergence is computable in closed form as follows
+\[
+\kl{\mcN_1}{\mcN_2} = \frac{1}{2}\left[\tr(\Sigma_2^{-1}\Sigma_1) - (\mu_1-\mu_2)^T\Sigma_2^{-1}(\mu_1-\mu_2) - M + \log\frac{|\Sigma_2|}{|\Sigma_1|}\right].
+\]
 
-\section{Robust Inference}
-\label{sec:b-robust-inference}
+%\section{Robust Inference}
+%\label{sec:b-robust-inference}
+When working in data setups that are likely to be contaminated by outliers, we get substantial performance improvements when enhancing our algorithms with \emph{robustness}. Relying on KL divergence cannot sufficiently address this concern. A robustified divergence, termed \bdiv{}, was instead proposed in~\citep{basu98,eguchi01}, that is able to downweight outlying data. Considering again the densities $\pi_1, \pi_2$, \bdiv{} is defined as 
+\[
+\betadistance{\pi_1}{\pi_2} \defined \frac{1}{\beta} \int\left(\pi_1^\beta(\theta) - \pi_2^\beta(\theta)\right)\pi_1(\theta)d\theta - \frac{1}{\beta+1}\int\left(\pi_1^{\beta+1}(\theta) - \pi_2^{\beta+1}(\theta)\right)d\theta.
+\] 
+One can easily show that \bdiv{} converges to KL divergence when $\beta \rightarrow 0$.
 
 \section{Differential Privacy}
 \label{sec:b-differential-privacy}
+\ndefn[($\veps, \delta$)-Differential Privacy]{
+	Fix $\veps \geq 0, \delta \in [0,1]$. A randomised algorithm
+	$ \mcM: \mcX^N \rightarrow \reals_+^M\times\mcX^M $  is  ($\veps, \delta$)-differentially private if for every pair of 
+	adjacent datasets $ x \approx x'$ and all events $ A \subseteq \reals_+^M\times\mcX^M$, 
+	$\;\Pr[\mcM(x) \in A] \leq e^\veps \Pr[\mcM(x') \in A] + \delta$.
+	\label{def:b-dp-definition}
+}
 
 \section{Representing Data}
 \label{sec:b-representing-data}
