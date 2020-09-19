@@ -96,13 +96,13 @@ Extracting a relevant feature representation is an important step in the context
 \[
 \phi: \mcX \rightarrow \mcH,
 \]
-is sought which transforms the datapoints from the original data space $\{x_n\}_{n=1}^{N}$, $x_n \in \mcX$, into \emph{feature representations} in a Hilbert space $\{\phi(x_n)\}_{n=1}^{N}$, $\phi(x_n) \in \mcH$. Then the patterns of interest can be revealed via applications of inner products in the Hilbert space $\langle A, \phi(x) \rangle_{\mcH}$. There is an extensive literature on constructing data representations; for the purposes of this thesis, in the remainder of the section we focus on two of them: kernel methods and random features.
+is sought which transforms the datapoints from the original data space $\{x_n\}_{n=1}^{N}$, $x_n \in \mcX$, into \emph{feature representations} in a Hilbert space $\{\phi(x_n)\}_{n=1}^{N}$, $\phi(x_n) \in \mcH$. Then the patterns of interest can be revealed via applications of inner products in the Hilbert space $\langle A, \phi(x) \rangle_{\mcH}$. There is an extensive literature on constructing data representations; for the purposes of this thesis, in the remainder of the section we focus on two of them: kernel methods and random projections.
 
 
 \subsection{Kernels}
 \label{subsec:b-kernels}
 
-The main tool in kernel methods~\cite{scholkopf02} is the \emph{kernel function} defined below
+The main tool in kernel methods~\cite{scholkopf02} is the \emph{kernel function} defined below.
 
 \begin{ndefn}[Kernel function] \label{def:bkernelfun}
 	A symmetric function $k: \mcX \times \mcX \rightarrow \reals $ is a positive definite kernel function, or kernel, if for all $N>1$, $x_1, \ldots, x_n \in \reals$, and $c_1, \ldots, c_n \in \reals$ 
@@ -130,8 +130,12 @@ Examples of widely-used kernel functions include
 	\item The Sigmoid kernel $k(x,x') = \tanh(\beta\langle x, x'\rangle + c)$.
 \end{itemize}
 
-\subsection{Random Features}
+Kernel methods induce \emph{non-parameteric} representations on the data, \ie~when given a set with $ n $ datapoints of dimension $d$, kernels effectively map each datapoint to an $n$-dimensional representation. Although allowing representation power scaling with the number of datapoints, such methods often reach prohibitive computational cost.
+
+\subsection{Finite-dimensional Random Projections}
 \label{subsec:b-random-features}
+
+Kernel methods appeal to large-scale learning as they are non-parameteric and able to learn complex non-linear structure from the data; however, their time and memory cost scales adversely with the dataset size. Random features~\citep{rahimi08} remedy poor scaling issues via utilising \emph{$m$-dimensional parametric} data representations.
 
 
 
