@@ -117,8 +117,8 @@ One can easily show that \bdiv{} converges to KL divergence when $\beta \rightar
 \label{sec:b-differential-privacy}
 \ndefn[($\veps, \delta$)-Differential Privacy]{
 	Fix $\veps \geq 0, \delta \in [0,1]$. A randomised algorithm
-	$ \mcM: \mcX^N \rightarrow \reals_+^M\times\mcX^M $  is  ($\veps, \delta$)-differentially private if for every pair of 
-	adjacent datasets $ x \approx x'$ and all events $ A \subseteq \reals_+^M\times\mcX^M$, 
+	$ \mcM: \mcX^N \rightarrow \mcX^M $  is  ($\veps, \delta$)-differentially private if for every pair of 
+	adjacent datasets $ x \approx x'$ and all events $ A \subseteq \mcX^M$, 
 	$\;\Pr[\mcM(x) \in A] \leq e^\veps \Pr[\mcM(x') \in A] + \delta$.
 	\label{def:b-dp-definition}
 }
@@ -136,14 +136,12 @@ is sought which transforms the datapoints from the original data space $\{x_n\}_
 \label{subsec:b-kernels}
 
 The main tool in kernel methods~\cite{scholkopf02} is the \emph{kernel function} defined below.
-
 \begin{ndefn}[Kernel function] \label{def:bkernelfun}
 	A symmetric function $k: \mcX \times \mcX \rightarrow \reals $ is a positive definite kernel function, or kernel, if for all $N>1$, $x_1, \ldots, x_n \in \reals$, and $c_1, \ldots, c_n \in \reals$ 
 	\[
 	\sum_{i,j=1}^{N} c_ic_j k(x_i, x_j) \geq 0.
 	\]
 \end{ndefn}
-
 Every kernel is associated with a feature map $\phi$ as follows.
 \begin{ndefn}[Kernel representation] \label{def:bkernelrepr}
 	 A function $k: \mcX \times \mcX \rightarrow \reals$ is a kernel if and only if there exists a Hilbert space $\mcH$ and a feature map $\phi: \mcX \rightarrow \mcH$ such that for all $x, x' \in \mcX$
@@ -153,7 +151,6 @@ Every kernel is associated with a feature map $\phi$ as follows.
 	 \]
 	 Feature map $\phi$ endows each datapoint $x \in \mcX$ with a kernel representation $\phi(x)$.
 \end{ndefn}
-
 A kernel representation might be lacking an explicit closed form, but can always be accessed via the inner product of~\cref{eq:bkernelrep} which is the central object of interest in learning with kernels.
 
 Examples of widely-used kernel functions include
