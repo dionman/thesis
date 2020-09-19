@@ -14,7 +14,7 @@
 \newcommand\fileversion{2.3.1}
 \newcommand\filedate{2016/04/23}
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{PhDThesisPSnPDF}[\filedate\space A PhD thesis class file
+\ProvidesClass{Classes/PhDThesisPSnPDF}[\filedate\space A PhD thesis class file
  by Krishna Kumar (v\fileversion)]
 \typeout{https://github.com/kks32/phd-thesis-template/}
 
@@ -464,7 +464,7 @@ supported!}
 \ifPHD@authoryear
   \ifPHD@biblatex
     \RequirePackage[backend=biber, style=authoryear, citestyle=alphabetic, 
-      sorting=nty, natbib=true, hyperref=true, backref=true]{biblatex}
+      sorting=nty, natbib=true]{biblatex}
     \setBiBLaTeXtrue
   \else
     \RequirePackage[round, sort, numbers, authoryear]{natbib} %author year
@@ -572,6 +572,7 @@ supported!}
   % default: pdfLaTeX
   \RequirePackage[utf8]{inputenc}
   \RequirePackage[T1]{fontenc}
+  \usepackage{textcomp}
   
   % If building with PDFLaTeX, use microtype spacing adjustments
   \RequirePackage[final]{microtype}
@@ -599,9 +600,7 @@ supported!}
 % Moved below other usepackage definitions to fix PDFLaTeX footnote warning
 % Based on the suggestion by John Plaice
 
-\usepackage[pagebackref=true]{hyperref}
-\hypersetup{pdffitwindow=true,linkcolor=LightSkyBlue,citecolor=Sienna,urlcolor=Navy,menucolor=black}
-
+\RequirePackage[unicode=true]{hyperref}
 
 \if@print
   % For Print version
@@ -621,8 +620,6 @@ supported!}
     citecolor=black,
     anchorcolor=black
   }
-
-
   \ifsetCustomMargin
   % Margin to be define in preamble using geometry package
   \else
@@ -736,14 +733,15 @@ wish to left align your text}
 
 \RequirePackage{fancyhdr} % Define custom header
 
+\fontsize{10pt}{12pt}\selectfont
 % Style 1: Sets Page Number at the Top and Chapter/Section Name on LE/RO
 \fancypagestyle{PageStyleI}{
   \renewcommand{\chaptermark}[1]{\markboth{##1}{}}
   \renewcommand{\sectionmark}[1]{\markright{\thesection\ ##1\ }}
   \fancyhf{}
-  \fancyhead[RO]{\nouppercase \rightmark\hspace{0.25em} | 
+  \fancyhead[RO]{\small\nouppercase \rightmark\hspace{0.25em} | 
     \hspace{0.25em} \bfseries{\thepage}}
-  \fancyhead[LE]{ {\bfseries\thepage} \hspace{0.25em} | 
+  \fancyhead[LE]{ \small{\bfseries\thepage} \hspace{0.25em} | 
     \hspace{0.25em} \nouppercase \leftmark}
 }
 
@@ -752,8 +750,8 @@ wish to left align your text}
   \renewcommand{\chaptermark}[1]{\markboth{##1}{}}
   \renewcommand{\sectionmark}[1]{\markright{\thesection\ ##1}}
   \fancyhf{}
-  \fancyhead[RO]{\bfseries\nouppercase \rightmark}
-  \fancyhead[LE]{\bfseries \nouppercase \leftmark}
+  \fancyhead[RO]{\small\bfseries\nouppercase \rightmark}
+  \fancyhead[LE]{\small\bfseries \nouppercase \leftmark}
   \fancyfoot[C]{\thepage}
 }
 
@@ -779,9 +777,9 @@ wish to left align your text}
     \renewcommand{\chaptermark}[1]{\markboth {##1}{}}
     \renewcommand{\sectionmark}[1]{\markright{\thesection\ ##1}}
     \fancyhf{}
-    \fancyhead[LO]{\nouppercase \rightmark}
-    \fancyhead[LE,RO]{\bfseries\thepage}
-    \fancyhead[RE]{\nouppercase \leftmark}
+    \fancyhead[LO]{\small\nouppercase \rightmark}
+    \fancyhead[LE,RO]{\small\bfseries\thepage}
+    \fancyhead[RE]{\small\nouppercase \leftmark}
   \fi
 \fi
 }
@@ -790,7 +788,7 @@ wish to left align your text}
 %\renewcommand{\headrulewidth}{0.5pt}
 %\renewcommand{\footrulewidth}{0pt}
 \fancypagestyle{plain}{
-  \fancyhead{}
+  \fancyhead{\small}
   \renewcommand{\headrulewidth}{0pt}
 }
 
@@ -1023,23 +1021,22 @@ wish to left align your text}
 }
 
 
-
 % ******************************* Nomenclature *********************************
 \RequirePackage[intoc]{nomencl}
 \makenomenclature
 \renewcommand{\nomgroup}[1]{%
-\ifthenelse{\equal{#1}{A}}{\item[\textbf{Roman Symbols}]}{%
-\ifthenelse{\equal{#1}{G}}{\item[\textbf{Greek Symbols}]}{%
-\ifthenelse{\equal{#1}{Z}}{\item[\textbf{Acronyms / Abbreviations}]}{%
-\ifthenelse{\equal{#1}{R}}{\item[\textbf{Superscripts}]}{%
-\ifthenelse{\equal{#1}{S}}{\item[\textbf{Subscripts}]}{%
-\ifthenelse{\equal{#1}{X}}{\item[\textbf{Other Symbols}]}
-{}
-}% matches mathematical symbols > X
-}% matches Subscripts           > S
-}% matches Superscripts         > R
-}% matches Abbreviations        > Z
-}% matches Greek Symbols        > G
+	\ifthenelse{\equal{#1}{A}}{\item[\textbf{Roman Symbols}]}{%
+		\ifthenelse{\equal{#1}{G}}{\item[\textbf{Greek Symbols}]}{%
+			\ifthenelse{\equal{#1}{Z}}{\item[\textbf{Acronyms / Abbreviations}]}{%
+				\ifthenelse{\equal{#1}{R}}{\item[\textbf{Superscripts}]}{%
+					\ifthenelse{\equal{#1}{S}}{\item[\textbf{Subscripts}]}{%
+						\ifthenelse{\equal{#1}{X}}{\item[\textbf{Other Symbols}]}
+						{}
+					}% matches mathematical symbols > X
+				}% matches Subscripts           > S
+			}% matches Superscripts         > R
+		}% matches Abbreviations        > Z
+	}% matches Greek Symbols        > G
 }% matches Roman Symbols        > A
 
 % To add nomenclature in the header
@@ -1047,11 +1044,13 @@ wish to left align your text}
 
 % Add nomenclature to contents and print out nomenclature
 \newcommand{\printnomencl}[1][]{
-\ifthenelse{\equal {#1}{}}
-{\printnomenclature}
-{\printnomenclature[#1]}
-%\addcontentsline{toc}{chapter}{\nomname}
+	\ifthenelse{\equal {#1}{}}
+	{\printnomenclature}
+	{\printnomenclature[#1]}
+	%\addcontentsline{toc}{chapter}{\nomname}
 }
+
+
 
 
 % ***************************** Create the index *******************************
@@ -1262,4 +1261,3 @@ wish to left align your text}
 			- \totalheightof{\usebox{\PHD@collegedate}}
 }
 }
-
