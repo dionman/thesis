@@ -3,21 +3,85 @@
 
 This chapter aims to set the context for the remainder of this thesis. Various concepts pertaining to this thesis, including Bayesian inference, exponential family distributions and differential privacy, are briefly introduced in the following.
 
+\section{Comparing Probability Distributions}
+\label{subsec:b-divergences}
+A critical component in constructing and evaluating inference algorithm is having a divergence measure, that captures informatively how similar two probabilities are. Statistical divergences are relaxations of distance measures, that are always non-negative and equal zero iff their arguments are identical---albeit without the requirements of being symmetric in their arguments, or satisfying the triangle inequality. The most commonly used divergence measure in approximate inference---which will directly serve as the objective quantifying the quality of our summaries in ~\cref{chap:chap4}---is the Kullback-Leibler~(KL) divergence, also named relative entropy~\citep{kullback51,kullback59}. For continuous densities $\pi_1(\theta)$ and $\pi_2(\theta)$, KL divergence is defined as 
+\[
+\label{eq:bkl-def}
+\kl{\pi_1(\theta)}{\pi_2(\theta)} \defined \int \pi_1(\theta) \log\frac{\pi_1(\theta)}{\pi_2(\theta)} d\theta.
+\]
+In particular, for two Gaussian distributions $\mcN_1(\mu_1, \Sigma_1)$ and $\mcN_1(\mu_1, \Sigma_1)$ the KL divergence is computable in closed form as follows
+\[
+\kl{\mcN_1}{\mcN_2} = \frac{1}{2}\left[\tr(\Sigma_2^{-1}\Sigma_1) - (\mu_1-\mu_2)^T\Sigma_2^{-1}(\mu_1-\mu_2) - M + \log\frac{|\Sigma_2|}{|\Sigma_1|}\right].
+\]
+
+%\section{Robust Inference}
+%\label{sec:b-robust-inference}
+When working in data setups that are likely to be contaminated by outliers, we get substantial performance improvements when enhancing our algorithms with \emph{robustness}. Relying on KL divergence cannot sufficiently address this concern. A robustified divergence, termed \bdiv{}, was instead proposed in~\citep{basu98,eguchi01}, that is able to downweight outlying data. Considering again the densities $\pi_1, \pi_2$, \bdiv{} is defined as 
+\[
+\betadistance{\pi_1}{\pi_2} \defined \frac{1}{\beta} \int\left(\pi_1^\beta(\theta) - \pi_2^\beta(\theta)\right)\pi_1(\theta)d\theta - \frac{1}{\beta+1}\int\left(\pi_1^{\beta+1}(\theta) - \pi_2^{\beta+1}(\theta)\right)d\theta.
+\] 
+One can easily show that \bdiv{} converges to KL divergence when $\beta \rightarrow 0$.
+
+\section{Exponential Families}
+\label{sec:b-expfam}
+
+The exponential family~\citep{wainwright08} is a broad class of probability distributions, sharing a set of important properties that facilitate tractable inference. Exponential family members include numerous well-known distributions, such as the Poisson distribution, the Gamma distribution, and the Gaussian or normal distribution. 
+
+\begin{ndefn}[Exponential family] \label{def:bexpfam}
+	A collection of densities $\pi$, with respect to a base measure $\nu$ indexed by a vector of parameters $\theta$, is an \emph{exponential family} of densities if it can be written as
+	\[
+	\pi_{\theta}(x) = h(x) \exp\left( \langle \theta, t(x) \rangle - Z(\theta) \right).
+	\label{eq:bexpfam}
+	\]
+	We call $t(x): \mcX \rightarrow \reals^{d}$ the \emph{sufficient statistics} of the data, $h(x)$ the \emph{base density} and 
+	\[
+	Z(\theta)\defined \log \int e^{\langle \theta, t(x) \rangle } h(x) \nu(dx)
+	\label{eq:b-logpartition}
+	\]
+	the \emph{log-partition function}.
+\end{ndefn}
+
+The parameters space of interest, referred to as the \emph{natural parameter space}, is the space $\Omega \subseteq \reals^d $ that contains all $\theta$ such that $Z(\theta)$ is finite. We say a family is \emph{regular} if $\Omega$ is open.
+
+An important property of exponential family densities is that the derivatives of the log-partition function $Z$ are related to the moments of the sufficient statistics as follows.
+
+\begin{nprop}[Derivatives of the log-partition function via expected statistics] \label{prop:bgradZ}
+	For a regular exponential family of densities in the form of~\cref{eq:bexpfam}, the log-partition function has derivatives of all orders on its domain $\Omega$, while for the first two derivatives hold the following
+	\[
+	\grad Z(\theta) = \EE_{\theta}[t(x)]
+	\label{eq:bgradZ}
+	\] 	
+	and 
+	\[
+	\grad^2Z(\theta) = \cov_{\theta}[t(x)] \defined \EE_{\theta}[t(x)t(x)^T] - \EE_{\theta}[t(x)]\EE_{\theta}[t(x)]^T.
+	\label{eq:bhessZ}
+	\]
+\end{nprop}
+
+\cref{prop:bgradZ} allows efficient approximations for the gradient and Hessian of $ Z $ using empirical estimates of the first two moments of the sufficient statistic, which we take advantage of in the variational approximation schemes to be introduced in~\cref{chap:chap4,chap:chap5}.
+
 \section{Probabilistic Learning at  a Glance}
 \label{sec:b-bayesian-inference}
 
-In (parametric) Bayesian learning settings we are generally given a set of observations $x = \{x_1,...,x_N\} \subseteq \mcX$ and aim to find a vector $\theta $ parameterising an assumed probabilistic model that \emph{is likely to} explain them. In the Bayesian paradigm we first assume a \emph{prior} distribution over the parameters $\pi_0(\theta)$, that encodes our beliefs about $\theta$ before observing any data. Once the data are taken into account, our beliefs shoud be updated accordingly, in order to better describe the observed distribution. For this purpose a \emph{likelihood} distribution $\pi(x|\theta)$ needs to be defined; the likelihood quantifies the probability of the observations under the assumed statistical model for parameters set to $\theta$. Combining the above distributions we are ready to formulate Bayes' theorem, the fundamental rule which gives the \emph{posterior} beliefs for our parameters updated in light of the observed data
+In (parametric) Bayesian learning settings we are generally given a set of observations $x = \{x_1,...,x_N\} \subseteq \mcX$ and aim to find a vector $\theta $ of latent random variables parameterising an assumed probabilistic model that \emph{is likely to} explain them. In the Bayesian paradigm we first assume a \emph{prior} distribution over the parameters $\pi_0(\theta)$, that encodes our beliefs about the uncertainty in $\theta$ before observing any data. Once the data are taken into account, our beliefs shoud be updated accordingly, in order to better describe the observed distribution. For this purpose a \emph{likelihood} distribution $\pi(x|\theta)$ needs to be defined; the likelihood quantifies the probability of the observations under the assumed statistical model for parameters set to $\theta$. Combining the above distributions we are ready to formulate Bayes' theorem, the fundamental rule which gives the \emph{posterior} beliefs for our parameters updated in light of the observed data
 \[
 \pi(\theta|x) = \frac{\pi(x|\theta)\pi_0(\theta)}{\pi(x)}.
 \label{eq:bbayes-rule}
 \] 
+Henceforth any quantity of interest $g(\cdot)$ involving the latent variables $\theta$ is calculated using expectations under the posterior---which is considered to be the complete information about $\theta$ given the data $x$---as follows
+\[
+\EE_{\theta \sim \pi(\theta|x)}\left[g(\theta)\right] \defined \int g(\theta) \pi(\theta|x) d\theta.
+\label{eq:binference}
+\]
+Computing~\cref{eq:binference} is known as doing \emph{inference} on our statistical model.
 
-A key computational challenge in~\cref{eq:bbayes-rule} is evaluating the normalizer, called \emph{marginal likelihood} (or \emph{model evidence}), which in a continuous parametric space takes the form
+A key computational challenge in computing the posterior according to~\cref{eq:bbayes-rule} is evaluating the normalizer, called \emph{marginal likelihood} (or \emph{model evidence}), which in a continuous parametric space takes the form
 \[
 \pi(x) = \int \pi(x|\theta) \pi_0(\theta) d\theta.
 \label{eq:bmarginal-likelihood}
 \]
-\emph{Marginalising}, \ie~computing the integral of~\cref{eq:bmarginal-likelihood}, can be done using analytical tools for a number of simple Bayesian models---some of which will be discussed in the remainder, including Gaussian mean inference, Bayesian and neural linear regression---where the likelihood is conjugate to the prior. However, for the vast majority of interesting statistical models marginalization cannot be done in closed form and should be approximated instead. Aiming to address such cases approximate Bayesian inference has been an active research area for many decades. In the following section we present an overview of classic approaches allowing approximate computations of~\cref{eq:bbayes-rule}. For a more detailed exposure of approximate inference methods cf.~\citep{bishop06,murphy12,angelino16}.
+\emph{Marginalising}, \ie~computing the integral of~\cref{eq:bmarginal-likelihood}, can be done using analytical tools for a number of simple Bayesian models---some of which will be discussed in the remainder, including Gaussian mean inference, Bayesian and neural linear regression---where the likelihood is conjugate to the prior. However, for the vast majority of interesting statistical models marginalization cannot be done in closed form and should be approximated instead. Aiming to address such cases, approximate Bayesian inference has emerged as an active research area for many decades. In the following section we present an overview of classic approaches allowing approximate inference. For a more detailed exposure cf.~\citep{bishop06,murphy12,angelino16}.
 
 \subsection{Laplace's Method}
 \label{subsec:b-laplace-method}
@@ -35,105 +99,50 @@ Hence we have
 \pi(\theta|X) \approx \frac{1}{Z}   \hpi(\theta, x)  \propto \mcN(\htheta, \Lambda^{-1}), 
 \label{eq:blaplace-approx}
 \]  
-\ie~the posterior can be approximated by a univariate Gaussian, where the mean corresponds to the minimum of the energy function and the covariance is the negative Hessian of the energy function evaluated on the mean. Clearly, using standard numerical optimization routines, e.g. quasi-Newton methods, we can achieve fast convergence to $\htheta$. 
+\ie~the posterior can be approximated by a (unimodal) Gaussian, where the mean corresponds to the minimum of the energy function and the covariance is the negative Hessian of the energy function evaluated on the mean. Clearly, using standard numerical optimization routines, e.g. quasi-Newton methods, we can achieve fast convergence to $\htheta$. 
+
+Laplace approximations will be used as coarse posterior approximations over our coreset summary constructions.
 
 \subsection{Sampling Methods}
 \label{subsec:b-sampling-methods}
-Markov Chain Monte Carlo~(MCMC) is the workhorse of approximate Bayesian inference. MCMC offers approximations to expectations \wrt intractable probability distributions via simulating an ergodic random walk which admits the target distribution as its stationary distribution; this property makes MCMC methods theoretically appealing, as it endows the estimators with strong \emph{asymptotic exactness} guarantees.
+In the absence of analytical formulae, integrals in the form of~\cref{eq:binference} can be approximated via empirical averaging, using samples from the target posterior distribution
+\[
+ \int g(\theta) \pi(\theta|x) d\theta \approx \frac{1}{S} \sum_{s=1}^{S} g(\theta_s), \quad (\theta_s)_{s=1}^{S} \distiid \pi(\theta|x) .
+\]
+Markov Chain Monte Carlo~(MCMC), the workhorse of approximate Bayesian inference, is a framework consisting of methods that pursue the above idea efficiently. MCMC offers approximations to expectations \wrt intractable probability distributions via simulating an ergodic random walk which admits the (unnormalized) posterior distribution as its stationary distribution; this property makes MCMC methods theoretically appealing, as it endows the estimators with strong \emph{asymptotic exactness} guarantees. Differing on the way that the Monte Carlo chain is constructed, several methods of MCMC infrence have emerged, including the Metropolis-Hastings~\citep{andrieu03}, the Hamiltonian Monte-Carlo~\citep{neal11}, and the No-U-Turn-Sampler~(NUTS)~\citep{hoffman14}. NUTS will be used to perform inference in part of our experiments over~\cref{chap:chap4,chap:chap5}.
 
 \subsection{Variational Inference}
 \label{subsec:b-variational-inference}
-The fundamental idea underpinning all variational inference~(VI) methods~\citep{jordan99,blei17} is to reduce Bayesian posterior inference into an optimization problem; hence, ideas allowing scaling up optimization can in principle be applied in VI, enabling scalable inference of approximate posteriors.
+The problem formulation underpinning all variational inference~(VI) methods~\citep{jordan99,blei17} is to find a member $q^*$ within a family of tractable probability distributions $Q$ that best approximates our posterior (typically in the KL-sense)
+\[
+\label{eq:bvi}
+q^{*}(\theta; x) \defined \arg \underset{q\in Q}{\min} \kl{q(\theta)}{\pi(\theta|x)}.
+\]
+In this way Bayesian posterior inference gets reduced into an optimization problem; hence, techniques allowing scaling up optimization (e.g. random subsampling) can in principle be applied in VI methods, enabling scalable inference of approximate posteriors~\citep{hoffman13}.
+
+In passing, %whilst it is beyond the scope of this introduction to give a detailed presentation of how the problem of~\cref{eq:bvi} is approached, 
+we note that in classical VI schemes expanding the KL divergence according to~\cref{eq:bkl-def} makes the log-evidence appear in the objective 
+\[
+\kl{q(\theta)}{\pi(\theta|x)} = \EE_{\theta \sim q(\theta)}\left[\log q(\theta)\right] - \EE_{z\sim q(\theta)}\left[\log \pi(x, \theta)\right] + \log \pi(\theta).
+\]
+Since this term is not a function of $q$, it can be subtracted and the problem is reduced to minimizing the negation of the first two terms instead, which is known as the \emph{evidence lower bound}~(ELBO).
+\[
+q^{*}(\theta; x) \defined \arg \underset{q\in Q}{\min} \left(-\text{ELBO}(q, x)\right), \qquad
+\text{ELBO} \defined \EE_{q}\left[\log \pi(x, \theta)\right] - \EE_q \left[\log q(\theta)\right]
+\]
+The simplest family that can be used for VI is the \emph{mean-field variational family} which relies on the simplifying assumption of independence among the coordinates of $\theta$, \ie $q(\theta) \defined \Pi_{d=1}^{D}q_d(\theta_d)$.
+Our VI scheme used approximation within the \emph{exponential family}, which can allow less restricted posterior. Additionally, they can circumvent the use of ELBO and be directly applied on the original variational formulation of~\cref{eq:bvi}, as MC computation of the gradient of the log-evidence can be done as per~\cref{prop:bgradZ}. 
 
 \subsection{Coresets}
 \label{subsec:b-coresets}
 Owing to their requirement for multiple evaluations of the data (log-)likelihood---a computation scaling at $\Omega(N)$---MCMC and VI methods are often prohibitively expensive in the large-data regime. Various stochastic schemes have been proposed to circumvent this computation, evaluating the likelihood on random data samples: despite achieving computational savings and being straightforward to implement, such schemes rarely offer guarantees on posterior approximation quality, and lack a rigorous principle over datapoints selection step, hence retaining part of the redundancy of the full data collection in the extracted samples.
 
-Bayesian coresets~\citep{huggins16,campbell18,campbell19jmlr,campbell19neurips} pursue the idea of scaling up inference via the application of a preprocessing step where \emph{part of the data gets retained under the criterion of likelihood approximation}. In the spirit of the first coresets proposed in the filed of computational geometry, initial construction schemes for coreset-based inference~\citep{huggins16,lucic17training} utilize \emph{importance sampling} according to the datapoints sensitivity, \ie~a non-negative quantity measuring the redundancy of each of the datapoints for the statistical model of interest. Although giving theoretical gurantees for the approximation quality achieved by the coreset, importance sampling based constructions have typically two shortcomings: (\emph{i}) they rely on efficiently computable upper bounds of the sensitivity, and (\emph{ii}) they do not have a sense of a residual posterior error, hence are limited by common MC rates in approximating data likelihood, offering error $\eps = O(\frac{1}{\sqrt{M}})$ for coreset size $M$.
+Bayesian coresets~\citep{huggins16,campbell18,campbell19jmlr,campbell19neurips} make the assumption that the full dataset has some degree of inherent redundancy, and put forth the idea of scaling up inference via the application of a preprocessing step where \emph{part of the data gets retained under the criterion of likelihood approximation}. In the spirit of the first coresets proposed in the filed of computational geometry, initial construction schemes for coreset-based inference~\citep{huggins16,lucic17training} utilize \emph{importance sampling} according to the datapoints sensitivity, \ie~a non-negative quantity measuring the redundancy of each of the datapoints for the statistical model of interest. Although giving theoretical gurantees for the approximation quality achieved by the coreset, importance sampling based constructions have typically two shortcomings: (\emph{i}) they rely on efficiently computable upper bounds of the sensitivity, and (\emph{ii}) they do not have a sense of a residual posterior error, hence are limited by common MC rates in approximating data likelihood, offering error $\eps = O(\frac{1}{\sqrt{M}})$ for coreset size $M$.
 
 Reformulating coreset construction as sparse function approximation in a Hilbert space~(\emph{Hilbert coresets}), Campbell and Broderick~\citep{campbell18,campbell19jmlr} introduced alternative optimization formulations for the problem. They showed that using inner-product inducing norms can lead to faster incremental construction schemes that critically can be guided by the direction of greatest impovement. Moreover, they made use of a coarse posterior approximation and random projections to efficiently compute Hilbert norms that capture the divergence between the coreset and the true posterior, and proposed faster sparse constructions under polytope and hypersphere constraints.
 
 In more recent work, Campbell and Beronov~\citep{campbell19neurips} casted Bayesian coresets to a problem of sparse variational inference within an exponential family, named \emph{Riemannian coresets}. Riemannian coresets raised the requirement for fixing a coarse posterior that appears in Hilbert coreset, offering full automation and improvement of approximation in KL over a larger range of summary sizes.
 
-
-\section{Exponential Families}
-\label{sec:b-expfam}
-
-The exponential family~\citep{wainwright08} is a broad class of probability distributions, sharing a set of important properties that facilitate tractable inference. Exponential family members include numerous well-known distributions, such as the Poisson distribution, the Gamma distribution, and the Gaussian or normal distribution. 
-
-\begin{ndefn}[Exponential family] \label{def:bexpfam}
-A collection of densities $\pi$, with respect to a base measure $\nu$ indexed by a vector of parameters $\theta$, is an \emph{exponential family} of densities if it can be written as
-\[
-\pi_{\theta}(x) = h(x) \exp\left( \langle \theta, t(x) \rangle - Z(\theta) \right).
-\label{eq:bexpfam}
-\]
-We call $t(x): \mcX \rightarrow \reals^{d}$ the \emph{sufficient statistics} of the data, $h(x)$ the \emph{base density} and 
-\[
-Z(\theta)\defined \log \int e^{\langle \theta, t(x) \rangle } h(x) \nu(dx)
-\label{eq:b-logpartition}
-\]
-the \emph{log-partition function}.
-\end{ndefn}
-
-The parameters space of interest, referred to as the \emph{natural parameter space}, is the space $\Omega \subseteq \reals^d $ that contains all $\theta$ such that $Z(\theta)$ is finite. We say a family is \emph{regular} if $\Omega$ is open.
-
-An important property of exponential family densities is that the derivatives of the log-partition function $Z$ are related to the moments of the sufficient statistics as follows.
-
-\begin{nprop}[Derivatives of the log-partition function via expected statistics] \label{prop:bgradZ}
-For a regular exponential family of densities in the form of~\cref{eq:bexpfam}, the log-partition function has derivatives of all orders on its domain $\Omega$, while for the first two derivatives hold the following
-\[
-\grad Z(\theta) = \EE_{\theta}[t(x)]
-\label{eq:bgradZ}
-\] 	
-and 
-\[
-\grad^2Z(\theta) = \cov_{\theta}[t(x)] \defined \EE_{\theta}[t(x)t(x)^T] - \EE_{\theta}[t(x)]\EE_{\theta}[t(x)]^T.
-\label{eq:bhessZ}
-\]
-\end{nprop}
-
-\cref{prop:bgradZ} allows efficient approximations for the gradient and Hessian of $ Z $ using empirical estimates of the first two moments of the sufficient statistic, which we take advantage of in the variational approximation schemes to be introduced in~\cref{chap:chap4,chap:chap5}.
-
-\section{Comparing Probability Distributions}
-\label{subsec:b-divergences}
-A critical component in constructing and evaluating inference algorithm is having a divergence measure, that captures informatively how similar two probabilities are. Statistical divergences are relaxations of distance measures, that are always non-negative and equal zero iff their arguments are identical---albeit without the requirements of being symmetric in their arguments, or satisfying the triangle inequality. The most commonly used divergence measure in approximate inference---which will directly serve as the objective quantifying the quality of our summaries in ~\cref{chap:chap4}---is the Kullback-Leibler~(KL) divergence, also named relative entropy~\citep{kullback51,kullback59}. For continuous densities $\pi_1(\theta)$ and $\pi_2(\theta)$, KL divergence is defined as 
-\[
-\kl{\pi_1(\theta)}{\pi_2(\theta)} \defined \int \pi_1(\theta) \log\frac{\pi_1(\theta)}{\pi_2(\theta)} d\theta.
-\]
-For two Gaussian distributions $\mcN_1(\mu_1, \Sigma_1)$ and $\mcN_1(\mu_1, \Sigma_1)$ the KL divergence is computable in closed form as follows
-\[
-\kl{\mcN_1}{\mcN_2} = \frac{1}{2}\left[\tr(\Sigma_2^{-1}\Sigma_1) - (\mu_1-\mu_2)^T\Sigma_2^{-1}(\mu_1-\mu_2) - M + \log\frac{|\Sigma_2|}{|\Sigma_1|}\right].
-\]
-
-%\section{Robust Inference}
-%\label{sec:b-robust-inference}
-When working in data setups that are likely to be contaminated by outliers, we get substantial performance improvements when enhancing our algorithms with \emph{robustness}. Relying on KL divergence cannot sufficiently address this concern. A robustified divergence, termed \bdiv{}, was instead proposed in~\citep{basu98,eguchi01}, that is able to downweight outlying data. Considering again the densities $\pi_1, \pi_2$, \bdiv{} is defined as 
-\[
-\betadistance{\pi_1}{\pi_2} \defined \frac{1}{\beta} \int\left(\pi_1^\beta(\theta) - \pi_2^\beta(\theta)\right)\pi_1(\theta)d\theta - \frac{1}{\beta+1}\int\left(\pi_1^{\beta+1}(\theta) - \pi_2^{\beta+1}(\theta)\right)d\theta.
-\] 
-One can easily show that \bdiv{} converges to KL divergence when $\beta \rightarrow 0$.
-
-\section{Differential Privacy}
-
-Differential privacy~(DP)~\citep{dwork06} requires that if we perturb a database by a single data point the output of an algorithm should not differ much. To define distance between two databases $x, x'$ of size $ N $ we use the Hamming distance
-\[
-D_{H}(x, x') \defined \#\{n=1,\ldots,N: x_n \neq x'_n \}.
-\]
-We call the databases adjacent, denoted $ x \approx x'$ iff $D_{H}(x, x')=1$.
-
-
-\label{sec:b-differential-privacy}
-\ndefn[Differential Privacy]{
-	Fix $\veps \geq 0$. A randomised algorithm
-	$ \mcM: \mcX \rightarrow \mcY$  is $\veps$-differentially private if for every pair of 
-	adjacent datasets $ x \approx x'$ and all events $ A \subseteq \mcY$, 
-	$\;\Pr[\mcM(x) \in A] \leq e^\veps \Pr[\mcM(x') \in A]$.
-	\label{def:b-dp-definition}
-}
-
-A weaker definition of DP allows that the guarantee of~\cref{def:b-dp-definition} gets broken with probability $\delta$. This definition is called \emph{($\veps, \delta$)-approximate differential privacy} and will be further discussed in~\cref{chap:chap4}.
-
-DP is equipped with a suite of properties that facilitate reasoning about privacy guarantees over complicated analysis tasks on sensitive databases.
 
 \section{Representing Data}
 \label{sec:b-representing-data}
@@ -199,9 +208,24 @@ In this way we get an unbiased finite-dimensional estimator of the inner product
 \]
 
 
+\section{Differential Privacy}
+
+Differential privacy~(DP)~\citep{dwork06} requires that if we perturb a database by a single data point the output of an algorithm should not differ much. To define distance between two databases $x, x'$ of size $ N $ we use the Hamming distance
+\[
+D_{H}(x, x') \defined \#\{n=1,\ldots,N: x_n \neq x'_n \}.
+\]
+We call the databases adjacent, denoted $ x \approx x'$ iff $D_{H}(x, x')=1$.
 
 
+\label{sec:b-differential-privacy}
+\ndefn[Differential Privacy]{
+	Fix $\veps \geq 0$. A randomised algorithm
+	$ \mcM: \mcX \rightarrow \mcY$  is $\veps$-differentially private if for every pair of 
+	adjacent datasets $ x \approx x'$ and all events $ A \subseteq \mcY$, 
+	$\;\Pr[\mcM(x) \in A] \leq e^\veps \Pr[\mcM(x') \in A]$.
+	\label{def:b-dp-definition}
+}
 
+A weaker definition of DP allows that the guarantee of~\cref{def:b-dp-definition} gets broken with probability $\delta$. This definition is called \emph{($\veps, \delta$)-approximate differential privacy} and will be further discussed in~\cref{chap:chap4}.
 
-
-
+DP is equipped with a suite of properties that facilitate reasoning about privacy guarantees over complicated analysis tasks on sensitive databases.
