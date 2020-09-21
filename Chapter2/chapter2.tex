@@ -221,7 +221,10 @@ In this way we get an unbiased finite-dimensional estimator of the inner product
 
 \section{Differential Privacy}
 
-Differential privacy~(DP)~\citep{dwork06} is an algorithmic property, requiring that if we perturb a database by a single datapoint the output of an algorithm should not differ much. To define distance between two databases $x, x'$ of size $ N $ we use the Hamming distance
+Differential privacy~(DP)~\citep{dwork2006calibrating,dwork14} enforces a stability property on randomized algorithms accessing a sensitive database and releasing aggregate information thereof, that mitigates the privacy threat due to changing an individual entry of the database. It limits disclosure of information about individuals within the database, offering strong indistinguishability guarantees regardless of the side information that an adversary might possess. 
+
+DP definition requires a notion of "neighboring" databases.
+To define distance between two databases $x, x' \in \mcX$ of size $ N $ we use the Hamming distance
 \[
 D_{H}(x, x') \defined \#\{n=1,\ldots,N: x_n \neq x'_n \}.
 \]
@@ -230,13 +233,11 @@ We call the databases adjacent, denoted $ x \approx x'$ iff $D_{H}(x, x')=1$.
 
 \label{sec:b-differential-privacy}
 \ndefn[Differential Privacy]{
-	Fix $\veps \geq 0$. A randomised algorithm
-	$ \mcM: \mcX \rightarrow \mcY$  is $\veps$-differentially private if for every pair of 
-	adjacent datasets $ x \approx x'$ and all events $ A \subseteq \mcY$, 
-	$\;\Pr[\mcM(x) \in A] \leq e^\veps \Pr[\mcM(x') \in A]$.
+	Fix $\veps \geq 0$. A randomised mechanism $ \mcM: \mcX \rightarrow \mcY$  is $\veps$-differentially private if for every pair of  adjacent datasets $ x \approx x'$ and all events $ A \subseteq \mcY$, 	$\;\Pr[\mcM(x) \in A] \leq e^\veps \Pr[\mcM(x') \in A]$.
 	\label{def:b-dp-definition}
 }
 
-A weaker definition of DP allows that the guarantee of~\cref{def:b-dp-definition} gets broken with probability $\delta$. This definition is called \emph{($\veps, \delta$)-approximate differential privacy} and will be the privacy definition applied on our summarization scheme in~\cref{chap:chap4}.
+\cref{def:b-dp-definition} requires that if we perturb a database by a single datapoint, the output of the algorithm should not differ much, with the latter being controlled by the privacy parameter $\veps$.
+A weaker definition of DP allows that the guarantee of~\cref{def:b-dp-definition} gets broken with probability $\delta$. This corresponds to the notion of \emph{($\veps, \delta$)-approximate differential privacy}, and will be the privacy definition applied on our summarization scheme in~\cref{chap:chap4}.
 
 DP is equipped with a suite of properties that facilitate reasoning about privacy guarantees over complicated analysis tasks involving repeated access to sensitive databases.
