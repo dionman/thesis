@@ -64,6 +64,8 @@ An important property of exponential family densities is that the derivatives of
 \section{Probabilistic Learning at  a Glance}
 \label{sec:b-bayesian-inference}
 
+Probabilistic modeling provides a principled framework for learning from observed data, handling model uncertainty and drawing coherent inferences in a unified way, following the languange of probability theory.
+
 In (parametric) Bayesian learning settings we are generally given a set of observations $x = \{x_1,...,x_N\} \subseteq \mcX$, and aim to find a vector $\theta $ of latent random variables parameterising an assumed probabilistic model that \emph{is likely to} explain them. In the Bayesian paradigm, we first assume a \emph{prior} distribution over the parameters $\pi_0(\theta)$, that encodes our beliefs about the uncertainty in $\theta$ before observing any data. Once the data are taken into account, our beliefs shoud be updated accordingly, in order to better describe the observed distribution. For this purpose a \emph{likelihood} distribution $\pi(x|\theta)$ needs to be defined; the likelihood quantifies the probability of the observations under the assumed statistical model for parameters set to $\theta$. Combining the above distributions we are ready to formulate \emph{Bayes' theorem}, the fundamental rule which gives the \emph{posterior} beliefs for our parameters updated in light of the observed data
 \[
 \pi(\theta|x) = \frac{\pi(x|\theta)\pi_0(\theta)}{\pi(x)}.
@@ -81,7 +83,7 @@ A key challenge in computing the posterior according to~\cref{eq:bbayes-rule} is
 \pi(x) = \int \pi(x|\theta) \pi_0(\theta) d\theta.
 \label{eq:bmarginal-likelihood}
 \]
-\emph{Marginalising}, \ie~computing the integral of~\cref{eq:bmarginal-likelihood}, can be done using analytical tools for a number of simple Bayesian models---some of which will be discussed in the remainder, including Gaussian mean inference, Bayesian and neural linear regression---where the likelihood is conjugate to the prior. However, for the vast majority of interesting statistical models marginalization cannot be done in closed form and should be approximated instead. Aiming to address such cases, approximate Bayesian inference has emerged as an active research area for many decades. In the following section we present an overview of classic approaches allowing approximate inference. For a more detailed exposure cf.~\citep{bishop06,murphy12,angelino16}.
+\emph{Marginalising}, \ie~computing the integral of~\cref{eq:bmarginal-likelihood}, can be done using analytical tools for a number of simple Bayesian models---some of which will be discussed in the remainder, including Gaussian mean inference, Bayesian and neural linear regression---where the likelihood is conjugate to the prior. However, for the vast majority of interesting statistical models marginalization cannot be done in closed form and should be approximated instead. Aiming to address such cases, approximate Bayesian inference has emerged as an active research area for many decades. In the remainder of the section we present an overview of existing approaches addressing approximate inference that are relevant to our algorithms. For a more detailed exposure, including methods beyond the scope of this thesis (e.g. expectation propagation), cf.~\citep{bishop06,murphy12,angelino16}.
 
 \subsection{Laplace's Method}
 \label{subsec:b-laplace-method}
@@ -109,11 +111,18 @@ In the absence of analytical formulae, integrals in the form of~\cref{eq:binfere
 \[
  \int g(\theta) \pi(\theta|x) d\theta \approx \frac{1}{S} \sum_{s=1}^{S} g(\theta_s), \quad (\theta_s)_{s=1}^{S} \distiid \pi(\theta|x) .
 \]
-Markov Chain Monte Carlo~(MCMC), the workhorse of approximate Bayesian inference, is a framework consisting of methods that pursue the above idea efficiently. MCMC offers approximations to expectations \wrt intractable probability distributions via simulating an ergodic random walk which admits the (unnormalized) posterior distribution as its stationary distribution; this property makes MCMC methods theoretically appealing, as it endows the estimators with strong \emph{asymptotic exactness} guarantees. Differing on the way that the Monte Carlo chain is constructed, several methods of MCMC infrence have emerged, including the Metropolis-Hastings~\citep{andrieu03}, the Hamiltonian Monte-Carlo~\citep{neal11}, and the No-U-Turn-Sampler~(NUTS)~\citep{hoffman14}. NUTS will be used to perform inference in part of our experiments over~\cref{chap:chap4,chap:chap5}.
+Markov Chain Monte Carlo~(MCMC), the workhorse of approximate Bayesian inference, is a framework of established tools that pursue the above idea efficiently~\citep{geyer92, gilks05, robert05}. 
+
+MCMC offers approximations to expectations \wrt intractable probability distributions via simulating an ergodic random walk in the space of model parameters which admits the (unnormalized) posterior distribution as its stationary distribution. As implied by the strong law of large numbers, the MC estimate converges to the true expecation almost surely; this property makes MCMC methods theoretically appealing, as it endows the estimators with strong \emph{asymptotic exactness} guarantees. Moreover, if $g$ is a real function, the variance of an MC estimator scales as $O(S^{-1})$ independent of the dimension of $\theta$. Differing in the way that the Monte Carlo chain is constructed, several methods of MCMC infrence have emerged, including the Metropolis-Hastings~\citep{andrieu03}, the Hamiltonian Monte-Carlo~\citep{neal11}, and the No-U-Turn-Sampler~(NUTS)~\citep{hoffman14}. NUTS will be used as a reference method to evaluate summarization performance in part of our experiments over~\cref{chap:chap4,chap:chap5}.
+
+Bounds on the number of MCMC iterations required until we obtain a satisfactory posterior approximation can hardly be automated, as they are highly problem-specific, and in practice heuristics are used to decide when sampling should stop. Typically each sample requires at least one evaluation of a function proportial to $\pi$, scaling at cost $\Theta(N)$ which becomes a burden in big data applications---on this account, methods operating on data subsets have been proposed, including~\citep{welling11,korattikara14,bardenet14}. Despite these shortcomings, in settings where data are high-dimensional, and likelihood lacks strcuture that we could exploit over inference, MCMC remains the gold standard for practitioners.
+
+
 
 \subsection{Variational Inference}
 \label{subsec:b-variational-inference}
-The problem formulation underpinning all variational inference~(VI) methods~\citep{jordan99,blei17} is to find a member $q^*$ within a family of tractable probability distributions $Q$ that best approximates our posterior (typically in the KL-sense)
+Variational inference~(VI)~\citep{jordan99,blei17} takes a fundamentally different approach to  address approximate inference.
+The problem formulation underpinning all VI methods is to find a member $q^*$ within a family of tractable probability distributions $Q$ that most closely matches our true posterior $\pi$ (typically in the KL-sense)
 \[
 \label{eq:bvi}
 q^{*}(\theta; x) \defined \arg \underset{q\in Q}{\min} \kl{q(\theta)}{\pi(\theta|x)}.
@@ -121,22 +130,22 @@ q^{*}(\theta; x) \defined \arg \underset{q\in Q}{\min} \kl{q(\theta)}{\pi(\theta
 In this way, Bayesian posterior inference gets reduced into an optimization problem; hence, techniques allowing scaling up optimization (e.g. random subsampling) can in principle be applied in VI methods, enabling scalable inference of approximate posteriors~\citep{hoffman13}.
 
 In passing, %whilst it is beyond the scope of this introduction to give a detailed presentation of how the problem of~\cref{eq:bvi} is approached, 
-we note that in classical VI schemes expanding the KL divergence according to~\cref{eq:bkl-def} makes the log-evidence appear in the objective 
+we note that, in classical Variational Bayes schemes, expanding the KL divergence according to~\cref{eq:bkl-def} makes the log-evidence appear in the objective 
 \[
 \kl{q(\theta)}{\pi(\theta|x)} = \EE_{\theta \sim q(\theta)}\left[\log q(\theta)\right] - \EE_{z\sim q(\theta)}\left[\log \pi(x, \theta)\right] + \log \pi(\theta).
 \]
 Since this term is not a function of $q$, it can be subtracted and the problem is reduced to minimizing the remaining two terms, the negation of which is known as the \emph{evidence lower bound}~(ELBO).
 \[
 q^{*}(\theta; x) \defined \arg \underset{q\in Q}{\min} \left(-\text{ELBO}(q, x)\right), \qquad
-\text{ELBO} \defined \EE_{q}\left[\log \pi(x, \theta)\right] - \EE_q \left[\log q(\theta)\right]
+\text{ELBO}(q, x) \defined \EE_{q}\left[\log \pi(x, \theta)\right] - \EE_q \left[\log q(\theta)\right]
 \]
-The simplest family that can be used for VI is the \emph{mean-field variational family} which relies on the simplifying assumption of independence among the coordinates of $\theta$, \ie~$q(\theta) \defined \Pi_{d=1}^{D}q_d(\theta_d)$.
+Via Jensen's inequality, ELBO can be shown to be a lower bound of the marginal log-likood of $x$ as expectation \wrt~$q$. The simplest family that can be used for VI is the \emph{mean-field variational family} which relies on the simplifying assumption of independence among the coordinates of $\theta$, \ie~$q(\theta) \defined \Pi_{d=1}^{D}q_d(\theta_d)$.
 
 Our VI scheme proposes approximations within the \emph{exponential family}, which generally allow less restricted posteriors. Additionally, it can circumvent the use of ELBO, and instead be directly applied on the original variational formulation of~\cref{eq:bvi}, since MC estimates of the gradient of the log-evidence term can be extracted as per~\cref{prop:bgradZ}. 
 
-\subsection{Coresets}
+\subsection{Bayesian Coresets}
 \label{subsec:b-coresets}
-Owing to their requirement for multiple evaluations of the data (log-)likelihood---a computation scaling at $\Omega(N)$---MCMC and VI methods are often prohibitively expensive in the large-data regime. Various stochastic schemes have been proposed to circumvent this computation, evaluating the likelihood on random data samples: despite achieving computational savings and being straightforward to implement, such schemes rarely offer guarantees on posterior approximation quality, and lack a rigorous principle over datapoints selection step, hence retaining part of the redundancy of the full data collection in the extracted samples.
+Owing to their requirement for multiple evaluations of the data (log-)likelihood---a computation scaling at $\Omega(N)$---MCMC and VI methods quickly become prohibitively expensive in the large-data regime. Various stochastic schemes have been proposed to circumvent this computation, evaluating the likelihood on random data minibatches: despite achieving computational savings and being straightforward to implement, such schemes rarely offer guarantees on posterior approximation quality, and lack a rigorous principle over minibatch selection step, hence retaining part of the redundancy of the full data collection in the extracted samples.
 
 Bayesian coresets~\citep{huggins16,campbell18,campbell19jmlr,campbell19neurips} make the assumption that the full dataset has some degree of inherent redundancy, and put forth the idea of scaling up inference via the application of a preprocessing step where \emph{part of the data gets retained under the criterion of likelihood approximation}. In the spirit of the first coresets proposed in the field of computational geometry, initial construction schemes for coreset-based inference~\citep{huggins16,lucic17training} utilize \emph{importance sampling} according to the datapoints sensitivity, \ie~a non-negative quantity measuring the redundancy of each of the datapoints \wrt the statistical model of interest. Although giving theoretical gurantees for the approximation quality achieved by the coreset, importance sampling based constructions have typically two shortcomings: (\emph{i}) they rely on efficiently computable upper bounds of the sensitivity, and (\emph{ii}) they do not have a sense of a residual posterior error, hence are limited by common MC rates in approximating data likelihood, offering error $\eps = O(\frac{1}{\sqrt{M}})$ for coreset size $M$.
 
