@@ -233,11 +233,18 @@ We call the databases adjacent, denoted $ x \approx x'$, iff $D_{H}(x, x')=1$.
 
 \label{sec:b-differential-privacy}
 \ndefn[Differential Privacy]{
-	Fix $\veps \geq 0$. A randomised mechanism $ \mcM: \mcX \rightarrow \mcY$  is $\veps$-differentially private if for every pair of  adjacent datasets $ x \approx x'$ and all events $ A \subseteq \mcY$, 	$\;\Pr[\mcM(x) \in A] \leq e^\veps \Pr[\mcM(x') \in A]$.
+	Fix $\veps \geq 0$. A randomised mechanism $ \mcM: \mcX \rightarrow \mcY$  is $\veps$-differentially private if for all adjacent datasets $ x \approx x'$ and each event $ A \subseteq \mcY$, 	$\;\Pr[\mcM(x) \in A] \leq e^\veps \Pr[\mcM(x') \in A]$.
 	\label{def:b-dp-definition}
 }
 
 \cref{def:b-dp-definition} requires that if we perturb a database by a single datapoint, the output of the algorithm should not differ much, with the latter being controlled by the privacy parameter $\veps$.
 A weaker definition of DP allows that the guarantee of~\cref{def:b-dp-definition} gets broken with probability $\delta$. This corresponds to the notion of \emph{($\veps, \delta$)-approximate differential privacy}, and will be the definition applied on our privacy-preserving summarization scheme in~\cref{chap:chap4}.
 
-DP is equipped with a suite of properties that facilitate reasoning about privacy guarantees over complicated analysis tasks involving repeated access to a sensitive collection of data.
+DP is equipped with a suite of properties that facilitate reasoning about privacy guarantees over complicated analysis tasks involving repeated access to a sensitive collection of data. In the remainder we review a fraction of them that will be relevant to our framework.
+
+A useful fact about DP algorithms is that a data analyst cannot weaken their privacy guarantees by doing any computation on their output that does not depend on the private input itself.
+
+\bnprop[Robustness to Post-Processing]
+	Let $ \mcM: \mcX \rightarrow \mcY$ be $(\veps, \delta)$-DP and $\psi:\mcY \rightarrow \mcY'$ be any function. Then $\psi \circ \mcM: \mcX \rightarrow \mcY'$ is $(\veps, \delta)$-DP.
+	\label{prop:bdp-postprocessing}
+\enprop
