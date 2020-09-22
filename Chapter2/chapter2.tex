@@ -221,7 +221,7 @@ In this way we get an unbiased finite-dimensional estimator of the inner product
 
 \section{Differential Privacy}
 
-Differential privacy~(DP)~\citep{dwork2006calibrating,dwork14} is a formal framework that quantifies the privacy threat due to changing an individual entry of a sensitive database over a data analysis task. It considers a setting where the database is held by a trusted curator; an untrusted analyst sends statistical queries to the curator and receives responses via randomized algorithms, or mechanisms: DP enforces a stability property on the output distribution of the mechanisms that limits the disclosure of information about individuals within the database, offering strong indistinguishability guarantees regardless of the side information that the analyst might possess. 
+Differential privacy~(DP)~\citep{dwork2006calibrating,dwork14} is a formal framework quantifying the privacy threat that exists in the output a data analysis task due to changing an individual entry of a sensitive database. It considers a setting where the database is held by a trusted curator; and an untrusted analyst sends statistical queries to the curator and receives responses via randomized algorithms, or mechanisms: DP enforces a stability property on the output distribution of these mechanisms that limits the disclosure of information about individuals within the database, offering strong indistinguishability guarantees regardless of the side information that the analyst might possess. 
 
 DP definition requires a notion of "neighboring" databases.
 To define distance between two databases $x, x' \in \mcX$ of size $ N $ we use the Hamming distance
@@ -233,14 +233,14 @@ We call the databases adjacent, denoted $ x \approx x'$, iff $D_{H}(x, x')=1$.
 
 \label{sec:b-differential-privacy}
 \ndefn[Differential Privacy]{
-	Fix $\veps \geq 0$. A mechanism $ \mcM: \mcX \rightarrow \mcY$  is $\veps$-differentially private if for all adjacent datasets $ x \approx x'$ and each event $ A \subseteq \mcY$, 	$\;\Pr[\mcM(x) \in A] \leq e^\veps \Pr[\mcM(x') \in A]$.
+	Fix $\veps \geq $, $\delta \geq 0$. A mechanism $ \mcM: \mcX \rightarrow \mcY$  is $(\veps, \delta)$-differentially private if for all adjacent datasets $ x \approx x'$ and each event $ A \subseteq \mcY$, 	$\;\Pr[\mcM(x) \in A] \leq e^\veps \Pr[\mcM(x') \in A] + \delta$.
 	\label{def:b-dp-definition}
 }
 
-\cref{def:b-dp-definition} requires that if we perturb a database by a single datapoint, the output of the algorithm should not differ much, with the privacy risk being controlled by the parameter $\veps$.
-A weaker definition of DP allows that the guarantee of~\cref{def:b-dp-definition} gets broken with probability $\delta$. This corresponds to the notion of \emph{($\veps, \delta$)-approximate differential privacy}, and will be the definition applied on our privacy-preserving summarization scheme in~\cref{chap:chap4}.
+\cref{def:b-dp-definition} with $\delta=0$, known as \emph{pure DP}, requires that if we perturb a database by a single datapoint, the output of the algorithm should not differ much, with the privacy risk being controlled by the parameter $\veps$.
+A weaker definition of DP allows that the guarantee of~\cref{def:b-dp-definition} gets broken with probability $\delta>0$. This corresponds to the notion of \emph{($\veps, \delta$)-approximate differential privacy}. The latter generally offers more tools for tighter privacy analysis over repeated access to the data, and will be the definition applied on our privacy-preserving summarization scheme in~\cref{chap:chap4}. In practice, $\veps \leq 0.1$ and $\delta \approx 1/N^{\omega(1)}$ are typically considered good values for the privacy hyperparameters. 
 
-The most common mechanisms that allow releasing numerical queries $f$ under DP rely on randomization via additive noise. The amount noise is calibrated to the \emph{global sensitivity} of the query, which is defined as 
+The most common mechanisms that allow releasing numerical queries $f$ under DP rely on randomization via injecting additive noise. The amount of noise is calibrated to the \emph{global sensitivity} of the query, which is defined as 
 \[
 \Delta_p(f) = \underset{x \approx x'}{\max} ||f(x)-f(x')||_p.
 \]
@@ -249,11 +249,11 @@ To achieve $(\veps, \delta)$-DP one can use the Gaussian Mechanism, which return
 f(x)+Z, \quad Z \sim \mcN(0, \sigma^2 I), \quad \text{where } \sigma \geq \frac{\sqrt{2\log(1.25/\delta)}\Delta_2(f)}{\veps}.
 \]
 
-DP is equipped with a suite of properties that facilitate reasoning about privacy guarantees over complicated analysis tasks on a sensitive data collection in a modular fashion. In the remainder we review a fraction of them that will be relevant to our framework.
+DP is equipped with a suite of properties that facilitate reasoning about privacy guarantees over complicated analysis tasks on a sensitive data collection in a modular fashion. In the remainder we review a fraction of them which are frequently encountered in machine learning settings.
 
 A useful fact about DP algorithms is that a data analyst cannot weaken their privacy guarantees by doing any computation on their output that does not depend on the private input itself.
 
-\bnprop[Robustness to Post-Processing]
+\bnprop[Robustness to Post-Processing~\citep{dwork14}]
 	Let $ \mcM: \mcX \rightarrow \mcY$ be $(\veps, \delta)$-DP and $\psi:\mcY \rightarrow \mcY'$ be any function. Then $\psi \circ \mcM: \mcX \rightarrow \mcY'$ is $(\veps, \delta)$-DP.
 	\label{prop:bdp-postprocessing}
 \enprop
@@ -261,6 +261,16 @@ A useful fact about DP algorithms is that a data analyst cannot weaken their pri
 Moreover, running a mechanism on a random subset of the datapoints implies stronger privacy compared to running the mechanism on the full database.
 
 \bnprop[Privacy Amplfication via Random Sampling~\citep{kasiviswanathan11,beimel13}]
-Let $ \mcM: \mcX \rightarrow \mcY$ be $(\veps, \delta)$-DP with $\veps \leq 1$ and $\omega: \mcX \rightarrow \mcX$ a random sampler returning a random ratio $q$ of the datapoints. Then $\mcM \circ \omega: \mcX \rightarrow \mcY$ is $(O(q\veps), q\delta)$-DP.
+Let $ \mcM: \mcX \rightarrow \mcY$ be $(\veps, \delta)$-DP with $\veps \leq 1$ and $\upsilon: \mcX \rightarrow \mcX$, a random sampler returning a random ratio $q$ of the datapoints. Then $\mcM \circ \upsilon: \mcX \rightarrow \mcY$ is $(O(q\veps), q\delta)$-DP.
 \label{prop:bdp-postprocessing}
 \enprop
+
+DP composition theorems accumulate the total privacy cost over the application of a sequence of mechanisms. The moments accountant is a recently proposed technique, that allows computing tights bounds for $\veps$ and $\delta$, as follows
+
+\bnprop[Moments Accountant~\citep{abadi16}]
+Given $0<\veps<1$ and $0<\delta<1$, to ensure $(\veps, T\delta'+\delta)$-DP over the composition of $T$ mechanisms $\mcM_1,\ldots,\mcM_T$, it suffices that each $\mcM_i$ is $(\veps', \delta')$-DP, where $\veps'=\frac{\veps}{2\sqrt{2T\log(2/\delta)}}$ and $\delta'=\frac{\delta}{T}$. 
+\label{prop:bmoments-accountant}
+\enprop
+
+
+
