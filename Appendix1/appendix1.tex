@@ -237,8 +237,6 @@ and likewise,
 \cov[h(u_i), \tf_n] = Q^{-T}\Psi \tv_n.
 \]
 
-
-
 \subsection{Bayesian linear regression}
 \label{supp:linear_regression_appendix}
 
@@ -284,11 +282,8 @@ To scale up computation on large datasets, in our experiment we made use of stoc
 
 Here we present some more plots demonstating the dependence of Hilbert coresets approximation quality on the number of random dimensions in the Bayesian linear regression setting presented in~\cref{fig:linreg_300}. We remind that dimension used at this experiment and throughout the entire experiments section was set to 100. Increasing this number is typically expensive to obtain in practice. As demonstrated in~\cref{fig:hilbert_varying_projdim}, getting higher projection dimension enables better posterior approximation in the problem, while \gigao~starts offering better quality of approximation than \gigar. However, \psvi~remains competitive in the small coreset regime even for Hilbert coresets with extremely large projection dimensionality, demonstrating the information-geometric limitations that Hilbert coreset constructions are known to face~\cite{campbell19neurips}.
 
-
-
 \subsection{Bayesian Logistic Regression}
 \label{supp:logreg_experiment_appendix}
-
 
 \subsubsection{Model}
 \label{supp:logreg_model_appendix}
@@ -394,8 +389,6 @@ Regarding \dpvi, over our experiments we also kept subsampling ratio fixed. We b
 \subsubsection{Additional Plots}
 \label{supp:cpu_timings}
 
-
-
 \begin{figure*}[!t]
 	\centering
 	\begin{subfigure}[b]{.29\textwidth}
@@ -437,8 +430,6 @@ Regarding \dpvi, over our experiments we also kept subsampling ratio fixed. We b
 	\label{fig:30logreg_dkl_cput}
 \end{figure*}
 
-
-
 \begin{figure*}[!t]
 	\centering
 	\begin{subfigure}[b]{\textwidth}
@@ -470,10 +461,7 @@ Regarding \dpvi, over our experiments we also kept subsampling ratio fixed. We b
 	\label{fig:logreg_dkl}
 \end{figure*}
 
-
-
 \paragraph{Evaluation of CPU time requirements} Experiments were performed on a CPU cluster node with a 2x Intel Xeon Gold 6142 and 12GB RAM. In the case of \psvi~the computation of coreset sizes from 1 to 100 was parallelized per single size over 32 cores in total. \cref{fig:30logreg_dkl_cput} shows posterior approximation error vs required CPU time for all coreset construction algorithms over logistic regression on the small-scale and large-scale datasets. As opposed to existing incremental coreset construction schemes, batch construction of \psvi~reduces the dependence between coreset size and processing cost: for \sparsevi~$\Theta(M^2)$ gradient computations are required, as this method builds up a coreset one point at a time; in contrast, \psvi~requires $\Theta(M)$ gradients since it learns all pseudodata points jointly. Although each gradient step of \psvi~is more expensive, practically this implies a steeper decrease in approximation error over processing time compared to \sparsevi. In the case of differentially private \psvi,~some extra CPU requirements are added due to the subsampled Gaussian mechanism computations.
-
 
 \paragraph{Incremental scheme for pseudocoreset construction} We also experimented with an \emph{incremental scheme for pseudocoreset} construction. According to this scheme, pseudodata points are added sequentially to the pseudocoreset. Similarly to \sparsevi, in the beginning of each coreset iteration, we initialize a new pseudodata point at the true datapoint which maximizes correlation with current residual approximation error. Next, we jointly optimize the most recently added pseudodata point location, along with the pseudocoreset weights vector, over a gradient descent loop.  As opposed to batch construction, for large coreset sizes the incremental scheme for \psvi~does not achieve savings in CPU time compared to \sparsevi.
 
