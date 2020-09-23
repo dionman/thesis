@@ -111,20 +111,32 @@
 \nomenclature[J]{WL}{Weisfeiler-Lehman}
 \nomenclature[J]{DK}{Deep graph kernels}
 
-In this thesis we study a set of approaches that enable large-scale learning via data summarization. We start by explaining and motivating our point of view.
+Machine learning pervades most modeling and decision-making tools of modern society: scientists use the wealth of stored medical records to understand the underlying causes of diseases, intelligent personal assistants learn the transportation patterns of an area and provide context-aware optimal route recommendations, and driving-intelligence systems are capable to navigate self-driving cars in complex, never-seen-before environments. 
 
-When faced with a data set too large to be processed all at once, an obvious solution is to retain only part of it.  In the large-scale setting, much of the data is redundant.
+From the statistical point of view, Bayesian modeling offers a unifying framework where experts and practitioners alike can leverage domain-specific knowledge, learn from new observations, share statistical power across components of hierarchical models, and take advantage of predictions which can account for model uncertainty. Having access to more data is invaluable for statistical models, as it allows a better understanding of the process that gives rise to them. 
 
-\par{Data Summarization and Differential Privacy}
+At the same time, handling massive-scale datasets in machine learning instigates a number of computational and societal challenges. First, apart from basic statistical settings, peforming inference, \ie~computing expectations under posterior distributions in the light of new observations, does not scale for large datasets. Hence, approximate inference methods should be followed instead. Apart from addressing scalability, modern approximate inference methods should be also able to give guarantees of convergence to the true posterior distribution, and work successfully in high-dimensions, where many of modern large-scale data live (e.g. genes, or social networks).
 
-\par{Data Summarization and Outliers Detection}
+Secondly, a large fraction of modern massive-scale machine learning applications involves observations stemming from privacy-sensitive data domains, for example health or behavioural studies. The sensitive information content of this sources raise to data contributors the requirement that inference methods satisfy formal guarantees of statistical privacy.
 
-\section{Thesis Statement and Contributions}
+Thirdly, real-world big data are often highly heterogeneous, containt outliers, or might be subject to data poisoning. The afore-mentioned phenomena are often expressed as patterns which cannot be captured by standard statistical assumptions of the model. As a result, standard Bayesian inference techniques which do not downweight the contribution of outlying datapoints can often be misguided by them and offer unreliable posteriors. 
+
+%In this thesis we study a set of approaches that enable large-scale learning via data summarization. We start by explaining and motivating our point of view.
+%When faced with a data set too large to be processed all at once, an obvious solution is to retain only part of it.  In the large-scale setting, much of the data is redundant.
+%\par{Data Summarization and Differential Privacy}
+% DP schemes for coresets applicable in
+%54 computational geometry already exist (Feldman et al., 09; 17), whilst the idea of releasing private dataset compressions
+%55 has been also pursued in kernel methods (Balog et al., 18), sparse regression (Zhou et al., 07), and compressive
+%56 learning (Schellekens et al.19); however, none of these approaches is directly applicable to summarising for general57 purpose Bayesian inference, which led us to the decision of comparing against a standard private VI method.
+
+%\par{Data Summarization and Outliers Detection}
+
+\section{Thesis Statement and Main Contributions}
 \label{sec:thesis-goals}
 
 The focus of this thesis is to develop scalable tools for data analysis on privacy-sensitive and vulnerable to contamination big data. We claim the following statement:
 
-\emph{Automated methods for probabilistic learning are typically computationally prohibitive in settings involving massive-scale data. In contrast, designing principled data summarization algorithms enables scaling up learning methods, achieving realiable inference results and addressing concerns of privacy and robustness. Notably, the latter can be achieved without substantial impact on automation and complexity of the summarization methods.}
+\emph{Automated methods for general-purpose probabilistic inference are typically computationally prohibitive in settings involving massive-scale and high-dimensional data. In contrast, designing principled dataset summarization algorithms enables scaling up learning methods in this data realm, achieving realiable inference results, and addressing concerns of privacy and robustness. Notably, the latter can be achieved without having a substantial bearing on the automation and complexity of the summarization methods.}
 
 Relying on coreset-based dataset summarizations as our fundamental framework for scalability, we adopt a two-pronged approach to tackle each of the aforementioned challenges, and design efficient algorithms that outperform state-of-the-art solutions for the posed problems. 
 
