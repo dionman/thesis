@@ -113,43 +113,47 @@
 
 In this thesis we study a set of approaches that enable large-scale learning via data summarization. We start by explaining and motivating our point of view.
 
-\section{Prelude}
-\label{sec:prelude}
-
 When faced with a data set too large to be processed all at once, an obvious solution is to retain only part of it.  In the large-scale setting, much of the data is redundant.
 
 \par{Data Summarization and Differential Privacy}
 
 \par{Data Summarization and Outliers Detection}
 
-\section{Thesis Goals and Contributions}
+\section{Thesis Statement and Contributions}
 \label{sec:thesis-goals}
 
-The focus of this thesis is to develop scalable tools for data analysis on privacy-sensitive and vulnerable to contamination big data. Relying on coreset-based dataset summarizations as our fundamental framework for scalability, we adopt a two-pronged approach to tackle each of the aforementioned challenges, and design efficient algorithms that outperform state-of-the-art solutions for the posed problems. 
+The focus of this thesis is to develop scalable tools for data analysis on privacy-sensitive and vulnerable to contamination big data. We claim the following statement:
+
+\emph{Automated methods for probabilistic learning are typically computationally prohibitive in settings involving massive-scale data. In contrast, designing principled data summarization algorithms enables scaling up learning methods, achieving realiable inference results and addressing concerns of privacy and robustness. Notably, the latter can be achieved without substantial impact on automation and complexity of the summarization methods.}
+
+Relying on coreset-based dataset summarizations as our fundamental framework for scalability, we adopt a two-pronged approach to tackle each of the aforementioned challenges, and design efficient algorithms that outperform state-of-the-art solutions for the posed problems. 
+
 
 In particular, the goals of this dissertation are to:
 
 \begin{enumerate}
 	\item Identify threats in commonly adopted practices for releasing privacy-sensitive datasets via anonymized coarsened representations of the data.
-	\item Propose novel principled methods that can directly address real-word considerations of privacy and robustness when applying summarizations for inference, without increasing the corresponding computational and memory footprint compared to the existing state-of-the-art methods.
+	\item Propose novel principled methods that can directly address real-word considerations of privacy and robustness when performing inference via summarization, without increasing the corresponding computational and memory footprint compared to the existing state-of-the-art methods.
 \end{enumerate}
 
 The central contributions of the thesis are the following:
 
 \begin{itemize}
 	\item We analyse the anonymity of individual data in a large-scale behavioural study, and develop a \emph{reidentification attack that exploits structural patterns similarity} to link users records in the absence of identifiers in their state-space.
-	\item We introduce a novel \emph{family of sparse variational distributions} that can approximate inference on massive datasets using learnable \emph{pseudodata} as variational parameters.
-	\item We theoretically show that the use of learnable pseudodata enables more efficient summarization for high-dimensional datapoints, compared to existing coreset constructions that are constrained to use points from the original dataset.
-	\item We provide an efficient black-box batch optimization scheme that can attain a good approximate posterior within the above-mentioned variational family, and use standard randomization tools to yield differentially private versions of this posterior for privacy-preserving data analysis.
+	\item We introduce a novel variational formulation for Bayesian coresets construction that utilises approximations within a \emph{family of sparse variational distributions} with learnable weights and \emph{pseudodata} as variational parameters.
+	\item Leveraging the use of learnable pseudodata, we show that our variational formulation enables substantially more rapid improvement in summarization quality for high-dimensional data in the small coresets regime, compared to existing coreset schemes that are constrained to use points from the original dataset. 
+	%\item We show that the use of learnable pseudodata enables substantially more efficient summarization quanlity for high-dimensional data, compared to existing coreset constructions that are constrained to use points from the original dataset. For the latter, we prove a data dimensionality dependent bound in optimal approximation quality 
+	%\item We theoretically show data dimension dependent limitations in optimal approximation quality for small summary sizes, achievable by existing coreset constructions that are constrained to use points from the original dataset; subsequently, we show that the use of learnable pseudodata enables overcoming the data-dimension constraints, and offers rapid improvement in approximation quality for small coreset sizes.
+	\item We provide an efficient black-box batch optimization scheme that can attain a good approximate posterior within the above-mentioned variational family, and use standard randomization tools to yield differentially private versions of this variational posterior for privacy-preserving data analysis.
 	\item We review Bayesian coresets behaviour in corrupted datasets and show deficiencies of standard constructions when dealing with outliers and poisoning.
-	\item Using tools from robust divergences, we propose a \emph{robustified family of sparse variational approximations} for reliable summarization in the presence of data contamination.
+	\item Using tools from robust divergences, we propose approximate inference within a \emph{robustified family of sparse variational approximations} for reliable summarization in the presence of data contamination.
 	\item We develop a black-box incremental optimization scheme for constructing such an approximation, and evaluate its applicability in scenarios of summarization both over datapoints and over data minibatches.
 \end{itemize}
 
-A recurring theme in our approach is to exploit inherent data redundancy, in order to simultaneously achieve efficient data analysis and satisfy the objectives of privacy and robustness. Importantly, the computation of redundancy is adapted to the statistical model used to describe the data via the likelihood function, offering increased efficiency for the purposes of learning---as our methods manage to preserve reliable \emph{approximate sufficient statistics} of the full data collection, despite retaining only a tiny fraction of it. Directly randomizing the sufficient statistics computation via a differentially private mechanism addresses formally the protection of privacy, and enables us to avoid adding more noise than necessary, as we only have to hide the part of individual datapoints information which is passed to the sufficient statistics instead of their full information. In the robustness case, our framework identifies datapoints that deviate from our statistical assumptions and downweights their contribution over inference on the dataset, distilling them in this way from the extracted summary. Overall, our methods indicate that privacy and robustness on both counts are in accordance to the fundamental problem that data summarization aims to resolve: encapsulating aggregate information for a statistical model of interest, while limiting the impact of each individual datapoint particulars.
+A recurring theme in our approach is to exploit inherent data redundancy, in order to simultaneously achieve efficient data analysis and satisfy the objectives of privacy and robustness. Importantly, the computation of redundancy is adapted to the statistical model used to describe the data via the likelihood function, offering increased efficiency for the purposes of learning---as our methods, guided by the data likelihood function, manage to preserve reliable \emph{approximate sufficient statistics} of the full data collection, despite retaining only a tiny fraction of it. Directly randomizing the sufficient statistics computation via a differentially private mechanism addresses formally the protection of privacy, and allows us to avoid adding more noise than necessary, as we only have to hide the part of individual datapoints information which is passed to the sufficient statistics instead of their full information. In the robustness case, our framework identifies datapoints that deviate from our statistical assumptions and downweights their contribution over inference on the dataset, distilling them in this way from the extracted summary. Overall, our methods indicate that privacy and robustness on both counts are in accordance to the fundamental problem that data summarization aims to resolve: encapsulating aggregate information for a statistical model of interest, while limiting the impact of each individual datapoint particulars.
 
 
-\section{Thesis Organization}
+\section{Organization of the Dissertation}
 \label{sec:thesis-organization}
 The remainder of the dissertation is organized as follows. 
 
