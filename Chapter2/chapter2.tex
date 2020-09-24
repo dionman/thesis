@@ -221,7 +221,7 @@ In this way we get an unbiased finite-dimensional estimator of the inner product
 
 \section{Differential Privacy}
 
-Differential privacy~(DP)~\citep{dwork2006calibrating,dwork14} is a formal framework quantifying the privacy threat that exists in the output a data analysis task due to changing an individual entry of a sensitive database. It considers a setting where the database is held by a trusted curator; and an untrusted analyst sends statistical queries to the curator and receives responses via randomized algorithms, or mechanisms: DP enforces a stability property on the output distribution of these mechanisms that limits the disclosure of information about individuals within the database, offering strong indistinguishability guarantees regardless of the side information that the analyst might possess. 
+Differential privacy~(DP)~\citep{dwork2006calibrating,dwork14} is a formal framework quantifying the privacy threat that exists in the output a data analysis task due to changing an individual entry of a sensitive database. It considers a setting where the database is held by a trusted curator; and an untrusted analyst sends statistical queries to the curator and receives public responses via randomized algorithms, or mechanisms: DP enforces a stability property on the output distribution of these mechanisms that limits the disclosure of information about any individual reocord within the database, offering strong indistinguishability guarantees regardless of the side information that the analyst might possess~(even when the analyst knows all other records of the database). 
 
 DP definition requires a notion of "neighboring" databases.
 To define distance between two databases $x, x' \in \mcX$ of size $ N $ we use the Hamming distance
