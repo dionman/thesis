@@ -3,8 +3,8 @@
 
 \subsection{Mobility Deanonymization}
 
-Protecting the anonymity of personal mobility is notoriously difficult due to sparsity~\citep{aggarwal2008} and hence mobility data are often vulnerable to deanonymization attacks~\citep{Narayanan2008}.
-Numerous studies into location privacy have shown that even when an individual's data are anonymized, they continue to possess unique patterns that can be exploited by a malicious adversary with access to auxiliary information.
+Protecting the anonymity of personal mobility is notoriously difficult due to sparsity~\citep{aggarwal2008}, and hence mobility data are often vulnerable to deanonymization attacks~\citep{Narayanan2008}.
+Numerous studies into location privacy have shown that, even when an individual's data are anonymized, they continue to possess unique patterns that can be exploited by a malicious adversary with access to auxiliary information.
 Zang \emph{et~al.} analysed nationwide call-data records (\emph{CDR}s) and showed that the $N$ most frequently visited places, so called \emph{top$-N$} data, correlated with publicly released side information and resulted in privacy risks, even for small values of $N$s~\citep{Zang2011}.
 This finding underlines the need for reductions in spatial or temporal data fidelity before publication.
 De Montjoye \emph{et~al.} quantified the unicity of human mobility on a mobile phone dataset of approximately $1.5M$ users with intrinsic temporal resolution of one hour and a 15-month measurement period~\citep{DeMontjoye2013}.
@@ -18,7 +18,7 @@ Similarly, Gambs \emph{et~al.} used Markov chains to model mobility traces in su
 Naini \emph{et~al.} explored the privacy impact of releasing statistics of individuals mobility traces in the form of histograms, instead of their actual location information~\cite{Naini2016a}. They demonstrated that even this statistical information suffices to successfully recover the identity of individuals in datasets of few hundred people, via jointly matching labeled and unlabeled histograms of a population.
 Other researchers have investigated the privacy threats from information sharing on location-based social networks, including the impact of location semantics on the difficulty of reidentification~\cite{privacyAndTheCity} and location inference~\cite{Agir}.
 
-All the above previous work assumes locations are expressed using a universal symbol or global identifier, either corresponding to (potentially obfuscated) geographic coordinates, or pseudonymous stay points.
+All the above previous work assumes that locations are expressed using a universal symbol or global identifier, either corresponding to (potentially obfuscated) geographic coordinates, or pseudonymous stay points.
 Hence, cross-referencing between individuals in the population is possible.
 This is inapplicable when location information is anonymized separately for each individual.
 Lin \emph{et~al.} presented a user verification method in this setting~\cite{LinMobile}.

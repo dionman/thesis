@@ -1,21 +1,21 @@
 \section{Proposed Methodology\label{sec:methodology}}
 
- In this section, we first adapt the privacy framework of $k-$anonymity to the case of graph data (Section~\ref{sec:graph-k-anonymity}). Next we introduce our methodology: We assume that all mobility data are initially represented as a sequence of pseudonymous locations.
-We also assume the pseudonymisation process is distinct per user, and therefore locations cannot be compared between individuals.
+ In this section, we first adapt the privacy framework of $k-$anonymity to the case of graph data (\cref{sec:graph-k-anonymity}). Next we introduce our methodology: We assume that all mobility data are initially represented as a sequence of pseudonymous locations.
+We also assume that the pseudonymisation process is distinct per user, and therefore locations cannot be compared between individuals.
 In other words, it is not possible to determine whether pseudonymous location $l_u$ for user $u$ is the same as (or different from) location $l_v$ for user $v$.
-We convert a location sequence for each user into a mobility network (Section \ref{sec:mobility-networks}). 
+We convert a location sequence for each user into a mobility network (\cref{sec:mobility-networks}). 
 We then extract feature representations of these networks and embed them into a vector space.
-Finally, in the vector space, we can define pairwise distances between the network embeddings (Section~\ref{sec:graph-kernels}) and use them in a deanonymization scenario (Section~\ref{sec:deanon-leakage}).  
+Finally, in the vector space, we can define pairwise distances between the network embeddings (\cref{sec:graph-kernels}) and use them in a deanonymization scenario (\cref{sec:deanon-leakage}).  
 
 Our methodology is, in principle, applicable to many other categories of recurrent behavioural trajectories that can be abstracted as graphs, such web browsing sessions~\cite{olejnik14, yen12} or smartphone application usage sequences~\cite{Welke2016}.
 We leave such analysis as future work.
 
 \subsection{$k-$anonymity on Graphs\label{sec:graph-k-anonymity}}
 
-Anonymity among networks refers to topological (or structural) equivalence. In our analysis we adopt the privacy framework of $k-$anonymity~\cite{sweeney2002k} which we summarize as follows:
+Anonymity among networks refers to topological (or structural) equivalence. In our analysis we adopt the privacy framework of $k-$anonymity~\cite{sweeney2002k}, which we summarize as follows:
 
 \ndefn[\textbf{$k-$anonymity}]{
-	A microdata release of statistics containing separate entries for a number of individuals in the population satisfies the $k-$anonymity property if the information for each individual contained in the release is indistinguishable from at least $k-1$ other individuals whose information also appears in the release.
+	A microdata release of statistics, containing separate entries for a number of individuals in the population, satisfies the $k-$anonymity property, iff the information for each individual contained in the release is indistinguishable from at least $k-1$ other individuals whose information also appears in the release.
 }
 
 \vspace{.4cm}
@@ -84,7 +84,7 @@ We refer to these networks as \textbf{top$-N $ mobility networks}.
 
 \subsection{Graph Similarity Metrics\label{sec:graph-kernels}}
 
-It is not possible to apply a graph isomorphism test to two mobility networks to determine if they represent the same underlying user because a user's mobility network is likely to vary over time.
+It is not practical to apply a graph isomorphism test to two mobility networks to determine if they represent the same underlying user, because a user's mobility network is likely to vary over time.
 Therefore we need distance functions that can measure the degree of similarity between two graphs.
 Distance functions decompose the graph into feature vectors (smaller substructures and pattern counts), or histograms of graph statistics, and express similarity as the distance between those feature representations.
 In the following, we introduce the notion of graph kernels and describe the graph similarity metrics used later in our experiments.
@@ -101,7 +101,7 @@ K({G}, {G}')=\left  \langle \frac{\phi({G})}{||\phi({G})||}, \frac{\phi(G')}{||\
 One interpretation of this function is as the \emph{cosine similarity of the graphs in the feature space} defined by the map of the kernel.
 
 In our experiments we apply a number of scalable kernel functions on our mobility datasets and assess their suitability for deanonymization applications on mobility networks.
-We note in advance that as the degree distribution and all substructure counts of a graph remain unchanged under structure-preserving bijection of the vertex set, all examined graph kernels are invariant under isomorphism.
+We note in advance that, as the degree distribution and all substructure counts of a graph remain unchanged under structure-preserving bijection of the vertex set, all examined graph kernels are invariant under isomorphism.
 We briefly introduce these kernels in the remainder of the section.
 
 
@@ -111,7 +111,7 @@ The degree distribution of nodes in the graph can be used to quantify the simila
 For example, we can use a histogram of weighted or unweighted node degree as a feature vector.
 We can then compute the pairwise distance of two graphs by taking either the inner product of the feature vectors or passing them through a Gaussian radial basis function (RBF) kernel:
 \[ K(G,G') =\exp\left( -\frac{||\phi(G) - \phi(G')||^2}{2\sigma^2} \right).\]
-Here, the parameters of the kernel are the variance $ \sigma $ (in case RBF is used) and the number of bins in the histogram.
+Here, the hyperparameters of the kernel are the variance $ \sigma $ (in case RBF is used) and the number of bins in the histogram.
 
 \subsubsection{Kernel on graph atomic substructures}
 
@@ -122,6 +122,7 @@ Hence, if
 $ s_1, s_2, ... \in \mcS$ are the substructures of interest and $ \#\left(s_i \in G\right)$ the counts of $ s_i $ in graph $ G $, we get as feature map vectors
 \[ 
 \phi(G) = \left[\#\left(s_1 \in G\right), \#\left(s_2 \in G\right), \dots\right]^T
+\label{eq:rconv-features}
 \]
 with dimension $ |\mcS| $  and kernel
 \[
@@ -134,7 +135,7 @@ In the following, we briefly present some kernels in this category and explain h
 \noindent\textbf{Shortest-Path Kernel}
 
 The Shortest-Path (\emph{SP}) graph kernel \cite{borgwardt2005} expresses the similarity between two graphs by counting the co-occuring shortest paths in the graphs.
-It can be written in the form of equation (3) where each element $ s_i \in \mcS $ is a triplet $\big(a_{\text{start}}^i, a_{\text{end}}^i, n\big)$, where $ n $ is the length of the path and $ a_{\text{start}}^i, a_{\text{end}}^i $ the attributes of the starting and ending nodes.
+It can be written in the form of~\cref{eq:rconv-features}, where each element $ s_i \in \mcS $ is a triplet $\big(a_{\text{start}}^i, a_{\text{end}}^i, n\big)$, where $ n $ is the length of the path and $ a_{\text{start}}^i, a_{\text{end}}^i $ the attributes of the starting and ending nodes.
 The shortest path set is computable in polynomial time using, for example, the Floyd-Warshall algorithm, with complexity $ O(|V|^4)$, where $ |V| $ is number of nodes in the network.
 
 \vspace{1em}
@@ -151,20 +152,21 @@ Computation progresses over iterations as follows:
 	\item the above steps are repeated until a specified threshold $ h $ is reached.
 \end{enumerate}
 %
-An example is shown in Figure~\ref{fig:WL}.
+An example is shown in~\cref{fig:WL}.
 
 If $ G $ and $ G' $ are the two graphs, the \emph{WL} subtree kernel is defined as follows:
 \[
 K^{h}_{WL}(G, G') = \big \langle \phi_h(G), \phi_h(G') \big \rangle,
 \]
-where $ \phi_h(G) $ and $ \phi_h(G') $ are the vectors of labels extracted after running $ h $ steps of the computation (Figure~\ref{fig:feat_G}). They consist of $ h $ blocks, where the $i$-th component of the $j$-th block corresponds to the frequency of label $ i $ at the $j$-th iteration of the computation.
+where $ \phi_h(G) $ and $ \phi_h(G') $ are the vectors of labels extracted after running $ h $ steps of the computation (\cref{fig:feat_G}). They consist of $ h $ blocks, where the $i$-th component of the $j$-th block corresponds to the frequency of label $ i $ at the $j$-th iteration of the computation.
 The computational complexity of the kernel scales \emph{linearly} with the number of edges $ |E| $ and the length $ h $ of the WL graph sequence.
 
-
-\begin{figure*}[!h]
+\begin{figure*}[t]
 	%\includegraphics[totalheight=7.3cm]{fig/wl_graph1_tikz.png}
+	\centering 
 	\begin{subfigure}[t]{.19\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
+			\centering 
 			\begin{tikzpicture}[shorten >=1pt, thick, auto,node distance=1.5cm,font=\small]
 			\tikzstyle{state1}=[circle,draw=black,text=red!90, font=\small]
 			\tikzstyle{state2}=[circle,draw=black,text=blue!90!, font=\small]
@@ -191,8 +193,10 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 			\end{tikzpicture}}
 		\caption{$G$} \label{fig:G}
 	\end{subfigure}
+	\centering 
 	\begin{subfigure}[t]{.19\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
+			\centering
 			\begin{tikzpicture}[shorten >=1pt, thick, auto,node distance=1.5cm]
 			\tikzstyle{state1}=[circle,draw=black,text=red!90, font=\small]
 			\tikzstyle{state2}=[circle,draw=black,text=blue!90!, font=\small]
@@ -220,8 +224,10 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 		}
 		\caption{$G'$} \label{fig:G'}
 	\end{subfigure}
+			\centering 
 	\begin{subfigure}[t]{.19\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
+			\centering 
 			\begin{tikzpicture}[shorten >=1pt, thick, auto,node distance=1.5cm,font=\small]
 			\tikzstyle{state1}=[circle,draw=black,text=red!90,scale=0.8, font=\small]
 			\tikzstyle{state2}=[circle,draw=black,text=blue!90!,scale=0.8, font=\small]
@@ -246,10 +252,12 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 			\draw (C0) edge[thick] (E0);
 			\draw (C0) edge[thick]  (F0);
 			\end{tikzpicture}}
-		\caption{$G$ with multiset node attributes} \label{fig:Gmult}
+		\caption{\mbox{$G$ with multiset} \mbox{node attributes}} \label{fig:Gmult}
 	\end{subfigure}
+			\centering 
 	\begin{subfigure}[t]{.19\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
+			\centering 
 			\begin{tikzpicture}[shorten >=1pt, thick, auto,node distance=1.5cm]
 			\tikzstyle{state1}=[circle,draw=black,text=red!90,scale=0.8, font=\small]
 			\tikzstyle{state2}=[circle,draw=black,text=blue!90!,scale=0.8, font=\small]
@@ -274,9 +282,11 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 			\draw (C1) edge[thick]  (E1);
 			\draw (D1) edge[thick]  (F1);
 			\end{tikzpicture}}
-		\caption{$G'$ with multiset node attributes} \label{fig:G'mult}
+		\caption{\mbox{$G'$ with multiset} \mbox{node attributes}} \label{fig:G'mult}
 	\end{subfigure}
+			\centering 
 	\begin{subfigure}[t]{.19\textwidth}
+		\centering 
 		\begin{tikzpicture}[->, thick, auto,node distance=0.005cm,every node/.style={inner sep=0,outer sep=0}]
 		\tikzstyle{state1}=[draw=white,text=red!90, font=\small]
 		\tikzstyle{state2}=[draw=white,text=blue!90!, font=\small]
@@ -312,9 +322,10 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 	\end{subfigure}
 	
 	\medskip
-	
+				\centering 
 	\begin{subfigure}[t]{.2\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
+			\centering 
 			\begin{tikzpicture}[shorten >=1pt, thick, auto,node distance=1.5cm,font=\small]
 			\tikzstyle{state1}=[circle,draw=black,text=red!90, font=\small]
 			\tikzstyle{state2}=[circle,draw=black,text=blue!90!, font=\small]
@@ -342,8 +353,10 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 		}
 		\caption{{$G$ relabeled}} \label{fig:Grel}
 	\end{subfigure}
+			\centering 
 	\begin{subfigure}[t]{.2\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
+			\centering 
 			\begin{tikzpicture}[shorten >=1pt, thick, auto,node distance=1.5cm]
 			\tikzstyle{state1}=[circle,draw=black,text=red!90, font=\small]
 			\tikzstyle{state2}=[circle,draw=black,text=blue!90!, font=\small]
@@ -373,6 +386,7 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 	\end{subfigure}
 	\centering
 	\begin{subfigure}[t]{.57\textwidth}
+		\centering
 		\begin{tikzpicture}[->, thick, auto,node distance=0.9cm,every node/.style={inner sep=0,outer sep=0}]
 		\tikzstyle{state0}=[draw=white,text=black!, font=\small]
 		\tikzstyle{state1}=[draw=white,text=red!90, font=\small]
@@ -420,11 +434,9 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 		\caption{extracted feature vectors} \label{fig:feat_G}
 	\end{subfigure}
 	
-	
 	\caption{{Computation of the Weisfeiler-Lehman subtree kernel of height $ h=1 $ for two attributed graphs.}}
 	\label{fig:WL}
 \end{figure*}
-
 
 \vspace{1em}
 \noindent\textbf{Deep Graph Kernels}
@@ -488,7 +500,7 @@ The basic premise of our deanonymization approach can be postulated as follows:
 
 For example, the daily commute to work corresponds to a relatively stable sequence of cell towers.
 This can be expressed in the mobility network of the user as a persistent subgraph and forms a characteristic behavioural pattern that can be exploited for deanonymization of mobility traces.
-Empirical evidence for our hypothesis is shown in Figure \ref{fig:evidence}.
+Empirical evidence for our hypothesis is shown in~\cref{fig:evidence}.
 For ease of presentation, in the figure, nodes between the disparate observation periods of the users can be cross-referenced. We assume that cross-referencing is not possible in our attack scenario, as locations are independently pseudonymized.
 
 \subsubsection{Threat Model \label{sec:threat-model}}
@@ -506,7 +518,7 @@ We hypothesize that a training and test mobility network belonging to the same p
 
 The intention of an adversary is to deanonymize a given test network $ G' \in \mcG_{\text{test}} $, by appropriately defining a vector of probabilities over the possible identities in $ \mcL$.
 
-An \textbf{uninformed adversary} has \emph{no information} about the networks of the population and in the absence of any other side knowledge, the prior belief of the adversary about the identity of $ G' $ is a uniform distribution over all possible identities:
+An \textbf{uninformed adversary} has \emph{no information} about the networks of the population and, in the absence of any other side knowledge, the prior belief of the adversary about the identity of $ G' $ is a uniform distribution over all possible identities:
 \[
 	P\left(l_{G'}= l_{G_i}\right) = 1/|\mcL|, \mbox{ for every }  G_i \in \mcG_{\text{training}}.
 \]
@@ -515,7 +527,7 @@ An \textbf{informed adversary} has \emph{access to the population of training ne
 Therefore, when the adversary attempts to deanonymize identities in the data, she assigns probabilities that follow a \emph{non-decreasing function} {of the computed pairwise similarity} of each label.
 Denoting this function by $f$, we can write the updated adversarial probability estimate for each identity as follows:
 \[
-	P\left(l_{G'} =l_{G_i}| \mcG_{\text{training}}, K\right) =  \frac{f\left(K(G_i, G')\right)}{\displaystyle \sum_{j\in \mcL}  f\left(K(G_j, G')\right)},   \mbox{ for every }  G_i \in \mcG_{\text{training}}.
+	P_K\left(l_{G'} =l_{G_i}| \mcG_{\text{training}}\right) =  \frac{f\left(K(G_i, G')\right)}{\displaystyle \sum_{j\in \mcL}  f\left(K(G_j, G')\right)},   \mbox{ for every }  G_i \in \mcG_{\text{training}}.
 	\label{eq:adversarial_rule}
 \]
 
@@ -528,7 +540,7 @@ In the case of the uninformed adversary, the true label for any user is expected
 
 In the case of the informed adversary, knowledge of $ \mcG_\text{training} $ and the use of $ K $ will induce some positive \emph{privacy loss} which will result in the expected rank of user to be smaller than $ |\mcL|/2$. The privacy loss can be quantified as follows:
 \[
-	PL\left(G';\mcG_{\text{training}}, K\right) = \frac{P\left(l_{G'}= l_{G'_\text{true}}|\mcG_{\text{training}}, K\right)}{P\left(l_{G'}= l_{G'_\text{true}}\right)} -1
+	PL\left(G';\mcG_{\text{training}}, K\right) = \frac{P_K\left(l_{G'}= l_{G'_\text{true}}|\mcG_{\text{training}}\right)}{P\left(l_{G'}= l_{G'_\text{true}}\right)} -1
 	\label{eq:privloss}
 \]
 
@@ -536,7 +548,7 @@ A privacy loss equal to zero reflects no information gain compared to an uninfor
 
 Let us assume that the users of our population generate distinct mobility networks.
 As will be supported with empirical evidence in the next section, this is often the case in real-world \emph{cid} datasets of few thousand users even for small networks sizes (e.g. for top$-20$ networks in our dataset).
-Under the above premise, the maximal privacy loss occurs when the presented test network is an identical copy of a training network of the same user which exists in the data of the adversary, i.e.\ $ G' \in \mcG_\text{training}$.
+Under the above premise, the maximal privacy loss occurs when the presented test network is an identical copy of a training network of the same user which exists in the data of the adversary, \ie\ $ G' \in \mcG_\text{training}$.
 This corresponds to a user deterministically repeating her mobility patterns over the observation period recorded in the test network.
 In such a scenario, we could think that isomorphism tests are the most natural way to compute similarity; however, isomorphism tests will be useless in real-world scenarios, since the stochastic nature and noise inherent in the mobility networks of a user would make them non-isomorphic.
 Maximal privacy loss reflects the discriminative ability of the kernel and cannot be exceeded in real-world datasets, where the test networks are expected to be noisy copies of the training networks existing in our system.

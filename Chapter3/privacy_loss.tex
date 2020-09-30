@@ -14,7 +14,7 @@ We choose the partition point separately for each user as a random number from t
 
 \subsection{Mobility Networks \& Kernels}
 
-We computed the pairwise distances between training and test mobility networks using kernels from the categories described in Section~\ref{sec:methodology}.
+We computed the pairwise distances between training and test mobility networks using kernels from the categories described in~\cref{sec:methodology}.
 Node attributes are supported in the computation of Weisfeiler-Lehman and Shortest-Path kernel.
 Thus we augmented the individual mobility networks with categorical features to add some information about the different roles of nodes in users mobility routine.
 Such attributes are computed independently for each user on the basis of the topological information of each network.
@@ -24,8 +24,8 @@ Concretely, we computed the distribution of users' visits to locations and added
 \begin{equation*}
 	a_{c=3}\left(v_i^u\right)=
 	\begin{cases}
-		 3, &  \mbox{if } v_i^u \in \mbox{top-20\% locations of } u  \\
-		 2, &  \mbox{if } v_i^u  \notin \mbox{top-20}\% \mbox{locations of }  u   \mbox{ and }  v_i^u \in \mbox{top}-80\% \mbox{locations}\\
+		 3, &  \mbox{if } v_i^u \in \mbox{top-20\%~locations of } u  \\
+		 2, &  \mbox{if } v_i^u  \notin \mbox{top-20}\%~\mbox{locations of }  u   \mbox{ and }  v_i^u \in \mbox{top}-80\%~\mbox{locations}\\
 		 1, &  \mbox{otherwise}.
 	\end{cases}
 \end{equation*}
@@ -48,7 +48,7 @@ We evaluated graph kernels functions from the following categories:
 	\item \emph{DD}: Degree Distribution kernel through Gaussian RBF
 	\item \emph{WD}: Weighted Degree distribution through Gaussian RBF
 \end{itemize}
-The  Cumulative Density Functions (\emph{CDF}s) of the  true label rank for the best performing kernel of each category are presented in Figure~\ref{fig:kernels_evaluation}.
+The  Cumulative Density Functions (\emph{CDF}s) of the  true label rank for the best performing kernel of each category are presented in~\cref{fig:kernels_evaluation}.
 
 If mobility networks are unique, an \emph{ideal retrieval mechanism} would correspond to a curve that reaches 1 at rank one, indicating a system able to correctly deanonymize all traces by matching the closest training graph.
 This would be the case when users training and test networks are identical, thus the knowledge of the latter implies maximum privacy loss.
@@ -67,11 +67,11 @@ We observe that atomic structure based kernels significantly outperform the rand
 The best overall performance is achieved by the \emph{DSP} kernel on graphs pruned to $ 200 $ nodes.
 In particular, this kernel places the true identity among the closest 10 networks for $10\%$ of the individuals, and among the closest $ 200 $ networks for $ 80\%$ of the population.
 The Shortest-Path kernel has an intuitive interpretation in the case of mobility networks, since its atomic substructures take into account the hop distances among the locations in a user's mobility network and the popularity categories of the departing and arrival location.
-The deep variant can also account for variation in the level of such substructures, which are more realistic when considering the stochasticity in the mobility patterns inherent to our dataset.
+The deep variant can also account for variation at the level of such substructures, which are more realistic when considering the stochasticity in the mobility patterns inherent to our dataset.
 
 The best performance of the Weisfeiler-Lehman kernel is achieved by its deep variant for $ h=2 $ iterations of the \emph{WL} test for a mobility network pruned to $200$ nodes.
 This phenomenon is explainable via the statistical properties of the mobility networks.
-As we saw in Section~\ref{sec:data-stats}, the networks display power law degree distribution and small diameters.
+As we saw in~\cref{sec:data-stats}, the networks display power law degree distribution and small diameters.
 Taking into account the steps of the \emph{WL} test, it is clear that these topological properties will lead the node relabeling scheme to cover the entire network after a very small number of iterations.
 Thus local structural patterns will be described by few features produced in the first iterations of the test.
 Furthermore, the feature space of the kernel increases very quickly as a function of $ h $, which leads to sparsity and low levels of similarity over the population of networks.
@@ -87,12 +87,12 @@ Based on the insights obtained from our experiment, we can make the following ob
 \begin{figure*}[]
 	\centering
 	\begin{minipage}[b]{.45\textwidth}
-		\includegraphics[width=\linewidth]{\MyPath/fig/rank_correct_.pdf}
+		\includegraphics[width=1.2\linewidth]{\MyPath/fig/rank_correct_.pdf}
 		\caption{{Boxplot of rank for the true labels of the population according to a Deep Shortest-Path kernel and to a random ordering.}}
 		\label{fig:rank_correct}
 	\end{minipage}\qquad
 	\begin{minipage}[b]{.45\textwidth}
-		\includegraphics[width=\linewidth]{\MyPath/fig/posterior_privloss_.pdf}
+		\includegraphics[width=1.2\linewidth]{\MyPath/fig/posterior_privloss_.pdf}
 		\centering \caption{{Privacy loss over the test data of our population for an adversary adopting the informed policy of~\eqref{eq:inverse_rank}. Median privacy loss is 2.52.}}
 		\label{fig:privloss}
 	\end{minipage}
@@ -118,11 +118,11 @@ Based on the insights obtained from our experiment, we can make the following ob
 
 
 The Deep Shortest-Path kernel on top$-200$ networks offers the best ranking of identities for the test networks.
-As observed in Figure \ref{fig:rank_correct}, the mean of the true rank has been shifted from $ 750 $ to $ 140 $ for our population.
+As observed in~\cref{fig:rank_correct}, the mean of the true rank has been shifted from $ 750 $ to $ 140 $ for our population.
 In addition, the variance is much smaller: approximately $ 218 $, instead of $ 423 $ for the random ordering.
 
 The obtained ordering implies a significant decrease in user privacy, since the ranking can be leveraged by an adversary to determine the most likely matches between a training mobility network and a test mobility network.
-The adversary can estimate the true identity of a given test network $ G' $, as suggested in Section~\ref{sec:threat-model}, applying some simple probabilistic policy that uses pairwise similarity information. For example, let us examine the privacy loss implied by update rule in~\eqref{eq:adversarial_rule} for  \mbox{function $ f$}:
+The adversary can estimate the true identity of a given test network $ G' $, as suggested in~\cref{sec:threat-model}, applying some simple probabilistic policy that uses pairwise similarity information. For example, let us examine the privacy loss implied by update rule in~\eqref{eq:adversarial_rule} for  \mbox{function $ f$}:
 
 \[
 f\left(K_{\text{DSP}}(G_i, G')\right) =\frac{1}{\text{rank}\left(K_{DSP}(G_i, G')\right)}.
@@ -132,7 +132,7 @@ f\left(K_{\text{DSP}}(G_i, G')\right) =\frac{1}{\text{rank}\left(K_{DSP}(G_i, G'
 This means that the adversary updates her probability estimate for the identity corresponding to a test network, by assigning to each possible identity a probability that is inversely proportional to the rank of the similarity between the test network and the training network corresponding to the identity.
 
 From equation~\eqref{eq:privloss}, we can compute the induced privacy loss for each test network, and the statistics of privacy loss over the networks of the Device Analyzer population.
-Figure~\ref{fig:privloss} demonstrates considerable privacy loss with a median of $ 2.52 $.
+\cref{fig:privloss} demonstrates considerable privacy loss with a median of $ 2.52 $.
 This means that the informed adversary can achieve a median deanonymization probability $3.52$ times higher than an uninformed adversary.
 Moreover, the positive mean of privacy loss ($ {\approx  27}$) means that the probabilities of  the true identities of the test networks have, on average, much higher values in the adversarial estimate compared to the uninformed random strategy.
 Hence, revealing the kernel values makes an adversarial attack easier.
@@ -142,7 +142,7 @@ Hence, revealing the kernel values makes an adversarial attack easier.
 The demonstrated privacy leakage motivates the quest
 for defense mechanisms against this category of attacks.
 There are a variety of techniques which we could apply in order to \emph{reduce the recurring patterns of an individual's mobility network over time} and \emph{decrease the diversity of mobility networks across a population}, and therefore enhance the privacy inherent in these graphs.
-Examples include noise injection on network structure via several strategies: randomization of node attributes, perturbations of network edges or node removal.
+Examples include noise injection on network structure via several strategies: randomization of node attributes, perturbations of network edges, or node removal.
 It is currently unclear how effective such techniques will be, and what trade-off can be achieved between utility in mobility networks and the privacy guarantees offered to individuals whose data the graphs represent.
 Moreover, it seems appropriate to devise kernel-agnostic techniques, suitable for generic defense mechanisms.
 For example, it is of interest to assess the resistance of our best similarity metric to noise, as the main purpose of deep graph kernels is to be robust to small dissimilarities at the substructure level.
