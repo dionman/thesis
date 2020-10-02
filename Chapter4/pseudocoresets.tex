@@ -34,7 +34,7 @@ A Bayesian pseudocoreset takes the form
 where $u\defined (u_m)_{m=1}^M$ are $M$ pseudodata points $u_m\in\reals^d$, $(w_m)_{m=1}^M$ are nonnegative weights,
 $f : \reals^d \times \Theta \to \reals$ is a potential function parametrized by a pseudodata point,
 and $Z(u, w)$ is the corresponding normalization constant rendering $\pi_{u, w}$ a probability density. In the setting of Bayesian posterior inference,
-$u_m$ will take the same form as the data, while the potentials are the log-likelihood functions, i.e., $f(u_m, \theta) = \log p(u_m | \theta)$.
+$u_m$ will take the same form as the data, while the potentials are the log-likelihood functions, \ie, $f(u_m, \theta) = \log p(u_m | \theta)$.
 We construct a coreset by minimizing the KL divergence over both the pseudodata locations and weights, 
 \[
 u^\star, w^\star = \argmin_{\substack{u\in\reals^{d \times M}}, w\in\reals^M_+}\,\, \kl{\pi_{u,w}}{\pi}. 
@@ -74,7 +74,7 @@ where $1\in\reals^N$ is the vector of all 1 entries, and $w\in\reals^M$ is the v
 
 As we will employ gradient descent steps as part of our algorithm to minimize the variational objective over the parameters $u, w$,
 we need to evaluate the derivative of the KL divergence \cref{eq:kl-expanded}. Despite the presence of the 
-intractable normalization constants and expectations, we show in \cref{supp:gradient_derivations}
+intractable normalization constants and expectations, we show in Appendix~\ref{app:gradient_derivations}
 that gradients can be expressed using moments of the pseudodata and original data potential vectors.
 In particular, 
 the gradients of the KL divergence with respect to the weights $ w$ and to a single pseudodata location $u_m$ are 
@@ -95,7 +95,7 @@ where $h(\cdot, \theta) \defined \nabla_u f(\cdot, \theta)$, and the $\theta$ ar
 
 The gradients in \cref{eq:dkl_duw} involve expectations of (gradient) log-likelihoods from the model.
 Although there are a few particular Bayesian models where these can be evaluated in closed-form
-(e.g.~the synthetic experiment in \cref{section:gaussian_experiment}; see also \cref{supp:gaussian_experiment_appendix}),
+(e.g.~the synthetic experiment in \cref{section:gaussian_experiment}; see also Appendix~\ref{app:gaussian_experiment_appendix}),
 this is not usually the case. In order to make the proposed pseudocoreset method broadly applicable,
 in this section we develop a black-box stochastic optimization scheme (\cref{alg:psvi}) for \cref{eq:pseudo-coreset-vi}. 
 
@@ -107,42 +107,6 @@ in this section we develop a black-box stochastic optimization scheme (\cref{alg
 \newcommand{\Commenttriangle}[1]{\algorithmiccomment{\hfill$\triangleright$ #1}}
 
 \setlength{\textfloatsep}{10pt}% Remove \textfloatsep
-
-\begin{algorithm}[!ht]
-	\caption{Pseudocoreset Variational Inference}
-	\label{alg:psvi}
-	\begin{algorithmic}[1]
-		\Procedure{PSVI}{$f(\cdot, \cdot), \pi_0, x, M, B, S, T, (\gamma_t)_{t=1}^{\infty}$}
-		\LineCommentIndent{Initialize the pseudocoreset using a uniformly chosen subset of the full dataset}
-		\State $N \gets $ \# datapoints in $x, \quad \mcB\dist\distUnifSubset\left([N], M\right), \quad \mcB \defined \left\{b_1, \dots, b_M\right\}$ 
-		\State $u_m \gets x_{b_m}, \quad w_m \gets \nicefrac{N}{M}, \quad m=1, \dots, M$
-		\For{$ t = 1, \ldots, T$}
-		\LineCommentIndent{\mbox{Take $S$ samples from current pseudocoreset posterior}}
-		\State $(\theta)_{s=1}^{S}  \distiid \pi_{u,w}$ where $\pi_{u,w}(\theta) \propto \exp\left(\sum_{m=1}^Mw_m f(u_m, \theta)\right)\pi_0(\theta)$
-		\State $\mcB\dist\distUnifSubset\left([N], B\right)$ \Commenttriangle{\mbox{Obtain a minibatch of $B$ points from the full data}}
-		\For{$s = 1, \dots, S$} 	\Commenttriangle{\mbox{Compute (gradient) log-likelihood discretizations}}
-		\State $g_{s} \gets \left( f(x_b, \theta_s ) - \nicefrac{1}{S}\sum_{s'=1}^S f(x_b, \theta_{s'}) \right)_{b\in\mcB} \in \reals^B$ 
-		\State $\tg_s\gets \left(f(u_m, \theta_s) - \nicefrac{1}{S}\sum_{s'=1}^S f(u_m, \theta_{s'})\right)_{m=1}^M\in\reals^M$
-		\For{$m = 1, \dots, M$}
-		\State $\tildeh_{m,s} \gets \nabla_u f(u_m, \theta_s) - \nicefrac{1}{S}\sum_{s'=1}^S \nabla_u f(u_m, \theta_{s'})\in\reals^d$
-		\EndFor
-		\EndFor
-		\State $\hat\nabla_w \gets -\nicefrac{1}{S}\sum_{s=1}^S \tg_s\left(\nicefrac{N}{B} g_s^T1 - \tg_s^Tw\right)$\Commenttriangle{\mbox{Compute Monte-Carlo gradients for $w$}}
-		\For{$m = 1,\dots, M$}
-		\Comment{and $(u_m)_{m=1}^M$}
-		\State $\hat\nabla_{u_m} \gets -w_m\nicefrac{1}{S}\sum_{s=1}^S \tildeh_{m,s}\left(\nicefrac{N}{B} g_s^T1 - \tg_s^Tw\right)$
-		\EndFor
-		\State $w \gets \max(w - \gamma_t\hat\nabla_w, 0)$ \Commenttriangle{\mbox{Take stochastic gradient step in $w$}}
-		\For{$m = 1,\dots, M$} \Comment{and $(u_m)_{m=1}^M$}
-		\State $u_m \gets u_m - \gamma_t\hat\nabla_{u_m}$
-		\EndFor
-		\EndFor
-		\State\Return $w$, $(u_m)_{m=1}^M$
-		\EndProcedure		 
-	\end{algorithmic}
-\end{algorithm}
-
-
 
 To initialize the pseudocoreset, we subsample $M$ datapoints from the large dataset and reweight them
 to match the overall weight of the full dataset,
@@ -189,10 +153,39 @@ Aside from that, all computations involving $\tg_s\in\reals^M$ and $\tildeh_{m,s
 Each of these computations are repeated $S$ times over the coreset posterior samples.
 
 
-
-
-
-
+\begin{algorithm}[!t]
+	\caption{Pseudocoreset Variational Inference}
+	\label{alg:psvi}
+	\begin{algorithmic}[1]
+		\Procedure{PSVI}{$f(\cdot, \cdot), \pi_0, x, M, B, S, T, (\gamma_t)_{t=1}^{\infty}$}
+		\LineCommentIndent{Initialize the pseudocoreset using a uniformly chosen subset of the full dataset}
+		\State $N \gets $ \# datapoints in $x, \quad \mcB\dist\distUnifSubset\left([N], M\right), \quad \mcB \defined \left\{b_1, \dots, b_M\right\}$ 
+		\State $u_m \gets x_{b_m}, \quad w_m \gets \nicefrac{N}{M}, \quad m=1, \dots, M$
+		\For{$ t = 1, \ldots, T$}
+		\LineCommentIndent{\mbox{Take $S$ samples from current pseudocoreset posterior}}
+		\State $(\theta)_{s=1}^{S}  \distiid \pi_{u,w}$ where $\pi_{u,w}(\theta) \propto \exp\left(\sum_{m=1}^Mw_m f(u_m, \theta)\right)\pi_0(\theta)$
+		\State $\mcB\dist\distUnifSubset\left([N], B\right)$ \Commenttriangle{\mbox{Obtain a minibatch of $B$ points from the full data}}
+		\For{$s = 1, \dots, S$} 	\Commenttriangle{\mbox{Compute (gradient) log-likelihood discretizations}}
+		\State $g_{s} \gets \left( f(x_b, \theta_s ) - \nicefrac{1}{S}\sum_{s'=1}^S f(x_b, \theta_{s'}) \right)_{b\in\mcB} \in \reals^B$ 
+		\State $\tg_s\gets \left(f(u_m, \theta_s) - \nicefrac{1}{S}\sum_{s'=1}^S f(u_m, \theta_{s'})\right)_{m=1}^M\in\reals^M$
+		\For{$m = 1, \dots, M$}
+		\State $\tildeh_{m,s} \gets \nabla_u f(u_m, \theta_s) - \nicefrac{1}{S}\sum_{s'=1}^S \nabla_u f(u_m, \theta_{s'})\in\reals^d$
+		\EndFor
+		\EndFor
+		\State $\hat\nabla_w \gets -\nicefrac{1}{S}\sum_{s=1}^S \tg_s\left(\nicefrac{N}{B} g_s^T1 - \tg_s^Tw\right)$\Commenttriangle{\mbox{Compute Monte-Carlo gradients for $w$}}
+		\For{$m = 1,\dots, M$}
+		\Comment{and $(u_m)_{m=1}^M$}
+		\State $\hat\nabla_{u_m} \gets -w_m\nicefrac{1}{S}\sum_{s=1}^S \tildeh_{m,s}\left(\nicefrac{N}{B} g_s^T1 - \tg_s^Tw\right)$
+		\EndFor
+		\State $w \gets \max(w - \gamma_t\hat\nabla_w, 0)$ \Commenttriangle{\mbox{Take stochastic gradient step in $w$}}
+		\For{$m = 1,\dots, M$} \Comment{and $(u_m)_{m=1}^M$}
+		\State $u_m \gets u_m - \gamma_t\hat\nabla_{u_m}$
+		\EndFor
+		\EndFor
+		\State\Return $w$, $(u_m)_{m=1}^M$
+		\EndProcedure		 
+	\end{algorithmic}
+\end{algorithm}
 
 
 
