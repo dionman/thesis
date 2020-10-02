@@ -8,7 +8,7 @@ $ (f(x_n, \theta))_{n=1}^{N} $ and a base density $ \pi_0(\theta)$:
 \pi(\theta) &\defined \frac{1}{Z} \exp \left(\sum_{n=1}^{N} f(x_n, \theta)\right) \pi_0(\theta).\label{eq:posterior}
 \]
 In the setting of Bayesian inference with conditionally independent data, 
-the potentials are data log-likelihoods, i.e. $f(x_n, \theta) := \log p(x_n | \theta)$,
+the potentials are data log-likelihoods, \ie $f(x_n, \theta) := \log p(x_n | \theta)$,
  $\pi_0$ is the prior density, $\pi$ is the posterior, 
 and $Z$ is the marginal likelihood of the data. 
 Rather than working directly with $\pi(\theta)$ for 
@@ -37,7 +37,7 @@ original datapoints themselves to summarize the whole dataset.
 summarizing high-dimensional data; in the common setting of posterior inference
 for a Gaussian mean, the KL divergence $\kl{\pi_{w^\star}}{\pi_1}$ of the
 \emph{optimal} coreset of any size scales with the dimension of the data.  The
-proof found in~\cref{supp:proofs}.
+proof may be found in~\cref{app:proofs}.
 \bnprop \label{prop:original_coreset_fails}
 Suppose we use $(X_n)_{n=1}^N \distiid \distNorm(0, I)$ in $\reals^d$ to perform posterior inference in a Bayesian model
 with prior 
