@@ -74,7 +74,7 @@ where $1\in\reals^N$ is the vector of all 1 entries, and $w\in\reals^M$ is the v
 
 As we will employ gradient descent steps as part of our algorithm to minimize the variational objective over the parameters $u, w$,
 we need to evaluate the derivative of the KL divergence \cref{eq:kl-expanded}. Despite the presence of the 
-intractable normalization constants and expectations, we show in Appendix~\ref{app:gradient_derivations}
+intractable normalization constants and expectations, we show in~\cref{app:gradient_derivations}
 that gradients can be expressed using moments of the pseudodata and original data potential vectors.
 In particular, 
 the gradients of the KL divergence with respect to the weights $ w$ and to a single pseudodata location $u_m$ are 
@@ -95,7 +95,7 @@ where $h(\cdot, \theta) \defined \nabla_u f(\cdot, \theta)$, and the $\theta$ ar
 
 The gradients in \cref{eq:dkl_duw} involve expectations of (gradient) log-likelihoods from the model.
 Although there are a few particular Bayesian models where these can be evaluated in closed-form
-(e.g.~the synthetic experiment in \cref{section:gaussian_experiment}; see also Appendix~\ref{app:gaussian_experiment_appendix}),
+(e.g.~the synthetic experiment in \cref{section:gaussian_experiment}; see also~\cref{app:gaussian_experiment_appendix}),
 this is not usually the case. In order to make the proposed pseudocoreset method broadly applicable,
 in this section we develop a black-box stochastic optimization scheme (\cref{alg:psvi}) for \cref{eq:pseudo-coreset-vi}. 
 

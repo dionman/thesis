@@ -15,7 +15,7 @@ additive relative noise~(\realistic). Notably, Hilbert coresets and
 \sparsevi~develop incremental schemes for construction, while \psvi~relies on
 batch optimization with random initialization~(\cref{alg:psvi}), and does not
 use any information from pseudocoresets of smaller size. An incremental scheme
-for \sparsevi~is included in Appendix~\ref{app:experiments_appendix}. %Code for the presented experiments is available at~\href{https://github.com/dionman/psvi}{https://github.com/dionman/psvi}. 
+for \sparsevi~is included in~\cref{app:experiments_appendix}. %Code for the presented experiments is available at~\href{https://github.com/dionman/psvi}{https://github.com/dionman/psvi}. 
 
 \subsection{Gaussian mean inference}
 \label{section:gaussian_experiment}
@@ -33,7 +33,7 @@ closed-form:
 \]
  Using the exact posterior, we derive the exact
 moments used in the gradient formulae from \cref{eq:dkl_duw} in closed form
-(see Appendix~\ref{app:gaussian_experiment_appendix}),
+(see~\cref{app:gaussian_experiment_appendix}),
 \[ 
 \begin{aligned}
 & \cov_{u,w}[f_n ,f_m]  =  v_n^T \Psi v_m + \half \tr{\Psi^T \Psi},
@@ -85,7 +85,7 @@ true posterior very efficiently.
 \subsection{Bayesian linear regression}
 \label{section:linreg_experiment}
 In the second experiment, we use a set of ${N=2,000}$ 
-$101$-dimensional datapoints $(x_n,y_n)_{n=1}^{N}$ generated as follows: $(x_n)_{n=1}^N  \distiid \distNorm(0, I),\; (y_n)_{n=1}^N  \dist [1, x_n]^T\theta + \epsilon_n,\;  (\epsilon_n)_{n=1}^{N} \distiid \distNorm(0, \sigma^2)$, and aim to infer $\theta \in \reals^{101}$. We assume a prior $\theta \dist \distNorm(\mu_0,\sigma_0^2 I)$, where $ \mu_0, \sigma_0^2$ are the dataset empirical mean and second moment, and set the noise parameter $ \sigma$ to the variance of $(y_n)_{n=1}^{N}$. We apply stochastic optimization for \psvi~construction~(also see Appendix~\ref{app:linreg_model_appendix}). We use learning rates $\gamma_t = t^{-1}$ for \sparsevi, and $\gamma_t = 0.1t^{-1}$ for \psvi, $B=200$, $T=1000$, while selection step for \sparsevi~is carried out over the full dataset. \cref{fig:linreg_300} shows that Hilbert coresets cannot improve posterior approximation in this setting with 100 random projections (see Appendix~\ref{app:linreg_plots_appendix}), 
+$101$-dimensional datapoints $(x_n,y_n)_{n=1}^{N}$ generated as follows: $(x_n)_{n=1}^N  \distiid \distNorm(0, I),\; (y_n)_{n=1}^N  \dist [1, x_n]^T\theta + \epsilon_n,\;  (\epsilon_n)_{n=1}^{N} \distiid \distNorm(0, \sigma^2)$, and aim to infer $\theta \in \reals^{101}$. We assume a prior $\theta \dist \distNorm(\mu_0,\sigma_0^2 I)$, where $ \mu_0, \sigma_0^2$ are the dataset empirical mean and second moment, and set the noise parameter $ \sigma$ to the variance of $(y_n)_{n=1}^{N}$. We apply stochastic optimization for \psvi~construction~(also see~\cref{app:linreg_model_appendix}). We use learning rates $\gamma_t = t^{-1}$ for \sparsevi, and $\gamma_t = 0.1t^{-1}$ for \psvi, $B=200$, $T=1000$, while selection step for \sparsevi~is carried out over the full dataset. \cref{fig:linreg_300} shows that Hilbert coresets cannot improve posterior approximation in this setting with 100 random projections (see~\cref{app:linreg_plots_appendix}), 
 while \psvi~achieves the fastest decay rate over sizes $ 100 \leq M \lessapprox 250$, surpassing \sparsevi.
 
 \subsection{Bayesian logistic regression}
@@ -97,7 +97,7 @@ dimensions) datasets. For brevity, equations and gradients for the logistic
 regression model, additional experiments on \mbox{3 smaller-scale} datasets,
 full dataset descriptions, hyperparameter selection, time performance
 evaluation and results on an incremental scheme for pseudocoreset construction
-are deferred to Appendix~\ref{app:logreg_experiment_appendix}. 
+are deferred to~\cref{app:logreg_experiment_appendix}. 
 %
   %Learning rates were tuned separately per dataset, using schedules $ {\gamma_t=\alpha t^{-\half}}$. For 	\textsc{Transactions}, \textsc{ChemReact100}, and \textsc{Music},  $ \alpha $ was respectively set to $0.05, 0.1, 0.1 $ for \sparsevi, and $10, 50, 10 $ for \psvi. 
 %
