@@ -182,19 +182,17 @@ Define $\Psi \defined Q^{-1}\Sigma_{u,w} Q^{-T}$,
 $v_n \defined Q^{-1}(x_n - \mu_{u,w})$,
 $\tv_n := Q^{-1}(u_n - \mu_{u,w})$,
 and $Q$ to be the Cholesky 
-decomposition of $\Sigma$, i.e. $ {\Sigma := Q Q^T}$. 
+decomposition of $\Sigma$, \ie~$ {\Sigma := Q Q^T}$. 
 In order to compute the gradients in \cref{eq:dkl_duw},
 we need expressions for $\cov[f_n,f_m]$,
 $\cov[\tf_n,f_m]$, 
 $\cov[h(u_i), f_n]$, and
 $\cov[h(u_i), \tf_n]$.
-
 Following \citep{campbell19neurips}, we have that
 \[ 
 \cov[f_n ,f_m]  &=  v_n^T \Psi v_m + \frac{1}{2} \tr{\Psi^T \Psi} \\
 \cov[\tf_n ,f_m]  &=  \tv_n^T \Psi v_m + \frac{1}{2} \tr{\Psi^T \Psi}. 
 \]
-
 We now evaluate the remaining covariance $\cov[h(u_i), f_m]$;
 the derivation of $\cov[h(u_i), \tf_m]$ follows similarly.
 We begin
@@ -436,23 +434,23 @@ Regarding \dpvi, over our experiments we also kept subsampling ratio fixed. We b
 		\centering
 		\caption*{\textsc{Synthetic}}
 		\vspace*{-0.3cm}
-		\includegraphics[width=0.475\textwidth]{\MyPath/tempfigs/synthlriter.png} \hfill 
-		\includegraphics[width=0.475\textwidth]{\MyPath/tempfigs/synthlrsz.png}%
+		\includegraphics[width=0.495\textwidth, height=3.1cm]{\MyPath/tempfigs/synthlriter.png} \hfill 
+		\includegraphics[width=0.495\textwidth, height=3.1cm]{\MyPath/tempfigs/synthlrsz.png}%
 	\end{subfigure}\hfill\qquad
 	\begin{subfigure}[b]{\textwidth}
 		\centering
 		\caption*{\textsc{Phishing}}
 		\vspace*{-0.3cm}
-		\includegraphics[width=0.475\textwidth]{\MyPath/tempfigs/phishingiter.png} \hfill
-		\includegraphics[width=0.475\textwidth]{\MyPath/tempfigs/phishingsz.png}%
+		\includegraphics[width=0.495\textwidth, height=3.1cm]{\MyPath/tempfigs/phishingiter.png} \hfill
+		\includegraphics[width=0.495\textwidth, height=3.1cm]{\MyPath/tempfigs/phishingsz.png}%
 	\end{subfigure}\hfill\qquad
 	\begin{subfigure}[b]{\textwidth}
 		\centering
 		\caption*{\textsc{ChemReact}}
 		\vspace*{-0.3cm}
-		\includegraphics[width=0.475\textwidth]{\MyPath/tempfigs/ds1iter.png}
+		\includegraphics[width=0.495\textwidth, height=3.1cm]{\MyPath/tempfigs/ds1iter.png}
 		\hfill
-		\includegraphics[width=0.475\textwidth]{\MyPath/tempfigs/ds1sz.png}%
+		\includegraphics[width=0.495\textwidth, height=3.1cm]{\MyPath/tempfigs/ds1sz.png}%
 	\end{subfigure}
 	\caption{Comparison of incremental \psvi~and \sparsevi~approximate posterior
 		quality vs iterations of incremental construction~(\emph{left}) and  coreset
