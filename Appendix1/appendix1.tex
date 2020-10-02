@@ -3,7 +3,7 @@
 \renewcommand*{\MyPath}{../Appendix1}%
 
 \section{Proof of~\cref{prop:original_coreset_fails}}
-\label{supp:proofs}
+\label{app:proofs}
 
 In the setting of~\cref{prop:original_coreset_fails}, both the exact posterior and the coreset posterior 
 are multivariate Gaussian distributions, denoted as $\distNorm{\left(\mu_1, \Sigma_1\right)}$ and 
@@ -81,7 +81,7 @@ and
 
 
 \section{Gradient Derivations}
-\label{supp:gradient_derivations}
+\label{app:gradient_derivations}
 
 Throughout, expectations and covariances over the random parameter $\theta$ with 
 no explicit subscripts are taken under pseudocoreset posterior $\piuw$. We also
@@ -89,7 +89,7 @@ interchange differentiation and integration without explicitly verifying that
 sufficient conditions to do so hold.
 
 \subsection{Weights gradient}
-\label{supp:weights_gradient}
+\label{app:weights_gradient}
 
 \setlength{\belowdisplayskip}{8pt} \setlength{\belowdisplayshortskip}{8pt}
 \setlength{\abovedisplayskip}{8pt} \setlength{\abovedisplayshortskip}{8pt}
@@ -128,7 +128,7 @@ The gradient with respect to $w$ in \cref{eq:dkl_duw} follows by substituting
 $1^Tf(\theta)$ and $w^T\tf(\theta)$ for $a(\theta)$ and using the product rule.
 
 \subsection{Location gradients}
-\label{supp:locations_gradient}
+\label{app:locations_gradient}
 
 Here we take the gradient with respect to a single
 pseudopoint $u_i \in \reals^d$. First note that
@@ -170,11 +170,11 @@ $f(\theta)^T1$ and $\tf(\theta)^Tw$ for $a(u,\theta)$.
 
 
 \section{Details on Experiments}
-\label{supp:experiments_appendix}
+\label{app:experiments_appendix}
 
 
 \subsection{Gaussian mean inference}
-\label{supp:gaussian_experiment_appendix}
+\label{app:gaussian_experiment_appendix}
 Let the coreset posterior have mean $\mu_{u,w}$ and covariance matrix $\Sigma_{u,w}$.
 Throughout, expectations and covariances over the random parameter $\theta$ with 
 no explicit subscripts are taken under pseudocoreset posterior $\piuw$.
@@ -238,10 +238,10 @@ and likewise,
 \]
 
 \subsection{Bayesian linear regression}
-\label{supp:linear_regression_appendix}
+\label{app:linear_regression_appendix}
 
 \subsubsection{Model and gradients details}
-\label{supp:linreg_model_appendix}
+\label{app:linreg_model_appendix}
 Here we present the terms involving pseudodata points---the corresponding expressions for original datapoints are the same, after replacing $u_m$ with $x_m$.
 
 For individual points, dropping normalization constants, we get log-likelihood terms of the form
@@ -258,7 +258,7 @@ Hence, we obtain for the pseudocoreset posterior
 To scale up computation on large datasets, in our experiment we made use of stochastic gradients for black-box construction of \psvi~and \sparsevi. Beyond the expressions for individual log-likelihood and (pseudo)coreset posteriors presented above, for pseudocoreset construction we also need the expression for log-likelihood gradient with respect to the pseudodata points, for which we can immediately see that $\nabla_{u_m} f(u_m, \theta) = \frac{1}{\sigma^2}(y_m - \theta^Tu_m)\theta$. Over our experiment, we optimized initial learning rates for \sparsevi~and \psvi~via a grid search over ${\{0.1, 1, 10\}}$.
 
 \subsubsection{Additional plots}
-\label{supp:linreg_plots_appendix}
+\label{app:linreg_plots_appendix}
 
 \begin{figure}[t]
 	\centering
@@ -283,10 +283,10 @@ To scale up computation on large datasets, in our experiment we made use of stoc
 Here we present some more plots demonstating the dependence of Hilbert coresets approximation quality on the number of random dimensions in the Bayesian linear regression setting presented in~\cref{fig:linreg_300}. We remind that dimension used at this experiment and throughout the entire experiments section was set to 100. Increasing this number is typically expensive to obtain in practice. As demonstrated in~\cref{fig:hilbert_varying_projdim}, getting higher projection dimension enables better posterior approximation in the problem, while \gigao~starts offering better quality of approximation than \gigar. However, \psvi~remains competitive in the small coreset regime even for Hilbert coresets with extremely large projection dimensionality, demonstrating the information-geometric limitations that Hilbert coreset constructions are known to face~\cite{campbell19neurips}.
 
 \subsection{Bayesian Logistic Regression}
-\label{supp:logreg_experiment_appendix}
+\label{app:logreg_experiment_appendix}
 
 \subsubsection{Model}
-\label{supp:logreg_model_appendix}
+\label{app:logreg_model_appendix}
 In logistic regression we have a set of datapoints $(x_n, y_n)_{n=1}^{N}$ each corresponding to a feature vector ${x_n \in \reals^d}$ and a label ${y_n \in \{-1, 1\}}$. Datapoints are assumed to be generated according to following statistical model
 \[
 y_n | x_n, \theta \sim \distBern \left( \frac{1}{1+e^{-z_n \theta}} \right) 
@@ -321,7 +321,7 @@ Hence in pseudocoreset construction we can optimize pseudodata point locations w
 
 
 \subsubsection{Datasets description}
-\label{supp:logreg_data_details}
+\label{app:logreg_data_details}
 For logistic regression experiments, we used subsampled and full versions of datasets presented in~\cref{table:datasets_details}: a synthetic dataset with $ x\in \reals^2 $ sampled \iid from a $\distNorm{(0, I)}$ and $ y\in\{-1,1\} $ sampled from respective logistic likelihood with $ \theta =[3, 3, 0]^T$ (\textsc{Synthetic}); a phishing websites dataset reduced to $ D=10 $ via PCA (\textsc{Phishing}); a chemical reactivity dataset with  real-valued features corresponding to its first $ 10 $ and $ 100 $ principal components (\textsc{ChemReact} and \textsc{ChemReact100} respectively); a dataset with $ 50 $ real-valued features associated with whether each of $ 100K $ customers of a bank will make a specific transaction (\textsc{Transactions}); and a dataset for music analysis, where we consider "classical vs all" genre classification task (\textsc{Music}). Original versions of the four latter datasets are available online respectively at~\href{https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/binary.html}{https://www.csie.ntu.edu.tw/\~{}cjlin/libsvm tools/datasets/binary.html},  \href{http://komarix.org/ac/ds/}{http://komarix.org/ac/ds},  \href{https://www.kaggle.com/c/santander-customer-transaction-prediction/data}{https://www.kaggle.com/c/santan der-customer-transaction-prediction/data}, and \href{https://github.com/mdeff/fma}{https://github.com/mdeff/fma}. 
 
 \begin{table}[!h]
@@ -343,7 +343,7 @@ For logistic regression experiments, we used subsampled and full versions of dat
 \end{table}
 
 \subsubsection{Small-scale experiments}
-\label{supp:small_scale_appendix}
+\label{app:small_scale_appendix}
 In the small-scale experiment, the number of overall gradient updates was
 set to $T = 1,500$, while minibatch size was set to  $B = 400$. Learning rate schedule for \sparsevi~and \psvi~was ${\gamma_t = 0.1t^{-1}}$. Results presented in~\cref{fig:smallscale_ls_blogreg_dkl} indicate that~\psvi~achieves superior quality to~\sparsevi~for small coreset sizes, and is competitive to~\gigao, while the latter unrealistically uses true posterior samples to tune a weighting function required over construction.
 
@@ -374,7 +374,7 @@ set to $T = 1,500$, while minibatch size was set to  $B = 400$. Learning rate sc
 \end{figure*}
 
 \subsubsection{Reproducibility of Bayesian Logistic Regression experiment}
-\label{supp:reproducibility}
+\label{app:reproducibility}
 In this subsection we provide additional details for reproducibility of the experimental setup for the Bayesian Logistic Regression experiment presented in~\cref{sec:experiments}.  
 
 \paragraph{Posterior approximation metrics, coreset gradients and learning rates} Posterior approximation quality was estimated via computing KL divergence between Gaussian distributions fitted on coreset and full data posteriors via Laplace approximation. For both \sparsevi~and \psvi, gradients were estimated using samples drawn from a Laplace approximation fitted on current coreset weights
@@ -387,7 +387,7 @@ Regarding \dpvi, over our experiments we also kept subsampling ratio fixed. We b
 
 
 \subsubsection{Additional Plots}
-\label{supp:cpu_timings}
+\label{app:cpu_timings}
 
 \begin{figure*}[!t]
 	\centering
