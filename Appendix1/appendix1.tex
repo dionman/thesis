@@ -38,7 +38,6 @@ and
 	\begin{equation} \label{eq:first_inequality}
 	\kl{\pi_{w}}{\pi_1} \geq \frac{1}{2}(\mu_{1} - \mu_{w})^T \Sigma_{1}^{-1}(\mu_{1} - \mu_{w}).
 	\end{equation}
-	
 	Suppose we pick a set $\mcI\subseteq[N]$, $\left|\mcI\right| = M$ of active indices $n$ where the optimal $w_n \geq 0$,
 	and enforce that all others $n\notin \mcI$ satisfy $w_n = 0$.
 	Then denoting
@@ -181,7 +180,7 @@ no explicit subscripts are taken under pseudocoreset posterior $\piuw$.
 Define $\Psi \defined Q^{-1}\Sigma_{u,w} Q^{-T}$,
 $v_n \defined Q^{-1}(x_n - \mu_{u,w})$,
 $\tv_n := Q^{-1}(u_n - \mu_{u,w})$,
-and $Q$ to be the Cholesky 
+and $Q$ to be the lower triangular matrix of the Cholesky 
 decomposition of $\Sigma$, \ie~$ {\Sigma := Q Q^T}$. 
 In order to compute the gradients in \cref{eq:dkl_duw},
 we need expressions for $\cov[f_n,f_m]$,
@@ -196,7 +195,7 @@ Following \citep{campbell19neurips}, we have that
 We now evaluate the remaining covariance $\cov[h(u_i), f_m]$;
 the derivation of $\cov[h(u_i), \tf_m]$ follows similarly.
 We begin
-by explicitly evaluating the log likelihood gradient and its expectation,
+by explicitly evaluating the log-likelihood gradient and its expectation,
 \[
 h(u_i) &= - \Sigma^{-1}(u_i-\theta)\\
 \EE\left[h(u_i)\right] &= - \Sigma^{-1}(u_i-\mu_{u,w}),
@@ -257,7 +256,6 @@ To scale up computation on large datasets, in our experiment we made use of stoc
 
 \subsubsection{Additional plots}
 \label{app:linreg_plots_appendix}
-
 \begin{figure}[t]
 	\centering
 	\begin{subfigure}[b]{.29\textwidth}
@@ -278,7 +276,8 @@ To scale up computation on large datasets, in our experiment we made use of stoc
 	\label{fig:hilbert_varying_projdim}
 \end{figure}
 
-Here we present some more plots demonstating the dependence of Hilbert coresets approximation quality on the number of random dimensions in the Bayesian linear regression setting presented in~\cref{fig:linreg_300}. We remind that dimension used at this experiment and throughout the entire experiments section was set to 100. Increasing this number is typically expensive to obtain in practice. As demonstrated in~\cref{fig:hilbert_varying_projdim}, getting higher projection dimension enables better posterior approximation in the problem, while \gigao~starts offering better quality of approximation than \gigar. However, \psvi~remains competitive in the small coreset regime even for Hilbert coresets with extremely large projection dimensionality, demonstrating the information-geometric limitations that Hilbert coreset constructions are known to face~\cite{campbell19neurips}.
+Here we present some more plots demonstating the dependence of Hilbert coresets approximation quality on the number of random dimensions in the Bayesian linear regression setting presented in~\cref{fig:linreg_300}. We remind that dimension used at this experiment and throughout the entire experiments section was set to 100. Increasing this number is typically expensive to obtain in practice. As demonstrated in~\cref{fig:hilbert_varying_projdim}, getting higher projection dimension enables better posterior approximation in the problem, while \gigao~starts offering better quality of approximation than \gigar. However, \psvi~remains competitive in the small coreset regime, even for Hilbert coresets with extremely large projection dimensionality, demonstrating the information-geometric limitations that Hilbert coreset constructions are known to face~\cite{campbell19neurips}.
+
 
 \subsection{Bayesian Logistic Regression}
 \label{app:logreg_experiment_appendix}
@@ -378,7 +377,7 @@ In this subsection we provide additional details for reproducibility of the expe
 \paragraph{Posterior approximation metrics, coreset gradients and learning rates} Posterior approximation quality was estimated via computing KL divergence between Gaussian distributions fitted on coreset and full data posteriors via Laplace approximation. For both \sparsevi~and \psvi, gradients were estimated using samples drawn from a Laplace approximation fitted on current coreset weights
 and points. To optimize initial learning rates for \sparsevi~and \psvi, we did a grid search over ${\{0.1, 1, 10\}}$.
 
-\paragraph{Differential privacy loss accounting and hyperparameter selection}  In the differential privacy experiment, we were not concerned with the extra privacy cost of hyperparameter optimization task.  Estimation of differential privacy cost at all experiments was based on TensorFlow privacy implementation of moments accountant for the subsampled Gaussian mechanism\footnote{\href{https://github.com/tensorflow/privacy}{https://github.com/tensorflow/privacy}}. 
+\paragraph{Differential privacy loss accounting and hyperparameter selection}  In the differential privacy experiment, we were not concerned with the extra privacy cost of hyperparameter optimization task.  Estimation of differential privacy cost at all experiments was based on TensorFlow privacy implementation of moments accountant for the subsampled Gaussian mechanism.\footnote{\href{https://github.com/tensorflow/privacy}{https://github.com/tensorflow/privacy}} 
 For \dpsvi~we used the best learning hyperparameters found for \psvi~on the corresponding dataset. The demonstrated range of privacy budgets was generated by decreasing the variance $ \sigma $ of additive Gaussian noise and keeping the rest of hyperparameters involved in privacy accounting fixed.  
 Regarding \dpvi, over our experiments we also kept subsampling ratio fixed. We based our implementation of \dpvi~on authors code,\footnote{\href{https://github.com/DPBayes/DPVI-code}{https://github.com/DPBayes/DPVI-code}} adapting noise calibration according to the adjacency relation used in~\cref{sec:dp-pseudocoresets}, and the standard differential privacy definition~\citep{dwork14}. In our experiment, we used the AdaGrad optimizer~\citep{duchi11}, with learning rate $0.01$, number of iterations $2,000$, and minibatch size $200$. Gradient clipping values for \dpvi~results presented in~\cref{fig:dklvseps}, for \textsc{Transactions}, \textsc{ChemReact100}, and \textsc{Music} datasets were tuned via grid search over ${\{1, 5, 10, 50\}}$. The values of gradient clipping constant giving best privacy profiles for each dataset, used in~\cref{fig:dklvseps}, were 10, 5, and 5 respectively. 
 
@@ -455,7 +454,7 @@ Regarding \dpvi, over our experiments we also kept subsampling ratio fixed. We b
 	\caption{Comparison of incremental \psvi~and \sparsevi~approximate posterior
 		quality vs iterations of incremental construction~(\emph{left}) and  coreset
 		size~(\emph{right}) for logistic regression on small-scale experiment. With dashed lines is displayed the posterior quality achieved
-		by incremental \psvi~and \sparsevi~constructions using gradients computed on data subsets of size $256$.}
+		by incremental \psvi~and \sparsevi~constructions using gradients computed on random data subsets of size $256$.}
 	\label{fig:logreg_dkl}
 \end{figure*}
 

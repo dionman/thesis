@@ -41,8 +41,8 @@ In the following we denote expectations and covariances under $\theta \sim \pi_{
 \]
 In our formulation it is easy to observe that posteriors of~\cref{eq:bcore-posterior} form a set of \emph{exponential family distributions}~\cite{wainwright08}, with natural parameters $w \in \reals_{\geq 0}^N$, sufficient statistics $(f_n(\theta))_{n=1}^{N}$, and log-partition function $\log Z(\beta, w)$. Following~\citep{campbell19neurips}, the objective can be expanded as 
 \[
-\kl{\pi_{\beta,w}}{\pi_{\beta}} =& \log Z(\beta) - \log Z(\beta, w) \\
-                                    &- \sum_{n=1}^{N}\EE_{\beta,w}\left[f_n(\theta)- w_n f_n(\theta)\right],
+\kl{\pi_{\beta,w}}{\pi_{\beta}} =& \log Z(\beta) - \log Z(\beta, w) 
+                                    - \sum_{n=1}^{N}\EE_{\beta,w}\left[f_n(\theta)- w_n f_n(\theta)\right],
 \label{eq:sparsevi-obj}
 \]
 and minimized via gradient descent on %$\beta$ and 
@@ -72,7 +72,7 @@ where $f:=\left[f_1(\theta) \ldots f_N(\theta)\right]^T$.%, $f':=\left[f'_1(\the
 		\For{$m =1, \ldots, M $}
 		\LineCommentIndent{Take S samples from current coreset posterior}
 		\State $(\theta)_{s=1}^{S}  \distiid \pi_{\beta,w} \propto \exp \left(w^Tf\right) \pi_0(\theta)$
-		\LineComment{Obtain a minibatch of B datapoints from the full dataset}
+		\LineComment{Obtain a minibatch of $B$ datapoints from the full dataset}
 		\State $\mcB\dist\distUnifSubset\left([N], B\right)$
 		\LineComment{Compute the \blik{} vectors over the coreset and minibatch datapoints for each sample}
 		\State $g_{s} \gets \left( f(x_m, \theta_s, \beta ) - \frac{1}{S}\sum_{r=1}^S f(x_m, \theta_{r}, \beta) \right)_{m \in \mcI}\in \reals^M$ 
@@ -89,8 +89,8 @@ where $f:=\left[f_1(\theta) \ldots f_N(\theta)\right]^T$.%, $f':=\left[f'_1(\the
 		\For{$ t = 1, \ldots, T$} 		\Commenttriangle{Optimize weights vector via projected gradient descent}
 		\State $(\theta)_{s=1}^{S}  \distiid \pi_{\beta,w}(\theta) \propto \exp\left(w^T f\right)\pi_0(\theta)$ 
 		\State $\mcB\dist\distUnifSubset\left([N], B\right)$
-		\For{$s = 1, \dots, S$} 
 		\LineComment{Compute gradient terms discretizations over the coreset and minibatch datapoints for each sample}
+		\For{$s = 1, \dots, S$} 
 		\State $g_{s} \gets \left( f(x_m, \theta_s, \beta) - \frac{1}{S}\sum_{r=1}^S f(x_m, \theta_{r}, \beta) \right)_{m\in\mcI} \in \reals^M$  
 		\State $g'_{s} \gets \left( f(x_b, \theta_s, \beta) - \frac{1}{S}\sum_{r=1}^S f(x_b, \theta_{r}, \beta) \right)_{b\in\mcB} \in \reals^B$  	
 		\EndFor
