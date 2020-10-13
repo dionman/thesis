@@ -117,7 +117,7 @@ Machine learning pervades most modeling and decision-making tools of modern soci
 
 From the statistical point of view, Bayesian modeling offers a powerful unifying framework where experts and practitioners alike can leverage domain-specific knowledge, learn from new observations, share statistical strength across components of hierarchical models, and take advantage of predictions which can account for model uncertainty. Having access to larger datasets is invaluable for statistical models, as it allows more insights into the process that gives rise to the data. 
 
-At the same time, handling massive-scale datasets in machine learning instigates a number of computational, societal, and statistical reliability challenges. First, beyond basic statistical settings, peforming inference---\ie~computing expectations of interest under posterior distributions in the light of new observations---does not scale to large datasets; hence, learning in most interesting models requires additional effort to explore the statistical-computational tradeoff of the problem, and turn to a suitable approximate inference method instead. Apart from addressing \emph{scalability}, modern approximate inference methods should be also able to give guarantees of convergence to the exact posterior distribution given sufficient computational resources, admit efficient quality measuring, and work seamlessly in high dimensions, where many of modern large-scale data live (e.g. genes, or social networks).
+At the same time, handling massive-scale datasets in machine learning instigates a number of computational, societal, and statistical reliability challenges. First, beyond basic statistical settings, performing inference---\ie~computing expectations of interest under posterior distributions in the light of new observations---does not scale to large datasets; hence, learning in most interesting models requires additional effort to explore the statistical-computational tradeoff of the problem, and turn to a suitable approximate inference method instead. Apart from addressing \emph{scalability}, modern approximate inference methods should be also able to give guarantees of convergence to the exact posterior distribution given sufficient computational resources, admit efficient quality measuring, and work seamlessly in high dimensions, where many of modern large-scale data live (e.g. genes, or social networks).
 
 Secondly, a large fraction of modern massive-scale machine learning applications involves observations stemming from privacy-sensitive data domains, for example health records or behavioural studies. The sensitive information content of such sources makes crucial for data contributors that inference methods satisfy formal guarantees of \emph{statistical privacy}. To this end, the gold standard is relying on the established framework of differential privacy: the existing toolset of privatising mechanisms and tight privacy loss estimation techniques, reinforced by the massive population sizes of modern datasets, allow statistically protecting individual information, yet extracting accurate insights about the population.
 
@@ -133,7 +133,7 @@ The aim of summarization is ostensibly in accord with the requirements of privac
 \section{Thesis Statement and Main Contributions}
 \label{sec:thesis-goals}
 
-The focus of this thesis is to develop scalable tools for data analysis on privacy-sensitive and vulnerable to contamination big data. We claim the following statement:
+The focus of this thesis is the development of scalable tools for data analysis on privacy-sensitive and vulnerable to contamination big data. We claim the following statement:
 
 \emph{Automated methods for general-purpose probabilistic inference are typically computationally prohibitive in settings involving massive-scale and high-dimensional data. In contrast, designing principled dataset summarization algorithms enables scaling up learning methods in this data realm, achieving realiable inference results, and addressing concerns of privacy and robustness. Notably, the latter can be achieved without having a substantial bearing on the automation and complexity of the summarization methods.}
 
@@ -190,7 +190,7 @@ This thesis covers material from the following papers:
 \end{quote}
 
 
-In addition, the following paper was written during my PhD but is not discussed in this thesis.
+In addition, the following paper was written during my PhD but is not discussed in this thesis:
 
 \begin{quote}
 	\fullcite{countering}

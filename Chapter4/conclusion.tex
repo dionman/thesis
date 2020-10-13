@@ -1,4 +1,41 @@
-\section{Conclusion}
+\section{Conclusions}
 We introduced a new variational formulation for Bayesian coreset construction, which yields efficient summarizations for big and high-dimensional datasets via simultaneously learning pseudodata points locations and weights. We proved limitations of existing variational formulations for coresets and demonstrated that they can be resolved with our new methodology. We proposed an efficient construction scheme via black-box stochastic optimization and showed how it can be adapted for differentially private Bayesian summarization. Finally, we demonstrated the applicability of our methodology on synthetic and real-world datasets, and practical statistical models.  
 
 %\textcolor{red}{Presented work can be further pursued in several directions: Although our experiments demonstrated similar levels of variance with \sparsevi, we think that existing variance reduction techniques~\citep{ranganath14} might allow improvement in our stochastic optimization. Furthermore, privacy accounting can become tighter via adapting it to the specific form of private computations entering gradients in \dpsvi. Learned pseudodata points are expected to offer an even larger improvement in statistical models where there is a stronger interdependence between datapoints and parameters---e.g. point processes---compared to i.i.d. settings. Last but not least, an information-geometric interpretation of our approximation can shed more light on the theoretical understanding of \psvi. We leave the above as topics for future research.} 
+
+Pseudocoreset variational inference is a general-purpose Bayesian inference
+algorithm, hence shares implications mostly encountered in approximate
+inference methods. For example, replacing the full dataset with a
+pseudocoreset has the potential to cause inferential errors; these can be
+partially tempered by using a pseudocoreset of larger size. Note also
+that the optimization algorithm in this work aims to reduce 
+KL divergence: however the proposed
+variational objective might be misleading in many applications and lead to
+incorrect conclusions in certain statistical models (e.g. point estimates and
+uncertainties might be far off despite KL being almost zero~\citep{huggins20}).
+Moreover, Bayesian inference in general is prone to model misspecification.
+Therefore, a pseudocoreset summarization based on a wrong statistical model
+will lead to non-representative compression for inferential purposes.
+Constructing the coreset on a statistical model suited for robust inference
+instead of the original one~\citep{miller19, wang17}, can offer protection
+against modeling mismatches. Naturally, the utility of generated dataset
+summary becomes task-dependent, as it has been optimized for a specific
+learning objective, and cannot be fully transferable to multiple different
+inference tasks on the same dataset.
+
+Our learnable pseudodata are also generally not as interpretable 
+as the points of previous coreset methods, as they are not real data. And the level of 
+interpretability is model specific. This creates a risk of misinterpretation
+of pseudocoreset points in practice. On the other hand, our optimization framework
+does allow the introduction of interpretability constraints (e.g.~pseudodata sparsity)
+to explicitly capture interpretability requirements.
+
+Pseudocoreset-based summarization is susceptible to reproducing potential
+biases and unfairness existing in the original dataset. Majority-group datapoints in the full dataset which capture information relevant to the
+statistical task of interest are expected to remain over-represented in the
+learned summary; while minority-group datapoints might be eliminated, if their
+distinguishing features are not related to inference. Amending the
+initialization step to contain such datapoints or using a prior that
+strongly favors a debiased version of the dataset could both mitigate these
+concerns; but more study is warranted.
+
