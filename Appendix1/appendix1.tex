@@ -259,24 +259,24 @@ To scale up computation on large datasets, in our experiment we made use of stoc
 \begin{figure}[t]
 	\centering
 	\begin{subfigure}[b]{.29\textwidth}
-		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/linregT__projdim200_KLDvssz.png}}%
+		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/linregKLDvsCstSize_200.png}}%
 		\caption{$\text{project. dim.}=200$}
 	\end{subfigure}\hfill\qquad
 	\centering
 	\begin{subfigure}[b]{.29\textwidth}
-		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/linregT__projdim2000_KLDvssz.png}}%
+		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/linregKLDvsCstSize_2000.png}}%
 		\caption{$\text{project. dim.}=2,000$}
 	\end{subfigure}\hfill\qquad
 	\centering
 	\begin{subfigure}[b]{.29\textwidth}
-		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/linregT__projdim10000_KLDvssz.png}}%
+		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/linregKLDvsCstSize_10000.png}}%
 		\caption{$\text{project. dim.}=10,000$}
 	\end{subfigure}
 	\caption{Comparison of Hilbert coresets performance on Bayesian linear regression experiment for increasing projection dimension (over 10 trials).}
 	\label{fig:hilbert_varying_projdim}
 \end{figure}
 
-Here we present some more plots demonstating the dependence of Hilbert coresets approximation quality on the number of random dimensions in the Bayesian linear regression setting presented in~\cref{fig:linreg_300}. We remind that dimension used at this experiment and throughout the entire experiments section was set to 100. Increasing this number is typically expensive to obtain in practice. As demonstrated in~\cref{fig:hilbert_varying_projdim}, getting higher projection dimension enables better posterior approximation in the problem, while \gigao~starts offering better quality of approximation than \gigar. However, \psvi~remains competitive in the small coreset regime, even for Hilbert coresets with extremely large projection dimensionality, demonstrating the information-geometric limitations that Hilbert coreset constructions are known to face~\cite{campbell19neurips}.
+Here we present some more plots demonstating the dependence of Hilbert coresets approximation quality on the dimension of random projections in the Bayesian linear regression setting presented in~\cref{fig:linreg_300}. We remind that the dimension used at this experiment and throughout the entire experiments section was set to 100. Increasing this number is typically expensive to obtain in practice. As demonstrated in~\cref{fig:hilbert_varying_projdim}, getting higher projection dimension enables better posterior approximation in the problem for both \gigao~and~\gigar. However, \psvi~remains competitive in the small coreset regime, even for Hilbert coresets with extremely large projection dimensionality, demonstrating the information-geometric limitations that Hilbert coreset constructions are known to face~\cite{campbell19neurips}.
 
 
 \subsection{Bayesian Logistic Regression}

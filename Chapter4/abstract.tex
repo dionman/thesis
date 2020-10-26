@@ -1,11 +1,9 @@
-{
-Standard Bayesian inference algorithms are prohibitively expensive in the
-regime of modern large-scale data. Recent work has found that
-a small, weighted subset of data (a \emph{coreset}) may be used in place
-of the full dataset during inference, taking advantage of data redundancy to
-reduce computational cost. However, this approach has limitations 
+In~\cref{chap:chap2}, we exposed the prohibitive computational limitations of Bayesian inference in the regime of modern large-scale data, and discussed coreset-based summarization as a viable solution for scalable approximate inference under statistical guarantees. In~\cref{chap:chap3}, we considered a case study on a massive high-dimensional dataset capturing longitudinal mobility information of a population, and quantified the privacy loss incurred via coarse representations of the datapoints for fast analysis.
+Motivated by the quest for scalable learning methods on sensitive data, in this chapter we propose \emph{Pseudocoresets Sparse Variational Inference}, a general-purpose approximate inference method designed to enable scalable inference on high-dimensional datasets, under the guarantees of approximate differential privacy.
+
+We begin by investigating the shortcomings of existing Bayesian coreset constructions 
 in the increasingly common setting of sensitive, high-dimensional data. 
-Indeed, we prove that there are situations in which 
+In particular, we prove that there are situations in which 
 the Kullback-Leibler~(KL) divergence between the \emph{optimal} coreset 
 and the true posterior grows with data dimension; and as coresets include
 a subset of the original data, they cannot be constructed in a manner
@@ -21,6 +19,6 @@ synthetic experiments on high-dimensional data demonstrate that Bayesian
 pseudocoresets achieve significant improvements in posterior approximation error compared to
 traditional coresets, and that pseudocoresets provide privacy without
 a significant loss in approximation quality. 
-}
+
 
 %This chapter is based on~\citep{psvi}.

@@ -58,10 +58,10 @@ $\tv_m := Q^{-1}(u_m - \mu_{u,w})$.
 				\caption{(b) Gaussian mean inference, $d=500$\label{fig:gauss_mean_500}}
 	\end{subfigure}\hfill\qquad
 	\begin{subfigure}[c]{.29\textwidth}
-			\centerline{\scalebox{1}{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/linregTT_KLDvssz.png}}}%
+			\centerline{\scalebox{1}{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/linregKLDvsCstSize.png}}}%
 				\caption{(c) Bayesian linear regression, $d=100$\label{fig:linreg_300}}
   \end{subfigure}
-	\caption{Comparison of coreset approximate posterior quality for experiments on synthetic datasets over {10 trials}. Solid lines display the median KL divergence, with shaded areas showing~$25^{\text{th}}$ and~$75^{\text{th}}$ percentiles of KL divergence. In \cref{fig:linreg_300}, KL divergence is normalized by the prior.}
+	\caption{Comparison of (pseudo)coreset approximate posterior quality for experiments on synthetic datasets over {10 trials}. Solid lines display the median KL divergence, with shaded areas showing~$25^{\text{th}}$ and~$75^{\text{th}}$ percentiles of KL divergence. In \cref{fig:linreg_300}, KL divergence is normalized by the prior.}
 	\label{fig:gaussian_dkl}
 \end{figure*}
 %
@@ -76,7 +76,7 @@ fundamentally limited by the use of the original datapoints, per
 \cref{prop:original_coreset_fails}.  Furthermore, we observe that the quality of all
 previous coreset methods when $d=500$ is significantly lower
 compared to $d=200$. On the other hand, the KL divergence for  \psvi~decreases
-significantly more quickly, giving a near perfect approximation for true
+significantly more quickly, giving a near perfect approximation for the true
 posterior with a single pseudodata point regardless of data dimension. As
 shown earlier in~\cref{fig:gaussian_coreset_points}, \psvi~has the capacity to move the
 pseudodata points in order to capture the
@@ -168,7 +168,7 @@ model.
 		\label{sfig:musicpriv}
 	\end{subfigure}
 	\hfill\qquad
-	\caption{Approximate posterior quality over decreasing differential privacy guarantees for private pseudocoresets of varying size plotted against private variational inference~\citep{jalko17}. $\delta$ is always kept fixed at $ 1/N$. Markers on the right end of each plot display the errorbar of approximation achieved by the corresponding nonprivate posteriors. Results are displayed over 5 trials for each construction.}
+	\caption{Approximate posterior quality over decreasing differential privacy guarantees for private pseudocoresets of varying size~(\dpsvi) plotted against private variational inference~(\dpvi, \citep{jalko17}). $\delta$ is always kept fixed at $ 1/N$. Markers on the right end of each plot display the errorbar of approximation achieved by the corresponding nonprivate posteriors. Results are displayed over 5 trials for each construction.}
 	\label{fig:dklvseps} 
 \end{figure*}
 
@@ -176,9 +176,7 @@ model.
 Results presented in~\cref{fig:ls_blogreg_dkl} demonstrate that \psvi~achieves consistently the smallest posterior approximation error in the small coreset size regime, offering improvement
 compared to \sparsevi~and being competitive with \gigao,
 without the requirement for specifying a weighting function. In~\cref{sfig:transactions}, for $M \geq d$ ~\gigao~follows a much steeper decrease in KL divergence, reflecting the dependence of its approximation quality on dataset dimension per~\cref{prop:original_coreset_fails}. In contrast, \psvi~typically reaches its minimum at $M<d$. The difference in approximation quality becomes clearer in higher dimensions~(e.g. \textsc{Music}, where $d=237$). Perhaps surprisingly, the private pseudocoreset construction has only marginally worse approximation quality compared to nonprivate \psvi~and generally achieves better peformance in comparison to the other state-of-the-art nonprivate coreset constructions. 
-In~\cref{fig:dklvseps} we present achieved posterior approximation quality via \dpsvi, against a competitive state-of-the-art method 
-%in differentially private variational inference for non-conjugate models 
-(\dpvi, \cite{jalko17}). For logistic regression, \dpvi~infers an approximate posterior from the family of Gaussians with diagonal covariance via ADVI~\citep{kucukelbir17}, followed by an additional Laplace approximation. Note that by design, \dpvi~is constrained by the usual Gaussian variational approximation, while \dpsvi~is more flexible and can approach the true posterior as $ M $ increases---this effect is reflected in nonprivate posteriors as well as data dimensionality grows~(see for example~\cref{sfig:musicpriv}). Indeed, we verify that in the high-privacy regime \dpsvi~for sufficient pseudocoreset size (which is typically small for tested real-world datasets) offers posterior approximation with better KL divergence compared to \dpvi. Our findings indicate that private \psvi~offers efficient releases of big data via informative pseudopoints, which enable arbitrary post processing (e.g. running any \emph{nonprivate} black-box algorithm for Bayesian inference), under strong privacy guarantees and without reducing the quality of inference.
+In~\cref{fig:dklvseps} we present the achieved posterior approximation quality via \dpsvi, against a competitive state-of-the-art method for general-purpose private inference(\dpvi, \cite{jalko17}). For logistic regression, \dpvi~infers an approximate posterior from the family of Gaussians with diagonal covariance via ADVI~\citep{kucukelbir17}, followed by an additional Laplace approximation. Note that by design, \dpvi~is constrained by the usual Gaussian variational approximation, while \dpsvi~is more flexible and can approach the true posterior as $ M $ increases---this effect is reflected in nonprivate posteriors as well as data dimensionality grows~(see for example~\cref{sfig:musicpriv}). Indeed, we verify that in the high-privacy regime \dpsvi~for sufficient pseudocoreset size (which is typically small for tested real-world datasets) offers posterior approximation with better KL divergence compared to \dpvi. Our findings indicate that private \psvi~offers efficient releases of big data via informative pseudopoints, which enable arbitrary post processing (e.g. running any \emph{nonprivate} black-box algorithm for Bayesian inference), under strong privacy guarantees and without reducing the quality of inference.
 
 
 

@@ -34,7 +34,7 @@ A Bayesian pseudocoreset takes the form
 where $u\defined (u_m)_{m=1}^M$ are $M$ pseudodata points $u_m\in\reals^d$, $(w_m)_{m=1}^M$ are nonnegative weights,
 $f : \reals^d \times \Theta \to \reals$ is a potential function parametrized by a pseudodata point,
 and $Z(u, w)$ is the corresponding normalization constant rendering $\pi_{u, w}$ a probability density. In the setting of Bayesian posterior inference,
-$u_m$ will take the same form as the data, while the potentials are the log-likelihood functions, \ie $f(u_m, \theta) = \log p(u_m | \theta)$.
+$u_m$ will take the same form as the data, while the potentials are the log-likelihood functions, \ie $f(u_m, \theta) = \log \pi(u_m | \theta)$.
 We construct a coreset by minimizing the KL divergence over both the pseudodata locations and weights, 
 \[
 u^\star, w^\star = \argmin_{\substack{u\in\reals^{d \times M}}, w\in\reals^M_+}\,\, \kl{\pi_{u,w}}{\pi}. 

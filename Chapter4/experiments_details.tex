@@ -122,7 +122,7 @@ Here we present some more plots demonstating the dependence of Hilbert coresets 
 
 \subsubsection{Model}
 \label{supp:logreg_model_appendix}
-In logistic regression we have a set of datapoints $(x_n, y_n)_{n=1}^{N}$ each corresponding to a feature vector ${x_n \in \reals^d}$ and a label ${y_n \in \{-1, 1\}}$. Datapoints are assumed to be generated according to following statistical model
+In logistic regression we have a set of datapoints $(x_n, y_n)_{n=1}^{N}$ each corresponding to a feature vector ${x_n \in \reals^d}$ and a label ${y_n \in \{-1, 1\}}$. Datapoints are assumed to be generated according to the following statistical model
 \[
 y_n | x_n, \theta \sim \distBern \left( \frac{1}{1+e^{-z_n \theta}} \right) 
 \quad 
@@ -133,7 +133,7 @@ z_n := \begin{bmatrix}
 \label{eq:logreg-model}
 \]
 The aim of inference is to compute the posterior over the latent parameter $ \theta = [\theta_0 \ldots \theta_d]^T \in \reals^{d+1}$.
-Log-likelihood of each datapoint can be expressed as
+The log-likelihood of each datapoint can be expressed as
 \[
 \begin{split}
 f_n(x_n, y_n|\theta)  
@@ -157,7 +157,7 @@ Hence in pseudocoreset construction we can optimize pseudodata point locations w
 
 \subsubsection{Datasets description}
 \label{supp:logreg_data_details}
-For logistic regression experiments, we used subsampled and full versions of datasets presented in~\cref{table:datasets_details}: a synthetic dataset with $ x\in \reals^2 $ sampled \iid from a $\distNorm{(0, I)}$ and $ y\in\{-1,1\} $ sampled from respective logistic likelihood with $ \theta =[3, 3, 0]^T$ (\textsc{Synthetic}); a phishing websites dataset reduced to $ D=10 $ via PCA (\textsc{Phishing}); a chemical reactivity dataset with  real-valued features corresponding to its first $ 10 $ and $ 100 $ principal components (\textsc{ChemReact} and \textsc{ChemReact100} respectively); a dataset with $ 50 $ real-valued features associated with whether each of $ 100K $ customers of a bank will make a specific transaction (\textsc{Transactions}); and a dataset for music analysis, where we consider "classical vs all" genre classification task (\textsc{Music}). Original versions of the four latter datasets are available online respectively at~\href{https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/binary.html}{https://www.csie.ntu.edu.tw/\~{}cjlin/libsvm tools/datasets/binary.html},  \href{http://komarix.org/ac/ds/}{http://komarix.org/ac/ds},  \href{https://www.kaggle.com/c/santander-customer-transaction-prediction/data}{https://www.kaggle.com/c/santander-customer- transaction-prediction/data}, and \href{https://github.com/mdeff/fma}{https://github.com/mdeff/fma}. 
+For logistic regression experiments, we used subsampled and full versions of datasets presented in~\cref{table:datasets_details}: a synthetic dataset with $ x\in \reals^2 $ sampled \iid from a $\distNorm{(0, I)}$ and $ y\in\{-1,1\} $ sampled from respective logistic likelihood with $ \theta =[3, 3, 0]^T$ (\textsc{Synthetic}); a phishing websites dataset reduced to $ D=10 $ via PCA (\textsc{Phishing}); a chemical reactivity dataset with  real-valued features corresponding to its first $ 10 $ and $ 100 $ principal components (\textsc{ChemReact} and \textsc{ChemReact100} respectively); a dataset with $ 50 $ real-valued features associated with whether each of $ 100K $ customers of a bank will make a specific transaction (\textsc{Transactions}); and a dataset for music analysis, where we consider the "classical vs all" genre classification task (\textsc{Music}). Original versions of the four latter datasets are available online respectively at~\href{https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/binary.html}{https://www.csie.ntu.edu.tw/\~{}cjlin/libsvm tools/datasets/binary.html},  \href{http://komarix.org/ac/ds/}{http://komarix.org/ac/ds},  \href{https://www.kaggle.com/c/santander-customer-transaction-prediction/data}{https://www.kaggle.com/c/santander-customer- transaction-prediction/data}, and \href{https://github.com/mdeff/fma}{https://github.com/mdeff/fma}. 
 
 \begin{table}[!h]
 	\begin{center}
@@ -263,7 +263,7 @@ Regarding \dpvi, over our experiments we also kept subsampling ratio fixed. We b
 		\vspace*{-0.3cm}
 		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/wfma_KLDvscput.png}}%
 	\end{subfigure}\hfill\qquad
-	\caption{Comparison of \psvi~and \sparsevi~approximate posterior quality vs CPU time requirements for logistic regression experiment of~\cref{sec:experiments}.}
+	\caption{Comparison of (pseudo)coreset approximate posterior quality vs CPU time requirements for the logistic regression experiment of~\cref{sec:experiments}.}
 	\label{fig:30logreg_dkl_cput}
 \end{figure*}
 
@@ -293,19 +293,19 @@ Regarding \dpvi, over our experiments we also kept subsampling ratio fixed. We b
 		\hfill
 		\includegraphics[width=0.475\textwidth]{\MyPath/tempfigs/ds1sz.png}%
 	\end{subfigure}
-	\caption{Comparison of incremental \psvi~and \sparsevi~approximate posterior
+	\caption{Comparison of incremental \psvi~and existing coresets approximate posterior
 		quality vs iterations of incremental construction~(\emph{left}) and  coreset
-		size~(\emph{right}) for logistic regression on small-scale experiment. With dashed lines is displayed the posterior quality achieved
+		size~(\emph{right}), for the small-scale datasets logistic regression experiment. With dashed lines is displayed the posterior quality achieved
 		by incremental \psvi~and \sparsevi~constructions using gradients computed on data subsets of size $256$.}
 	\label{fig:logreg_dkl}
 \end{figure*}
 
 
 
-\paragraph{Evaluation of CPU time requirements} Experiments were performed on a CPU cluster node with a 2x Intel Xeon Gold 6142 and 12GB RAM. In the case of \psvi~the computation of coreset sizes from 1 to 100 was parallelized per single size over 32 cores in total. \cref{fig:30logreg_dkl_cput} shows posterior approximation error vs required CPU time for all coreset construction algorithms over logistic regression on the small-scale and large-scale datasets. As opposed to existing incremental coreset construction schemes, batch construction of \psvi~reduces the dependence between coreset size and processing cost: for \sparsevi~$\Theta(M^2)$ gradient computations are required, as this method builds up a coreset one point at a time; in contrast, \psvi~requires $\Theta(M)$ gradients since it learns all pseudodata points jointly. Although each gradient step of \psvi~is more expensive, practically this implies a steeper decrease in approximation error over processing time compared to \sparsevi. In the case of differentially private \psvi,~some extra CPU requirements are added due to the subsampled Gaussian mechanism computations.
+\paragraph{Evaluation of CPU time requirements} Experiments were performed on a CPU cluster node with a 2x Intel Xeon Gold 6142 and 12GB RAM. In the case of \psvi~the computation of coreset sizes from 1 to 100 was parallelized per single size over 32 cores in total. \cref{fig:30logreg_dkl_cput} shows the posterior approximation error vs required CPU time for all coreset construction algorithms over logistic regression on the small-scale and large-scale datasets. As opposed to existing incremental coreset construction schemes, batch construction of \psvi~reduces the dependence between coreset size and processing cost: for \sparsevi~$\Theta(M^2)$ gradient computations are required, as this method builds up a coreset one point at a time; in contrast, \psvi~requires $\Theta(M)$ gradients since it learns all pseudodata points jointly. Although each gradient step of \psvi~is more expensive, practically this implies a steeper decrease in approximation error over processing time compared to \sparsevi. In the case of differentially private \psvi,~some extra CPU requirements are added due to the subsampled Gaussian mechanism computations.
 
 
-\paragraph{Incremental scheme for pseudocoreset construction} We also experimented with an \emph{incremental scheme for pseudocoreset} construction. According to this scheme, pseudodata points are added sequentially to the pseudocoreset. Similarly to \sparsevi, in the beginning of each coreset iteration, we initialize a new pseudodata point at the true datapoint which maximizes correlation with current residual approximation error. Next, we jointly optimize the most recently added pseudodata point location, along with the pseudocoreset weights vector, over a gradient descent loop.  As opposed to batch construction, for large coreset sizes the incremental scheme for \psvi~does not achieve savings in CPU time compared to \sparsevi.
+\paragraph{Incremental scheme for pseudocoreset construction} We also experimented with an \emph{incremental scheme for pseudocoreset} construction. According to this scheme, pseudodata points are added sequentially to the pseudocoreset. Similarly to \sparsevi, in the beginning of each coreset iteration, we initialize a new pseudodata point at the true datapoint which maximizes correlation with current residual approximation error vector. Next, we jointly optimize the most recently added pseudodata point location, along with the pseudocoreset weights vector, over a gradient descent loop.  As opposed to batch construction, for large coreset sizes the incremental scheme for \psvi~does not achieve savings in CPU time compared to \sparsevi.
 
 We evaluated coreset construction methods on Bayesian logistic regression. We used $M=100$ iterations for construction, $ S=100 $ Monte Carlo samples per gradient estimation, $ T= 100$ iterations for optimization, and learning rate $\gamma_t \propto 0.5t^{-1}$. Coreset posterior samples over the course of construction
 for \sparsevi~and incremental \psvi~were drawn from a Laplace approximation using current

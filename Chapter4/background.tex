@@ -1,14 +1,14 @@
 \section{Bayesian Coresets}
 \label{sec:bayesian-coresets}
 
-In this work, the goal is to approximate expectations under a density $\pi(\theta)$, 
+Our goal is to approximate expectations under a density $\pi(\theta)$, 
  \mbox{$ \theta \in \Theta $} expressed as the product of $N$ potentials 
 $ (f(x_n, \theta))_{n=1}^{N} $ and a base density $ \pi_0(\theta)$:
 \[
 \pi(\theta) &\defined \frac{1}{Z} \exp \left(\sum_{n=1}^{N} f(x_n, \theta)\right) \pi_0(\theta).\label{eq:posterior}
 \]
 In the setting of Bayesian inference with conditionally independent data, 
-the potentials are data log-likelihoods, \ie~$f(x_n, \theta) := \log p(x_n | \theta)$,
+the potentials are data log-likelihoods, \ie~$f(x_n, \theta) := \log \pi(x_n | \theta)$,
  $\pi_0$ is the prior density, $\pi$ is the posterior, 
 and $Z$ is the marginal likelihood of the data. 
 Rather than working directly with $\pi(\theta)$ for 
@@ -29,6 +29,23 @@ based on samples from the coreset posterior $\pi_w$.
 
 \subsection{High-dimensional data}
 \label{sec:high_dimensional_data}
+
+\captionsetup[subfigure]{labelformat=empty}
+\begin{figure}[t!]
+	\centering 
+	\begin{subfigure}[b]{.45\textwidth} 
+		\scalebox{1}{\includegraphics[width=\textwidth]{\MyPath/figs/d500_pts_combined.png}}
+		\caption{(a)\label{fig:gaussian_coreset_points}}
+	\end{subfigure}
+	\hfill\qquad
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\scalebox{1}{\includegraphics[width=\textwidth]{\MyPath/figs/klbound.png}}
+		\caption{(b)\label{fig:klbound}}
+	\end{subfigure}
+	\caption{Gaussian mean inference under~pseudocoreset (\psvi)~against~standard coreset (\sparsevi) summarization for $N=1,000$  datapoints. (\subref{fig:gaussian_coreset_points})~Progression of~\psvi~vs.~\sparsevi~construction for coreset sizes $M=0, 1, 5, 12, 30, 100$, in 500 dimensions~(displayed are datapoint projections on 2 random dimensions).~\psvi~and~\sparsevi~coreset predictive $3\sigma$ ellipses are displayed in red and blue respectively, while the true posterior $3\sigma$ ellipse is shown in black.~\psvi~has the ability to immediately move pseudopoints towards the  true posterior mean, while \sparsevi~has to add a larger number of existing points in order to obtain a good posterior approximation. See \cref{fig:gauss_mean_500} for the quantitative KL comparison.
+		(\subref{fig:klbound})~Optimal coreset KL divergence lower bound from \cref{prop:original_coreset_fails} as a function of dimension with $\delta = 0.5$, and  coreset size $M$ evenly spaced from 0 to 100 in increments of 5.}
+\end{figure}
 
 
 Coresets, as formulated in~\cref{eq:coresets-vi}, are limited to using the
@@ -60,20 +77,4 @@ that the above bound requires the data to be high-dimensional such that $d >
 M$; if $d\leq M$ the proof technique used above results in a vacuous
 $\kl{\pi_{w^\star}}{\pi_1} = 0$ lower bound. 
 
-\captionsetup[subfigure]{labelformat=empty}
-\begin{figure}[t!]
-	\centering 
-\begin{subfigure}[b]{.45\textwidth} 
-	\scalebox{1}{\includegraphics[width=\textwidth]{\MyPath/figs/d500_pts_combined.png}}
-	\caption{(a)\label{fig:gaussian_coreset_points}}
-	\end{subfigure}
-\hfill\qquad
-\centering
-\begin{subfigure}[b]{0.45\textwidth}
-	\scalebox{1}{\includegraphics[width=\textwidth]{\MyPath/figs/klbound.png}}
-	\caption{(b)\label{fig:klbound}}
-\end{subfigure}
-\caption{Gaussian mean inference under~pseudocoreset (\psvi)~against~standard coreset (\sparsevi) summarization for $N=1,000$  datapoints. (\subref{fig:gaussian_coreset_points})~Progression of~\psvi~vs.~\sparsevi~construction for coreset sizes $M=0, 1, 5, 12, 30, 100$, in 500 dimensions~(displayed are datapoint projections on 2 random dimensions).~\psvi~and~\sparsevi~coreset predictive $3\sigma$ ellipses are displayed in red and blue respectively, while the true posterior $3\sigma$ ellipse is shown in black.~\psvi~has the ability to immediately move pseudopoints towards the  true posterior mean, while \sparsevi~has to add a larger number of existing points in order to obtain a good posterior approximation. See \cref{fig:gaussian_dkl} for the quantitative KL comparison.
-(\subref{fig:klbound})~Optimal coreset KL divergence lower bound from \cref{prop:original_coreset_fails} as a function of dimension with $\delta = 0.5$, and  coreset size $M$ evenly spaced from 0 to 100 in increments of 5.}
-\end{figure}
 
