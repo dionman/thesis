@@ -17,11 +17,13 @@ In particular, for two Gaussian distributions $\mcN_1(\mu_1, \Sigma_1)$ and $\mc
 
 %\section{Robust Inference}
 %\label{sec:b-robust-inference}
-When working in data setups that are likely to be contaminated by outliers, we get substantial performance improvements when enhancing our algorithms with \emph{robustness}. Relying on KL divergence cannot sufficiently address this concern. A robustified divergence, termed \bdiv{}, was instead proposed in~\citep{basu98,eguchi01}, that is able to downweight outlying data. Considering again the densities $\pi_1, \pi_2$, \bdiv{} is defined as 
+When working in data setups that are likely to be contaminated by outliers, we get substantial performance improvements when enhancing our algorithms with \emph{robustness}. Relying on the KL divergence cannot sufficiently address this concern. A robustified divergence, termed \emph{\bdiv{}} or \emph{density power divergence}, was instead proposed in~\citep{basu98,eguchi01}, that is able to downweight outlying data. Considering again the densities $\pi_1, \pi_2$, the \bdiv{} is defined as 
 \[
-\betadistance{\pi_1}{\pi_2} \defined \frac{1}{\beta} \int\left(\pi_1^\beta(\theta) - \pi_2^\beta(\theta)\right)\pi_1(\theta)d\theta - \frac{1}{\beta+1}\int\left(\pi_1^{\beta+1}(\theta) - \pi_2^{\beta+1}(\theta)\right)d\theta.
+\betadistance{\pi_1}{\pi_2} \defined \frac{1}{\beta} \int \pi_1(\theta)^{1+\beta}d\theta - \frac{\beta+1}{\beta}\int \pi_1(\theta) \pi_2(\theta)^{\beta} d\theta + \int \pi_2(\theta)^{1+\beta}d\theta,
 \] 
-One can easily show that \bdiv{} converges to KL divergence when $\beta \rightarrow 0$.
+where $\beta > 0$.
+
+One can easily show that the \bdiv{} converges to the KL divergence when $\beta \rightarrow 0$.
 
 \section{Exponential Families}
 \label{sec:b-expfam}
