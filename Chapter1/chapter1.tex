@@ -151,7 +151,7 @@ The central contributions of the thesis are the following:
 
 \begin{itemize}
 	\item We analyse the anonymity of individual data in a large-scale behavioural study, and develop a \emph{reidentification attack that exploits structural patterns similarity} to link users records in the absence of identifiers in their state-space.
-	\item We introduce a novel variational formulation for Bayesian coresets construction that utilises approximations within a \emph{family of sparse variational distributions} with learnable weights and \emph{pseudodata} as variational parameters.
+	\item We introduce a novel variational formulation for Bayesian coresets construction that utilises approximations within a \emph{family of efficient variational distributions} with learnable weights and \emph{pseudodata} as variational parameters.
 	 Leveraging the use of learnable pseudodata, we show that our variational formulation enables substantially more rapid improvement in summarization quality for high-dimensional data in the small coresets regime, compared to existing coreset schemes that are constrained to use points from the original dataset. 
 	%\item We show that the use of learnable pseudodata enables substantially more efficient summarization quanlity for high-dimensional data, compared to existing coreset constructions that are constrained to use points from the original dataset. For the latter, we prove a data dimensionality dependent bound in optimal approximation quality 
 	%\item We theoretically show data dimension dependent limitations in optimal approximation quality for small summary sizes, achievable by existing coreset constructions that are constrained to use points from the original dataset; subsequently, we show that the use of learnable pseudodata enables overcoming the data-dimension constraints, and offers rapid improvement in approximation quality for small coreset sizes.
@@ -172,7 +172,7 @@ The remainder of the dissertation is organized as follows.
 
 \cref{chap:chap3} sheds light into the anonymity properties of a large-scale longitudinal mobility dataset, revealing a realistic privacy threat that survives in a release of sensitive structured data, despite anonymizing and coarsening individual behavioural records. 
 
-\cref{chap:chap4} presents a general-purpose sparse variational inference algorithm that allows scaling up Bayesian inference in big and high-dimensional datasets via a coreset representation that relies on learnable synthetic datapoints~(\psvi). Additionally, it develops a differentially private construction for this coreset~(\dpsvi). 
+\cref{chap:chap4} presents a general-purpose variational inference algorithm that allows scaling up Bayesian inference in big and high-dimensional datasets via a coreset representation that relies on learnable synthetic datapoints~(\psvi). Additionally, it develops a differentially private construction for this coreset~(\dpsvi). 
 
 \cref{chap:chap5} proposes a sparse variational approximation for robust pseudo-Bayesian posteriors using \bdiv, that can yield reliable summarizations for large-scale datasets in the presence of extensive contamination~(\bcores). 
 
