@@ -8,9 +8,9 @@ In this section we discuss \bcores, our unified solution to the robustness and s
 \label{subsec:sparse-b-posterior}
 
 
-Scaling up the computation of~\cref{eq:b-posterior} in the regime of massive datasets for non-conjugate models is challenging:
+Scaling up the computation of the robust $\beta$-posterior~\cref{eq:b-posterior} in the regime of massive datasets for non-conjugate models is challenging:
 %~Closed form computation of~\bdiv{} is not possible for a large number of statistical models. Moreover, 
-similarly to  ~\cref{eq:bayes-rule}, applying Markov chain Monte Carlo~(MCMC) methods to sample from the~\bpost{}, implies a computational cost scaling at order $\Theta(N)$. 
+similarly to the standard Bayesian posterior~\cref{eq:bayes-rule}, applying Markov chain Monte Carlo~(MCMC) methods to sample from the~\bpost{}, implies a computational cost scaling at order $\Theta(N)$. 
 
 Bayesian coresets~\cite{huggins16,campbell19jmlr} have been recently proposed as a method to circumvent the computational cost for the purposes of approximate inference via summarizing the original dataset  $(x_n)_{n=1}^{N}$ with a small learnable subset of weighted datapoints $(x_m, w_m)_{m=1}^{M}$, where  $(w_m)_{m=1}^{M} \in \reals^{M}_{+},\; M \ll N$. 
 Substituting~\cref{eq:b-loss} in ~\cref{eq:b-posterior}, allows us to explicitly introduce a weights vector $ w \in \reals_{\geq 0}^{N}$ in the posterior, and rewrite the latter in the general form
