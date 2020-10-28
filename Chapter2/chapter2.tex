@@ -90,7 +90,7 @@ A key challenge in computing the posterior according to~\cref{eq:bbayes-rule} is
 \subsection{Laplace's method}
 \label{subsec:b-laplace-method}
 
-Point estimates of $\theta$, obtained for example via \emph{maximum a posteriori~(MAP)} or \emph{maximum likelihood estimation~(MLE)}, are cheap to compute, as they correspond to solutions of optimization problems involving only the unnormalised rhs of~\cref{eq:bbayes-rule}---on the other hand, they cannot capture the uncertainty of our posterior beliefs. Laplace's method~\citep{mackay03} is an approximate inference scheme that makes a first step towards uncertainty awareness, offering a non-degenerate, yet inexpensive to compute, approximate posterior for $\theta$.
+Point estimates of $\theta$, obtained for example via \emph{maximum a posteriori} or \emph{maximum likelihood estimation}, are cheap to compute, as they correspond to solutions of optimization problems involving only the unnormalised rhs of~\cref{eq:bbayes-rule}---on the other hand, they cannot capture the uncertainty of our posterior beliefs. Laplace's method~\citep{mackay03} is an approximate inference scheme that makes a first step towards uncertainty awareness, offering a non-degenerate, yet inexpensive to compute, approximate posterior for $\theta$.
 
 Let us write the posterior of~\cref{eq:bbayes-rule} in the following equivalent form
 \[
@@ -113,7 +113,7 @@ In the absence of analytical formulae, integrals in the form of~\cref{eq:binfere
 \[
  \int g(\theta) \pi(\theta|x) d\theta \approx \frac{1}{S} \sum_{s=1}^{S} g(\theta_s), \quad (\theta_s)_{s=1}^{S} \distiid \pi(\theta|x) .
 \]
-Markov Chain Monte Carlo~(MCMC), the workhorse of approximate Bayesian inference, is a framework of established tools that pursue the above idea efficiently~\citep{geyer92, gilks05, robert05}. 
+\emph{Markov Chain Monte Carlo~(MCMC)}, the workhorse of approximate Bayesian inference, is a framework of established tools that pursue the above idea efficiently~\citep{geyer92, gilks05, robert05}. 
 
 MCMC offers approximations to expectations \wrt intractable probability distributions via simulating an ergodic random walk in the state space of the model, which admits the posterior distribution as its stationary distribution. As implied by the strong law of large numbers, the MC estimate---formed using (effectively independent) samples from the stationary distribution---converges to the true expecation almost surely as $s \rightarrow \infty$; this property makes MCMC methods theoretically appealing, as it endows the estimators with strong \emph{asymptotic exactness} guarantees. Moreover, if $g$ is a real function, using the central limit theorem, it can be shown that the standard error of a MC estimator scales asymptotically as $O(\frac{1}{\sqrt{S}})$, independent of the dimension of $\theta$. Differing in the way that the Monte Carlo chain is constructed, as well as the offered level of automation, several methods of MCMC inference have emerged, including the Metropolis-Hastings~\citep{andrieu03}, the Hamiltonian Monte-Carlo~\citep{neal11}, and the No-U-Turn-Sampler~(NUTS)~\citep{hoffman14}. NUTS will be used as a reference method to evaluate summarization performance in part of our experiments over~\cref{chap:chap4,chap:chap5}.
 
@@ -136,15 +136,15 @@ we note that, in classical Variational Bayes schemes, expanding the KL divergenc
 \[
 \kl{q(\theta)}{\pi(\theta|x)} = \EE_{\theta \sim q(\theta)}\left[\log q(\theta)\right] - \EE_{z\sim q(\theta)}\left[\log \pi(x, \theta)\right] + \log \pi(\theta).
 \]
-Since this term is not a function of $q$, it can be subtracted and the problem is reformulated as minimizing the remaining two terms, the negation of which is known as the \emph{evidence lower bound}~(ELBO).
+Since this term is not a function of $q$, it can be subtracted and the problem is reformulated as minimizing the remaining two terms, the negation of which is known as the \emph{evidence lower bound}~(ELBO)
 \[
 q^{*}(\theta; x) \defined \arg \underset{q\in Q}{\min} \left(-\text{ELBO}(q, x)\right), \qquad
-\text{ELBO}(q, x) \defined \EE_{q}\left[\log \pi(x, \theta)\right] - \EE_q \left[\log q(\theta)\right]
+\text{ELBO}(q, x) \defined \EE_{q}\left[\log \pi(x, \theta)\right] - \EE_q \left[\log q(\theta)\right].
 \]
-Via Jensen's inequality, ELBO can be shown to be a lower bound of the marginal log-likelikood of $x$ as expectation \wrt~$q$. As opposed to MCMC methods, \mbox{theoretical guarantees} for inferential results of the solution to~\cref{eq:bvi} can only be obtained for a few simple statistical models for the following main reasons: optimization methods can often converge to bad local optima; also, depending on the statistical divergence and variational family used, VI might return miscalibrated posterior variance estimates~\citep[Chapter~10]{bishop06}.
+Via Jensen's inequality, ELBO can be shown to be a lower bound of the marginal log-likelihood of $x$ as expectation \wrt~$q$. As opposed to MCMC methods, \mbox{theoretical guarantees} for inferential results of the solution to~\cref{eq:bvi} can only be obtained for a few simple statistical models for the following main reasons: optimization methods in typically non-convex landscapes can often converge to bad local optima; also, depending on the statistical divergence and variational family used, VI might return miscalibrated posterior variance estimates~\citep[Chapter~10]{bishop06}.
 
 The simplest family $Q$ that can be used for VI is the \emph{mean-field variational family} which relies on the simplifying assumption of independence among the coordinates of $\theta$, \ie~$q(\theta) \defined \Pi_{d=1}^{D}q_d(\theta_d)$.
-Our VI scheme proposes approximations within the \emph{exponential family}, which generally allow less restricted posteriors. Additionally, it can circumvent the use of ELBO, and instead be directly applied on the original variational formulation of~\cref{eq:bvi}, since MC estimates of the gradient of the log-evidence term can be extracted as per~\cref{prop:bgradZ}. 
+Our VI schemes in~\cref{chap:chap4,chap:chap5} propose approximations within the \emph{exponential family} instead, which generally allow less restricted posteriors. Additionally, they can circumvent the use of ELBO, and instead be directly applied on the original variational formulation of~\cref{eq:bvi}, since MC estimates of the gradient of the intractable log-evidence term can be extracted as per~\cref{prop:bgradZ}. 
 
 \subsection{Bayesian coresets}
 \label{subsec:b-coresets}
