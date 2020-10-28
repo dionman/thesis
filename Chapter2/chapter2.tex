@@ -150,7 +150,7 @@ Our VI schemes in~\cref{chap:chap4,chap:chap5} propose approximations within the
 \label{subsec:b-coresets}
 Owing to their requirement for multiple evaluations of the data (log-)likelihood---a computation scaling at $\Omega(N)$---MCMC and VI methods quickly become prohibitively expensive in the large-data regime. Various stochastic schemes have been proposed to circumvent this computation, evaluating the likelihood on random data minibatches: despite achieving computational savings and often being straightforward to implement, such schemes rarely offer guarantees on posterior approximation quality, and lack a rigorous principle over the minibatch selection step, hence retaining part of the redundancy of the full data collection in the extracted samples.
 
-Bayesian coresets~\citep{huggins16,campbell18,campbell19jmlr,campbell19neurips} make the assumption that the full dataset has some degree of inherent redundancy, and put forth the idea of scaling up inference via the application of a preprocessing step where \emph{part of the data gets retained under the criterion of likelihood approximation}. In the spirit of the first coresets proposed in the field of computational geometry, initial construction schemes for coreset-based inference~\citep{huggins16,lucic17training} utilize \emph{importance sampling} according to the datapoints sensitivity, \ie~a non-negative quantity measuring the redundancy of each of the datapoints \wrt the statistical model of interest. Although giving theoretical gurantees for the approximation quality achieved by the coreset, importance sampling based constructions have typically two shortcomings: (\emph{i}) they rely on efficiently computable upper bounds of the sensitivity, and (\emph{ii}) they do not have a sense of a residual posterior error, hence are limited by common MC rates in approximating the full data likelihood, offering error $\eps = O(\frac{1}{\sqrt{M}})$ for coreset size $M$.
+Bayesian coresets~\citep{huggins16,campbell18,campbell19jmlr,campbell19neurips} make the assumption that the full dataset has some degree of inherent redundancy, and put forth the idea of scaling up inference via the application of a preprocessing step where \emph{part of the data gets retained under the criterion of likelihood approximation}. In the spirit of the first coresets proposed in the field of computational geometry~\citep{feldman11unified}, initial construction schemes for coreset-based \mbox{inference~\citep{huggins16,lucic17training}} utilize \emph{importance sampling} according to the datapoints sensitivity, \ie~a non-negative quantity measuring the redundancy of each of the datapoints \wrt the statistical model of interest. Although giving theoretical gurantees for the approximation quality achieved by the coreset, importance sampling based constructions have typically two shortcomings: (\emph{i}) they rely on efficiently computable upper bounds of the sensitivity, and (\emph{ii}) they do not have a sense of a residual posterior error, hence are limited by common MC rates in approximating the full data likelihood, offering error $\eps = O(\frac{1}{\sqrt{M}})$ for coreset size $M$.
 
 Reformulating coreset construction as sparse function approximation in a Hilbert space~(\emph{Hilbert coresets}), Campbell and Broderick~\citep{campbell18,campbell19jmlr} introduced alternative optimization formulations for the problem. They showed that using inner-product inducing norms can lead to faster incremental construction schemes that, critically, can guide next datapoint selection by the direction of greatest impovement. Moreover, they made use of a coarse posterior approximation and random projections to efficiently compute Hilbert norms that capture the divergence between the coreset and the true posterior, and proposed faster sparse constructions under polytope and hypersphere constraints.
 
@@ -159,7 +159,7 @@ In more recent work, Campbell and Beronov~\citep{campbell19neurips} casted Bayes
 
 \section{Robust inference}
 
-In this section, we present robustness limitations of standard posterior on big data, and outline existing generalizations of the posterior that aim to robustify inference with respect to data mismatch. Adopting robustified posteriors as our target of coreset approximations, in~\cref{chap:chap5} we will successfully address scenarios of inference under model misspecification.
+In this section, adopting an optimization view of Bayesian inference, we present robustness limitations of the standard Bayesian posterior on big data, and outline existing generalizations of the posterior that aim to robustify inference with respect to model-data mismatch. Setting these robustified posteriors as the target of our coreset approximations, in~\cref{chap:chap5} we will successfully address scenarios of large-scale inference under model misspecification.
 
 \subsection{Standard Bayesian inference and lack of robustness in the large-data regime}
 In the context of Bayesian inference, we are interested in updating our beliefs about a vector of random variables $\theta \in \Theta$, initially expressed through a prior distribution $\pi_0(\theta)$, after observing a set of datapoints $ x:=(x_n)_{n=1}^{N} \in \mcX^N$.  Rewriting~\cref{eq:bbayes-rule}, the posterior on $\theta$ can be computed via the application of Bayes rule 
@@ -167,17 +167,22 @@ In the context of Bayesian inference, we are interested in updating our beliefs 
 \pi(\theta|x) = \frac{1}{Z'}\pi(x|\theta)\pi_0(\theta),
 \label{eq:bayes-rule}
 \] 
-where $Z'$ is a (typically intractable) normalization constant.%, and $\pi(x|\theta)$ is the likelihood of our observations according to an assumed statistical model.
-When datapoints are conditionally independent given $\theta$, the likelihood function gets factorized as $\pi(x|\theta) = \Pi_{n=1}^{N}\pi(x_n|\theta)$. An equivalent formulation of  the
-Bayesian posterior as a solution to an optimization problem was proposed by Zellner~\citep{zellner88}, which is written as  
+where $Z'$ is a (typically intractable) normalization constant. %, and $\pi(x|\theta)$ is the likelihood of our observations according to an assumed statistical model.
+When datapoints \mbox{are conditio-} nally independent given $\theta$, the likelihood function gets factorized as \mbox{$\pi(x|\theta) = \Pi_{n=1}^{N}\pi(x_n|\theta)$.} An equivalent formulation of  the
+Bayesian posterior as a solution to a convex optimization problem over the density space was introduced by Williams~\citep{williams80} and Zellner~\citep{zellner88}, and used in various subsequent works including \citep{zhu14, dai16, futami18}. Concretely,~\cref{eq:bayes-rule} can be recovered by solving the problem
+\[
+\arg \underset{q(\theta) \in \mcP}{\min}  \kl{q(\theta)}{\pi_0(\theta)} -\sum_{n=1}^{N}\left[\int q(\theta) \log \pi(x_n|\theta)d\theta\right],
+\label{eq:bayes-rule-opt}
+\]
+where $\mcP$ is the valid density space, while the Bayesian posterior can be expressed as 
 \[
 \pi(\theta|x) = \frac{1}{Z'} \exp\left(-\xent{\hpi(x)}{\pi(x|\theta)}\right)\pi_0(\theta).
 \label{eq:zellner-rule}
 \]
-In the above, $\hpi(x)$ is the empirical distribution of the observed datapoints. The exponent $\xent{\hpi(x)}{\pi(x|\theta)}:=-\sum_{n=1}^{N}\log\pi(x_n|\theta)$
+In the last expression, $\hpi(x):=\frac{1}{N}\sum_{n=1}^{N}\delta(x, x_n)$ is the empirical distribution of the observed datapoints. The exponent $\xent{\hpi(x)}{\pi(x|\theta)}:=-\sum_{n=1}^{N}\log\pi(x_n|\theta)$
 corresponds (up to a constant) to the \emph{cross-entropy}, which is  equal to the empirical average of negative log-likelihoods of the datapoints, and quantifies the expected loss incurred by our estimates for the model parameters $\theta$ over the available observations, under the Kullback-Leibler divergence.
 
-When $N$ is large, the Bayesian posterior is strongly affected by perturbations in the observed data space. To develop an intuition on this, assuming that the true and observed data distributions have densities $\pi_\theta$ and $\pi_\textsubscript{obs}$ respectively, we can rewrite an approximation of~\cref{eq:zellner-rule} via the KL divergence as in Miller and Dunson~\cite{miller19}
+When $N$ is large, the Bayesian posterior is strongly affected by perturbations in the observed data space. To develop an intuition on this, assuming that the true and observed data distributions admit densities $\pi_\theta$ and $\pi_\textsubscript{obs}$ respectively, we can rewrite an approximation of~\cref{eq:zellner-rule} via the KL divergence as in Miller and Dunson~\cite{miller19}
 \[
 \pi(\theta|x) 
 & \propto  \exp\left(\sum_{n=1}^{N}\log\pi(x_n|\theta)\right) \pi_0(\theta)
@@ -190,9 +195,15 @@ Hence, due to the large $N$ in the exponent, small changes in $\pi_\textsubscrip
 
 \subsection{Robustified pseudo-Bayesian posteriors}
 
-Robust inference methods aim to adapt~\cref{eq:bayes-rule} to formulations that can address the case of observations departing from model assumptions, as often happening in practice, e.g. due to misspecified shapes of data distributions and number of components, or due to the presence of outliers. In such formulations~\citep{dawid16, jewson18, fujisawa08, eguchi01}, Bayesian updates rely on utilising robust divergences instead of the KL divergence, to express the losses over the data. 
+Robust inference methods aim to adapt~\cref{eq:bayes-rule,eq:bayes-rule-opt,eq:zellner-rule} to formulations that can address the case of observations departing from model assumptions, as often happening in practice, e.g. due to misspecified shapes of data distributions and number of components, or due to the presence of outliers. In such formulations~\citep{dawid16, jewson18, fujisawa08, eguchi01}, Bayesian updates rely on utilising robust divergences instead of the KL divergence, to express the losses over the data. 
 
-As mentioned in~\cref{subsec:b-divergences}, a popular choice~\citep{futami18, knoblauch18} for enhancing robustness of inference is replacing the log-likelihood terms arising in~\cref{eq:zellner-rule} with the \emph{\bdiv~}, which yields the following posterior for $\theta$~\citep{ghosh16,knoblauch18}
+From the definition of KL divergence~\cref{eq:bkl-def}, we can equivalently rewrite \cref{eq:bayes-rule-opt} as
+\[
+\arg \underset{q(\theta) \in \mcP}{\min}  \kl{q(\theta)}{\pi_0(\theta)} + N\EE_{q(\theta)}\left[\kl{\hpi(x)}{\pi(x|\theta)}\right],
+\label{eq:bayes-rule-opt-kl}
+\]
+namely inference corresponds to maximizing the expected likelihood of the observations, under a regularizer that aims to keep the posterior $q$ close to the prior $\pi_0$.
+As mentioned in~\cref{subsec:b-divergences}, a popular choice~\citep{futami18, knoblauch18} for enhancing inferential robustness is to replace the KL divergence---computed via the expected likelihood  arising in the second term of~\cref{eq:bayes-rule-opt-kl}---with the \emph{\bdiv}. This yields the following posterior for $\theta$~\citep{ghosh16,knoblauch18}
 \[
 \pi_\beta(\theta|x) \propto \exp\left(-\db{\hpi(x)}{\pi(x|\theta)}\right)\pi_0(\theta),
 \label{eq:b-posterior}
@@ -204,10 +215,10 @@ where
 \label{eq:b-loss}
 \]
 with $\beta>0$.
-We refer to quantities defined in~\cref{eq:b-posterior,eq:b-loss} as the \emph{\bpost{}} and \emph{\blik{}} respectively. Noticeably, the individual terms $f_n(\theta)$  of the \blik{} %, which are known as the Tsallis scores~\citep{tsallis88}, are decomposed into a data-independent $c(\theta)$, and a data-dependent part $t_n(\theta)$.
+In the remainder we refer to quantities defined in~\cref{eq:b-posterior,eq:b-loss} as the \emph{\bpost{}} and \emph{\blik{}} respectively. Noticeably, the individual terms $f_n(\theta)$  of the \blik{} %, which are known as the Tsallis scores~\citep{tsallis88}, are decomposed into a data-independent $c(\theta)$, and a data-dependent part $t_n(\theta)$.
 % := \frac{1}{\beta} \pi(x_n|\theta)^{\beta}$. 
 %The latter 
-allow attributing \emph{different strength of influence to each of the datapoints}, depending on their accordance with the model assumptions. As densities get raised to a suitable power $\beta$, outlying observations are exponentially downweighted. When $\beta \rightarrow 0$,~\cref{eq:zellner-rule} is recovered and all datapoints are treated equally.
+allow attributing \emph{different strength of influence to each of the datapoints}, depending on their accordance with the model assumptions. As densities get raised to a suitable power $\beta$, outlying observations are exponentially downweighted. When $\beta \rightarrow 0$, the Bayes posterior of \cref{eq:zellner-rule,eq:bayes-rule} is recovered and all datapoints are treated equally.
 
 In the presentation above we focused on modeling observations $(x_n)_{n=1}^{N}$~(unsupervised learning). In the case of supervised learning on data pairs ${(x_n,y_n)}_{n=1}^{N} \in (\mcX \times \mcY)^N$, the respective expression for individual terms of \blik{}\footnote{In this context for simplicity we use notation $f_n(\cdot)$  to denote $f(y_n|x_n, \cdot)$.} is~\cite{basu98}
 \[
