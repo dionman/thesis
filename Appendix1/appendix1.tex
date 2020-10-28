@@ -286,7 +286,7 @@ Here we present some more plots demonstating the dependence of Hilbert coresets 
 \label{app:logreg_model_appendix}
 In logistic regression we have a set of datapoints $(x_n, y_n)_{n=1}^{N}$ each corresponding to a feature vector ${x_n \in \reals^d}$ and a label ${y_n \in \{-1, 1\}}$. Datapoints are assumed to be generated according to following statistical model
 \[
-y_n | x_n, \theta \sim \distBern \left( \frac{1}{1+e^{-z_n \theta}} \right) 
+y_n | x_n, \theta \sim \distBern \left( \frac{1}{1+e^{-z_n^T \theta}} \right) 
 \quad 
 z_n := \begin{bmatrix}
 x_n \\
