@@ -1,14 +1,14 @@
 \section{Method}
 \label{sec:method}
 
-In this section we discuss \bcores, our unified solution to the robustness and scalability challenges of large-scale Bayesian inference. \cref{subsec:sparse-b-posterior} introduces the main quantity of interest in our inference method, and shows how it addresses the exposed issues. \cref{subsec:bb-construct} presents an iterative algorithm that allows efficient approximate computations of our posterior.
+In this section we present \bcores, our unified solution to the robustness and scalability challenges of large-scale Bayesian inference. \cref{subsec:sparse-b-posterior} introduces the main quantity of interest in our inference method, and shows how it addresses the exposed issues. \cref{subsec:bb-construct} presents an iterative algorithm that allows efficient approximate computations of our posterior.
 
 
 \subsection{Sparse \bpost{}}
 \label{subsec:sparse-b-posterior}
 
 
-Scaling up the computation of the robust \bpost~\cref{eq:b-posterior} in the regime of massive datasets for non-conjugate models is challenging:
+Scaling up the computation of the robust \bpost defined in~\cref{eq:b-posterior} in the regime of massive datasets for non-conjugate models is challenging:
 %~Closed form computation of~\bdiv{} is not possible for a large number of statistical models. Moreover, 
 similarly to the standard Bayesian posterior~\cref{eq:bayes-rule}, applying Markov chain Monte Carlo~(MCMC) methods to sample from the~\bpost{}, implies a computational cost scaling at order $\Theta(N)$. 
 
@@ -24,7 +24,7 @@ In the case of the \bpost{} on the full dataset~\cref{eq:b-posterior}, we have $
 
 Although Bayesian coresets can dramatically reduce inference time, they inherit the susceptibility of Bayesian posterior to data mismatch in the large data regime: even though the number of points used in inference gets reduced, these points are now weighted, hence the remark of~\cref{eq:missmatch_with_N} can carry over in coresets posterior. 
 
-The recent formulation of Riemannian coresets~\citep{campbell19neurips} has framed the problem of coreset construction as Variational Inference~(VI) in a sparse exponential family. Our method provides a natural extension of this framework to robust divergences. Here we aim to approximate data posterior via a \emph{sparse \bpost}, which can be expressed as follows
+The recent formulation of Riemannian coresets~\citep{campbell19neurips} has framed the problem of coreset construction as variational inference in a sparse exponential family. Our method provides a natural extension of this framework to robust divergences. Here we aim to approximate data posterior via a \emph{sparse \bpost}, which can be expressed as follows
 \[
 w^{*} = \arg \min_{w\in\reals^{N}} \kl{\pi_{\beta,w}}{\pi_{\beta}} 
 \quad

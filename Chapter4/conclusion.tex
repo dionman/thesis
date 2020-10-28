@@ -1,5 +1,5 @@
-\section{Summary}
-We introduced a new variational formulation for Bayesian coreset construction, which yields efficient summarizations for big and high-dimensional datasets via simultaneously learning pseudodata points locations and weights. We proved limitations of existing variational formulations for coresets and demonstrated that they can be resolved with our new methodology. We proposed an efficient construction scheme via black-box stochastic optimization and showed how it can be adapted for differentially private Bayesian summarization. Finally, we demonstrated the applicability of our methodology on synthetic and real-world datasets, and practical statistical models.  
+\section{Summary \& discussion}
+In this chapter, we introduced a new variational formulation for Bayesian coreset construction, which yields efficient summarizations for big and high-dimensional datasets via simultaneously learning pseudodata points locations and weights. We proved limitations of existing variational formulations for coresets and demonstrated that they can be resolved with our new methodology. We proposed an efficient construction scheme via black-box stochastic optimization and showed how it can be adapted for differentially private Bayesian summarization. Finally, we demonstrated the applicability of our methodology on synthetic and real-world datasets, and practical statistical models.  
 
 %\textcolor{red}{Presented work can be further pursued in several directions: Although our experiments demonstrated similar levels of variance with \sparsevi, we think that existing variance reduction techniques~\citep{ranganath14} might allow improvement in our stochastic optimization. Furthermore, privacy accounting can become tighter via adapting it to the specific form of private computations entering gradients in \dpsvi. Learned pseudodata points are expected to offer an even larger improvement in statistical models where there is a stronger interdependence between datapoints and parameters---e.g. point processes---compared to i.i.d. settings. Last but not least, an information-geometric interpretation of our approximation can shed more light on the theoretical understanding of \psvi. We leave the above as topics for future research.} 
 
@@ -18,7 +18,7 @@ Therefore, a pseudocoreset summarization based on a wrong statistical model
 will lead to non-representative compression for inferential purposes.
 Constructing the coreset on a statistical model suited for robust inference
 instead of the original one~\citep{miller19, wang17}, can offer protection
-against modeling mismatches. Naturally, the utility of generated dataset
+against modeling mismatches, and will be the subject of the following chapter. Naturally, the utility of generated dataset
 summary becomes task-dependent, as it has been optimized for a specific
 learning objective, and cannot be fully transferable to multiple different
 inference tasks on the same dataset.

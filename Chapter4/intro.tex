@@ -23,8 +23,7 @@ A common form of summarization is that of a sparse, weighted subset of the origi
 Coresets have two distinct advantages over other possible summarization modalities: they are easily interpreted, and can often be used
 as the input to standard data analysis algorithms without modification. 
 But as the dimensionality of a dataset grows, its constituent 
-datapoints tend to become more ``unique'' and cannot represent one another well. Indeed, in the context of Bayesian inference---the focus of the
-present work---we show that the \emph{optimal} coreset posterior approximation to the true posterior has KL divergence that scales with the dimension 
+datapoints tend to become more ``unique'' and cannot represent one another well. Indeed, in the context of Bayesian inference we show that the \emph{optimal} coreset posterior approximation to the true posterior has KL divergence that scales with the dimension 
 of the data in a simple problem setting (\cref{prop:original_coreset_fails}). 
 Furthermore, directly releasing a subset of the original data precludes any possibility of
 individual privacy under the current standard 

@@ -9,7 +9,7 @@ We examine the inferential results achieved by our method under 3 statistical mo
 \bcores{} is compared against a uniformly random sampling baseline, and stochastic batch implementations of two existing Riemannian coreset methods: 
 \benum[label={(\roman*)}]
 	\item \sparsevi~\cite{campbell19neurips}, which builds up a coreset according to an incremental scheme similar to ours, considering the standard likelihood function terms evaluated on the dataset points, and 
-	\item \psvi~\cite{psvi}, which runs a batch optimization on a set of pseudopoints, and uses standard likelihood evaluations to jointly learn the pseudopoints weights and locations, so that the extracted summary resembles the statistics of the full dataset. 
+	\item \psvi~\cite{psvi}, the method introduced in~\cref{chap:chap4}, which runs a batch optimization on a set of pseudopoints, and uses standard likelihood evaluations to jointly learn the pseudopoints weights and locations, so that the extracted summary resembles the statistics of the full dataset. 
 \eenum
 
 
