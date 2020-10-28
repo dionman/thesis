@@ -1,4 +1,4 @@
-\section{Experiments \& Applications}
+\section{Experiments \& applications}
 \label{sec:evaluation}
 \definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
 \definecolor{oxfordblue}{rgb}{0.0, 0.13, 0.28}
@@ -15,7 +15,7 @@ We examine the inferential results achieved by our method under 3 statistical mo
 
 We default the number of iterations in the optimization loop over gradient-based coreset constructions to $ T = 500$, using a learning rate $ \gamma_t \propto t^{-1}$ and $S=100$ random projections per gradient computation. For consistency with the compared baselines, we evaluate inference results obtained by \bcores{} using the classical Bayesian posterior from~\cref{eq:bayes-rule} conditioned on the corresponding robustified data summary. Additional details on used benchmark datasets are presented in~\cref{sec:data-details}. %Code is available at 	\MYhref{https://github.com/dionman/beta-cores}{https://github.com/dionman/beta-cores}.
 
-\subsection{Simulated Gaussian Mean Inference under Stuctured Data Contamination}
+\subsection{Simulated Gaussian mean inference under stuctured data contamination}
 \label{subsec:gauss-expt}
 
 In this experiment we study how \bcores{} behaves in the setting of mean inference on synthetic $d$-dimensional data, sampled \iid from a normal distribution with known covariance,
@@ -65,7 +65,7 @@ Moreover, in the case of contaminated datasets, baseline coresets are quite conf
 We can however notice that, for coreset sizes growing beyond 60 points---despite remaining consistently better compared to the baselines---\bcores{} starts to present some instability over trials in contaminated dataset instances. This effect is attributed to the small value of the $\beta$ hyperparameter  selected for the demonstration (so that this value can successfully model the case of clean data). As a result, eventually some outliers might be allowed to enter the summary for large coreset sizes. The instability can be resolved by increasing $\beta$ according to the observations failure probability. 
 
 
-\subsection{Bayesian Logistic Regression under Mislabeling and Feature Noise}
+\subsection{Bayesian logistic regression under mislabeling and feature noise}
 \label{subsec:logreg-expt}
 
 \begin{figure}[t!]
@@ -110,7 +110,7 @@ The values for hyperparameter $\beta$ and learning rates $\gamma_t$ were chosen 
 %\footnote{For~\textsc{WebSpam} we notice that coresets performance in uncontaminated data for the displayed summary sizes is comparable to uniform sampling: this is a side effect of the high-dimensionality of this dataset examined in more depth at~\citep{psvi}, which out of scope for the purposes of this work.},
 
 
-\subsection{Neural Linear Regression on Noisy Data Batches}
+\subsection{Neural linear regression on noisy data batches}
 \label{subsec:neur-linr-expt}
 
 Here we use the coresets extension for batch summarization to efficiently train a neural linear model on selected data minibatches. Neural linear models perform Bayesian linear regression on the representation of the last layer of a deterministic neural network feature extractor~\cite{snoek15,riquelme18,pinsler19}.
@@ -153,7 +153,7 @@ Our neural architecture is comprised of two fully connected hidden layers, batch
 
 
 
-\subsection{Efficient Data Acquisition from Subpopulations for Budgeted Inference}
+\subsection{Efficient data acquisition from subpopulations for budgeted inference}
 \label{sec:active-selection}
 
 

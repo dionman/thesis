@@ -3,7 +3,7 @@
 
 This chapter aims to set the context for the remainder of this thesis. Various concepts pertaining to this thesis, including Bayesian inference, exponential family distributions and differential privacy, are briefly introduced in the following.
 
-\section{Comparing Probability Distributions}
+\section{Comparing probability distributions}
 \label{subsec:b-divergences}
 A critical component in constructing and evaluating inference algorithms is using a \emph{divergence measure}, that captures informatively how similar two probability distributions are. Statistical divergences are relaxations of distance functions, that (\emph{i})~are always non-negative, and (\emph{ii})~equal zero iff their arguments are identical---albeit they do not necessarily satisfy symmetry in their arguments, or the triangle inequality. The most commonly used divergence measure in approximate inference---which will directly serve to define the objective quantifying the inferential quality of our summaries in \cref{chap:chap4}---is the \emph{Kullback-Leibler}~(KL) divergence, also named \emph{relative entropy}~\citep{kullback51,kullback59}. For probability density functions $\pi_1(\theta)$ and $\pi_2(\theta)$, the KL divergence is defined as 
 \[
@@ -25,7 +25,7 @@ for $\beta > 0$.
 
 One can easily show that the \bdiv{} converges to the KL divergence when $\beta \rightarrow 0$.
 
-\section{Exponential Families}
+\section{Exponential families}
 \label{sec:b-expfam}
 
 The exponential family~\citep{wainwright08} is a broad class of probability distributions, sharing a set of important properties that facilitate tractable inference. Exponential family members include numerous well-known distributions, such as the Poisson distribution, the Gamma distribution, and the Gaussian or normal distribution. 
@@ -63,7 +63,7 @@ An important property of exponential family densities is that the derivatives of
 
 \cref{prop:bgradZ} allows efficient approximations for the gradient and Hessian of $ Z $ using empirical estimates of the first two moments of the sufficient statistic; we take advantage of this property in the variational inference schemes to be introduced in~\cref{chap:chap4,chap:chap5}.
 
-\section{Probabilistic Learning at  a Glance}
+\section{Probabilistic learning at  a glance}
 \label{sec:b-bayesian-inference}
 
 Bayesian probabilistic modeling provides a principled framework for  learning from observed data, incorporating expert knowledge, handling model uncertainty and drawing coherent inferences in a unified way, following the languange of probability theory.
@@ -87,7 +87,7 @@ A key challenge in computing the posterior according to~\cref{eq:bbayes-rule} is
 \]
 \emph{Marginalising}, \ie~computing the integral of~\cref{eq:bmarginal-likelihood}, can be done using analytical tools for a number of simple Bayesian models---some of which will be discussed in the remainder, including Gaussian mean inference, Bayesian and neural linear regression---where the likelihood is conjugate to the prior. However, for the vast majority of interesting statistical models marginalization cannot be done in closed form and should be approximated instead. Aiming to address such cases, approximate Bayesian inference has emerged as an active research area for many decades. In the remainder of the section we present an overview of existing approaches addressing approximate inference that are relevant to our algorithms. For a more detailed exposure, including methods beyond the scope of this thesis (e.g. expectation propagation), cf.~\citep{bishop06,murphy12,angelino16}.
 
-\subsection{Laplace's Method}
+\subsection{Laplace's method}
 \label{subsec:b-laplace-method}
 
 Point estimates of $\theta$, obtained for example via \emph{maximum a posteriori~(MAP)} or \emph{maximum likelihood estimation~(MLE)}, are cheap to compute, as they correspond to solutions of optimization problems involving only the unnormalised rhs of~\cref{eq:bbayes-rule}---on the other hand, they cannot capture the uncertainty of our posterior beliefs. Laplace's method~\citep{mackay03} is an approximate inference scheme that makes a first step towards uncertainty awareness, offering a non-degenerate, yet inexpensive to compute, approximate posterior for $\theta$.
@@ -107,7 +107,7 @@ Hence we have
 
 Laplace approximations will be used as coarse posterior approximations over our coreset summary constructions.
 
-\subsection{Sampling Methods}
+\subsection{Sampling methods}
 \label{subsec:b-sampling-methods}
 In the absence of analytical formulae, integrals in the form of~\cref{eq:binference} can be approximated via empirical averaging, using samples from the target posterior distribution
 \[
@@ -121,7 +121,7 @@ Bounds on the number of MCMC iterations required until we obtain a satisfactory 
 
 
 
-\subsection{Variational Inference}
+\subsection{Variational inference}
 \label{subsec:b-variational-inference}
 Variational inference~(VI)~\citep{jordan99,blei17} takes a fundamentally different approach to  address approximate inference.
 The problem formulation underpinning all VI methods is to find a member $q^*$ within a family of tractable probability distributions $Q$ that most closely matches our true posterior $\pi$ (typically in the KL-sense)
@@ -146,7 +146,7 @@ Via Jensen's inequality, ELBO can be shown to be a lower bound of the marginal l
 The simplest family $Q$ that can be used for VI is the \emph{mean-field variational family} which relies on the simplifying assumption of independence among the coordinates of $\theta$, \ie~$q(\theta) \defined \Pi_{d=1}^{D}q_d(\theta_d)$.
 Our VI scheme proposes approximations within the \emph{exponential family}, which generally allow less restricted posteriors. Additionally, it can circumvent the use of ELBO, and instead be directly applied on the original variational formulation of~\cref{eq:bvi}, since MC estimates of the gradient of the log-evidence term can be extracted as per~\cref{prop:bgradZ}. 
 
-\subsection{Bayesian Coresets}
+\subsection{Bayesian coresets}
 \label{subsec:b-coresets}
 Owing to their requirement for multiple evaluations of the data (log-)likelihood---a computation scaling at $\Omega(N)$---MCMC and VI methods quickly become prohibitively expensive in the large-data regime. Various stochastic schemes have been proposed to circumvent this computation, evaluating the likelihood on random data minibatches: despite achieving computational savings and often being straightforward to implement, such schemes rarely offer guarantees on posterior approximation quality, and lack a rigorous principle over the minibatch selection step, hence retaining part of the redundancy of the full data collection in the extracted samples.
 
@@ -157,11 +157,11 @@ Reformulating coreset construction as sparse function approximation in a Hilbert
 In more recent work, Campbell and Beronov~\citep{campbell19neurips} casted Bayesian coresets to a problem of sparse variational inference within an exponential family, named \emph{Riemannian coresets}. Riemannian coresets removed the requirement for fixing a coarse posterior that appears when computing the norm in practical Hilbert coreset constructions, achieving full automation and improvement of approximation (in KL) over a larger range of summary sizes.
 
 
-\section{Robust Inference}
+\section{Robust inference}
 
 In this section, we present robustness limitations of standard posterior on big data, and outline existing generalizations of the posterior that aim to robustify inference with respect to data mismatch. Adopting robustified posteriors as our target of coreset approximations, in~\cref{chap:chap5} we will successfully address scenarios of inference under model misspecification.
 
-\subsection{Standard Bayesian Inference and Lack of Robustness in the Large-Data Regime}
+\subsection{Standard Bayesian inference and lack of robustness in the large-data regime}
 In the context of Bayesian inference, we are interested in updating our beliefs about a vector of random variables $\theta \in \Theta$, initially expressed through a prior distribution $\pi_0(\theta)$, after observing a set of datapoints $ x:=(x_n)_{n=1}^{N} \in \mcX^N$.  Rewriting~\cref{eq:bbayes-rule}, the posterior on $\theta$ can be computed via the application of Bayes rule 
 \[
 \pi(\theta|x) = \frac{1}{Z'}\pi(x|\theta)\pi_0(\theta),
@@ -188,7 +188,7 @@ When $N$ is large, the Bayesian posterior is strongly affected by perturbations 
 where $\doteq$ denotes  agreement to first order in exponent.\footnote{\ie~$a_n \doteq b_n$ iff $(1/n)\log(a_n/b_n) \rightarrow 0$}
 Hence, due to the large $N$ in the exponent, small changes in $\pi_\textsubscript{obs}$ will have a large impact on the posterior.
 
-\subsection{Robustified Pseudo-Bayesian Posteriors}
+\subsection{Robustified pseudo-Bayesian posteriors}
 
 Robust inference methods aim to adapt~\cref{eq:bayes-rule} to formulations that can address the case of observations departing from model assumptions, as often happening in practice, e.g. due to misspecified shapes of data distributions and number of components, or due to the presence of outliers. In such formulations~\citep{dawid16, jewson18, fujisawa08, eguchi01}, Bayesian updates rely on utilising robust divergences instead of the KL divergence, to express the losses over the data. 
 
@@ -215,7 +215,7 @@ f_n(\theta):= -\frac{\beta+1}{\beta}\pi(y_n|x_n,\theta)^{\beta} +  \int_{\mcY} \
 \label{eq:sl-lik-terms}
 \] 
 
-\section{Representing Data}
+\section{Representing data}
 \label{sec:b-representing-data}
 Extracting a relevant feature representation is an important step in the context of statistical pattern recognition. For this purpose a feature map 
 \[
@@ -254,7 +254,7 @@ Examples of widely-used kernel functions include
 
 Kernel methods induce \emph{non-parametric} representations on the data, \ie~when given a set with $ N $ datapoints of dimension $d$, kernels effectively map each datapoint to an $N$-dimensional representation. %Although allowing representation power scaling with the number of datapoints, such methods often reach prohibitive computational cost.
 
-\subsection{Finite-dimensional Random Projections}
+\subsection{Finite-dimensional random projections}
 \label{subsec:b-random-features}
 
 Kernel methods appeal to large-scale learning due to their non-parametric nature: their representation power scales with the number of datapoints, hence they can learn complex, highly non-linear structure from the data; however, their time and memory cost scales adversely with the dataset size. Random features~\citep{rahimi08} remedy poor complexity scaling issues via utilising \emph{parametric finite-dimensional} data representations. We motivate this concept via an application arising in Hilbert coreset constructions~\cite{campbell19jmlr}.
@@ -279,7 +279,7 @@ In this way we get an unbiased finite-dimensional estimator of the inner product
 \]
 
 
-\section{Differential Privacy}
+\section{Differential privacy}
 
 Differential privacy~(DP)~\citep{dwork2006calibrating,dwork14} is a formal framework quantifying the privacy threat that exists in the output of a data analysis task, due to changing an individual entry of a sensitive database. It considers a setting where the database is held by a trusted curator; and an untrusted analyst sends statistical queries to the curator and receives public responses via randomized algorithms, or mechanisms: DP enforces a stability property on the output distribution of these mechanisms that limits the disclosure of information about any individual record within the database, offering strong indistinguishability guarantees regardless of the side information that the analyst might possess~(even when the analyst knows all other records of the database). 
 

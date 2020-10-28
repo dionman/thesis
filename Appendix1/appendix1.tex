@@ -79,7 +79,7 @@ and
 \end{proof}
 
 
-\section{Gradient Derivations}
+\section{Gradient derivations}
 \label{app:gradient_derivations}
 
 Throughout, expectations and covariances over the random parameter $\theta$ with 
@@ -168,7 +168,7 @@ $f(\theta)^T1$ and $\tf(\theta)^Tw$ for $a(u,\theta)$.
 
 
 
-\section{Details on Experiments}
+\section{Details on experiments}
 \label{app:experiments_appendix}
 
 
@@ -279,7 +279,7 @@ To scale up computation on large datasets, in our experiment we made use of stoc
 Here we present some more plots demonstating the dependence of Hilbert coresets approximation quality on the dimension of random projections in the Bayesian linear regression setting presented in~\cref{fig:linreg_300}. We remind that the dimension used at this experiment and throughout the entire experiments section was set to 100. Increasing this number is typically expensive to obtain in practice. As demonstrated in~\cref{fig:hilbert_varying_projdim}, getting higher projection dimension enables better posterior approximation in the problem for both \gigao~and~\gigar. However, \psvi~remains competitive in the small coreset regime, even for Hilbert coresets with extremely large projection dimensionality, demonstrating the information-geometric limitations that Hilbert coreset constructions are known to face~\cite{campbell19neurips}.
 
 
-\subsection{Bayesian Logistic Regression}
+\subsection{Bayesian logistic regression}
 \label{app:logreg_experiment_appendix}
 
 \subsubsection{Model}
@@ -370,7 +370,7 @@ set to $T = 1,500$, while minibatch size was set to  $B = 400$. Learning rate sc
 	\label{fig:smallscale_ls_blogreg_dkl}
 \end{figure*}
 
-\subsubsection{Reproducibility of Bayesian Logistic Regression experiment}
+\subsubsection{Reproducibility of Bayesian logistic regression experiment}
 \label{app:reproducibility}
 In this subsection we provide additional details for reproducibility of the experimental setup for the Bayesian Logistic Regression experiment presented in~\cref{sec:experiments}.  
 
@@ -383,7 +383,7 @@ Regarding \dpvi, over our experiments we also kept subsampling ratio fixed. We b
 
 
 
-\subsubsection{Additional Plots}
+\subsubsection{Additional plots}
 \label{app:cpu_timings}
 
 \begin{figure*}[!t]

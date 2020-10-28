@@ -1,8 +1,8 @@
-\section{Data for Analysis}
+\section{Data for analysis}
 
 In this section we present an exploratory analysis of the dataset used in our experiments, highlighting statistical properties of the data and empirical results regarding the structural anonymity of the generated state connectivity networks.
 
-\subsection{Data Description}
+\subsection{Data description}
 
 We evaluate our methodology on the Device Analyzer dataset \cite{Wagner2014}. Device Analyzer contains records of smartphone usage collected from over $ 30,000 $  study participants around the globe.
 Collected data include information about system status and parameters, running background processes, cellular and wireless connectivity.
@@ -15,7 +15,7 @@ We selected these $1,500$ handsets in order to examine the re-identifiability of
 This allowed us to study the various attributes of individual mobility affecting privacy in detail.
 As mentioned in the previous section, the cost of computing the adversarial posterior probability for the deanonymization of a given unlabeled network scales linearly with the population size.
 
-\subsection{Mobility Networks Construction\label{sec:mobility-net-construct}}
+\subsection{Mobility networks construction\label{sec:mobility-net-construct}}
 
 \begin{figure*}[t]
 	\centering
@@ -34,7 +34,7 @@ This method tests graphical models of varying orders and selects the optimal ord
 
 We tested higher-order models up to order three. In the case of top$-20$ mobility networks, we found routine patterns in the mobility trajectories were best explained with models of order two for more than 20$\%$ of the users. However, when considering top$-100$, top$-200$, top$-500$ and full mobility networks, we found that the optimal model for our dataset has order one for more than $ 99\% $ of the users; see~\cref{fig:model_selection}. In other words, when considering mobility trajectories which visit less frequent locations in the graph, the overall increase in likelihood of the data for higher-order models cannot compensate for the complexity penalty induced by the larger state space. So while there might still be regions in the graph which are best represented by a higher-order model, the optimal order describing the entire graph is one. Therefore we use a model of order one in the rest of this paper.
 
-\subsection{Data Properties and Statistics} \label{sec:data-stats}
+\subsection{Data properties and statistics} \label{sec:data-stats}
 
 \begin{table*}[!t]
 	\centering 
@@ -101,7 +101,7 @@ As shown in~\cref{fig:ccdf}, the parsed mobility network of a typical user is ch
  \cref{fig:avg_edge_weight} shows that the estimated probability distribution of average edge weight.
  This peaks in the range from two to four, indicating that many transitions captured in the full mobility network are rarely repeated. However, most of the total weight of the network is attributed to the tail of this distribution, which corresponds to the edges that the user frequently repeats.
 
-\subsection{Anonymity Clusters on Top$-N$  Networks}\label{sec:anonymity-clusters}
+\subsection{Anonymity clusters on top$-N$  networks}\label{sec:anonymity-clusters}
 
 \begin{table*}[!t]
 	\centering

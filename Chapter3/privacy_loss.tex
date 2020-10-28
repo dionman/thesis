@@ -1,9 +1,9 @@
-\section{Evaluation of Privacy Loss in Longitudinal Mobility Traces}
+\section{Evaluation of privacy loss in longitudinal mobility traces}
 
 In this section we empirically quantify the privacy leakage implied by the information of longitudinal mobility networks for the population of users in the Device Analyzer dataset.
 For this purpose we undertake experiments in graph matching using different kernel functions, and assume an adversary has access to a variety of mobility network information.
 
-\subsection{Experimental Setup}
+\subsection{Experimental setup}
 
 For our experiments we split the \emph{cid} sequences of each user into two sets: the \emph{training} sequences where user identities are disclosed to the adversary, and the \emph{test} sequences where user identities are undisclosed to the adversary but are used to quantify the success of the adversarial attack.
 Therefore each user has two mobility networks: one derived from the training sequences, and one derived from the test sequences.
@@ -12,7 +12,7 @@ To do so, the adversary computes the pairwise distances between training mobilit
 We partitioned \emph{cid} sequences of each user by time, placing all \emph{cid}s before the partition point in the training set, and all \emph{cid}s after into the test set.
 We choose the partition point separately for each user as a random number from the uniform distribution with range $ 0.3 $ to $ 0.7 $.
 
-\subsection{Mobility Networks \& Kernels}
+\subsection{Mobility networks \& kernels}
 
 We computed the pairwise distances between training and test mobility networks using kernels from the categories described in~\cref{sec:methodology}.
 Node attributes are supported in the computation of Weisfeiler-Lehman and Shortest-Path kernel.
@@ -39,7 +39,7 @@ This was done using top$-N$ networks for varying size $N$.
 
 
 
-\subsection{Evaluation \& Discussion}
+\subsection{Evaluation \& discussion}
 
 We evaluated graph kernels functions from the following categories:
 \begin{itemize}
@@ -111,11 +111,7 @@ Based on the insights obtained from our experiment, we can make the following ob
 	\item \textbf{Directionality of transitions}: Directionality generally enhances the identifiability of networks and guides the similarity computation when using Shortest-Path kernels.
 \end{itemize}
 
-
-
-\subsection{Quantification of Privay Loss}
-
-
+\subsection{Quantification of privay loss}
 
 The Deep Shortest-Path kernel on top$-200$ networks offers the best ranking of identities for the test networks.
 As observed in~\cref{fig:rank_correct}, the mean of the true rank has been shifted from $ 750 $ to $ 140 $ for our population.
@@ -137,7 +133,7 @@ This means that the informed adversary can achieve a median deanonymization prob
 Moreover, the positive mean of privacy loss ($ {\approx  27}$) means that the probabilities of  the true identities of the test networks have, on average, much higher values in the adversarial estimate compared to the uninformed random strategy.
 Hence, revealing the kernel values makes an adversarial attack easier.
 
-\subsection{Defense Mechanisms }
+\subsection{Defense mechanisms }
 
 The demonstrated privacy leakage motivates the quest
 for defense mechanisms against this category of attacks.
