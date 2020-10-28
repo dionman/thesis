@@ -309,9 +309,9 @@ We call the databases adjacent, denoted $ x \approx x'$, iff $D_{H}(x, x')=1$.
 }
 
 \cref{def:b-dp-definition} with $\delta=0$, known as \emph{pure DP}, requires that if we perturb a database by a single datapoint, the output of the algorithm should not differ much, with the privacy risk being controlled by the parameter $\veps$.
-A weaker definition of DP allows that the guarantee of~\cref{def:b-dp-definition} gets broken with probability $\delta>0$. This corresponds to the notion of \emph{($\veps, \delta$)-approximate differential privacy}. The latter generally offers more tools for tighter privacy analysis over repeated access to the data, and will be the definition applied on our privacy-preserving summarization scheme in~\cref{chap:chap4}. In practice, $\veps \leq 0.1$ and $\delta \approx 1/N^{\omega(1)}$ are typically considered good values for the privacy hyperparameters. 
+A weaker definition of DP allows that the guarantee of~\cref{def:b-dp-definition} gets broken with probability $\delta>0$. This corresponds to the notion of \emph{($\veps, \delta$)-approximate differential privacy}. The latter generally allows more tools for tighter privacy analysis over repeated access to the data, and will be the definition applied on our privacy-preserving summarization scheme in~\cref{chap:chap4}. In practice, $\veps \leq 0.1$ and $\delta \approx 1/N^{\omega(1)}$ are typically considered good values for the privacy parameters. 
 
-The most common mechanisms that allow releasing numerical queries $f$ under DP rely on randomization via injecting additive noise. The amount of noise is calibrated to the \emph{global sensitivity} of the query, which is defined as 
+The most common mechanisms that enable releasing numerical queries $f$ under DP rely on randomization via injecting additive noise. The amount of noise is calibrated to the \emph{global sensitivity} of the query, which is defined as 
 \[
 \Delta_p(f) = \underset{x \approx x'}{\max} ||f(x)-f(x')||_p.
 \]
