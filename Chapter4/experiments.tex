@@ -42,7 +42,7 @@ moments used in the gradient formulae from \cref{eq:dkl_duw} in closed form
 & \cov_{u,w}[h(u_i), \tf_n] = Q^{-T}\Psi \tv_n,
 \end{aligned}\label{eq:synthgaussformulae}
 \]
-where $Q$ is the Cholesky decomposition of $\Sigma$ (i.e.~$\Sigma = QQ^T$),
+where $Q$ is the lower triangular matrix of the Cholesky decomposition of $\Sigma$ (i.e.~$\Sigma = QQ^T$),
 $\Psi \defined Q^{-1}\Sigma_{u,w} Q^{-T}$,
 $v_n := Q^{-1}(x_n - \mu_{u,w})$, and 
 $\tv_m := Q^{-1}(u_m - \mu_{u,w})$. 
@@ -86,7 +86,7 @@ true posterior very efficiently.
 \label{section:linreg_experiment}
 In the second experiment, we use a set of ${N=2,000}$ 
 $101$-dimensional datapoints $(x_n,y_n)_{n=1}^{N}$ generated as follows: $(x_n)_{n=1}^N  \distiid \distNorm(0, I),\; (y_n)_{n=1}^N  \dist [1, x_n]^T\theta + \epsilon_n,\;  (\epsilon_n)_{n=1}^{N} \distiid \distNorm(0, \sigma^2)$, and aim to infer $\theta \in \reals^{101}$. We assume a prior $\theta \dist \distNorm(\mu_0,\sigma_0^2 I)$, where $ \mu_0, \sigma_0^2$ are the dataset empirical mean and second moment, and set the noise parameter $ \sigma$ to the variance of $(y_n)_{n=1}^{N}$. We apply stochastic optimization for \psvi~construction~(also see~\cref{app:linreg_model_appendix}). We use learning rates $\gamma_t = t^{-1}$ for \sparsevi, and $\gamma_t = 0.1t^{-1}$ for \psvi, $B=200$, $T=1000$, while selection step for \sparsevi~is carried out over the full dataset. \cref{fig:linreg_300} shows that Hilbert coresets cannot improve posterior approximation in this setting with 100 random projections (see~\cref{app:linreg_plots_appendix}), 
-while \psvi~achieves the fastest decay rate over sizes $ 100 \leq M \lessapprox 250$, surpassing \sparsevi.
+while \psvi~achieves the fastest decay rate over sizes $ 100 \leq M < 250$, surpassing \sparsevi.
 
 \subsection{Bayesian logistic regression}
 \label{section:logreg_experiment}
@@ -110,7 +110,7 @@ For the differentially private pseudocoreset constructions (\dpsvi), we  use a
 subsampling ratio $q=2\times10^{-3}$. At each iteration we adapt the clipping
 norm value $ C $ to the median norm of $( f(u_m, \theta_s) - \frac{1}{S}
 \sum_{s'=1}^{S} f(u_m, \theta_{s'}))_{s=1}^{S}$ computed
-over pseudodata point values $u_m$, and use noise level $\sigma=5$. We
+over pseudodata point values $u_m$, and use noise level $\sigma=5$. Our hyperparameters choice implies privacy parameters $\veps=0.2$ and $\delta=1/N$ for each of the datasets. We
 initialise each pseudocoreset of size $ M$ via sampling $(x_m)_{m=1}^{M} \distiid
 \distNorm{(0, I)}$, and sampling $\theta$, $ (y_m)_{m=1}^{M} $ from the statistical
 model.
@@ -172,11 +172,12 @@ model.
 	\label{fig:dklvseps} 
 \end{figure*}
 
-
 Results presented in~\cref{fig:ls_blogreg_dkl} demonstrate that \psvi~achieves consistently the smallest posterior approximation error in the small coreset size regime, offering improvement
 compared to \sparsevi~and being competitive with \gigao,
 without the requirement for specifying a weighting function. In~\cref{sfig:transactions}, for $M \geq d$ ~\gigao~follows a much steeper decrease in KL divergence, reflecting the dependence of its approximation quality on dataset dimension per~\cref{prop:original_coreset_fails}. In contrast, \psvi~typically reaches its minimum at $M<d$. The difference in approximation quality becomes clearer in higher dimensions~(e.g. \textsc{Music}, where $d=237$). Perhaps surprisingly, the private pseudocoreset construction has only marginally worse approximation quality compared to nonprivate \psvi~and generally achieves better peformance in comparison to the other state-of-the-art nonprivate coreset constructions. 
-In~\cref{fig:dklvseps} we present the achieved posterior approximation quality via \dpsvi, against a competitive state-of-the-art method for general-purpose private inference(\dpvi, \cite{jalko17}). For logistic regression, \dpvi~infers an approximate posterior from the family of Gaussians with diagonal covariance via ADVI~\citep{kucukelbir17}, followed by an additional Laplace approximation. Note that by design, \dpvi~is constrained by the usual Gaussian variational approximation, while \dpsvi~is more flexible and can approach the true posterior as $ M $ increases---this effect is reflected in nonprivate posteriors as well as data dimensionality grows~(see for example~\cref{sfig:musicpriv}). Indeed, we verify that in the high-privacy regime \dpsvi~for sufficient pseudocoreset size (which is typically small for tested real-world datasets) offers posterior approximation with better KL divergence compared to \dpvi. Our findings indicate that private \psvi~offers efficient releases of big data via informative pseudopoints, which enable arbitrary post processing (e.g. running any \emph{nonprivate} black-box algorithm for Bayesian inference), under strong privacy guarantees and without reducing the quality of inference.
+
+In~\cref{fig:dklvseps} we present the achieved posterior approximation quality via \dpsvi, against a competitive state-of-the-art method for general-purpose private inference~(\dpvi, \cite{jalko17}). The plots display the
+behaviour of methods over a wide range of $\veps$ values, achieved using varying levels of privatization noise, and $\delta$ always set to $1/N$. For logistic regression, \dpvi~infers an approximate posterior from the family of Gaussians with diagonal covariance via ADVI~\citep{kucukelbir17}, followed by an additional Laplace approximation. Note that by design, \dpvi~is constrained by the usual Gaussian variational approximation, while \dpsvi~is more flexible and can approach the true posterior as $ M $ increases---this effect is reflected in nonprivate posteriors as well as data dimensionality grows~(see for example~\cref{sfig:musicpriv}). Indeed, we verify that in the high-privacy regime \dpsvi~for sufficient pseudocoreset size (which is typically small for tested real-world datasets) offers posterior approximation with better KL divergence compared to \dpvi. Our findings indicate that private \psvi~offers efficient releases of big data via informative pseudopoints, which enable arbitrary post processing (e.g. running any \emph{nonprivate} black-box algorithm for Bayesian inference), under strong privacy guarantees and without reducing the quality of inference.
 
 
 
