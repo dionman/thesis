@@ -21,10 +21,10 @@ for $w\in\reals^N$, $w\geq 0$ may be used in most popular posterior inference sc
 If the number of nonzero entries $\|w\|_0$ of $w$ is small, this results in a significant reduction in computational burden.
 Recent work has formulated the problem of constructing a  Bayesian coreset of size $M\in\nats$ as sparse variational inference~\citep{campbell19neurips},
 \[
-& w^\star = \argmin_{w\in\reals^N} \kl{\pi_w}{\pi_1}\label{eq:coresets-vi} \quad \quad
+& w^\star = \argmin_{w\in\reals^N} \kl{\pi_w}{\pi}\label{eq:coresets-vi} \quad \quad
  \text{s.t.} \quad w \geq 0, \; \|w\|_0 \leq M,
 \]
-and showed that the objective can be minimized using stochastic estimates of $\nabla_w\kl{\pi_w}{\pi_1}$
+and showed that the objective can be minimized using stochastic estimates of $\nabla_w\kl{\pi_w}{\pi}$
 based on samples from the coreset posterior $\pi_w$. 
 
 \subsection{High-dimensional data}
@@ -52,7 +52,7 @@ Coresets, as formulated in~\cref{eq:coresets-vi}, are limited to using the
 original datapoints themselves to summarize the whole dataset.
 \cref{prop:original_coreset_fails} shows that this is problematic when
 summarizing high-dimensional data; in the common setting of posterior inference
-for a Gaussian mean, the KL divergence $\kl{\pi_{w^\star}}{\pi_1}$ of the
+for a Gaussian mean, the KL divergence $\kl{\pi_{w^\star}}{\pi}$ of the
 \emph{optimal} coreset of any size scales with the dimension of the data.  The
 proof may be found in~\cref{app:proofs-of-failure}.
 \bnprop \label{prop:original_coreset_fails}
@@ -63,7 +63,7 @@ $(X_n)_{n=1}^N  \distiid \distNorm(\mu, I).$
 Then $\forall M < d$ and $\delta \in[0, 1]$, 
 with probability at least $1-\delta$ the optimal size-$M$ coreset $w^\star$ satisfies
 \[
-\kl{\pi_{w^\star}}{\pi_1} \geq \frac{1}{2}\frac{N-M}{1+N}F_{d-M}^{-1}\left(\delta{N\choose M}^{-1}\right),
+\kl{\pi_{w^\star}}{\pi} \geq \frac{1}{2}\frac{N-M}{1+N}F_{d-M}^{-1}\left(\delta{N\choose M}^{-1}\right),
 \]
 where $F_{k}$ is the CDF of a $\chi^2$ random variable with $k$ degrees of freedom.
 \enprop
@@ -75,6 +75,6 @@ increasing linearly in $d$; \cref{fig:klbound} visualizes the value of the
 lower bound as a function of dimension $d$ for various coreset sizes $M$. Note
 that the above bound requires the data to be high-dimensional such that $d >
 M$; if $d\leq M$ the proof technique used in~\cref{app:proofs-of-failure} results in a vacuous
-$\kl{\pi_{w^\star}}{\pi_1} = 0$ lower bound. 
+$\kl{\pi_{w^\star}}{\pi} = 0$ lower bound. 
 
 
