@@ -19,7 +19,7 @@ Node attributes are supported in the computation of Weisfeiler-Lehman and Shorte
 Thus we augmented the individual mobility networks with categorical features to add some information about the different roles of nodes in users mobility routine.
 Such attributes are computed independently for each user on the basis of the topological information of each network.
 After experimenting with several schemes, we obtained the best performance on the kernels when dividing locations into three categories with respect to the frequency in which each node is visited by the user.
-Concretely, we computed the distribution of users' visits to locations and added the following values to the nodes:
+Concretely, we computed the distribution of users visits to locations and added the following values to the nodes:
 
 \begin{equation*}
 	a_{c=3}\left(v_i^u\right)=
@@ -39,7 +39,7 @@ This was done using top$-N$ networks for varying size $N$.
 
 
 
-\subsection{Evaluation \& discussion}
+\subsection{Evaluation}
 
 We evaluated graph kernels functions from the following categories:
 \begin{itemize}
@@ -78,7 +78,7 @@ Furthermore, the feature space of the kernel increases very quickly as a functio
 
 Histograms of length $10^3$ were also computed for the unweighted and weighted degree distributions and passed through a Gaussian RBF kernel.
 We can see that the degree distribution gives almost a random ranking, as it is heavily dependent on the network size.
-When including the normalized edge weights, the \emph{WD} kernel only barely outperforms a rand\label{key}om ranking.
+When including the normalized edge weights, the \emph{WD} kernel only barely outperforms a random ranking.
 Repetitions on pruned versions did not improve the performance and are not presented for brevity.
 
 Based on the insights obtained from our experiment, we can make the following observations with respect to attributes of individual mobility and their impact on the identifiability of networks:
@@ -146,4 +146,4 @@ For example, it is of interest to assess the resistance of our best similarity m
 We think this study is important for one further reason: kernel-based methods allow us to apply a rich toolbox
 of learning algorithms without accessing the original datapoints, or their feature vectors, but instead by using their kernel matrix.
 Thus studying the anonymity associated with kernels is valuable for ensuring that such learning systems do not leak privacy of the original data.
-We leave this direction to future work.
+%We leave this direction to future work.

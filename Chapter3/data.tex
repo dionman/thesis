@@ -11,7 +11,7 @@ Thus we cannot determine geographic proximity between the nodes and the location
 
 For our experiments, we analysed \emph{cid} information collected from $1,500$ handsets with the largest number of recorded location datapoints in the dataset.
 \cref{fig:num_of_days} shows the observation period for these handsets; note that the mean is greater than one year but there is lot of variance across the population.
-We selected these $1,500$ handsets in order to examine the re-identifiability of devices with rich longitudinal mobility profiles.
+We selected these $1,500$ handsets in order to examine the reidentifiability of devices with rich longitudinal mobility profiles.
 This allowed us to study the various attributes of individual mobility affecting privacy in detail.
 As mentioned in the previous section, the cost of computing the adversarial posterior probability for the deanonymization of a given unlabeled network scales linearly with the population size.
 
@@ -32,7 +32,7 @@ Movements from one \emph{cid} to another were then recorded as edges in the mobi
 As outlined in~\cref{sec:graph-k-anonymity}, we analysed the pathways of the Device Analyzer dataset during the entire observation period, applying the model selection method~\cite{scholtes2017network} of Scholtes.\footnote{\url{https://github.com/IngoScholtes/pathpy}}
 This method tests graphical models of varying orders and selects the optimal order by balancing the model complexity and the explanatory power of observations.
 
-We tested higher-order models up to order three. In the case of top$-20$ mobility networks, we found routine patterns in the mobility trajectories were best explained with models of order two for more than 20$\%$ of the users. However, when considering top$-100$, top$-200$, top$-500$ and full mobility networks, we found that the optimal model for our dataset has order one for more than $ 99\% $ of the users; see~\cref{fig:model_selection}. In other words, when considering mobility trajectories which visit less frequent locations in the graph, the overall increase in likelihood of the data for higher-order models cannot compensate for the complexity penalty induced by the larger state space. So while there might still be regions in the graph which are best represented by a higher-order model, the optimal order describing the entire graph is one. Therefore we use a model of order one in the rest of this paper.
+We tested higher-order models up to order three. In the case of top$-20$ mobility networks, we found routine patterns in the mobility trajectories were best explained with models of order two for more than 20$\%$ of the users. However, when considering top$-100$, top$-200$, top$-500$ and full mobility networks, we found that the optimal model for our dataset has order one for more than $ 99\% $ of the users; see~\cref{fig:model_selection}. In other words, when considering mobility trajectories which visit less frequent locations in the graph, the overall increase in likelihood of the data for higher-order models cannot compensate for the complexity penalty induced by the larger state space. Hence, while there might still be regions in the graph which are best represented by a higher-order model, the optimal order describing the entire graph is one. Therefore we use a model of order one in the rest of this paper.
 
 \subsection{Data properties and statistics} \label{sec:data-stats}
 
@@ -82,7 +82,7 @@ We tested higher-order models up to order three. In the case of top$-20$ mobilit
 		\caption{}
 		\label{fig:avg_edge_weight}
 	\end{subfigure}
-	\caption{Empirical statistical findings of the Device Analyzer dataset. (a)~Observation period duration distribution. (b)~Normalized histogram and probability density estimate of network size for the full mobility networks over the population. (c)~Complementary cumulative distribution function (\emph{CCDF}) for the node degree in the mobility network of a typical user from the population, displayed on log-log scale. (d)~Normalized histogram and probabilty density of average edge weight over the networks.}
+	\caption{Empirical statistical findings of the Device Analyzer dataset. (a)~Distribution of the observation period duration. (b)~Normalized histogram and probability density estimate of network size for the full mobility networks over the population. (c)~Complementary cumulative distribution function (\emph{CCDF}) for the node degree in the mobility network of a typical user from the population, displayed on log-log scale. (d)~Normalized histogram and probabilty density of average edge weight over the networks.}
 	\label{fig:eda}
 \end{figure*}
 
@@ -125,7 +125,7 @@ This analysis demonstrates empirically the privacy implications of releasing ano
 Before presenting our findings on the Device Analyzer dataset, we will perform a theoretical upper bound analysis on the identifiability of a population, by finding the maximum number of people that can be distinguished by networks of size $ N $.
 This corresponds to the number of non-isomorphic graphs with $ N $ nodes.
 
-Currently the most of efficient way of enumerating  non-isomorphic graphs is by using McKay's algorithm~\cite{McKay}, implemented in the package~\texttt{nauty}.\footnote{\url{http://pallini.di.uniroma1.it/}}~\cref{tab:graphsenumeration} presents the enumeration for undirected and directed non-isomorphic graphs of increasing size. We observe that there exist $12,346$ undirected graphs with $8$ nodes and $9,608$ directed graphs with $5$ nodes. In other words, finding the top$-8$ places for each person is the smallest number which could produce unique graphs for each person in our sample of $1,500$ individuals; this reduces to $5$ when directionality is taken into account. Moreover, we find that top$-12$ undirected and top$-8$ directed networks are sufficient to enable each human on the planet to be represented by a different graph, assuming world population of $7.6$B.
+Currently the most efficient way of enumerating  non-isomorphic graphs is by using McKay's algorithm~\cite{McKay}, implemented in the package~\texttt{nauty}.\footnote{\url{http://pallini.di.uniroma1.it/}}~\cref{tab:graphsenumeration} presents the enumeration for undirected and directed non-isomorphic graphs of increasing size. We observe that there exist $12,346$ undirected graphs with $8$ nodes and $9,608$ directed graphs with $5$ nodes. In other words, finding the top$-8$ places for each person is the smallest number which could produce unique graphs for each person in our sample of $1,500$ individuals; this reduces to $5$ when directionality is taken into account. Moreover, we find that top$-12$ undirected and top$-8$ directed networks are sufficient to enable each human on the planet to be represented by a different graph, assuming world population of $7.6$B.
 
 Next we present the results of our analysis on the Device Analyzer data.
 As observed in~\cref{fig:k_an}, \emph{sparsity arises in a mobility network even for very small $ N $}.

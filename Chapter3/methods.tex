@@ -77,7 +77,7 @@ In first-order networks, nodes correspond to distinct places the user visits.
 Given a high-frequency, timestamped sequence of location events for a user, distinct places can be extracted as small geographic regions where a user stays longer than a defined time interval, using existing clustering algorithms~\cite{kang2005extracting}.
 Nodes in the mobility network have no geographic or timing information associated with them.
 Nodes may have \emph{attributes} attached to them reflecting additional side information.
-For example, in this work we consider whether attaching the frequency of visits a user makes to a specific node aids an attacker attempting to deanonymize the user.
+For example, in this study we consider whether attaching the frequency of visits a user makes to a specific node aids an attacker attempting to deanonymize the user.
 
 In some of our experiments, we prune the mobility networks of users by reducing the size of the mobility network to the $ N $ most frequent places and rearranging the edges in the network accordingly.
 We refer to these networks as \textbf{top$-N $ mobility networks}.
@@ -89,10 +89,12 @@ Therefore we need distance functions that can measure the degree of similarity b
 Distance functions decompose the graph into feature vectors (smaller substructures and pattern counts), or histograms of graph statistics, and express similarity as the distance between those feature representations.
 In the following, we introduce the notion of graph kernels and describe the graph similarity metrics used later in our experiments.
 
-We wish to compute the similarity between two graphs $ G, G' \in \mcG$. Kernel functions~\cite{Vishwanathan2010}, or \emph{kernels}, are symmetric positive semidefinite functions, where  $ K(G, G') : \mcG \times \mcG \rightarrow \mcR^{+} $, meaning
-that for all $ n > 1 $,  $ G_1, . . . , G_n \in \mathcal{G} $, and $ c_1, . . . , c_n \in \mcR$, we have $ {\sum_{i,j=1}^{n} c_ic_jK(G_i, G_j ) \geq 0} $.
-Each kernel function corresponds to some feature map $ \phi(G) $, where the
-kernel function can be expressed as the inner product between feature maps, i.e., $ K(G, G') = \left \langle \phi(G), \phi(G') \right \rangle$.
+We wish to compute the similarity between two graphs $ G, G' \in \mcG$. 
+To this end, according to the definitions of~\cref{subsec:b-kernels}, we will use graph kernel functions $ K(G, G') : \mcG \times \mcG \rightarrow \mcR^{+}$~\cite{Vishwanathan2010}, and their corresponding feature maps $\phi(G)$.
+%Kernel functions~\cite{Vishwanathan2010}, or \emph{kernels}, are symmetric positive semidefinite functions, where  $ K(G, G') : \mcG \times \mcG \rightarrow \mcR^{+} $, meaning
+%that for all $ n > 1 $,  $ G_1, . . . , G_n \in \mathcal{G} $, and $ c_1, . . . , c_n \in \mcR$, we have $ {\sum_{i,j=1}^{n} c_ic_jK(G_i, G_j ) \geq 0} $.
+%Each kernel function corresponds to some feature map $ \phi(G) $, where the
+%kernel function can be expressed as the inner product between feature maps, i.e., $ K(G, G') = \left \langle \phi(G), \phi(G') \right \rangle$.
 
 In order to ensure the result from the kernel lies in the interval $[-1, 1]$, we apply \emph{cosine normalization} as follows:
 \[
@@ -100,7 +102,7 @@ K({G}, {G}')=\left  \langle \frac{\phi({G})}{||\phi({G})||}, \frac{\phi(G')}{||\
 \]
 One interpretation of this function is as the \emph{cosine similarity of the graphs in the feature space} defined by the map of the kernel.
 
-In our experiments we apply a number of scalable kernel functions on our mobility datasets and assess their suitability for deanonymization applications on mobility networks.
+In our experiments we apply a number of kernel functions on our mobility datasets and assess their suitability for deanonymization applications on mobility networks.
 We note in advance that, as the degree distribution and all substructure counts of a graph remain unchanged under structure-preserving bijection of the vertex set, all examined graph kernels are invariant under isomorphism.
 We briefly introduce these kernels in the remainder of the section.
 
@@ -450,7 +452,7 @@ K(G, G') = \phi\left(G\right)^T M \phi\left(G'\right),
 \]
 where $ \phi $ is the feature mapping of a classical R-convolution graph kernel.
 
-In the above, $M : |\mcV| \times |\mcV|$ is a positive-definitive matrix encoding the relationships between the atomic substructures and $ \mcV $ is the vocabulary of the observed substructures in the dataset.
+In the above, $M : |\mcV| \times |\mcV|$ is a positive semidefinitive matrix encoding the relationships between the atomic substructures and $ \mcV $ is the vocabulary of the observed substructures in the dataset.
 Here, $ M $ can be defined using the edit distance of the substructures, i.e.\ the number of elementary operations to transform one substructure to another; or $ M $ can be learnt from the data, applying relevant neural language modeling methods \cite{mikolov2013efficient}.
 
 \subsection{Deanonymization of user mobility networks and privacy leakage evaluation\label{sec:deanon-leakage}}
@@ -459,28 +461,28 @@ Here, $ M $ can be defined using the edit distance of the substructures, i.e.\ t
 
 \begin{figure}[!h]
 	\centering
-	\begin{subfigure}[]{0.49\textwidth}
+	\begin{subfigure}[]{0.495\textwidth}
 		\centering		\includegraphics[height=4cm]{\MyPath/fig/1_firsthalf_.pdf}
-		\caption{{\textbf{user 1}: first half of the \mbox{observation period}}}
+		\caption{{\textbf{user 1}: 1\textsuperscript{st} half of the \mbox{observation period}}}
 		\label{fig:evidence11}
 	\end{subfigure}%
-	\begin{subfigure}[]{0.49\textwidth}
+	\begin{subfigure}[]{0.495\textwidth}
 		\centering
 		\includegraphics[height=4cm]{\MyPath/fig/1_secondhalf_.pdf}
-		\caption{{\textbf{user 1}: second half of the \mbox{observation period}}}
+		\caption{{\textbf{user 1}: 2\textsuperscript{nd} half of the \mbox{observation period}}}
 		\label{fig:evidence12}
 	\end{subfigure}%
 	\\
-	\begin{subfigure}[]{0.49\textwidth}
+	\begin{subfigure}[]{0.495\textwidth}
 		\centering
 		\includegraphics[height=4cm]{\MyPath/fig/2_firsthalf_.pdf}
-		\caption{{\textbf{user 2}: first half of the \mbox{observation period}}}
+		\caption{{\textbf{user 2}: 1\textsuperscript{st} half of the \mbox{observation period}}}
 		\label{fig:evidence21}
 	\end{subfigure}
-	\begin{subfigure}[]{0.49\textwidth}
+	\begin{subfigure}[]{0.495\textwidth}
 		\centering
 		\includegraphics[height=4cm]{\MyPath/fig/2_secondhalf_.pdf}
-		\caption{{\textbf{user 2}: second half of the \mbox{observation period}}}
+		\caption{{\textbf{user 2}: 2\textsuperscript{nd} half of the \mbox{observation period}}}
 		\label{fig:evidence22}
 	\end{subfigure}
 	\caption{{Top$-20$ networks for two random users from the Device Analyzer dataset.
@@ -506,7 +508,7 @@ For ease of presentation, in the figure, nodes between the disparate observation
 
 \subsubsection{Threat model \label{sec:threat-model}}
 
-We assume an adversary has access to a \emph{set of mobility networks} $ G \in \mcG_{\text{training}} $ \emph{with disclosed identities (or labels)} $l_{G} \in \mcL$
+We assume that an adversary has access to a \emph{set of mobility networks} $ G \in \mcG_{\text{training}} $ \emph{with disclosed identities (or labels)} $l_{G} \in \mcL$
 and a \emph{set of mobility networks} $ G' \in \mcG_{\text{test}} $ \emph{with undisclosed identities}
 $ l_{G'} \in \mcL$.%
 
@@ -539,7 +541,7 @@ Denoting this function by $f$, we can write the updated adversarial probability 
 
 In the case of the uninformed adversary, the true label for any user is expected to have rank $ |\mcL|/2$. Under this policy, the amount of privacy for each user is proportional to the size of the population.
 
-In the case of the informed adversary, knowledge of $ \mcG_\text{training} $ and the use of $ K $ will induce some positive \emph{privacy loss} which will result in the expected rank of user to be smaller than $ |\mcL|/2$. The privacy loss can be quantified as follows:
+In the case of the informed adversary, knowledge of $ \mcG_\text{training} $ and the use of $ K $ will induce some non-negative \emph{privacy loss} which will result in the expected rank of user to be smaller than $ |\mcL|/2$. The privacy loss can be quantified as follows:
 \[
 	PL\left(G';\mcG_{\text{training}}, K\right) = \frac{P_K\left(l_{G'}= l_{G'_\text{true}}|\mcG_{\text{training}}\right)}{P\left(l_{G'}= l_{G'_\text{true}}\right)} -1
 	\label{eq:privloss}

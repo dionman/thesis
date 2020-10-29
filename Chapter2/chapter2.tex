@@ -241,7 +241,7 @@ is sought which transforms the datapoints from the original data space $\{x_n\}_
 
 The main tool in kernel methods~\cite{scholkopf02} is the \emph{kernel function} defined below.
 \begin{ndefn}[Kernel function] \label{def:bkernelfun}
-	A symmetric function $k: \mcX \times \mcX \rightarrow \reals $ is a positive definite kernel function, or kernel, if for all $N>1$, $x_1, \ldots, x_N \in \reals$, and $c_1, \ldots, c_N \in \reals$ 
+	A symmetric function $k: \mcX \times \mcX \rightarrow \reals $ is a positive semidefinite kernel function, or kernel, if for all $N>1$, $x_1, \ldots, x_N \in \reals$, and $c_1, \ldots, c_N \in \reals$ 
 	\[
 	\sum_{i,j=1}^{N} c_ic_j k(x_i, x_j) \geq 0.
 	\]
