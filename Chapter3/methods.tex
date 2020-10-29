@@ -141,26 +141,6 @@ The shortest path set is computable in polynomial time using, for example, the F
 \vspace{1em}
 \noindent\textbf{Weisfeiler-Lehman Subtree Kernel}
 
-Shervashidze \emph{et~al.} proposed an efficient method~\cite{Shervashidze2011} to construct a graph kernel utilizing the \mbox{Weisfeiler-Lehman} (\emph{WL}) test of isomorphism~\cite{weisfeiler1968reduction}.
-The idea of the \emph{WL} kernel is to measure co-occurences of subtree patterns across node attributed graphs.
-
-Computation progresses over iterations as follows:
-%
-\begin{enumerate}
-	\item each node attribute is augmented with a multiset of attributes from adjacent nodes;
-	\item each node attribute is then compressed into a single attribute label for the next iteration; and
-	\item the above steps are repeated until a specified threshold $ h $ is reached.
-\end{enumerate}
-%
-An example is shown in~\cref{fig:WL}.
-
-If $ G $ and $ G' $ are the two graphs, the \emph{WL} subtree kernel is defined as follows:
-\[
-K^{h}_{WL}(G, G') = \big \langle \phi_h(G), \phi_h(G') \big \rangle,
-\]
-where $ \phi_h(G) $ and $ \phi_h(G') $ are the vectors of labels extracted after running $ h $ steps of the computation (\cref{fig:feat_G}). They consist of $ h $ blocks, where the $i$-th component of the $j$-th block corresponds to the frequency of label $ i $ at the $j$-th iteration of the computation.
-The computational complexity of the kernel scales \emph{linearly} with the number of edges $ |E| $ and the length $ h $ of the WL graph sequence.
-
 \begin{figure*}[t]
 	%\includegraphics[totalheight=7.3cm]{fig/wl_graph1_tikz.png}
 	\centering 
@@ -224,7 +204,7 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 		}
 		\caption{$G'$} \label{fig:G'}
 	\end{subfigure}
-			\centering 
+	\centering 
 	\begin{subfigure}[t]{.19\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
 			\centering 
@@ -254,7 +234,7 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 			\end{tikzpicture}}
 		\caption{\mbox{$G$ with multiset} \mbox{node attributes}} \label{fig:Gmult}
 	\end{subfigure}
-			\centering 
+	\centering 
 	\begin{subfigure}[t]{.19\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
 			\centering 
@@ -284,7 +264,7 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 			\end{tikzpicture}}
 		\caption{\mbox{$G'$ with multiset} \mbox{node attributes}} \label{fig:G'mult}
 	\end{subfigure}
-			\centering 
+	\centering 
 	\begin{subfigure}[t]{.19\textwidth}
 		\centering 
 		\begin{tikzpicture}[->, thick, auto,node distance=0.005cm,every node/.style={inner sep=0,outer sep=0}]
@@ -322,7 +302,7 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 	\end{subfigure}
 	
 	\medskip
-				\centering 
+	\centering 
 	\begin{subfigure}[t]{.2\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
 			\centering 
@@ -353,7 +333,7 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 		}
 		\caption{{$G$ relabeled}} \label{fig:Grel}
 	\end{subfigure}
-			\centering 
+	\centering 
 	\begin{subfigure}[t]{.2\textwidth}
 		\resizebox{0.6\textwidth}{0.08\textheight}{%
 			\centering 
@@ -437,6 +417,27 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 	\caption{{Computation of the Weisfeiler-Lehman subtree kernel of height $ h=1 $ for two attributed graphs.}}
 	\label{fig:WL}
 \end{figure*}
+
+
+Shervashidze \emph{et~al.} proposed an efficient method~\cite{Shervashidze2011} to construct a graph kernel utilizing the \mbox{Weisfeiler-Lehman} (\emph{WL}) test of isomorphism~\cite{weisfeiler1968reduction}.
+The idea of the \emph{WL} kernel is to measure co-occurences of subtree patterns across node attributed graphs.
+
+Computation progresses over iterations as follows:
+%
+\begin{enumerate}
+	\item each node attribute is augmented with a multiset of attributes from adjacent nodes;
+	\item each node attribute is then compressed into a single attribute label for the next iteration; and
+	\item the above steps are repeated until a specified threshold $ h $ is reached.
+\end{enumerate}
+%
+An example is shown in~\cref{fig:WL}.
+
+If $ G $ and $ G' $ are the two graphs, the \emph{WL} subtree kernel is defined as follows:
+\[
+K^{h}_{WL}(G, G') = \big \langle \phi_h(G), \phi_h(G') \big \rangle,
+\]
+where $ \phi_h(G) $ and $ \phi_h(G') $ are the vectors of labels extracted after running $ h $ steps of the computation (\cref{fig:feat_G}). They consist of $ h $ blocks, where the $i$-th component of the $j$-th block corresponds to the frequency of label $ i $ at the $j$-th iteration of the computation.
+The computational complexity of the kernel scales \emph{linearly} with the number of edges $ |E| $ and the length $ h $ of the WL graph sequence.
 
 \vspace{1em}
 \noindent\textbf{Deep Graph Kernels}
