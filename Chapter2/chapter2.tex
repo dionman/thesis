@@ -172,7 +172,7 @@ where $Z'$ is a (typically intractable) normalization constant. %, and $\pi(x|\t
 When datapoints \mbox{are conditio-} nally independent given $\theta$, the likelihood function gets factorized as \mbox{$\pi(x|\theta) = \Pi_{n=1}^{N}\pi(x_n|\theta)$.} An equivalent formulation of  the
 Bayesian posterior as a solution to a convex optimization problem over the density space was introduced by Williams~\citep{williams80} and Zellner~\citep{zellner88}, and used in various subsequent works including \citep{zhu14, dai16, futami18}. Concretely,~\cref{eq:bayes-rule} can be recovered by solving the problem
 \[
-\arg \underset{q(\theta) \in \mcP}{\min}  \kl{q(\theta)}{\pi_0(\theta)} -\sum_{n=1}^{N}\left[\int q(\theta) \log \pi(x_n|\theta)d\theta\right],
+\arg \underset{q(\theta) \in \mcP}{\min} \left(\kl{q(\theta)}{\pi_0(\theta)} -\sum_{n=1}^{N}\left[\int q(\theta) \log \pi(x_n|\theta)d\theta\right]\right),
 \label{eq:bayes-rule-opt}
 \]
 where $\mcP$ is the valid density space, while the Bayesian posterior can be expressed as 
@@ -200,7 +200,7 @@ Robust inference methods aim to adapt~\cref{eq:bayes-rule,eq:bayes-rule-opt,eq:z
 
 From the definition of KL divergence~\cref{eq:bkl-def}, we can equivalently rewrite \cref{eq:bayes-rule-opt} as
 \[
-\arg \underset{q(\theta) \in \mcP}{\min}  \kl{q(\theta)}{\pi_0(\theta)} + N\EE_{q(\theta)}\left[\kl{\hpi(x)}{\pi(x|\theta)}\right],
+\arg \underset{q(\theta) \in \mcP}{\min}  \left(\kl{q(\theta)}{\pi_0(\theta)} + N\EE_{q(\theta)}\left[\kl{\hpi(x)}{\pi(x|\theta)}\right]\right),
 \label{eq:bayes-rule-opt-kl}
 \]
 namely inference corresponds to maximizing the expected likelihood of the observations, under a regularizer that aims to keep the posterior $q$ close to the prior $\pi_0$.
@@ -338,7 +338,7 @@ Let $ \mcM: \mcX \rightarrow \mcY$ be $(\veps, \delta)$-DP with $\veps \leq 1$ a
 \label{prop:bdp-postprocessing}
 \enprop
 
-DP composition theorems accumulate the total privacy cost over the application of a sequence of mechanisms. The moments accountant is a recently proposed technique, that allows computing tights bounds for $\veps$ and $\delta$, as follows
+DP composition theorems accumulate the total privacy cost over the application of a sequence of mechanisms. The moments accountant is a recently proposed technique, that allows computing tight bounds for $\veps$ and $\delta$, as follows
 
 \bnprop[Moments Accountant~\citep{abadi16}]
 Given $0<\veps<1$ and $0<\delta<1$, to ensure $(\veps, T\delta'+\delta)$-DP over the composition of $T$ mechanisms $\mcM_1,\ldots,\mcM_T$, it suffices that each $\mcM_i$ is $(\veps', \delta')$-DP, where $\veps'=\frac{\veps}{2\sqrt{2T\log(2/\delta)}}$ and $\delta'=\frac{\delta}{T}$. 
