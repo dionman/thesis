@@ -36,7 +36,7 @@ and
 	$$ d\log \left( \frac{1+ N}{1+ \sum_{n=1}^N w_n}\right) -d + d \left( \frac{1+ N}{1+ \sum_{n=1}^N w_n}\right) > 0.$$ 
 	Thus, 
 	\begin{equation} \label{eq:first_inequality}
-	\kl{\pi_{w}}{\pi_1} \geq \frac{1}{2}(\mu_{1} - \mu_{w})^T \Sigma_{1}^{-1}(\mu_{1} - \mu_{w}).
+	\kl{\pi_{w}}{\pi} \geq \frac{1}{2}(\mu_{1} - \mu_{w})^T \Sigma_{1}^{-1}(\mu_{1} - \mu_{w}).
 	\end{equation}
 	Suppose we pick a set $\mcI\subseteq[N]$, $\left|\mcI\right| = M$ of active indices $n$ where the optimal $w_n \geq 0$,
 	and enforce that all others $n\notin \mcI$ satisfy $w_n = 0$.
@@ -47,7 +47,7 @@ and
 	\]
 	we have that for any $w\in \reals_+^M$ for those indices $\mcI$,
 	\[
-	\kl{\pi_w}{\pi_1} 
+	\kl{\pi_w}{\pi} 
 	\geq & \frac{1}{2(N+1)}1^TY^TY1 
 	+1^TY^TX\left(\frac{1}{N+1} - \frac{w}{1+1^Tw}\right)\\
 	&+\frac{N+1}{2}\!\!\left(\frac{1}{N+1}\! -\! \frac{w}{1+1^Tw}\right)^T\!\!\!\!\!X^T\!X\!\left(\frac{1}{N+1} \!-\! \frac{w}{1+1^Tw}\right).
@@ -57,7 +57,7 @@ and
 	we can optimize this expression yielding a lower bound
 	on the optimal KL divergence using active index set $\mcI$,
 	\[
-	\kl{\pi_{w^\star_{\mcI}}}{\pi_1} &\geq \frac{1^TY^T\left(I-X(X^TX)^{-1}X^T\right)Y1}{2(N+1)}.
+	\kl{\pi_{w^\star_{\mcI}}}{\pi} &\geq \frac{1^TY^T\left(I-X(X^TX)^{-1}X^T\right)Y1}{2(N+1)}.
 	\]
 	The numerator is the squared norm of $Y1$ minus its projection onto the subspace spanned by the $M$ columns of $X$.
 	Since $Y1 \dist \distNorm(0, (N-M)I)$, $Y1 \in \reals^d$ is an isotropic Gaussian, then its projection into the orthogonal
@@ -65,7 +65,7 @@ and
 	Since the columns of $X$ are also independent and isotropic, its column subspace is uniformly distributed.
 	So therefore, for each possible choice of $\mcI$
 	\[
-	\kl{\pi_{w^\star_{\mcI}}}{\pi_1} &\geq \frac{N-M}{2(N+1)} Z_{\mcI},  \quad Z_{\mcI}\dist \chi^2(d-M).
+	\kl{\pi_{w^\star_{\mcI}}}{\pi} &\geq \frac{N-M}{2(N+1)} Z_{\mcI},  \quad Z_{\mcI}\dist \chi^2(d-M).
 	\]
 	Note that the $Z_\mcI$ will have dependence across the $N\choose M$ different choices of index subset $\mcI$.
 	Thus, the probability that \emph{all} $Z_{\mcI}$ are large is
@@ -187,7 +187,7 @@ we need expressions for $\cov[f_n,f_m]$,
 $\cov[\tf_n,f_m]$, 
 $\cov[h(u_i), f_n]$, and
 $\cov[h(u_i), \tf_n]$.
-Following \citep{campbell19neurips}, we have that
+\mbox{Following \citep{campbell19neurips},} we have that
 \[ 
 \cov[f_n ,f_m]  &=  v_n^T \Psi v_m + \frac{1}{2} \tr{\Psi^T \Psi} \\
 \cov[\tf_n ,f_m]  &=  \tv_n^T \Psi v_m + \frac{1}{2} \tr{\Psi^T \Psi}. 
@@ -319,9 +319,9 @@ Hence in pseudocoreset construction we can optimize pseudodata point locations w
 
 \subsubsection{Datasets description}
 \label{app:logreg_data_details}
-For logistic regression experiments, we used subsampled and full versions of datasets presented in~\cref{table:datasets_details}: a synthetic dataset with $ x\in \reals^2 $ sampled \iid from a $\distNorm{(0, I)}$ and $ y\in\{-1,1\} $ sampled from respective logistic likelihood with $ \theta =[3, 3, 0]^T$ (\textsc{Synthetic}); a phishing websites dataset reduced to $ D=10 $ via PCA (\textsc{Phishing}); a chemical reactivity dataset with  real-valued features corresponding to its first $ 10 $ and $ 100 $ principal components (\textsc{ChemReact} and \textsc{ChemReact100} respectively); a dataset with $ 50 $ real-valued features associated with whether each of $ 100K $ customers of a bank will make a specific transaction (\textsc{Transactions}); and a dataset for music analysis, where we consider "classical vs all" genre classification task (\textsc{Music}). Original versions of the four latter datasets are available online respectively at~\href{https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/binary.html}{https://www.csie.ntu.edu.tw/\~{}cjlin/libsvm tools/datasets/binary.html},  \href{http://komarix.org/ac/ds/}{http://komarix.org/ac/ds},  \href{https://www.kaggle.com/c/santander-customer-transaction-prediction/data}{https://www.kaggle.com/c/santan der-customer-transaction-prediction/data}, and \href{https://github.com/mdeff/fma}{https://github.com/mdeff/fma}. 
+For logistic regression experiments, we used subsampled and full versions of datasets presented in~\cref{table:datasets_details}: a synthetic dataset with $ x\in \reals^2 $ sampled \iid from a $\distNorm{(0, I)}$ and $ y\in\{-1,1\} $ sampled from respective logistic likelihood with $ \theta =[3, 3, 0]^T$ (\textsc{Synthetic}); a phishing websites dataset reduced to $ D=10 $ via PCA (\textsc{Phishing}); a chemical reactivity dataset with  real-valued features corresponding to its first $ 10 $ and $ 100 $ principal components (\textsc{ChemReact} and \textsc{ChemReact100} respectively); a dataset with $ 50 $ real-valued features associated with whether each of $ 100K $ customers of a bank will make a specific transaction (\textsc{Transactions}); and a dataset for music analysis, where we consider \emph{"classical vs all"} genre classification task (\textsc{Music}). Original versions of the four latter datasets are available online respectively at~\href{https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/binary.html}{https://www.csie.ntu.edu.tw/\~{}cjlin/libsvm tools/datasets/binary.html},  \href{http://komarix.org/ac/ds/}{http://komarix.org/ac/ds},  \href{https://www.kaggle.com/c/santander-customer-transaction-prediction/data}{https://www.kaggle.com/c/santan der-customer-transaction-prediction/data}, and \href{https://github.com/mdeff/fma}{https://github.com/mdeff/fma}. 
 
-\begin{table}[!h]
+\begin{table}[!t]
 	\begin{center}
 		\begin{tabular}{|l|l|l|}
 			\hline
