@@ -149,7 +149,7 @@ f_N(\theta_r)
 \end{comment}
 
 \subsubsection{Coreset points reweighting}
-After adding a new datapoint we update the coreset weight vector $w\in\reals_{\geq 0}$ via $T$ steps of projected stochastic gradient descent, using the Monte Carlo estimate of~\cref{eq:dkl-grad} per line~\ref{lst:line:mc-grad} of~\cref{alg:bcores}.
+After adding a new datapoint, we update the coreset weight vector $w\in\reals_{\geq 0}$ via $T$ steps of projected stochastic gradient descent, using the Monte Carlo estimate of~\cref{eq:dkl-grad} per line~\ref{lst:line:mc-grad} of~\cref{alg:bcores}.
 \begin{comment}
 \[
 \hat{\nabla}_w := -\frac{1}{S} \sum_{s=1}^{S} g_s \left(\frac{N}{B}1^Tg_s - w^T g_s\right) \in \reals_{d}, 
