@@ -180,7 +180,7 @@ where $\mcP$ is the valid density space, while the Bayesian posterior can be exp
 \pi(\theta|x) = \frac{1}{Z'} \exp\left(-\xent{\hpi(x)}{\pi(x|\theta)}\right)\pi_0(\theta).
 \label{eq:zellner-rule}
 \]
-In the last expression, $\hpi(x):=\frac{1}{N}\sum_{n=1}^{N}\delta(x, x_n)$ is the empirical distribution of the observed datapoints. The exponent $\xent{\hpi(x)}{\pi(x|\theta)}:=-\sum_{n=1}^{N}\log\pi(x_n|\theta)$
+In the last expression, $\hpi(x):=\frac{1}{N}\sum_{n=1}^{N}\delta(x-x_n)$ is the empirical distribution of the observed datapoints and $\delta$ is the Dirac delta function. The exponent $\xent{\hpi(x)}{\pi(x|\theta)}:=-\sum_{n=1}^{N}\log\pi(x_n|\theta)$
 corresponds (up to a constant) to the \emph{cross-entropy}, which is  equal to the empirical average of negative log-likelihoods of the datapoints, and quantifies the expected loss incurred by our estimates for the model parameters $\theta$ over the available observations, under the Kullback-Leibler divergence.
 
 When $N$ is large, the Bayesian posterior is strongly affected by perturbations in the observed data space. To develop an intuition on this, assuming that the true and observed data distributions admit densities $\pi_\theta$ and $\pi_\textsubscript{obs}$ respectively, we can rewrite an approximation of~\cref{eq:zellner-rule} via the KL divergence as in Miller and Dunson~\cite{miller19}

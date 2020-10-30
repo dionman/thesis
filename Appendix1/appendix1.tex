@@ -25,7 +25,7 @@ and
 	By~\cref{eq:exact_post,eq:coreset_post}, 
 	\begin{equation} \label{eq:KL_from_coreset_post_to_exact}
 	\begin{aligned}
-	\kl{\pi_{w}}{\pi_1}
+	\kl{\pi_{w}}{\pi}
 	=& \frac{1}{2}\left[\log\frac{|\Sigma_{1}|}{|\Sigma_{w}|} - d + \tr\left( \Sigma_{1}^{-1}\Sigma_{w}\right) +  
 	(\mu_{1} - \mu_{w})^T \Sigma_{1}^{-1}(\mu_{1} - \mu_{w})\right]\\
 	=& \frac{1}{2} \left[ -d\log \left( \frac{1+ N}{1+ \sum_{n=1}^N w_n}\right) - d  + d \left( \frac{1+ N}{1+ \sum_{n=1}^N w_n}\right)
@@ -193,7 +193,7 @@ $\cov[h(u_i), \tf_n]$.
 \cov[\tf_n ,f_m]  &=  \tv_n^T \Psi v_m + \frac{1}{2} \tr{\Psi^T \Psi}. 
 \]
 We now evaluate the remaining covariance $\cov[h(u_i), f_m]$;
-the derivation of $\cov[h(u_i), \tf_m]$ follows similarly.
+the derivation of~$\cov[h(u_i), \tf_m]$ follows similarly.
 We begin
 by explicitly evaluating the log-likelihood gradient and its expectation,
 \[
