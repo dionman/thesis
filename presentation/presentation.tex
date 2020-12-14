@@ -80,6 +80,8 @@
 	\end{tikzpicture}
 }
 
+\definecolor{darkred}{rgb}{0.55, 0.0, 0.0}
+
 
 % for resuming lists across frames
 \newcounter{savedenum}
@@ -121,6 +123,14 @@
 	\end{itemize}
 \end{frame}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% PETS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 \begin{frame}
 	\LARGE{\textbf{I. Quantifying Privacy Loss of Human Mobility Graph Topology}}
 \end{frame}
@@ -134,7 +144,7 @@
 		\item --- transportation management, health studies, urban development
 	\end{itemize}
 \end{block}
-%\pause
+\pause
 \begin{block}{ $\bullet$ \textbf{Utility}-preserving anonymized data representations}
 	\begin{itemize}
 		  \setlength\itemsep{.3em}
@@ -142,7 +152,7 @@
 	\item --- histograms, heatmaps, \textbf{graphs}
 	\end{itemize}
 \end{block}
-%\pause
+\pause
 \begin{block}{ $\bullet$ How \textbf{privacy} conscientious they are?}
 	\begin{itemize}
 		\item --- often poorly understood, leading to privacy breaches
@@ -281,7 +291,6 @@
 		% Draw the background
 		\path[fill=yellow!1,rounded corners, draw=black!50, dashed]
 		(a) rectangle (c);
-		\pause
 		\end{pgfonlayer}
 		\begin{pgfonlayer}{background}
 		% Left-top corner of the background rectangle
@@ -292,7 +301,6 @@
 		\path[fill=yellow!30,rounded corners, draw=black!50, dashed]
 		(a) rectangle (c);
 		\end{pgfonlayer}
-		\pause
 		\node (screen)[above right=of accessfile]{Sparsity};
 		\node (braille)[below right =of accessfile]{Recurrence};
 		\coordinate (middle) at ($(screen.east)!0.5!(braille.east)$);
@@ -307,7 +315,6 @@
 		\path[fill=green!40,rounded corners, draw=green,thick]
 		(a) rectangle (b);
 		\end{pgfonlayer}
-		\pause
 		\node (enlarge)[ right =of middle]{\textcolor{Privacy\\Loss}};
 		\node (source) [right=of middle,draw=black,thick,rectangle,fill=red!30]{Privacy\\Loss};
 		\draw[outpt](middle)--(enlarge);
@@ -378,11 +385,13 @@
 	\begin{center}
 	\textbf{\emph{$k-$anonymity}  via  \emph{graph isomorphism}}
 	\end{center}\\
-\begin{tcolorbox}[colback=green!5,colframe=white!40!black,title=Graph $k-$anonymity]  is the minimum  cardinality of isomorphism
-	classes within a population of graphs\end{tcolorbox}
+\begin{tcolorbox}[colback=green!5,colframe=white!40!black,title=Graph $k-$anonymity] 
+	 is the minimum  cardinality of isomorphism
+	classes within a population of graphs
+\end{tcolorbox}
 	\begin{flushright}
 	Adapted from $k$-anonymity definition in~\Fontvi\citep{sweeney2002k}\hfill
-\end{flushright}
+    \end{flushright}
 \end{frame}
 
 
@@ -636,7 +645,7 @@ respectively
 	\end{center}
 	
 	\begin{tikzpicture}[remember picture,overlay]
-	\draw[line width=1pt] (6.,0.5) -- (6.,6.5);
+	\draw[line width=1pt] (5.4,0.5) -- (5.4,6.5);
 	\end{tikzpicture}
 Assumptions
 \begin{itemize}
@@ -737,20 +746,12 @@ Assumptions
 	\frametitle{Graph Similarity Functions}
 	\begin{block}{Graph Kernels} Express similarity as inner product of vectors with graph statistics \textcolor{black}{\Fontit{\citep{Vishwanathan2010}}}
 		\begin{itemize}
-			%\pause
-			%\item  on \textbf{Graph Statistics} (e.g. weighted degree distribution)
 			\pause
 			\vspace{0.2cm}
 			\item   $\blacktriangleright$ on \textbf{Atomic Substructures} (e.g. Shortest-Paths, Weisfeiler-Lehman subtrees) \\
-			%\begin{center}
-			%$K({G}, {G}')=\bigg   \langle \frac{\phi({G})}{||\phi({G})||}, \frac{\phi(G')}{||\phi(G')||} \bigg  \rangle$
-			%\end{center}
 			\pause
 			\vspace{0.2cm}
 			\item  $\blacktriangleright$ \textbf{Deep Kernels}: \Fontit{\citep{yanardagV15}} \\
-			%\begin{center}
-			%				$K(G, G') = \phi\big(G\big)^T \mathcal{M} \phi\big(G'\big)$
-			%\end{center}
 			 additionally learn an encoding similarities between substructures
 		\end{itemize}
 	\end{block}	
@@ -764,11 +765,11 @@ Assumptions
 		\begin{figure}
 			\begin{subfigure}{\textwidth}
 				\centering
-				\includegraphics[width=.49\linewidth]{figs/kernels_evaluation}
+				\includegraphics[width=.7\linewidth]{figs/kernels_evaluation}
 			\end{subfigure}%
 			\begin{subfigure}{\textwidth}
 				\centering
-				\includegraphics[width=.49\linewidth]{figs/rank_correct_}
+				\includegraphics[width=.7\linewidth]{figs/rank_correct_}
 			\end{subfigure}
 			\label{fig:test}
 		\end{figure}
@@ -854,11 +855,243 @@ locations}, \textbf{directionality of transitions}
 	\end{itemize}
 \end{frame}
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% NEURIPS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
 	\LARGE{\textbf{II. Bayesian Pseudocoresets}}
 \end{frame}
+
+\begin{frame}
+	\frametitle{Large Scale Inference}
+	\begin{itemize}
+		\item $\blacktriangleright$ Update beliefs about unknowns given massive data \\
+		\hfill \includegraphics[width=2cm, height=2cm]{figs/Bayes.png} 
+		\begin{align*}
+		\pi(\theta|x) = \frac{1}{Z} \pi(x|\theta) \pi(\theta) 
+		\end{align*}
+		\pause
+		\hfill
+			\textcolor{darkred}{Hard to compute!}
+		\pause
+		\item $\blacktriangleright$ \textbf{Intuition:} In large data there is a lot of redundancy. Hence, compress the dataset into an informative summary and perform inference thereon
+	\end{itemize}
+	\begin{figure}{\textwidth}
+		\centering
+		\includegraphics[width=.7\linewidth]{figs/coresets_high_level.png}
+		\label{fig:coresets_high_level}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Bayesian Coresets}
+	Riemannian Coresets~\citep{campbell19neurips}
+	\begin{figure}
+		\includegraphics[width=1.\linewidth]{figs/sparsevi_posterior.png}
+	\end{figure}
+	Sparse Variational Inference
+	\begin{align*}
+	 w^\star = \argmin_{w\in\reals^N} \kl{\pi_w}{\pi}\label{eq:coresets-vi} \quad \quad
+	\text{s.t.} \quad w \geq 0, \; \|w\|_0 \leq M
+	\end{align*}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Limitation I: High-dimensional data}
+	\begin{tcolorbox}[colback=green!5,colframe=white!40!black,title=KL Lowner Bound in Gaussian mean inference via coresets]  
+		Suppose we use $(X_n)_{n=1}^N \distiid \distNorm(0, I)$ in $\reals^d$ to perform posterior inference in a Bayesian model
+		with prior 
+		$\mu \dist \distNorm(0, I)$ and likelihood
+		$(X_n)_{n=1}^N  \distiid \distNorm(\mu, I).$
+		Then $\forall M < d$ and $\delta \in[0, 1]$, 
+		with probability at least $1-\delta$ the optimal size-$M$ coreset $w^\star$ satisfies
+		\[
+		\kl{\pi_{w^\star}}{\pi} \geq \frac{1}{2}\frac{N-M}{1+N}F_{d-M}^{-1}\left(\delta{N\choose M}^{-1}\right),
+		\]
+		where $F_{k}$ is the CDF of a $\chi^2$ random variable with $k$ degrees of freedom.
+	\end{tcolorbox}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Limitation I: High-dimensional data}
+	\begin{figure*}
+		\centering
+		\includegraphics[width=.8\linewidth]{figs/klbound.png}
+	\end{figure*}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Limitation I: High-dimensional data}
+	In Gaussian mean inference coreset covariance and mean are 
+	\begin{align*}
+	\Sigma_w &=\left(1+\sum_{n=1}^N w_n\right)^{-1} I, & \mu_w &= \Sigma_w \sum_{n=1}^N w_n X_n.\label{eq:gausswpost}
+	\end{align*}
+	
+	which can be replicated via a point 
+	\begin{align*}
+	& U = \left(\sum_{n=1}^Nw_n\right)^{-1}\sum_{n=1}^N w_nX_n
+	& \text{with weight}\;\; \sum_{n=1}^N w_n.
+	\end{align*}
+	True posterior can be exactly computed via a \emph{single pseudopoint}
+	\begin{align*}
+	& U = \frac{1}{N}\sum_{n=1}^N X_n & \text{with weight}\;\; N.
+	\end{align*}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Limitation II: Privacy}
+	Existing constructions are incompatible with formal privacy definitions, as subset
+	of datapoints gets revealed \\
+	\pause 
+	For sensitive datasets, summarization
+	should use synthetic data
+	\begin{figure*}
+		\includegraphics[width=1\linewidth]{figs/dp_summarize.png}
+	\end{figure*}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Bayesian Pseudocoresets}
+	Pseudocoreset posterior
+	\begin{align*}
+		\pi_{u,w}(\theta) = \frac{1}{Z(u, w)} \exp \left( \sum_{m=1}^{M} w_m f(u_m,\theta) \right) \pi_0(\theta)
+	\end{align*}
+	where $(u_m)_{m=1}^{M}$ are \textbf{learnable pseudodata points}.\\
+	\pause
+	Variational inference over \textbf{pseudodata locations} and \texbf{weights}
+	\begin{align*}
+	u^\star, w^\star = \argmin_{\substack{u\in\reals^{d \times M}}, w\in\reals^M_+}\,\, \kl{\pi_{u,w}}{\pi}. 
+	\end{align*}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Pseudocoresets Construction}
+	\begin{align*}
+	u^\star, w^\star = \argmin_{\substack{u\in\reals^{d \times M}}, w\in\reals^M_+}\,\, \kl{\pi_{u,w}}{\pi}. 
+	\end{align*}	
+	
+	Gradients \wrt variational parameters are tractable 
+	\begin{align*}
+	\nabla_{u_m}\mathrm{D}_{\mathrm{KL}} = -w_m\cov_{u,w}\left[(\nabla_u f)(u_m), f(x, \theta)^T1 - f(u, \theta)^Tw\right]
+	\end{align*}
+	\begin{align*}
+	 \nabla_w\mathrm{D}_{\mathrm{KL}} = - \cov_{u,w}[f(u, \theta) ,f(x, \theta)^T1 - f(u, \theta)^Tw]
+	\end{align*}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Black-box Batch Construction of Bayesian Pseudocoreset}
+	\vspace{-0.7cm}
+  \scriptsize 
+	\begin{algorithmic}[1]
+		\Procedure{PSVI}{$f(\cdot, \cdot), \pi_0, x, M, B, S, T, (\gamma_t)_{t=1}^{\infty}$}
+		\LineCommentIndent{Initialize using a uniformly chosen subset of the full dataset}
+		\State $N \gets $ \# datapoints in $x, \quad \mcB\dist\distUnifSubset\left([N], M\right), \quad \mcB \defined \left\{b_1, \dots, b_M\right\}$ 
+		\State $u_m \gets x_{b_m}, \quad w_m \gets \nicefrac{N}{M}, \quad m=1, \dots, M$
+		\For{$ t = 1, \ldots, T$}
+		\LineCommentIndent{\mbox{Take $S$ samples from current pseudocoreset posterior}}
+		\State $(\theta)_{s=1}^{S}  \distiid \pi_{u,w}$ where $\pi_{u,w}(\theta) \propto \exp\left(\sum_{m=1}^Mw_m f(u_m, \theta)\right)\pi_0(\theta)$
+		\State $\mcB\dist\distUnifSubset\left([N], B\right)$
+		\Commenttriangle{$\triangleright$ \mbox{Get a minibatch of $B$ points from the full dataset}}
+		\For{$s = 1, \dots, S$} 	\Commenttriangle{$\triangleright$ \mbox{Compute (gradient) log-likelihood discretizations}}
+		\State $g_{s} \gets \left( f(x_b, \theta_s ) - \nicefrac{1}{S}\sum_{s'=1}^S f(x_b, \theta_{s'}) \right)_{b\in\mcB} \in \reals^B$ 
+		\State $\tg_s\gets \left(f(u_m, \theta_s) - \nicefrac{1}{S}\sum_{s'=1}^S f(u_m, \theta_{s'})\right)_{m=1}^M\in\reals^M$
+		\For{$m = 1, \dots, M$}
+		\State $\tildeh_{m,s} \gets \nabla_u f(u_m, \theta_s) - \nicefrac{1}{S}\sum_{s'=1}^S \nabla_u f(u_m, \theta_{s'})\in\reals^d$
+		\EndFor
+		\EndFor
+		\State $\hat\nabla_w \gets -\nicefrac{1}{S}\sum_{s=1}^S \tg_s\left(\nicefrac{N}{B} g_s^T1 - \tg_s^Tw\right)$\Commenttriangle{$\triangleright$ \mbox{Compute MC gradients for $w$ and $u$}}
+		\For{$m = 1,\dots, M$}
+		\State $\hat\nabla_{u_m} \gets -w_m\nicefrac{1}{S}\sum_{s=1}^S \tildeh_{m,s}\left(\nicefrac{N}{B} g_s^T1 - \tg_s^Tw\right)$
+		\EndFor
+		\State $w \gets \max(w - \gamma_t\hat\nabla_w, 0)$ \Commenttriangle{$\triangleright$ \mbox{Take stochastic gradient step in $w$ and $u$}}
+		\For{$m = 1,\dots, M$}
+		\State $u_m \gets u_m - \gamma_t\hat\nabla_{u_m}$
+		\EndFor
+		\EndFor
+		\State\Return $w$, $(u_m)_{m=1}^M$
+		\EndProcedure		 
+	\end{algorithmic}
+\normalsize
+	\end{frame}
+
+
+\begin{frame}
+	\frametitle{Differentially Private Construction of Bayesian Pseudocoreset}
+	\vspace{-0.7cm}
+	\begin{columns}
+		\begin{column}[t]{0.4\textwidth}
+		\begin{itemize}
+			\item $\blacktriangleright$ \textbf{Initialize} pseudodata to points sampled from the statistical model
+			\item $\blacktriangleright$ \textbf{Iterate} Compute private estimates of $\nabla_w\mathrm{D}_{\mathrm{KL}}$, $\nabla_u\mathrm{D}_{\mathrm{KL}}$ via applications of the \textbf{subsampled Gaussian mechanism}~\citep{abadi16} and take gradient steps
+		\end{itemize}
+		\end{column}
+	\pause
+		\begin{column}[t]{0.6\textwidth}
+		\begin{itemize}
+			\item --- Moments accountant for tight $(\veps, \delta)$-DP guarantees estimation
+			\item --- No extra privacy cost when sampling from the private pseudocoreset posterior
+			\item --- No requirement for global sensitivity computation
+			\item --- Adaptive gradient clipping guided by statistics of the pseudopoints potentials
+			\item --- Constructed private pseudocoresets can be further queried ad infinitum for data analysis without privacy guarantees weakening
+		\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Experiments I~(High-dimensional Gaussian mean inference)}
+	\centering 
+	500 dimensions, 1K datapoints\\
+	\includegraphics[width=.49\textwidth]{figs/d500_pts_combined.png}
+	\includegraphics[width=.49\textwidth]{figs/d500_KLDvsCstSize.png}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Experiments II~(Bayesian Linear Regression)}
+	\centering
+	\begin{columns}
+		\begin{column}{.5\textwidth}
+		Synthetic dataset
+		\\101 dimensions,
+		\\2K datapoints
+		\end{column}
+		\begin{column}{.5\textwidth}
+		\includegraphics[width=1.\textwidth]{figs/linregKLDvsCstSize.png}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Experiments III~(Bayesian Logistic Regression)}
+	\centering 
+	2-237 dimensions, 500-100K datapoints\\
+	\includegraphics[width=.3\textwidth]{figs/wsanta100K_KLDvssz.png}
+	\includegraphics[width=.3\textwidth]{figs/wds1100_KLDvssz.png}
+	\includegraphics[width=.3\textwidth]{figs/wfma_KLDvssz.png} \\
+	\includegraphics[width=.3\textwidth]{figs/wsanta100K_privacy.png}
+	\includegraphics[width=.3\textwidth]{figs/wds1100_privacy.png}
+	\includegraphics[width=.3\textwidth]{figs/wfma_privacy.png} 
+	\small $\delta=\frac{1}{N}$
+	\normalsize
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% WSDM
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 
 \begin{frame}
@@ -867,21 +1100,250 @@ locations}, \textbf{directionality of transitions}
 
 
 
+
 \begin{frame}
-	\begin{center}
-		\centering
-		\Fontvilarge
-		\textcolor{red}{Thanks!} \\
-		\vspace{0.15cm}
-		Any Questions? \\ 
-		\vspace{0.15cm}
-		\includegraphics[width=3.5cm,height=3.5cm]{qr.png} \\ 
-		\vspace{0.25cm}
-		dm754@cam.ac.uk
-	\end{center}
-	%\blfootnote{We would like to acknowledge the support of the Alan Turing Institute and Nokia Bell Labs}
+	\frametitle{Introduction}
+	\begin{itemize}
+		\item $\blacktriangleright$ Large-scale ML systems collect growing massive datasets contributed from multiple sources
+		\item $\blacktriangleright$ \textbf{Requirement 1}: \emph{Scalable} inference via redudancy minimization
+		\item $\blacktriangleright$ \textbf{Requirement 2}: \emph{Robustness to statistical misspecification} due to non-conforming observations, or model assumptions   
+		\item $\blacktriangleright$ \textbf{$\beta$-Cores} offer \textbf{an integrated approach to data cleaning and scalable black-box inference} with a high degree of automation: Bayesian Summarization robust to contamination potentially existing in the data 
+	\end{itemize}
 \end{frame}
 
+\begin{frame}
+	\frametitle{Background}
+	\begin{itemize}
+		\item $\blacktriangleright$ \textbf{Outliers detection} is typically treated separately from inference, via computing distances within datapoints~\citep{diakonikolas19, dickens20}, or introducing data redudancies~\citep{raykar10, karger11}. Such approaches scale adversely with data dimensionality and size.
+		\item $\blacktriangleright$ \textbf{Robustified Bayesian inference} via 
+			\begin{itemize}
+				\item --- heavy-tailed data likelihood functions~\citep{huber09, insua12}
+				\item --- localization~\citep{definetti61, wang18}
+				\item --- robust gradient estimates in MC methods~\citep{bhatia19}
+				\item --- datapoint specific weighting~\citep{wang17} 
+				\item --- robust statistical divergences~\citep{futami18, knoblauch18, miller19}
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Huber $\eps$-contamination model}
+		\begin{columns}
+		\begin{column}{.39\textwidth}
+			 \hfill \includegraphics[width=1.\textwidth]{figs/Huber.jpg}\\ 
+		\end{column}
+		\begin{column}{.69\textwidth}
+			\hfill \includegraphics[width=.5\textwidth]{figs/contaminated-gaussian.png}\\ 
+		\end{column}
+	\end{columns}
+\definecolor{darkred}{rgb}{0.55, 0.0, 0.0}
+$(x_n)_{n=1}^{N}\sim (1-\eps)\cdot G + \eps \color{darkred}{Q}$~\citep{huber92},
+where $\eps \in (0,1)$, $G$ follows our statistical assumptions and $\color{darkred}{Q}$ is an arbitrary distribution of outliers.
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Bayes rule: An optimization perspective}
+	\centering 
+	\begin{columns}
+		\begin{column}{.79\textwidth}
+	Bayes rule recasted to an optimization problem~\citep{zellner88}
+		\end{column}
+	\begin{column}{.29\textwidth}
+			\hfill \includegraphics[width=1.\textwidth]{figs/Zellner.jpg}\\ 
+	\end{column}
+	\end{columns}
+	\begin{align*}
+	\arg \underset{q(\theta) \in \mcP}{\min}  \left(\kl{q(\theta)}{\pi_0(\theta)} + N\EE_{q(\theta)}\left[\kl{\hpi(x)}{\pi(x|\theta)}\right]\right),
+	\end{align*}
+	giving
+	\begin{align*}
+	\pi(\theta|x) = \frac{1}{Z'} \exp\left(-\xent{\hpi(x)}{\pi(x|\theta)}\right)\pi_0(\theta),
+	\end{align*}
+	where $\hpi(x):=\frac{1}{N}\sum_{n=1}^{N}\delta(x-x_n)$ and $\xent{\hpi(x)}{\pi(x|\theta)}:=-\sum_{n=1}^{N}\log\pi(x_n|\theta)$.
+\end{frame}
+
+
+\begin{frame}
+		\frametitle{Generalized Bayesian inference via $\beta$-divergence}
+		Replace the KL with the \emph{$\beta$-divergence}~\citep{basu98}.\\
+		\textbf{$\beta$-posterior}:
+		\begin{align*}
+		\pi_\beta(\theta|x) \propto \exp\left(-\db{\hpi(x)}{\pi(x|\theta)}\right)\pi_0(\theta),
+		\end{align*}
+		where \\
+		$\db{\hpi(x)}{\pi(x|\theta)} := 
+		-\sum_{n=1}^{N}  \underbrace{\left(\frac{\beta+1}{\beta}\pi(x_n|\theta)^{\beta} + \int_{\mcX} \pi(\chi|\theta)^{1+\beta}d\chi\right)}_{:=f_n(\theta)}$, with $\beta>0$.
+		\pause
+		\begin{itemize}
+			\item $\blacktriangleright$ different strengths of influence to each datapoint downweigthing outliers
+			\item $\blacktriangleright$ when $\beta \rightarrow 0$ classical Bayesian posterior gets recovered
+			\item $\blacktriangleright$ \textbf{same scalability issues with classical Bayesian posterior}
+		\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Coresets for $\beta$-posterior}
+	\textbf{Sparse $\beta$-posterior}
+	\begin{align*}
+	\pi_{\beta,w}(\theta|x) 
+	:= \frac{1}{Z(\beta, w)}  \exp\left(\sum_{n=1}^{N}w_nf_n(\theta)\right)\pi_0(\theta)
+	\end{align*}
+	\pause 
+	Variational formulation
+	\begin{align*}
+	w^{*} = \arg \min_{w\in\reals^{N}} \kl{\pi_{\beta,w}}{\pi_{\beta}} 
+	\quad
+	\text{s.t.}
+	\quad
+	w \geq 0,\; ||w||_0 \leq M.
+	\end{align*}
+	\pause 
+	Analytical gradients 
+	\begin{align*}
+	\nabla_{w}\kl{\pi_{\beta,w}}{\pi_\beta} 
+	& = -\cov_{\beta,w}\left[f,(1 -w)^Tf\right],
+	\end{align*}
+	where $f:=\left[f_1(\theta) \ldots f_N(\theta)\right]^T$.
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Black-box incremental construction of Sparse $\beta$-posterior}
+	\vspace{-0.5cm}
+	\scriptsize 
+	\begin{algorithmic}[1]
+		\Procedure{\bcore}{$f,  \pi_0, x, M, B, S, T, (\gamma_t)_{t=1}^{\infty}$, $\beta$}
+		\State $w \assign \mathbf{0} \in \reals^{M}$,\;\; $g \assign \mathbf{0} \in \reals^{S \times M}$, \;\;$g' \assign \mathbf{0} \in \reals^{S \times B}$, \;\;$\mcI \assign \emptyset$
+		\For{$m =1, \ldots, M $}
+		\State $(\theta)_{s=1}^{S}  \distiid \pi_{\beta,w} \propto \exp \left(w^Tf\right) \pi_0(\theta)$ \Commenttriangle{$\triangleright$ Sample from coreset posterior}
+		\State $\mcB\dist\distUnifSubset\left([N], B\right)$
+		\Commenttriangle{$\triangleright$ \mbox{Get minibatch of $B$ datapoints from the full data}}
+		\State $g_{s} \gets \left( f(x_m, \theta_s, \beta ) - \frac{1}{S}\sum_{r=1}^S f(x_m, \theta_{r}, \beta) \right)_{m \in \mcI}\in \reals^M$ 
+		\State  $g'_{s} \gets \left( f(x_b, \theta_s, \beta) - \frac{1}{S}\sum_{r=1}^S f(x_b, \theta_{r}, \beta) \right)_{b\in\mcB} \in \reals^B$
+		\State $\hcorr \assign \diag \left[ \frac{1}{S} \sum_{s=1}^{S} g_{s}
+		{g_{s}}^T\right]^{-\frac{1}{2}} \left(\frac{1}{S} \sum_{s=1}^{S} g_{s} \left(\frac{N}{B}1^T g'_{s} - w^T g_{s}\right)\right) \in \reals^{M}$
+		\label{lst:line:core-corr}
+		\State $\hcorr' \assign \diag \left[ \frac{1}{S} \sum_{s=1}^{S} g'_{s}
+		{g'_{s}}^T\right]^{-\frac{1}{2}} \left(\frac{1}{S} \sum_{s=1}^{S} g'_{s} \left(\frac{N}{B}1^T g'_{s} - w^T g_{s}\right)\right)  \in \reals^{B}$
+		\label{lst:line:batch-corr}
+		\LineCommentIndent{ Select next via max-correlation}			 
+		\State $n^{\star} \assign \arg \underset{n \in [m] \cup [B]}{\max} \left( \left|\hcorr \right| \cdot \vecone[n \in \mcI] + \hcorr' \cdot \vecone [n \notin \mcI]\right)$, \;\;$ \mcI \assign \mcI \cup \{n^{\star}\}$
+		\For{$ t = 1, \ldots, T$}
+		\State $(\theta)_{s=1}^{S}  \distiid \pi_{\beta,w}(\theta) \propto \exp\left(w^T f\right)\pi_0(\theta)$, $\mcB\dist\distUnifSubset\left([N], B\right)$
+		\For{$s = 1, \dots, S$} 	
+		\State $g_{s} \gets \left( f(x_m, \theta_s, \beta) - \frac{1}{S}\sum_{r=1}^S f(x_m, \theta_{r}, \beta) \right)_{m\in\mcI} \in \reals^M$  	
+		\State $g'_{s} \gets \left( f(x_b, \theta_s, \beta) - \frac{1}{S}\sum_{r=1}^S f(x_b, \theta_{r}, \beta) \right)_{b\in\mcB} \in \reals^B$  	
+		\EndFor
+		\State $\hat\nabla_w \gets -\frac{1}{S}\sum_{s=1}^S g_s\left( \frac{N}{B} 1^Tg'_s- w^Tg_s\right)$
+		\Commenttriangle{$\triangleright$ \mbox{MC gradient for var. params}}
+		\State $w \gets \max(w - \gamma_t\hat\nabla_w, 0)$
+		%, $\beta \gets \max(\beta - \gamma_t\hat\nabla_\beta, 0)$
+		\Commenttriangle{$\triangleright$ \mbox{Take a gradient step}}
+		\EndFor
+		\EndFor
+		\State\Return $w$%, $\beta$
+		\EndProcedure		 
+	\end{algorithmic}
+\normalsize
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Black-box incremental construction of Sparse $\beta$-posterior}
+	\begin{itemize}
+		\item $\blacktriangleright$ Computational complexity $O(M(M+B)ST)$
+		\item $\blacktriangleright$ Extends seamlessly to summarizing observations groups and minibatches 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Simulated Gaussian Mean Inference under Stuctured Data Contamination}
+	\centering
+	\includegraphics[width=.67\textwidth, height=4.5cm]{figs/gauss_scatterplot.png}\\
+	\includegraphics[width=.3\textwidth]{figs/f0KLDvsCstSize.png}
+	\includegraphics[width=.3\textwidth]{figs/f15KLDvsCstSize.png}
+	\includegraphics[width=.3\textwidth]{figs/f30KLDvsCstSize.png}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Bayesian Logistic Regression under Mislabeling and Feature Noise}
+	\centering
+	\includegraphics[width=.3\textwidth]{figs/adult07_10_25_False_False_ACCvssz.png}
+	\includegraphics[width=.3\textwidth]{figs/phish09_10_15_False_False_ACCvssz.png}
+	\includegraphics[width=.3\textwidth]{figs/webspam09_10_15_True_False_ACCvssz.png}
+	\includegraphics[width=.3\textwidth]{figs/adult07_10_0_False_False_ACCvssz.png}
+	\includegraphics[width=.3\textwidth]{figs/phish07_10_0_False_False_ACCvssz.png}
+	\includegraphics[width=.3\textwidth]{figs/webspam09_10_0_True_False_ACCvssz.png}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Neural Linear Regression on Noisy Data Batches}
+	\centering
+	\includegraphics[width=.49\textwidth]{figs/boston02_01_30_RMSEvssz.png}
+	\includegraphics[width=.49\textwidth]{figs/year02_01_30_RMSEvssz.png}
+	\includegraphics[width=.49\textwidth]{figs/boston02_01_0_RMSEvssz.png}
+	\includegraphics[width=.49\textwidth]{figs/year02_01_0_RMSEvssz.png}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Efficient Data Acquisition from Subpopulations for Budgeted Inference}
+	\centering
+	\includegraphics[width=.49\textwidth]{figs/group_diabetes06_10_01_False_ACCvsit.png}
+\includegraphics[width=.49\textwidth]{figs/group_diabetes06_10_01_False_ACCvssz.png}
+\includegraphics[width=.49\textwidth]{figs/group_diabetes06_10_0_False_ACCvsit.png}
+\includegraphics[width=.49\textwidth]{figs/group_diabetes06_10_0_False_ACCvssz.png}	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Efficient Data Acquisition from Subpopulations for Budgeted Inference}
+	\centering
+	\includegraphics[width=.49\textwidth]{figs/selected_groups.png}	
+	\pause 
+	\begin{itemize}
+		\item $\blacktriangleright$ Demographic insights conforming with prior results in the literature~\citep{ghorbani19}: older age female group population is most informative for the regression task
+		\item $\blacktriangleright$ More effective selection of data subpopulations compared to standard data Shapley valuation~\citep{shapley53}
+	\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Future outlook
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\begin{frame}
+	\LARGE{\textbf{Future Outlook}}
+\end{frame}
+
+\begin{frame}
+	\begin{itemize}
+		\item $\blacktriangleright$  \texbf{Summarization under human-centric constraints}: Enforce pseudodata interpretability, fairness and right-to-be-forgotten
+		\item $\blacktriangleright$  \textbf{Coresets for structured data}: Extend methods to relational datasets and point process data
+		\item $\blacktriangleright$ \textbf{Implicit privacy amplification effects of data-informed sampling}: Recent studies have highlighted DP amplification results for uniform samplings. Is a similar analysis possible for importance samplings?
+		\item $\blacktriangleright$ \textbf{Summarization for meta-learning}: Extend methods for summaries according to a single statistical model to summaries applicable to sets of models/tasks.
+	\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Thanks, acknoledgements
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\begin{frame}
+	\Large{\textbf{Thanks} \\ email \href{mailto:dm754@cam.ac.uk}{dm754@cam.ac.uk}  }
+	\item \textbf{Colleagues}: Cecilia Mascolo, Trevor Campbell, Alastair R. Beresford
+	\item \textbf{Sponsors}: Nokia Bell Labs, Lundgren Fund, Darwin College Cambridge, Department of Computer Science \& Technology
+\end{frame}
 
 \begin{frame}[allowframebreaks]{References}
 	\tiny %\scriptsize
