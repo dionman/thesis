@@ -901,7 +901,7 @@ locations}, \textbf{directionality of transitions}
 
 \begin{frame}
 	\frametitle{Limitation I: High-dimensional data}
-	\begin{tcolorbox}[colback=green!5,colframe=white!40!black,title=KL Lowner Bound in Gaussian mean inference via coresets]  
+	\begin{tcolorbox}[colback=green!5,colframe=white!40!black,title=KL Lower Bound in Gaussian mean inference via coresets]  
 		Suppose we use $(X_n)_{n=1}^N \distiid \distNorm(0, I)$ in $\reals^d$ to perform posterior inference in a Bayesian model
 		with prior 
 		$\mu \dist \distNorm(0, I)$ and likelihood
@@ -1039,7 +1039,7 @@ locations}, \textbf{directionality of transitions}
 			\item --- No extra privacy cost when sampling from the private pseudocoreset posterior
 			\item --- No requirement for global sensitivity computation
 			\item --- Adaptive gradient clipping guided by statistics of the pseudopoints potentials
-			\item --- Constructed private pseudocoresets can be further queried ad infinitum for data analysis without privacy guarantees weakening
+			\item --- Constructed private pseudocoresets can be further queried \emph{ad infinitum} for data analysis without privacy guarantees weakening
 		\end{itemize}
 		\end{column}
 	\end{columns}
@@ -1106,15 +1106,15 @@ locations}, \textbf{directionality of transitions}
 	\begin{itemize}
 		\item $\blacktriangleright$ Large-scale ML systems collect growing massive datasets contributed from multiple sources
 		\item $\blacktriangleright$ \textbf{Requirement 1}: \emph{Scalable} inference via redudancy minimization
-		\item $\blacktriangleright$ \textbf{Requirement 2}: \emph{Robustness to statistical misspecification} due to non-conforming observations, or model assumptions   
-		\item $\blacktriangleright$ \textbf{$\beta$-Cores} offer \textbf{an integrated approach to data cleaning and scalable black-box inference} with a high degree of automation: Bayesian Summarization robust to contamination potentially existing in the data 
+		\item $\blacktriangleright$ \textbf{Requirement 2}: \emph{Robustness to statistical misspecification} due to non-conforming observations, and/or inaccurate model assumptions   
+		\item $\blacktriangleright$ \textbf{$\beta$-Cores} offer \textbf{an integrated approach to data cleaning \emph{and} scalable black-box inference} with a high degree of automation: Bayesian summarization robust to contamination potentially existing in the data 
 	\end{itemize}
 \end{frame}
 
 \begin{frame}
 	\frametitle{Background}
 	\begin{itemize}
-		\item $\blacktriangleright$ \textbf{Outliers detection} is typically treated separately from inference, via computing distances within datapoints~\citep{diakonikolas19, dickens20}, or introducing data redudancies~\citep{raykar10, karger11}. Such approaches scale adversely with data dimensionality and size.
+		\item $\blacktriangleright$ \textbf{Outliers detection} is typically treated separately from inference, and tackled via computing distances within datapoints~\citep{diakonikolas19, dickens20}, or introducing data redudancies~\citep{raykar10, karger11}. Such approaches scale adversely with data dimensionality and size.
 		\item $\blacktriangleright$ \textbf{Robustified Bayesian inference} via 
 			\begin{itemize}
 				\item --- heavy-tailed data likelihood functions~\citep{huber09, insua12}
@@ -1147,7 +1147,7 @@ where $\eps \in (0,1)$, $G$ follows our statistical assumptions and $\color{dark
 	\centering 
 	\begin{columns}
 		\begin{column}{.79\textwidth}
-	Bayes rule recasted to an optimization problem~\citep{zellner88}
+	Bayes rule recasted as an optimization problem~\citep{zellner88}
 		\end{column}
 	\begin{column}{.29\textwidth}
 			\hfill \includegraphics[width=1.\textwidth]{figs/Zellner.jpg}\\ 
@@ -1323,7 +1323,7 @@ where $\eps \in (0,1)$, $G$ follows our statistical assumptions and $\color{dark
 
 \begin{frame}
 	\begin{itemize}
-		\item $\blacktriangleright$  \texbf{Summarization under human-centric constraints}: Enforce pseudodata interpretability, fairness and right-to-be-forgotten
+		\item $\blacktriangleright$  \textbf{Summarization under human-centric constraints}: Enforce pseudodata interpretability, fairness and right-to-be-forgotten
 		\item $\blacktriangleright$  \textbf{Coresets for structured data}: Extend methods to relational datasets and point process data
 		\item $\blacktriangleright$ \textbf{Implicit privacy amplification effects of data-informed sampling}: Recent studies have highlighted DP amplification results for uniform samplings. Is a similar analysis possible for importance samplings?
 		\item $\blacktriangleright$ \textbf{Summarization for meta-learning}: Extend methods for summaries according to a single statistical model to summaries applicable to sets of models/tasks.
