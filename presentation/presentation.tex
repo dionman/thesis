@@ -112,6 +112,54 @@
   \vspace{10cm}
 \end{frame}
 
+\begin{frame}
+	\frametitle{Problem Statement}
+	\begin{tcolorbox}[colback=green!5,colframe=white!40!black]  
+		\centering
+		\textbf{In modern ML, datasets growth has started outpacing our ability to process them under real-world constraints}\\
+	\end{tcolorbox}
+	\textbf{Proposal: Replace datasets with \emph{coresets}}
+	\begin{itemize}
+		\item i.e. summaries defined on weighted datapoints that
+		\pause
+		\item $\blacktriangleright$ minimize redundancy in a model-specific way
+		\pause
+		\item $\blacktriangleright$ allow scaling-up expensive inference methods
+		\pause
+		\item $\blacktriangleright$ offer good quality monitoring/statistical approximation guarantees
+		\pause 
+		\item  $\blacktriangleright$ maintain high degree of automation (reduced number of dedicated hyperparameters, compatible with black-box inference techniques)
+		\pause
+		\item \emph{overall} allong mapping our learning instance to a favorable point on the statistical-computational trade-off  of a given learning problem, \emph{under statistical privacy and robustness constraints}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Findings}
+	\begin{itemize}
+		\item \textbf{I. Empirical study on reduced and anonymized representations of structural mobility data} 
+		\item \textbf{II. Bayesian pseudocoresets}
+		\item \textbf{III. $\beta$-Cores}
+	\end{itemize}
+\end{frame}
+
+\begin{comment}
+\begin{frame}
+	\frametitle{Findings}
+	\begin{itemize}
+		\item \textbf{I. Empirical study on reduced and anonymized representations of structural mobility data} \\
+		Privacy properties of identifiers removal and data dimensionality reduction are poorly understood. Data linkage threats via structural attacks remain.
+		\pause
+		\item \textbf{II. Bayesian pseudocoresets} \\
+		Summarizing via learnable pseudodata (i) increases efficiency in high-dimensional datasets, and (ii) enables public data relases under rigorous privacy guarantees
+		\pause
+		\item \textbf{III. $\beta$-Cores} \\
+		Sparse approximations of robust posteriors can unify outliers removal and scalable inference, offering resilience to model misspecification.
+	\end{itemize}
+\end{frame}
+\end{comment}
+
+
 \begin{frame}{Structure}
 	\begin{itemize}
 		\item[I.]\textbf{Quantifying Privacy Loss of Human Mobility Graph Topology}  \small{\citep{manousakas2018quantifying}} \\
@@ -698,7 +746,6 @@ Assumptions
 	\end{columns}
 \end{frame}
 
-%$P\big(l_{G'}= l_{G_i}\big) = 1/|\mathcal{L}|, \\ \mbox{for every }  G_i \in \mathcal{G}_{\text{train}}$\\
 
 
 \begin{frame}
@@ -717,8 +764,6 @@ Assumptions
 \includegraphics[width=2.3cm, height=2.7cm]{figs/adv_informed.png}
 		\end{column}	
 	\end{columns}
-	%\centering
-	%\includegraphics[width=5cm, height=7cm]{figs/tm1.png}
 \end{frame}
 
 
@@ -752,7 +797,7 @@ Assumptions
 			\pause
 			\vspace{0.2cm}
 			\item  $\blacktriangleright$ \textbf{Deep Kernels}: \Fontit{\citep{yanardagV15}} \\
-			 additionally learn an encoding similarities between substructures
+			 additionally learn an encoding of similarities between substructures
 		\end{itemize}
 	\end{block}	
 \end{frame}
@@ -918,8 +963,8 @@ locations}, \textbf{directionality of transitions}
 
 \begin{frame}
 	\frametitle{Limitation I: High-dimensional data}
+			\centering
 	\begin{figure*}
-		\centering
 		\includegraphics[width=.8\linewidth]{figs/klbound.png}
 	\end{figure*}
 \end{frame}
@@ -1341,7 +1386,7 @@ where $\eps \in (0,1)$, $G$ follows our statistical assumptions and $\color{dark
 
 \begin{frame}
 	\Large{\textbf{Thanks} \\ email \href{mailto:dm754@cam.ac.uk}{dm754@cam.ac.uk}  }
-	\item \textbf{Colleagues}: Cecilia Mascolo, Trevor Campbell, Alastair R. Beresford
+	\item \textbf{Collaborators}: Cecilia Mascolo, Trevor Campbell, Alastair R. Beresford
 	\item \textbf{Sponsors}: Nokia Bell Labs, Lundgren Fund, Darwin College Cambridge, Department of Computer Science \& Technology
 \end{frame}
 
