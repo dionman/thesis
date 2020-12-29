@@ -40,7 +40,7 @@ We construct a coreset by minimizing the KL divergence over both the pseudodata 
 u^\star, w^\star = \argmin_{\substack{u\in\reals^{d \times M}}, w\in\reals^M_+}\,\, \kl{\pi_{u,w}}{\pi}. 
 \label{eq:pseudo-coreset-vi}
 \]
-As opposed to previous Bayesian coreset construction optimization problems~\citep{campbell18, campbell19jmlr, campbell19neurips}, 
+As opposed to previous Bayesian coreset construction optimization problems~\textcites{campbell18, campbell19jmlr, campbell19neurips}, 
 we do not need an explicit sparsity constraint; the coreset size is limited to $M$ directly through the selection of the number
 of pseudodata and weights. 
 
@@ -115,43 +115,6 @@ to match the overall weight of the full dataset,
 &\mcB\dist\distUnifSubset\left([N], M\right), \quad \mcB \defined \left\{b_1, \dots, b_M\right\}. 
 \]
 
-After initializing the pseudodata locations and weights,
-we simultaneously optimize \cref{eq:pseudo-coreset-vi} over both.
-Each optimization iteration $t\in \{1, \dots, T\}$ consists of a stochastic gradient descent step
-with a learning rate $\gamma_t \propto t^{-1}$,  
-\[
-w_m \gets \max\left(0, w_m - \gamma_t (\hat\nabla_{w})_m\right),
-\quad u_m \gets u_{m} - \gamma_t \hat\nabla_{u_{m}},
-\quad 1\leq m \leq M.
-\label{eq:gd-update}
-\]
-The stochastic gradient estimates $\hat\nabla_w \in \reals^M$ and $\hat\nabla_{u_m} \in \reals^d$
-are based on $S\in\nats$ samples $\theta_s \distiid \pi_{u,w}$ from the coreset approximation
-and a minibatch of $B\in\nats$ datapoints from the full dataset,
-\[
-\hat\nabla_w \defined -\frac{1}{S}\sum_{s=1}^{S} \tg_s \left(\frac{N}{B}g_s^T 1  -  \tg_s^Tw  \right) \label{eq:weight-optimization-mc}, \quad \\
- \hat\nabla_{u_m} \defined - w_m \frac{1}{S}\sum_{s=1}^{S} \tildeh_{m,s}  \left(\frac{N}{B}g_s^T 1 - \tg_s^T w \right), \label{eq:location-optimization-mc-cov}
-\]
-where
-\[
-\begin{aligned}
-& \tildeh_{m,s} \defined\nabla_u f(u_m, \theta_s) - \frac{1}{S} \sum_{s'=1}^{S}\nabla_u f(u_m, \theta_{s'}),
-\quad & g_s \defined \left. \left(f(\theta_s) - \frac{1}{S} \sum_{s'=1}^{S} f(\theta_{s'})\right)\right|_{\mcB},\\
-& \tg_s \defined \tf(\theta_s) - \frac{1}{S} \sum_{s'=1}^{S} \tf(\theta_{s'}),
-\quad & \mcB \dist \distUnifSubset\left([N], B\right),
-\end{aligned}\label{eq:gradparts}
-\] 
-and $\left.(\cdot)\right|_{\mcB}$ denotes restriction of a vector to only those indices in $\mcB\subset[N]$.
-Crucially, note that this computation does not scale with $N$, but rather with the number
-of coreset points $M$, the sample and minibatch sizes $S$ and $B$, and the dimension $d$.
-Obtaining $\theta_s\distiid \pi_{u,w}$ efficiently via Markov chain Monte Carlo sampling
-algorithms~\citep{hoffman14,jacob17} is (roughly) $O(M)$ per sample, because the coreset is always of size $M$;
-and we need not compute
-the entire vector $g_s\in\reals^N$ per sample $s$, but rather only those $B\ll N$ indices in the minibatch $\mcB$,
-resulting in a cost of $O(B)$.
-Aside from that, all computations involving $\tg_s\in\reals^M$ and $\tildeh_{m,s}\in\reals^d$ are at most $O(Md)$.
-Each of these computations are repeated $S$ times over the coreset posterior samples.
-
 
 \begin{algorithm}[!t]
 	\caption{Pseudocoreset Variational Inference}
@@ -186,6 +149,44 @@ Each of these computations are repeated $S$ times over the coreset posterior sam
 		\EndProcedure		 
 	\end{algorithmic}
 \end{algorithm}
+
+
+After initializing the pseudodata locations and weights,
+we simultaneously optimize \cref{eq:pseudo-coreset-vi} over both.
+Each optimization iteration $t\in \{1, \dots, T\}$ consists of a stochastic gradient descent step
+with a learning rate $\gamma_t \propto t^{-1}$,  
+\[
+w_m \gets \max\left(0, w_m - \gamma_t (\hat\nabla_{w})_m\right),
+\quad u_m \gets u_{m} - \gamma_t \hat\nabla_{u_{m}},
+\quad 1\leq m \leq M.
+\label{eq:gd-update}
+\]
+The stochastic gradient estimates $\hat\nabla_w \in \reals^M$ and $\hat\nabla_{u_m} \in \reals^d$
+are based on $S\in\nats$ samples $\theta_s \distiid \pi_{u,w}$ from the coreset approximation
+and a minibatch of $B\in\nats$ datapoints from the full dataset,
+\[
+\hat\nabla_w \defined -\frac{1}{S}\sum_{s=1}^{S} \tg_s \left(\frac{N}{B}g_s^T 1  -  \tg_s^Tw  \right) \label{eq:weight-optimization-mc}, \quad \\
+\hat\nabla_{u_m} \defined - w_m \frac{1}{S}\sum_{s=1}^{S} \tildeh_{m,s}  \left(\frac{N}{B}g_s^T 1 - \tg_s^T w \right), \label{eq:location-optimization-mc-cov}
+\]
+where
+\[
+\begin{aligned}
+& \tildeh_{m,s} \defined\nabla_u f(u_m, \theta_s) - \frac{1}{S} \sum_{s'=1}^{S}\nabla_u f(u_m, \theta_{s'}),
+\quad & g_s \defined \left. \left(f(\theta_s) - \frac{1}{S} \sum_{s'=1}^{S} f(\theta_{s'})\right)\right|_{\mcB},\\
+& \tg_s \defined \tf(\theta_s) - \frac{1}{S} \sum_{s'=1}^{S} \tf(\theta_{s'}),
+\quad & \mcB \dist \distUnifSubset\left([N], B\right),
+\end{aligned}\label{eq:gradparts}
+\] 
+and $\left.(\cdot)\right|_{\mcB}$ denotes restriction of a vector to only those indices in $\mcB\subset[N]$.
+Crucially, note that this computation does not scale with $N$, but rather with the number
+of coreset points $M$, the sample and minibatch sizes $S$ and $B$, and the dimension $d$.
+Obtaining $\theta_s\distiid \pi_{u,w}$ efficiently via Markov chain Monte Carlo sampling
+algorithms~\citep{hoffman14,jacob17} is (roughly) $O(M)$ per sample, because the coreset is always of size $M$;
+and we need not compute
+the entire vector $g_s\in\reals^N$ per sample $s$, but rather only those $B\ll N$ indices in the minibatch $\mcB$,
+resulting in a cost of $O(B)$.
+Aside from that, all computations involving $\tg_s\in\reals^M$ and $\tildeh_{m,s}\in\reals^d$ are at most $O(Md)$.
+Each of these computations are repeated $S$ times over the coreset posterior samples.
 
 
 

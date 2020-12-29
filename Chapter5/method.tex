@@ -12,7 +12,7 @@ Scaling up the computation of the robust \bpost~defined in~\cref{eq:b-posterior}
 %~Closed form computation of~\bdiv{} is not possible for a large number of statistical models. Moreover, 
 similarly to the standard Bayesian posterior~\cref{eq:bayes-rule}, applying Markov chain Monte Carlo~(MCMC) methods to sample from the~\bpost{}, implies a computational cost scaling at order $\Theta(N)$. 
 
-Bayesian coresets~\cite{huggins16,campbell19jmlr} have been recently proposed as a method to circumvent the computational cost for the purposes of approximate inference via summarizing the original dataset  $(x_n)_{n=1}^{N}$ with a small learnable subset of weighted datapoints $(x_m, w_m)_{m=1}^{M}$, where  $(w_m)_{m=1}^{M} \in \reals^{M}_{+},\; M \ll N$. 
+Bayesian coresets~\citep{huggins16,campbell19jmlr} have been recently proposed as a method to circumvent the computational cost for the purposes of approximate inference via summarizing the original dataset  $(x_n)_{n=1}^{N}$ with a small learnable subset of weighted datapoints $(x_m, w_m)_{m=1}^{M}$, where  $(w_m)_{m=1}^{M} \in \reals^{M}_{+},\; M \ll N$. 
 Substituting~\cref{eq:b-loss} in~\cref{eq:b-posterior}, allows us to explicitly introduce a weights vector $ w \in \reals_{\geq 0}^{N}$ in the posterior, and rewrite the latter in the general form
 \[
 \pi_{\beta,w}(\theta|x) 
@@ -39,7 +39,7 @@ In the following we denote expectations and covariances under $\theta \sim \pi_{
 \kl{\pi_{\beta,w}}{\pi_{\beta}}:=\EE_{\beta, w} \left[\log\frac{\pi_{\beta,w}}{\pi_\beta}\right].
 \label{eq:kld}
 \]
-In our formulation it is easy to observe that posteriors of~\cref{eq:bcore-posterior} form a set of \emph{exponential family distributions}~\cite{wainwright08}, with natural parameters $w \in \reals_{\geq 0}^N$, sufficient statistics $(f_n(\theta))_{n=1}^{N}$, and log-partition function $\log Z(\beta, w)$. Following~\citep{campbell19neurips}, the objective can be expanded as 
+In our formulation it is easy to observe that posteriors of~\cref{eq:bcore-posterior} form a set of \emph{exponential family distributions}~\citep{wainwright08}, with natural parameters $w \in \reals_{\geq 0}^N$, sufficient statistics $(f_n(\theta))_{n=1}^{N}$, and log-partition function $\log Z(\beta, w)$. Following~\textcite{campbell19neurips}, the objective can be expanded as 
 \[
 \kl{\pi_{\beta,w}}{\pi_{\beta}} =& \log Z(\beta) - \log Z(\beta, w) 
                                     - \sum_{n=1}^{N}\EE_{\beta,w}\left[f_n(\theta)- w_n f_n(\theta)\right],
@@ -114,7 +114,7 @@ The covariance of~\cref{eq:dkl-grad} required for exact gradient computation of 
 
 
 \subsubsection{Next datapoint selection}
-We first select the next datapoint to include in our coreset summary, via a greedy selection criterion. Although maximizing decrease in KL locally via~\cref{eq:dkl-grad}, seems to be the natural greedy choice here, using the information-geometric argument presented in~\cite{campbell19neurips}, we use instead the following correlation maximization criterion:
+We first select the next datapoint to include in our coreset summary, via a greedy selection criterion. Although maximizing decrease in KL locally via~\cref{eq:dkl-grad}, seems to be the natural greedy choice here, using the information-geometric argument presented in~\textcite{campbell19neurips}, we use instead the following correlation maximization criterion:
 \[
 x_{m} = \arg \underset{x_m \in \mcI \cup \mcB }{\max}
 \begin{cases}

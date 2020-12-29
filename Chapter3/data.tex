@@ -4,7 +4,7 @@ In this section we present an exploratory analysis of the dataset used in our ex
 
 \subsection{Data description}
 
-We evaluate our methodology on the Device Analyzer dataset \cite{Wagner2014}. Device Analyzer contains records of smartphone usage collected from over $ 30,000 $  study participants around the globe.
+We evaluate our methodology on the Device Analyzer dataset~\citep{Wagner2014}. Device Analyzer contains records of smartphone usage collected from over $ 30,000 $  study participants around the globe.
 Collected data include information about system status and parameters, running background processes, cellular and wireless connectivity.
 For privacy purposes, released \emph{cid} information is given a unique pseudonym separately for each user, and contains no geographic, or semantic, information concerning the location of users.
 Thus we cannot determine geographic proximity between the nodes and the location data of two users cannot be directly aligned.
@@ -29,7 +29,7 @@ We first parsed the \emph{cid} sequences from the mobility trajectories into mob
 In order to remove \emph{cid}s associated with movement, we only defined nodes for \emph{cid}s which were visited by the handset for at least 15 minutes.
 Movements from one \emph{cid} to another were then recorded as edges in the mobility network.
 
-As outlined in~\cref{sec:graph-k-anonymity}, we analysed the pathways of the Device Analyzer dataset during the entire observation period, applying the model selection method~\cite{scholtes2017network} of Scholtes.\footnote{\url{https://github.com/IngoScholtes/pathpy}}
+As outlined in~\cref{sec:graph-k-anonymity}, we analysed the pathways of the Device Analyzer dataset during the entire observation period, applying the model selection method of~\textcite{scholtes2017network}.\footnote{\url{https://github.com/IngoScholtes/pathpy}}
 This method tests graphical models of varying orders and selects the optimal order by balancing the model complexity and the explanatory power of observations.
 
 We tested higher-order models up to order three. In the case of top$-20$ mobility networks, we found routine patterns in the mobility trajectories were best explained with models of order two for more than 20$\%$ of the users. However, when considering top$-100$, top$-200$, top$-500$ and full mobility networks, we found that the optimal model for our dataset has order one for more than $ 99\% $ of the users; see~\cref{fig:model_selection}. In other words, when considering mobility trajectories which visit less frequent locations in the graph, the overall increase in likelihood of the data for higher-order models cannot compensate for the complexity penalty induced by the larger state space. Hence, while there might still be regions in the graph which are best represented by a higher-order model, the optimal order describing the entire graph is one. Therefore we use a model of order one in the rest of this paper.
@@ -125,7 +125,7 @@ This analysis demonstrates empirically the privacy implications of releasing ano
 Before presenting our findings on the Device Analyzer dataset, we will perform a theoretical upper bound analysis on the identifiability of a population, by finding the maximum number of people that can be distinguished by networks of size $ N $.
 This corresponds to the number of non-isomorphic graphs with $ N $ nodes.
 
-Currently the most efficient way of enumerating  non-isomorphic graphs is by using McKay's algorithm~\cite{McKay}, implemented in the package~\texttt{nauty}.\footnote{\url{http://pallini.di.uniroma1.it/}}~\cref{tab:graphsenumeration} presents the enumeration for undirected and directed non-isomorphic graphs of increasing size. We observe that there exist $12,346$ undirected graphs with $8$ nodes and $9,608$ directed graphs with $5$ nodes. In other words, finding the top$-8$ places for each person is the smallest number which could produce unique graphs for each person in our sample of $1,500$ individuals; this reduces to $5$ when directionality is taken into account. Moreover, we find that top$-12$ undirected and top$-8$ directed networks are sufficient to enable each human on the planet to be represented by a different graph, assuming world population of $7.6$B.
+Currently the most efficient way of enumerating  non-isomorphic graphs is by using the algorithm of~\textcite{McKay}, implemented in the package~\texttt{nauty}.\footnote{\url{http://pallini.di.uniroma1.it/}}~\cref{tab:graphsenumeration} presents the enumeration for undirected and directed non-isomorphic graphs of increasing size. We observe that there exist $12,346$ undirected graphs with $8$ nodes and $9,608$ directed graphs with $5$ nodes. In other words, finding the top$-8$ places for each person is the smallest number which could produce unique graphs for each person in our sample of $1,500$ individuals; this reduces to $5$ when directionality is taken into account. Moreover, we find that top$-12$ undirected and top$-8$ directed networks are sufficient to enable each human on the planet to be represented by a different graph, assuming world population of $7.6$B.
 
 Next we present the results of our analysis on the Device Analyzer data.
 As observed in~\cref{fig:k_an}, \emph{sparsity arises in a mobility network even for very small $ N $}.

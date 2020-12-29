@@ -7,7 +7,7 @@ We convert a location sequence for each user into a mobility network (\cref{sec:
 We then extract feature representations of these networks and embed them into a vector space.
 Finally, in the vector space, we can define pairwise distances between the network embeddings (\cref{sec:graph-kernels}) and use them in a deanonymization scenario (\cref{sec:deanon-leakage}).  
 
-Our methodology is, in principle, applicable to many other categories of recurrent behavioural trajectories that can be abstracted as graphs, such web browsing sessions~\cite{olejnik14, yen12} or smartphone application usage sequences~\cite{Welke2016}.
+Our methodology is, in principle, applicable to many other categories of recurrent behavioural trajectories that can be abstracted as graphs, such web browsing sessions~\citep{olejnik14, yen12} or smartphone application usage sequences~\citep{Welke2016}.
 We leave such analysis as future work.
 
 \subsection{$k-$anonymity on graphs\label{sec:graph-k-anonymity}}
@@ -20,7 +20,7 @@ Anonymity among networks refers to topological (or structural) equivalence. In o
 
 \vspace{.4cm}
 Therefore we interpret $k-$anonymity in this chapter to mean that the mobility network of an individual in a population should be identical to the mobility network of at least $k-1$ other individuals.
-Recent work casts doubt on the protection guarantees offered by \mbox{$k-$anonymity} in location privacy~\cite{shokri2010}, motivating the definition of $l-$diversity \cite{Machanavajjhala2007} and $t-$closeness \cite{li2007}.
+Recent work casts doubt on the protection guarantees offered by \mbox{$k-$anonymity} in location privacy~\citep{shokri2010}, motivating the definition of $l-$diversity~\citep{Machanavajjhala2007} and $t-$closeness~\citep{li2007}.
 Although $k-$anonymity may be insufficient to ensure privacy in the presence of adversarial knowledge, \mbox{$k-$anonymity} is a good metric to use to measure the uniqueness of an individual in the data.
 Moreover, this framework is straightforwardly generalizable to the case of graph data.
 
@@ -35,7 +35,7 @@ Structural equivalence in the space of graphs corresponds to isomorphism and, ba
 }
 
 \vspace{.4cm}
-After clustering our population of graphs into isomorphism classes, we can also define the \emph{identifiability set} and \emph{anonymity size}~\cite{anon_terminology} as follows:
+After clustering our population of graphs into isomorphism classes, we can also define the \emph{identifiability set} and \emph{anonymity size}~\citep{anon_terminology} as follows:
 
 \ndefn[\textbf{Identifiability Set}]{
 	\emph{Identifiability set} is the percentage of the population which is uniquely identified given their top$-N$ network.
@@ -56,7 +56,7 @@ For example, the probability that an individual visits the shops or work next de
 The alternative is that a sequence of the states is better modelled by higher-order Markov chains, namely that transitions depend on the current state and one or more previously visited states.
 For example, the probability that an individual visits the shops or work next depends not only on where they are now, but where they were earlier in the day or week.
 If higher-order Markov chains are required, we should assume a larger state-space and use these states as the nodes of our individual mobility networks.
-Recently proposed methods on optimal order selection of sequential data \cite{xu2016representing, scholtes2017network} can be directly applied at this step.
+Recently proposed methods on optimal order selection of sequential data~\citep{xu2016representing, scholtes2017network} can be directly applied at this step.
 
 Let us assume a mobility dataset from a population of users $ u \in U$.
 We introduce two network representations of user's mobility.
@@ -74,7 +74,7 @@ graph $G^{u}=\left(V^{u}, E^{u}, W^{u}\right)  \in \mcG$, with the same topology
 To facilitate comparisons of frequencies across networks of different sizes in our experiments, we normalize edge weights on each mobility network to sum \mbox{to 1}.
 
 In first-order networks, nodes correspond to distinct places the user visits.
-Given a high-frequency, timestamped sequence of location events for a user, distinct places can be extracted as small geographic regions where a user stays longer than a defined time interval, using existing clustering algorithms~\cite{kang2005extracting}.
+Given a high-frequency, timestamped sequence of location events for a user, distinct places can be extracted as small geographic regions where a user stays longer than a defined time interval, using existing clustering algorithms~\citep{kang2005extracting}.
 Nodes in the mobility network have no geographic or timing information associated with them.
 Nodes may have \emph{attributes} attached to them reflecting additional side information.
 For example, in this study we consider whether attaching the frequency of visits a user makes to a specific node aids an attacker attempting to deanonymize the user.
@@ -90,11 +90,8 @@ Distance functions decompose the graph into feature vectors (smaller substructur
 In the following, we introduce the notion of graph kernels and describe the graph similarity metrics used later in our experiments.
 
 We wish to compute the similarity between two graphs $ G, G' \in \mcG$. 
-To this end, according to the definitions of~\cref{subsec:b-kernels}, we will use graph kernel functions $ K(G, G') : \mcG \times \mcG \rightarrow \mcR^{+}$~\cite{Vishwanathan2010}, and their corresponding feature maps $\phi(G)$.
-%Kernel functions~\cite{Vishwanathan2010}, or \emph{kernels}, are symmetric positive semidefinite functions, where  $ K(G, G') : \mcG \times \mcG \rightarrow \mcR^{+} $, meaning
-%that for all $ n > 1 $,  $ G_1, . . . , G_n \in \mathcal{G} $, and $ c_1, . . . , c_n \in \mcR$, we have $ {\sum_{i,j=1}^{n} c_ic_jK(G_i, G_j ) \geq 0} $.
-%Each kernel function corresponds to some feature map $ \phi(G) $, where the
-%kernel function can be expressed as the inner product between feature maps, i.e., $ K(G, G') = \left \langle \phi(G), \phi(G') \right \rangle$.
+To this end, according to the definitions of~\cref{subsec:b-kernels}, we will use graph kernel functions $ K(G, G') : \mcG \times \mcG \rightarrow \mcR^{+}$~\citep{Vishwanathan2010}, and their corresponding feature maps $\phi(G)$.
+
 
 In order to ensure the result from the kernel lies in the interval $[-1, 1]$, we apply \emph{cosine normalization} as follows:
 \[
@@ -118,7 +115,7 @@ Here, the hyperparameters of the kernel are the variance $ \sigma $ (in case RBF
 \subsubsection{Kernel on graph atomic substructures}
 
 Kernels can use counts on substructures, such as subtree patterns, shortest paths, walks or limited-size subgraphs.
-This family of kernels are called \emph{$R-$convolution graph kernels}~\cite{haussler}.
+This family of kernels are called \emph{$R-$convolution graph kernels}~\citep{haussler}.
 In this way, graphs are represented as vectors with elements corresponding to the frequency of each such substructure over the graph.
 Hence, if
 $ s_1, s_2, ... \in \mcS$ are the substructures of interest and $ \#\left(s_i \in G\right)$ the counts of $ s_i $ in graph $ G $, we get as feature map vectors
@@ -136,7 +133,7 @@ In the following, we briefly present some kernels in this category and explain h
 \vspace{1em}
 \noindent\textbf{Shortest-Path Kernel}
 
-The Shortest-Path (\emph{SP}) graph kernel \cite{borgwardt2005} expresses the similarity between two graphs by counting the co-occuring shortest paths in the graphs.
+The Shortest-Path (\emph{SP}) graph kernel~\citep{borgwardt2005} expresses the similarity between two graphs by counting the co-occuring shortest paths in the graphs.
 It can be written in the form of~\cref{eq:rconv-features}, where each element $ s_i \in \mcS $ is a triplet $\big(a_{\text{start}}^i, a_{\text{end}}^i, n\big)$, where $ n $ is the length of the path and $ a_{\text{start}}^i, a_{\text{end}}^i $ the attributes of the starting and ending nodes.
 The shortest path set is computable in polynomial time using, for example, the Floyd-Warshall algorithm, with complexity $ O(|V|^4)$, where $ |V| $ is number of nodes in the network.
 
@@ -421,7 +418,7 @@ The shortest path set is computable in polynomial time using, for example, the F
 \end{figure*}
 
 
-Shervashidze \emph{et~al.} proposed an efficient method~\cite{Shervashidze2011} to construct a graph kernel utilizing the \mbox{Weisfeiler-Lehman} (\emph{WL}) test of isomorphism~\cite{weisfeiler1968reduction}.
+\textcite{Shervashidze2011} proposed an efficient method to construct a graph kernel utilizing the \mbox{Weisfeiler-Lehman} (\emph{WL}) test of isomorphism~\citep{weisfeiler1968reduction}.
 The idea of the \emph{WL} kernel is to measure co-occurences of subtree patterns across node attributed graphs.
 
 Computation progresses over iterations as follows:
@@ -444,7 +441,7 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 \vspace{1em}
 \noindent\textbf{Deep Graph Kernels}
 
-Deep graph kernels (\emph{DK}s) are a unified framework that takes into account similarity relations at the level of atomic substructures in the kernel computation~\cite{yanardagV15}.
+Deep graph kernels (\emph{DK}s) are a unified framework that takes into account similarity relations at the level of atomic substructures in the kernel computation~\citep{yanardagV15}.
 Hence, these kernels can quantify \emph{similar substructure} co-occurence, offering more robust feature representations.
 DKs are based on computing the following inner product:
 \[
@@ -453,7 +450,7 @@ K(G, G') = \phi\left(G\right)^T M \phi\left(G'\right),
 where $ \phi $ is the feature mapping of a classical R-convolution graph kernel.
 
 In the above, $M : |\mcV| \times |\mcV|$ is a positive semidefinitive matrix encoding the relationships between the atomic substructures and $ \mcV $ is the vocabulary of the observed substructures in the dataset.
-Here, $ M $ can be defined using the edit distance of the substructures, i.e.\ the number of elementary operations to transform one substructure to another; or $ M $ can be learnt from the data, applying relevant neural language modeling methods \cite{mikolov2013efficient}.
+Here, $ M $ can be defined using the edit distance of the substructures, i.e.\ the number of elementary operations to transform one substructure to another; or $ M $ can be learnt from the data, applying relevant neural language modeling methods \citep{mikolov2013efficient}.
 
 \subsection{Deanonymization of user mobility networks and privacy leakage evaluation\label{sec:deanon-leakage}}
 

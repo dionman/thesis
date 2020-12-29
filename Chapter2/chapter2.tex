@@ -90,7 +90,7 @@ A key challenge in computing the posterior according to~\cref{eq:bbayes-rule} is
 \subsection{Laplace's method}
 \label{subsec:b-laplace-method}
 
-Point estimates of $\theta$, obtained for example via \emph{maximum a posteriori} or \emph{maximum likelihood estimation}, are cheap to compute, as they correspond to solutions of optimization problems involving only the unnormalised rhs of~\cref{eq:bbayes-rule}---on the other hand, they cannot capture the uncertainty of our posterior beliefs. Laplace's method~\citep{mackay03} is an approximate inference scheme that makes a first step towards uncertainty awareness, offering a non-degenerate, yet inexpensive to compute, approximate posterior for $\theta$.
+Point estimates of $\theta$, obtained for example via \emph{maximum a posteriori} or \emph{maximum likelihood estimation}, are cheap to compute, as they correspond to solutions of optimization problems involving only the unnormalised RHS of~\cref{eq:bbayes-rule}---on the other hand, they cannot capture the uncertainty of our posterior beliefs. Laplace's method~\citep{mackay03} is an approximate inference scheme that makes a first step towards uncertainty awareness, offering a non-degenerate, yet inexpensive to compute, approximate posterior for $\theta$.
 
 Let us write the posterior of~\cref{eq:bbayes-rule} in the following equivalent form
 \[
@@ -150,11 +150,11 @@ Our VI schemes in~\cref{chap:chap4,chap:chap5} propose approximations within the
 \label{subsec:b-coresets}
 Owing to their requirement for multiple evaluations of the data (log-)likelihood---a computation scaling at $\Theta(N)$---MCMC and VI methods quickly become prohibitively expensive in the large-data regime. Various stochastic schemes have been proposed to circumvent this computation, evaluating the likelihood on random data minibatches: despite achieving computational savings and often being straightforward to implement, such schemes rarely offer guarantees on posterior approximation quality, and lack a rigorous principle over the minibatch selection step, hence retaining part of the redundancy of the full data collection in the extracted samples.
 
-Bayesian coresets~\citep{huggins16,campbell18,campbell19jmlr,campbell19neurips} make the assumption that the full dataset has some degree of inherent redundancy, and put forth the idea of scaling up inference via the application of a preprocessing step where \emph{part of the data gets retained under the criterion of likelihood approximation}. In the spirit of the first coresets proposed in the field of computational geometry~\citep{feldman11unified}, initial construction schemes for coreset-based \mbox{inference~\citep{huggins16,lucic17training}} utilize \emph{importance sampling} according to the datapoints sensitivity, \ie~a non-negative quantity measuring the redundancy of each of the datapoints \wrt the statistical model of interest. Although giving theoretical gurantees for the approximation quality achieved by the coreset, importance sampling based constructions have typically two shortcomings: (\emph{i}) they rely on efficiently computable upper bounds of the sensitivity, and (\emph{ii}) they do not have a sense of a residual posterior error, hence are limited by common MC rates in approximating the full data likelihood, offering error $\eps = O(\frac{1}{\sqrt{M}})$ for coreset size $M$.
+Bayesian coresets~\citep{huggins16,campbell18,campbell19jmlr,campbell19neurips} make the assumption that the full dataset has some degree of inherent redundancy, and put forth the idea of scaling up inference via the application of a preprocessing step where \emph{part of the data gets retained under the criterion of likelihood approximation}. In the spirit of the first coresets proposed in the field of computational geometry~\citep{feldman11unified}, initial construction schemes for coreset-based \mbox{inference~\citep{huggins16,lucic17training}} utilize \emph{importance sampling} according to the datapoints' sensitivity, \ie~a non-negative quantity measuring the redundancy of each of the datapoints \wrt the statistical model of interest. Although giving theoretical gurantees for the approximation quality achieved by the coreset, importance sampling based constructions have typically two shortcomings: (\emph{i}) they rely on efficiently computable upper bounds of the sensitivity, and (\emph{ii}) they do not have a sense of a residual posterior error, hence are limited by common MC rates in approximating the full data likelihood, offering error $\eps = O(\frac{1}{\sqrt{M}})$ for coreset size $M$.
 
-Reformulating coreset construction as sparse function approximation in a Hilbert space~(\emph{Hilbert coresets}), Campbell and Broderick~\citep{campbell18,campbell19jmlr} introduced alternative optimization formulations for the problem. They showed that using inner-product inducing norms can lead to faster incremental construction schemes that, critically, can guide next datapoint selection by the direction of greatest impovement. Moreover, they made use of a coarse posterior approximation and random projections to efficiently compute Hilbert norms that capture the divergence between the coreset and the true posterior, and proposed faster sparse constructions under polytope and hypersphere constraints.
+Reformulating coreset construction as sparse function approximation in a Hilbert space~(\emph{Hilbert coresets}), \textcites{campbell18,campbell19jmlr} introduced alternative optimization formulations for the problem. They showed that using inner-product inducing norms can lead to faster incremental construction schemes that, critically, can guide next datapoint selection by the direction of greatest impovement. Moreover, they made use of a coarse posterior approximation and random projections to efficiently compute Hilbert norms that capture the divergence between the coreset and the true posterior, and proposed faster sparse constructions under polytope and hypersphere constraints.
 
-In more recent work, Campbell and Beronov~\citep{campbell19neurips} casted Bayesian coresets to a problem of sparse variational inference within an exponential family, named \emph{Riemannian coresets}. Riemannian coresets removed the requirement for fixing a coarse posterior that appears when computing the norm in practical Hilbert coreset constructions, achieving full automation and improvement of approximation (in KL) over a larger range of summary sizes.
+In more recent work,~\textcite{campbell19neurips} casted Bayesian coresets to a problem of sparse variational inference within an exponential family, named \emph{Riemannian coresets}. Riemannian coresets removed the requirement for fixing a coarse posterior that appears when computing the norm in practical Hilbert coreset constructions, achieving full automation and improvement of approximation (in KL) over a larger range of summary sizes.
 
 
 \section{Robust inference}
@@ -170,7 +170,7 @@ In the context of Bayesian inference, we are interested in updating our beliefs 
 \] 
 where $Z'$ is a (typically intractable) normalization constant. %, and $\pi(x|\theta)$ is the likelihood of our observations according to an assumed statistical model.
 When datapoints \mbox{are conditio-} nally independent given $\theta$, the likelihood function gets factorized as \mbox{$\pi(x|\theta) = \Pi_{n=1}^{N}\pi(x_n|\theta)$.} An equivalent formulation of  the
-Bayesian posterior as a solution to a convex optimization problem over the density space was introduced by Williams~\citep{williams80} and Zellner~\citep{zellner88}, and used in various subsequent works including \citep{zhu14, dai16, futami18}. Concretely,~\cref{eq:bayes-rule} can be recovered by solving the problem
+Bayesian posterior as a solution to a convex optimization problem over the density space was introduced by~\textcites{williams80,zellner88}, and used in various subsequent works including~\textcites{zhu14, dai16, futami18}. Concretely,~\cref{eq:bayes-rule} can be recovered by solving the problem
 \[
 \arg \underset{q(\theta) \in \mcP}{\min} \left(\kl{q(\theta)}{\pi_0(\theta)} -\sum_{n=1}^{N}\left[\int q(\theta) \log \pi(x_n|\theta)d\theta\right]\right),
 \label{eq:bayes-rule-opt}
@@ -204,7 +204,7 @@ From the definition of KL divergence~\cref{eq:bkl-def}, we can equivalently rewr
 \label{eq:bayes-rule-opt-kl}
 \]
 namely inference corresponds to maximizing the expected likelihood of the observations, under a regularizer that aims to keep the posterior $q$ close to the prior $\pi_0$.
-As mentioned in~\cref{subsec:b-divergences}, a popular choice~\citep{futami18, knoblauch18} for enhancing inferential robustness is to replace the KL divergence---computed via the expected likelihood  arising in the second term of~\cref{eq:bayes-rule-opt-kl}---with the \emph{\bdiv}. This yields the following posterior for $\theta$~\citep{ghosh16,knoblauch18}
+As mentioned in~\cref{subsec:b-divergences}, a popular choice for enhancing inferential robustness is to replace the KL divergence---computed via the expected likelihood  arising in the second term of~\cref{eq:bayes-rule-opt-kl}---with the \emph{\bdiv}~\citep{futami18, knoblauch18}. This yields the following posterior for $\theta$~\citep{ghosh16,knoblauch18}
 \[
 \pi_\beta(\theta|x) \propto \exp\left(-\db{\hpi(x)}{\pi(x|\theta)}\right)\pi_0(\theta),
 \label{eq:b-posterior}
@@ -221,7 +221,7 @@ In the remainder we refer to quantities defined in~\cref{eq:b-posterior,eq:b-los
 %The latter 
 allow attributing \emph{different strength of influence to each of the datapoints}, depending on their accordance with the model assumptions. As densities get raised to a suitable power $\beta$, outlying observations are exponentially downweighted. When $\beta \rightarrow 0$, the Bayes posterior of \cref{eq:zellner-rule,eq:bayes-rule} is recovered and all datapoints are treated equally.
 
-In the presentation above we focused on modeling observations $(x_n)_{n=1}^{N}$~(unsupervised learning). In the case of supervised learning on data pairs ${(x_n,y_n)}_{n=1}^{N} \in (\mcX \times \mcY)^N$, the respective expression for individual terms of \blik{}\footnote{In this context for simplicity we use notation $f_n(\cdot)$  to denote $f(y_n|x_n, \cdot)$.} is~\cite{basu98}
+In the presentation above we focused on modeling observations $(x_n)_{n=1}^{N}$~(unsupervised learning). In the case of supervised learning on data pairs ${(x_n,y_n)}_{n=1}^{N} \in (\mcX \times \mcY)^N$, the respective expression for individual terms of \blik{}\footnote{In this context for simplicity we use notation $f_n(\cdot)$  to denote $f(y_n|x_n, \cdot)$.} is~\citep{basu98}
 \[
 f_n(\theta):= -\frac{\beta+1}{\beta}\pi(y_n|x_n,\theta)^{\beta} +  \int_{\mcY} \pi(\psi|x_n,\theta)^{1+\beta}d\psi.
 \label{eq:sl-lik-terms}
@@ -239,7 +239,7 @@ is sought which transforms the datapoints from the original data space $\{x_n\}_
 \subsection{Kernels}
 \label{subsec:b-kernels}
 
-The main tool in kernel methods~\cite{scholkopf02} is the \emph{kernel function} defined below.
+The main tool in kernel methods~\citep{scholkopf02} is the \emph{kernel function} defined below.
 \begin{ndefn}[Kernel function] \label{def:bkernelfun}
 	A symmetric function $k: \mcX \times \mcX \rightarrow \reals $ is a positive semidefinite kernel function, or kernel, if for all $N>1$, $x_1, \ldots, x_N \in \reals$, and $c_1, \ldots, c_N \in \reals$ 
 	\[
@@ -269,7 +269,7 @@ Kernel methods induce \emph{non-parametric} representations on the data, \ie~whe
 \subsection{Finite-dimensional random projections}
 \label{subsec:b-random-features}
 
-Kernel methods appeal to large-scale learning due to their non-parametric nature: their representation power scales with the number of datapoints, hence they can learn complex, highly non-linear structure from the data; however, their time and memory cost scales adversely with the dataset size. Random features~\citep{rahimi08} remedy poor complexity scaling issues via utilising \emph{parametric finite-dimensional} data representations. We motivate this concept via an application arising in Hilbert coreset constructions~\cite{campbell19jmlr}.
+Kernel methods appeal to large-scale learning due to their non-parametric nature: their representation power scales with the number of datapoints, hence they can learn complex, highly non-linear structure from the data; however, their time and memory cost scales adversely with the dataset size. Random features~\citep{rahimi08} remedy poor complexity scaling issues via utilising \emph{parametric finite-dimensional} data representations. We motivate this concept via an application arising in Hilbert coreset constructions~\citep{campbell19jmlr}.
 
 Denote by $ f(\theta) \defined \sum_{n=1}^{N} \log\pi(x_n|\theta) $ the log-likelihood function of a dataset $x \defined {(x_n)}_{n=1}^{N}$, and by $ f(\theta,w) \defined \sum_{n=1}^{N} w_n\log\pi(x_n|\theta)$ the corresponding log-likelihood of a Hilbert coreset $(w_n, x_n)_{n=1}^{N}$ constructed on the data, where $(w_n)_{n=1}^{N}$ is a vector of sparse, non-negative weights. The quality of posterior approximation that this coreset offers can be quantified using a $L^2$ norm on the log-likelihoods under a weighting distribution $\hpi$ that has the same support with the posterior $\pi$ 
 \[
