@@ -170,7 +170,7 @@ In the context of Bayesian inference, we are interested in updating our beliefs 
 \] 
 where $Z'$ is a (typically intractable) normalization constant. %, and $\pi(x|\theta)$ is the likelihood of our observations according to an assumed statistical model.
 When datapoints \mbox{are conditio-} nally independent given $\theta$, the likelihood function gets factorized as \mbox{$\pi(x|\theta) = \Pi_{n=1}^{N}\pi(x_n|\theta)$.} An equivalent formulation of  the
-Bayesian posterior as a solution to a convex optimization problem over the density space was introduced by~\textcites{williams80,zellner88}, and used in various subsequent works including~\textcites{zhu14, dai16, futami18}. Concretely,~\cref{eq:bayes-rule} can be recovered by solving the problem
+Bayesian posterior as a solution to a convex optimization problem over the density space was introduced by~\textcites{williams80,zellner88}, and used in various subsequent works including~\citep{zhu14, dai16, futami18}. Concretely,~\cref{eq:bayes-rule} can be recovered by solving the problem
 \[
 \arg \underset{q(\theta) \in \mcP}{\min} \left(\kl{q(\theta)}{\pi_0(\theta)} -\sum_{n=1}^{N}\left[\int q(\theta) \log \pi(x_n|\theta)d\theta\right]\right),
 \label{eq:bayes-rule-opt}
