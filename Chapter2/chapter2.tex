@@ -10,9 +10,9 @@ A critical component in constructing and evaluating inference algorithms is usin
 \label{eq:bkl-def}
 \kl{\pi_1}{\pi_2} \defined \int \pi_1(\theta) \log\frac{\pi_1(\theta)}{\pi_2(\theta)} d\theta.
 \]
-In particular, for two Gaussian distributions $\mcN_1(\mu_1, \Sigma_1)$ and $\mcN_1(\mu_1, \Sigma_1)$, the KL divergence is computable in closed form as follows
+In particular, for two $d$-dimensional Gaussian distributions $\mcN_1(\mu_1, \Sigma_1)$ and $\mcN_2(\mu_2, \Sigma_2)$, the KL divergence is computable in closed form as follows
 \[
-\kl{\mcN_1}{\mcN_2} = \frac{1}{2}\left[\tr(\Sigma_2^{-1}\Sigma_1) - (\mu_1-\mu_2)^T\Sigma_2^{-1}(\mu_1-\mu_2) - M + \log\frac{|\Sigma_2|}{|\Sigma_1|}\right].
+\kl{\mcN_1}{\mcN_2} = \frac{1}{2}\left[\log\frac{|\Sigma_2|}{|\Sigma_1|} - d  + \tr(\Sigma_2^{-1}\Sigma_1) + (\mu_2-\mu_1)^T\Sigma_2^{-1}(\mu_2-\mu_1) \right].
 \]
 
 %\section{Robust Inference}
@@ -134,7 +134,7 @@ In this way, Bayesian posterior inference gets reduced into an optimization prob
 In passing, %whilst it is beyond the scope of this introduction to give a detailed presentation of how the problem of~\cref{eq:bvi} is approached, 
 we note that, in classical Variational Bayes schemes, expanding the KL divergence according to~\cref{eq:bkl-def} makes the log-evidence appear in the objective 
 \[
-\kl{q(\theta)}{\pi(\theta|x)} = \EE_{\theta \sim q(\theta)}\left[\log q(\theta)\right] - \EE_{z\sim q(\theta)}\left[\log \pi(x, \theta)\right] + \log \pi(\theta).
+\kl{q(\theta)}{\pi(\theta|x)} = \EE_{\theta \sim q}\left[\log q(\theta)\right] - \EE_{\theta \sim q}\left[\log \pi(x, \theta)\right] + \log \pi(x).
 \]
 Since this term is not a function of $q$, it can be subtracted and the problem is reformulated as minimizing the remaining two terms, the negation of which is known as the \emph{evidence lower bound}~(ELBO)
 \[
@@ -148,7 +148,7 @@ Our VI schemes in~\cref{chap:chap4,chap:chap5} propose approximations within the
 
 \subsection{Bayesian coresets}
 \label{subsec:b-coresets}
-Owing to their requirement for multiple evaluations of the data (log-)likelihood---a computation scaling at $\Omega(N)$---MCMC and VI methods quickly become prohibitively expensive in the large-data regime. Various stochastic schemes have been proposed to circumvent this computation, evaluating the likelihood on random data minibatches: despite achieving computational savings and often being straightforward to implement, such schemes rarely offer guarantees on posterior approximation quality, and lack a rigorous principle over the minibatch selection step, hence retaining part of the redundancy of the full data collection in the extracted samples.
+Owing to their requirement for multiple evaluations of the data (log-)likelihood---a computation scaling at $\Theta(N)$---MCMC and VI methods quickly become prohibitively expensive in the large-data regime. Various stochastic schemes have been proposed to circumvent this computation, evaluating the likelihood on random data minibatches: despite achieving computational savings and often being straightforward to implement, such schemes rarely offer guarantees on posterior approximation quality, and lack a rigorous principle over the minibatch selection step, hence retaining part of the redundancy of the full data collection in the extracted samples.
 
 Bayesian coresets~\citep{huggins16,campbell18,campbell19jmlr,campbell19neurips} make the assumption that the full dataset has some degree of inherent redundancy, and put forth the idea of scaling up inference via the application of a preprocessing step where \emph{part of the data gets retained under the criterion of likelihood approximation}. In the spirit of the first coresets proposed in the field of computational geometry~\citep{feldman11unified}, initial construction schemes for coreset-based \mbox{inference~\citep{huggins16,lucic17training}} utilize \emph{importance sampling} according to the datapoints sensitivity, \ie~a non-negative quantity measuring the redundancy of each of the datapoints \wrt the statistical model of interest. Although giving theoretical gurantees for the approximation quality achieved by the coreset, importance sampling based constructions have typically two shortcomings: (\emph{i}) they rely on efficiently computable upper bounds of the sensitivity, and (\emph{ii}) they do not have a sense of a residual posterior error, hence are limited by common MC rates in approximating the full data likelihood, offering error $\eps = O(\frac{1}{\sqrt{M}})$ for coreset size $M$.
 
@@ -212,7 +212,7 @@ As mentioned in~\cref{subsec:b-divergences}, a popular choice~\citep{futami18, k
 where 
 \[
 \db{\hpi(x)}{\pi(x|\theta)} := 
--\sum_{n=1}^{N}  \underbrace{\left(\frac{\beta+1}{\beta}\pi(x_n|\theta)^{\beta} + \int_{\mcX} \pi(\chi|\theta)^{1+\beta}d\chi\right)}_{:=f_n(\theta)},
+\sum_{n=1}^{N}  \underbrace{\left(-\frac{\beta+1}{\beta}\pi(x_n|\theta)^{\beta} + \int_{\mcX} \pi(\chi|\theta)^{1+\beta}d\chi\right)}_{:=f_n(\theta)},
 \label{eq:b-loss}
 \]
 with $\beta>0$.
