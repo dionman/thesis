@@ -10,7 +10,13 @@ is a Gaussian with mean $\mu_w$ and covariance $\Sigma_w$,
 \]
 Examining \cref{eq:gausswpost}, we can replicate any coreset posterior exactly by using a single synthetic \emph{pseudodata} point $U = \left(\sum_{n=1}^Nw_n\right)^{-1}\sum_{n=1}^N w_nX_n$
 with weight $\sum_{n=1}^N w_n$. In particular, the true posterior is equivalent to the posterior
-conditioned on the single pseudodata point $U = \frac{1}{N}\sum_{n=1}^N X_n$ with weight $N$ (with corresponding KL divergence equal to 0).
+conditioned on the single pseudodata point $U = \frac{1}{N}\sum_{n=1}^N X_n$ with weight $N$ (with corresponding KL divergence equal to 0), indicating the absence of a lower bound for the KL divergence of the optimal coreset defined on pseudodata in the setting of~\cref{prop:original_coreset_fails} \emph{regardless of data dimensionality}.
+
+\bncor
+Suppose the same setting with~\cref{prop:original_coreset_fails}. The optimal size-$M$ pseudocoreset $(u^*,w^*)$  defined on pseudodata $u_1, \ldots, u_M \in \mathbb{R}^d $ achieves ${\kl{\pi_{u^\star,w^\star}}{\pi}=0}$ for any size $M \geq 1$ and any data dimension $d$.
+\label{cor:pseudocoreset-succeeds}
+\encor
+
 This is not surprising; the mean of the data is precisely a sufficient statistic for the data in this 
 simple setting. However, it does illustrate that carefully-chosen pseudodata may be able to
 represent the overall dataset---as ``approximate sufficient statistics''---far better than any reasonably small collection of the original data.
@@ -40,9 +46,7 @@ We construct a coreset by minimizing the KL divergence over both the pseudodata 
 u^\star, w^\star = \argmin_{\substack{u\in\reals^{d \times M}}, w\in\reals^M_+}\,\, \kl{\pi_{u,w}}{\pi}. 
 \label{eq:pseudo-coreset-vi}
 \]
-As opposed to previous Bayesian coreset construction optimization problems~\citep{campbell18,campbell19jmlr,campbell19neurips}, 
-we do not need an explicit sparsity constraint; the coreset size is limited to $M$ directly through the selection of the number
-of pseudodata and weights. 
+As opposed to previous Bayesian coreset construction optimization problems~\citep{campbell18,campbell19jmlr,campbell19neurips}, we do not need an explicit sparsity constraint; the coreset size is limited to $M$ directly through the selection of the number of pseudodata and weights. 
 
 Denote the vectors of original data potentials $f(\theta)\in\reals^N$ and synthetic pseudodata potentials ${\tf(\theta)\in\reals^M}$ as
 $
@@ -108,14 +112,6 @@ in this section we develop a black-box stochastic optimization scheme (\cref{alg
 
 \setlength{\textfloatsep}{10pt}% Remove \textfloatsep
 
-To initialize the pseudocoreset, we subsample $M$ datapoints from the large dataset and reweight them
-to match the overall weight of the full dataset,
-\[
-&u_m \gets x_{b_m}, \quad w_m \gets N/M, \quad m=1, \dots, M\\
-&\mcB\dist\distUnifSubset\left([N], M\right), \quad \mcB \defined \left\{b_1, \dots, b_M\right\}. 
-\]
-
-
 \begin{algorithm}[!t]
 	\caption{Pseudocoreset Variational Inference}
 	\label{alg:psvi}
@@ -150,6 +146,13 @@ to match the overall weight of the full dataset,
 	\end{algorithmic}
 \end{algorithm}
 
+
+To initialize the pseudocoreset, we subsample $M$ datapoints from the large dataset and reweight them
+to match the overall weight of the full dataset,
+\[
+&u_m \gets x_{b_m}, \quad w_m \gets N/M, \quad m=1, \dots, M\\
+&\mcB\dist\distUnifSubset\left([N], M\right), \quad \mcB \defined \left\{b_1, \dots, b_M\right\}. 
+\]
 
 After initializing the pseudodata locations and weights,
 we simultaneously optimize \cref{eq:pseudo-coreset-vi} over both.

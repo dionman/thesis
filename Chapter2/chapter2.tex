@@ -5,14 +5,16 @@ This chapter aims to set the context for the remainder of this thesis. Various c
 
 \section{Comparing probability distributions}
 \label{subsec:b-divergences}
-A critical component in constructing and evaluating inference algorithms is using a \emph{divergence measure}, that captures informatively how similar two probability distributions are. Statistical divergences are relaxations of distance functions, that (\emph{i})~are always non-negative, and (\emph{ii})~equal zero iff their arguments are identical---albeit they do not necessarily satisfy symmetry in their arguments, or the triangle inequality. The most commonly used divergence measure in approximate inference---which will directly serve to define the objective quantifying the inferential quality of our summaries in \cref{chap:chap4}---is the \emph{Kullback-Leibler}~(KL) divergence, also named \emph{relative entropy}~\citep{kullback51,kullback59}. For probability density functions $\pi_1(\theta)$ and $\pi_2(\theta)$, the KL divergence is defined as 
+A critical component in constructing and evaluating inference algorithms is using a \emph{divergence measure}, that captures informatively how similar two probability distributions are. Statistical divergences are relaxations of distance functions, that (\emph{i})~are always non-negative, and (\emph{ii})~equal zero iff their arguments are identical---albeit they do not necessarily satisfy symmetry in their arguments, or the triangle inequality. 
+
+The most commonly used divergence measure in approximate inference---which will directly serve to define the objective quantifying the inferential quality of our summaries in \cref{chap:chap4}---is the \emph{Kullback-Leibler}~(KL) divergence, also named \emph{relative entropy}~\citep{kullback51,kullback59}. For a continuous random variable $\theta$ and probability density functions $\pi_1$ and $\pi_2$, the KL divergence is defined as 
 \[
 \label{eq:bkl-def}
 \kl{\pi_1}{\pi_2} \defined \int \pi_1(\theta) \log\frac{\pi_1(\theta)}{\pi_2(\theta)} d\theta.
 \]
 In particular, for two $d$-dimensional Gaussian distributions $\mcN_1(\mu_1, \Sigma_1)$ and $\mcN_2(\mu_2, \Sigma_2)$, the KL divergence is computable in closed form as follows
 \[
-\kl{\mcN_1}{\mcN_2} = \frac{1}{2}\left[\log\frac{|\Sigma_2|}{|\Sigma_1|} - d  + \tr(\Sigma_2^{-1}\Sigma_1) + (\mu_2-\mu_1)^T\Sigma_2^{-1}(\mu_2-\mu_1) \right].
+\kl{\pi_1}{\pi_2} = \frac{1}{2}\left[\log\frac{|\Sigma_2|}{|\Sigma_1|} - d  + \tr(\Sigma_2^{-1}\Sigma_1) + (\mu_2-\mu_1)^T\Sigma_2^{-1}(\mu_2-\mu_1) \right].
 \]
 
 %\section{Robust Inference}
@@ -24,6 +26,7 @@ In data setups that are likely to be contaminated by outliers, we get substantia
 for $\beta > 0$.
 
 One can easily show that the \bdiv{} converges to the KL divergence when $\beta \rightarrow 0$.
+Both divergences are asymmetric and do not satisfy the triangle inequality. 
 
 \section{Exponential families}
 \label{sec:b-expfam}
@@ -68,7 +71,7 @@ An important property of exponential family densities is that the derivatives of
 
 Bayesian probabilistic modeling provides a principled framework for  learning from observed data, incorporating expert knowledge, handling model uncertainty and drawing coherent inferences in a unified way, following the languange of probability theory.
 
-In (parametric) Bayesian learning settings we are generally given a set of observations $x = \{x_1,...,x_N\} \subseteq \mcX$, and aim to find a vector $\theta $ of latent random variables parameterising an assumed probabilistic model that \emph{is likely to} explain them. In the Bayesian paradigm, we first assume a \emph{prior} distribution over the parameters $\pi_0(\theta)$, that encodes our beliefs about the uncertainty in $\theta$ before observing any data. Once the data are taken into account, our beliefs shoud be updated accordingly, in order to better describe the observed distribution. For this purpose a \emph{likelihood} distribution $\pi(x|\theta)$ needs to be defined; the likelihood quantifies the probability of the observations under the assumed statistical model for parameters set to $\theta$. Combining the above distributions we are ready to formulate \emph{Bayes' theorem}, the fundamental rule which gives the \emph{posterior} beliefs for our parameters updated in light of the observed data
+In (parametric) Bayesian learning settings we are generally given a set of observations $x = \{x_1,...,x_N\} \subseteq \mcX$, and aim to find a vector $\theta $ of latent random variables parameterising an assumed probabilistic model that \emph{is likely to} explain them. In the Bayesian paradigm, we first assume a \emph{prior} distribution over the parameters $\pi_0(\theta)$, that encodes our beliefs about the uncertainty in $\theta$ before observing any data. Once the data are taken into account, our beliefs shoud be updated accordingly, in order to better describe the observed distribution. For this purpose a \emph{likelihood} function $\pi(x|\theta)$ needs to be defined; the likelihood quantifies the probability of the observations under the assumed statistical model for parameters set to $\theta$. Combining the above distributions we are ready to formulate \emph{Bayes' theorem}, the fundamental rule which gives the \emph{posterior} beliefs for our parameters updated in light of the observed data
 \[
 \pi(\theta|x) = \frac{\pi(x|\theta)\pi_0(\theta)}{\pi(x)}.
 \label{eq:bbayes-rule}
@@ -124,7 +127,7 @@ Bounds on the number of MCMC iterations required until we obtain a satisfactory 
 \subsection{Variational inference}
 \label{subsec:b-variational-inference}
 Variational inference~(VI)~\citep{jordan99,blei17} takes a fundamentally different approach to  address approximate inference.
-The problem formulation underpinning all VI methods is to find a member $q^*$ within a family of tractable probability distributions $Q$ that most closely matches our true posterior $\pi$ (typically in the KL-sense)
+The problem formulation underpinning all VI methods is to find a member $q^*$ within a family of tractable probability densities $Q$ that most closely matches our true posterior $\pi$ (typically in the KL-sense)
 \[
 \label{eq:bvi}
 q^{*}(\theta; x) \defined \arg \underset{q\in Q}{\min} \kl{q(\theta)}{\pi(\theta|x)}.
@@ -144,13 +147,13 @@ q^{*}(\theta; x) \defined \arg \underset{q\in Q}{\min} \left(-\text{ELBO}(q, x)\
 Via Jensen's inequality, ELBO can be shown to be a lower bound of the marginal log-likelihood of $x$ as expectation \wrt~$q$. As opposed to MCMC methods, \mbox{theoretical guarantees} for inferential results of the solution to~\cref{eq:bvi} can only be obtained for a few simple statistical models for the following main reasons: optimization methods in typically non-convex landscapes can often converge to bad local optima; also, depending on the statistical divergence and variational family used, VI might return miscalibrated posterior variance estimates~\citep[Chapter~10]{bishop06}.
 
 The simplest family $Q$ that can be used for VI is the \emph{mean-field variational family} which relies on the simplifying assumption of independence among the coordinates of $\theta$, \ie~$q(\theta) \defined \Pi_{d=1}^{D}q_d(\theta_d)$.
-Our VI schemes in~\cref{chap:chap4,chap:chap5} propose approximations within the \emph{exponential family} instead, which generally allow less restricted posteriors. Additionally, they can circumvent the use of ELBO, and instead be directly applied on the original variational formulation of~\cref{eq:bvi}, since MC estimates of the gradient of the intractable log-evidence term can be extracted as per~\cref{prop:bgradZ}. 
+Our VI schemes in~\cref{chap:chap4,chap:chap5} propose approximations within the \emph{exponential family} instead, which generally allow less restricted posteriors. Additionally, they can circumvent the use of ELBO, and instead be directly applied on the original KL minimizing variational formulation of~\cref{eq:bvi}, since MC estimates of the gradient of the intractable log-evidence term can be extracted as per~\cref{prop:bgradZ}. 
 
 \subsection{Bayesian coresets}
 \label{subsec:b-coresets}
 Owing to their requirement for multiple evaluations of the data (log-)likelihood---a computation scaling at $\Theta(N)$---MCMC and VI methods quickly become prohibitively expensive in the large-data regime. Various stochastic schemes have been proposed to circumvent this computation, evaluating the likelihood on random data minibatches: despite achieving computational savings and often being straightforward to implement, such schemes rarely offer guarantees on posterior approximation quality, and lack a rigorous principle over the minibatch selection step, hence retaining part of the redundancy of the full data collection in the extracted samples.
 
-Bayesian coresets~\citep{huggins16,campbell18,campbell19jmlr,campbell19neurips} make the assumption that the full dataset has some degree of inherent redundancy, and put forth the idea of scaling up inference via the application of a preprocessing step where \emph{part of the data gets retained under the criterion of likelihood approximation}. In the spirit of the first coresets proposed in the field of computational geometry~\citep{feldman11unified}, initial construction schemes for coreset-based \mbox{inference~\citep{huggins16,lucic17training}} utilize \emph{importance sampling} according to the datapoints' sensitivity, \ie~a non-negative quantity measuring the redundancy of each of the datapoints \wrt the statistical model of interest. Although giving theoretical gurantees for the approximation quality achieved by the coreset, importance sampling based constructions have typically two shortcomings: (\emph{i}) they rely on efficiently computable upper bounds of the sensitivity, and (\emph{ii}) they do not have a sense of a residual posterior error, hence are limited by common MC rates in approximating the full data likelihood, offering error $\eps = O(\frac{1}{\sqrt{M}})$ for coreset size $M$.
+Bayesian coresets~\citep{huggins16,campbell18,campbell19jmlr,campbell19neurips} make the assumption that the full dataset has some degree of inherent redundancy, and put forth the idea of scaling up inference via the application of a preprocessing step where \emph{part of the data gets retained under the criterion of likelihood approximation}. In the spirit of the first coresets proposed in the field of computational geometry~\citep{feldman11unified}, initial construction schemes for coreset-based \mbox{inference~\citep{huggins16,lucic17training}} utilize \emph{importance sampling} according to the datapoints' sensitivity, \ie~a non-negative quantity measuring the redundancy of each of the datapoints \wrt the statistical model of interest. Although providing theoretical gurantees for the approximation quality achieved by the coreset, importance sampling based constructions have typically two shortcomings: (\emph{i}) they rely on efficiently computable upper bounds of the sensitivity, and (\emph{ii}) they do not have a sense of a residual posterior error, hence are limited by common MC rates in approximating the full data likelihood, offering error $\eps = O(\frac{1}{\sqrt{M}})$ for coreset size $M$.
 
 Reformulating coreset construction as sparse function approximation in a Hilbert space~(\emph{Hilbert coresets}), \textcites{campbell18,campbell19jmlr} introduced alternative optimization formulations for the problem. They showed that using inner-product inducing norms can lead to faster incremental construction schemes that, critically, can guide next datapoint selection by the direction of greatest impovement. Moreover, they made use of a coarse posterior approximation and random projections to efficiently compute Hilbert norms that capture the divergence between the coreset and the true posterior, and proposed faster sparse constructions under polytope and hypersphere constraints.
 
@@ -160,7 +163,7 @@ In more recent work,~\textcite{campbell19neurips} casted Bayesian coresets to a 
 \section{Robust inference}
 \label{sec:brobust-inference}
 
-In this section, adopting an optimization view of Bayesian inference, we present robustness limitations of the standard Bayesian posterior on big data, and outline existing generalizations of the posterior that aim to robustify inference with respect to model-data mismatch. Setting these robustified posteriors as the target of our coreset approximations, in~\cref{chap:chap5} we will successfully address scenarios of large-scale inference under model misspecification.
+In this section, adopting an optimization view of Bayesian inference, we present robustness limitations of the standard Bayesian posterior on big data, and outline existing generalizations of the posterior that aim to robustify inference wrt mismatches between observed data and modelling assumptions. Setting these robustified posteriors as the target of our coreset approximations, in~\cref{chap:chap5} we will successfully address scenarios of large-scale inference under model misspecification.
 
 \subsection{Standard Bayesian inference and lack of robustness in the large-data regime}
 In the context of Bayesian inference, we are interested in updating our beliefs about a vector of random variables $\theta \in \Theta$, initially expressed through a prior distribution $\pi_0(\theta)$, after observing a set of datapoints $ x:=(x_n)_{n=1}^{N} \in \mcX^N$.  Rewriting~\cref{eq:bbayes-rule}, the posterior on $\theta$ can be computed via the application of Bayes rule 
@@ -183,7 +186,7 @@ where $\mcP$ is the valid density space, while the Bayesian posterior can be exp
 In the last expression, $\hpi(x):=\frac{1}{N}\sum_{n=1}^{N}\delta(x-x_n)$ is the empirical distribution of the observed datapoints and $\delta$ is the Dirac delta function. The exponent $\xent{\hpi(x)}{\pi(x|\theta)}:=-\sum_{n=1}^{N}\log\pi(x_n|\theta)$
 corresponds (up to a constant) to the \emph{cross-entropy}, which is  equal to the empirical average of negative log-likelihoods of the datapoints, and quantifies the expected loss incurred by our estimates for the model parameters $\theta$ over the available observations, under the Kullback-Leibler divergence.
 
-When $N$ is large, the Bayesian posterior is strongly affected by perturbations in the observed data space. To develop an intuition on this, assuming that the true and observed data distributions admit densities $\pi_\theta$ and $\pi_\textsubscript{obs}$ respectively, we can rewrite an approximation of~\cref{eq:zellner-rule} via the KL divergence as in Miller and Dunson~\cite{miller19}
+When $N$ is large, the Bayesian posterior is strongly affected by perturbations in the observed data space. To develop an intuition on this, assuming that the true and observed data distributions admit densities $\pi_\theta$ and $\pi_\textsubscript{obs}$ respectively, we can rewrite an approximation of~\cref{eq:zellner-rule} via the KL divergence as in~\citep{miller19}
 \[
 \pi(\theta|x) 
 & \propto  \exp\left(\sum_{n=1}^{N}\log\pi(x_n|\theta)\right) \pi_0(\theta)
@@ -194,7 +197,7 @@ When $N$ is large, the Bayesian posterior is strongly affected by perturbations 
 where $\doteq$ denotes  agreement to first order in exponent.\footnote{\ie~$a_n \doteq b_n$ iff $(1/n)\log(a_n/b_n) \rightarrow 0$}
 Hence, due to the large $N$ in the exponent, small changes in $\pi_\textsubscript{obs}$ will have a large impact on the posterior.
 
-\subsection{Robustified pseudo-Bayesian posteriors}
+\subsection{Robustified generalized Bayesian posteriors}
 
 Robust inference methods aim to adapt~\cref{eq:bayes-rule,eq:bayes-rule-opt,eq:zellner-rule} to formulations that can address the case of observations departing from model assumptions, as often happening in practice, e.g. due to misspecified shapes of data distributions and number of components, or due to the presence of outliers. In such formulations~\citep{dawid16, jewson18, fujisawa08, eguchi01}, Bayesian updates rely on utilising robust divergences instead of the KL divergence, to express the losses over the data. 
 
@@ -241,14 +244,16 @@ is sought which transforms the datapoints from the original data space $\{x_n\}_
 
 The main tool in kernel methods~\citep{scholkopf02} is the \emph{kernel function} defined below.
 \begin{ndefn}[Kernel function] \label{def:bkernelfun}
-	A symmetric function $k: \mcX \times \mcX \rightarrow \reals $ is a positive semidefinite kernel function, or kernel, if for all $N>1$, $x_1, \ldots, x_N \in \reals$, and $c_1, \ldots, c_N \in \reals$ 
+	A symmetric function $k: \mcX \times \mcX \rightarrow \reals $ is a positive semidefinite \emph{kernel function}, or \emph{kernel}, if for all $N>1$, $x_1, \ldots, x_N \in \reals$, and $c_1, \ldots, c_N \in \reals$ 
 	\[
 	\sum_{i,j=1}^{N} c_ic_j k(x_i, x_j) \geq 0.
 	\]
 \end{ndefn}
+
 Every kernel is associated with a feature map $\phi$ as follows.
+
 \begin{ndefn}[Kernel representation] \label{def:bkernelrepr}
-	 A function $k: \mcX \times \mcX \rightarrow \reals$ is a kernel if and only if there exists a Hilbert space $\mcH$ and a feature map $\phi: \mcX \rightarrow \mcH$ such that for all $x, x' \in \mcX$
+	 A function $k: \mcX \times \mcX \rightarrow \reals$ is a kernel iff there exists a Hilbert space $\mcH$ and a feature map $\phi: \mcX \rightarrow \mcH$ such that for all $x, x' \in \mcX$
 	 \[
 	 \label{eq:bkernelrep}
 	 k(x,x') = \langle \phi(x), \phi(x') \rangle_\mcH.
@@ -271,7 +276,7 @@ Kernel methods induce \emph{non-parametric} representations on the data, \ie~whe
 
 Kernel methods appeal to large-scale learning due to their non-parametric nature: their representation power scales with the number of datapoints, hence they can learn complex, highly non-linear structure from the data; however, their time and memory cost scales adversely with the dataset size. Random features~\citep{rahimi08} remedy poor complexity scaling issues via utilising \emph{parametric finite-dimensional} data representations. We motivate this concept via an application arising in Hilbert coreset constructions~\citep{campbell19jmlr}.
 
-Denote by $ f(\theta) \defined \sum_{n=1}^{N} \log\pi(x_n|\theta) $ the log-likelihood function of a dataset $x \defined {(x_n)}_{n=1}^{N}$, and by $ f(\theta,w) \defined \sum_{n=1}^{N} w_n\log\pi(x_n|\theta)$ the corresponding log-likelihood of a Hilbert coreset $(w_n, x_n)_{n=1}^{N}$ constructed on the data, where $(w_n)_{n=1}^{N}$ is a vector of sparse, non-negative weights. The quality of posterior approximation that this coreset offers can be quantified using a $L^2$ norm on the log-likelihoods under a weighting distribution $\hpi$ that has the same support with the posterior $\pi$ 
+Denote by $ f(\theta) \defined \sum_{n=1}^{N} \log\pi(x_n|\theta) $ the log-likelihood function of a dataset $x \defined {(x_n)}_{n=1}^{N}$, and by $ f(\theta,w) \defined \sum_{n=1}^{N} w_n\log\pi(x_n|\theta)$ the corresponding log-likelihood of a Hilbert coreset $(w_n, x_n)_{n=1}^{N}$ constructed on the data, where $(w_n)_{n=1}^{N}$ is a vector of sparse, non-negative weights. The quality of posterior approximation that this coreset offers can be quantified using a $L^2$ norm on the log-likelihoods under a weighting distribution $\hpi$ that has the same support with the true posterior $\pi$ 
 \[
 ||f(\theta, w) - f(\theta)||_{\hpi,2} \defined \EE_{\hpi} \left[ (f(\theta) - f(\theta, w))^2\right],
 \]
@@ -338,7 +343,7 @@ Let $ \mcM: \mcX \rightarrow \mcY$ be $(\veps, \delta)$-DP with $\veps \leq 1$ a
 \label{prop:bdp-postprocessing}
 \enprop
 
-DP composition theorems accumulate the total privacy cost over the application of a sequence of mechanisms. The moments accountant is a recently proposed technique, that allows computing tight bounds for $\veps$ and $\delta$, as follows
+DP composition theorems accumulate the total privacy cost over the application of a sequence of mechanisms. The moments accountant is a recently proposed technique, that allows computing tight bounds for $\veps$ and $\delta$, offering the following guarantees:
 
 \bnprop[Moments Accountant~\citep{abadi16}]
 Given $0<\veps<1$ and $0<\delta<1$, to ensure $(\veps, T\delta'+\delta)$-DP over the composition of $T$ mechanisms $\mcM_1,\ldots,\mcM_T$, it suffices that each $\mcM_i$ is $(\veps', \delta')$-DP, where $\veps'=\frac{\veps}{2\sqrt{2T\log(2/\delta)}}$ and $\delta'=\frac{\delta}{T}$. 

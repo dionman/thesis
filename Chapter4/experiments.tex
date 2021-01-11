@@ -91,6 +91,7 @@ while \psvi~achieves the fastest decay rate over sizes $ 100 \leq M < 250$, surp
 \subsection{Bayesian logistic regression}
 \label{section:logreg_experiment}
 
+
 Finally, we compare (pseudo)coreset construction methods on Bayesian logistic
 regression applied to 3 large~($8.4$--$100K$ datapoints, $50$--$237$
 dimensions) datasets. For brevity, equations and gradients for the logistic
@@ -98,10 +99,7 @@ regression model, additional experiments on \mbox{3 smaller-scale} datasets,
 full dataset descriptions, hyperparameter selection, time performance
 evaluation and results on an incremental scheme for pseudocoreset construction
 are deferred to~\cref{app:logreg_experiment_appendix}. 
-%
-  %Learning rates were tuned separately per dataset, using schedules $ {\gamma_t=\alpha t^{-\half}}$. For 	\textsc{Transactions}, \textsc{ChemReact100}, and \textsc{Music},  $ \alpha $ was respectively set to $0.05, 0.1, 0.1 $ for \sparsevi, and $10, 50, 10 $ for \psvi. 
-%
- For \psvi~and \sparsevi~we use minibatch size ${B=200}$, number of gradient
+For \psvi~and \sparsevi~we use minibatch size ${B=200}$, number of gradient
 updates ${T=500}$, and learning rate schedules $ \gamma_t = \alpha t^{-1}$. For
 \textsc{Transactions}, \textsc{ChemReact100} and \textsc{Music}, $\alpha$ is
 respectively set to 0.1, 0.1, 1 for \sparsevi, and 1, 10, 10 for \psvi. In the
@@ -115,14 +113,6 @@ initialise each pseudocoreset of size $ M$ via sampling $(x_m)_{m=1}^{M} \distii
 \distNorm{(0, I)}$, and sampling $\theta$, $ (y_m)_{m=1}^{M} $ from the statistical
 model.
 
-
-
-Results presented in~\cref{fig:ls_blogreg_dkl} demonstrate that \psvi~achieves consistently the smallest posterior approximation error in the small coreset size regime, offering improvement
-compared to \sparsevi~and being competitive with \gigao,
-without the requirement for specifying a weighting function. In~\cref{sfig:transactions}, for $M \geq d$ ~\gigao~follows a much steeper decrease in KL divergence, reflecting the dependence of its approximation quality on dataset dimension per~\cref{prop:original_coreset_fails}. In contrast, \psvi~typically reaches its minimum at $M<d$. The difference in approximation quality becomes clearer in higher dimensions~(e.g. \textsc{Music}, where $d=237$). Perhaps surprisingly, the private pseudocoreset construction has only marginally worse approximation quality compared to nonprivate \psvi~and generally achieves better peformance in comparison to the other state-of-the-art nonprivate coreset constructions. 
-
-In~\cref{fig:dklvseps} we present the achieved posterior approximation quality via \dpsvi, against a competitive state-of-the-art method for general-purpose private inference~(\dpvi, \cite{jalko17}). The plots display the
-behaviour of methods over a wide range of $\veps$ values, achieved using varying levels of privatization noise, and $\delta$ always set to $1/N$. For logistic regression, \dpvi~infers an approximate posterior from the family of Gaussians with diagonal covariance via ADVI~\citep{kucukelbir17}, followed by an additional Laplace approximation. Note that by design, \dpvi~is constrained by the usual Gaussian variational approximation, while \dpsvi~is more flexible and can approach the true posterior as $ M $ increases---this effect is reflected in nonprivate posteriors as well as data dimensionality grows~(see for example~\cref{sfig:musicpriv}). Indeed, we verify that in the high-privacy regime \dpsvi~for sufficient pseudocoreset size (which is typically small for tested real-world datasets) offers posterior approximation with better KL divergence compared to \dpvi. Our findings indicate that private \psvi~offers efficient releases of big data via informative pseudopoints, which enable arbitrary post processing (e.g. running any \emph{nonprivate} black-box algorithm for Bayesian inference), under strong privacy guarantees and without reducing the quality of inference.
 
 
 \begin{figure*}[!t]
@@ -180,6 +170,16 @@ behaviour of methods over a wide range of $\veps$ values, achieved using varying
 	\caption{Approximate posterior quality over decreasing differential privacy guarantees for private pseudocoresets of varying size~(\dpsvi) plotted against private variational inference~(\dpvi, \textcite{jalko17}). $\delta$ is always kept fixed at $ 1/N$. Markers on the right end of each plot display the errorbar of approximation achieved by the corresponding nonprivate posteriors. Results are displayed over 5 trials for each construction.}
 	\label{fig:dklvseps} 
 \end{figure*}
+
+
+Results presented in~\cref{fig:ls_blogreg_dkl} demonstrate that \psvi~achieves consistently the smallest posterior approximation error in the small coreset size regime, offering improvement
+compared to \sparsevi~and being competitive with \gigao,
+without the requirement for specifying a weighting function. In~\cref{sfig:transactions}, for $M \geq d$ ~\gigao~follows a much steeper decrease in KL divergence, reflecting the dependence of its approximation quality on dataset dimension per~\cref{prop:original_coreset_fails}. In contrast, \psvi~typically reaches its minimum at $M<d$. The difference in approximation quality becomes clearer in higher dimensions~(e.g. \textsc{Music}, where $d=237$). Perhaps surprisingly, the private pseudocoreset construction has only marginally worse approximation quality compared to nonprivate \psvi~and generally achieves better peformance in comparison to the other state-of-the-art nonprivate coreset constructions. 
+
+In~\cref{fig:dklvseps} we present the achieved posterior approximation quality via \dpsvi, against a competitive state-of-the-art method for general-purpose private inference~(\dpvi, \cite{jalko17}). The plots display the
+behaviour of methods over a wide range of $\veps$ values, achieved using varying levels of privatization noise, and $\delta$ always set to $1/N$. For logistic regression, \dpvi~infers an approximate posterior from the family of Gaussians with diagonal covariance via ADVI~\citep{kucukelbir17}, followed by an additional Laplace approximation. Note that by design, \dpvi~is constrained by the usual Gaussian variational approximation, while \dpsvi~is more flexible and can approach the true posterior as $ M $ increases---this effect is reflected in nonprivate posteriors as well as data dimensionality grows~(see for example~\cref{sfig:musicpriv}). Indeed, we verify that in the high-privacy regime \dpsvi~for sufficient pseudocoreset size (which is typically small for tested real-world datasets) offers posterior approximation with better KL divergence compared to \dpvi. Our findings indicate that private \psvi~offers efficient releases of big data via informative pseudopoints, which enable arbitrary post processing (e.g. running any \emph{nonprivate} black-box algorithm for Bayesian inference), under strong privacy guarantees and without reducing the quality of inference.
+
+
 
 
 

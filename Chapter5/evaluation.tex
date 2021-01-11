@@ -34,8 +34,7 @@ We consider the case of structured data corruption existing in the observations,
 
 All computations involved in the coreset construction and posterior evaluation in this experiment can be performed in closed form. We apply the batch scheme of~\cref{alg:bcores}, sampling from the exact coreset posterior over gradient estimation. The used \mbox{($\beta$-)}likelihood equations are outlined in~\cref{sec:gauss-lik}. For all coreset methods, constructions are repeated for up to $M=200$ iterations, with learning rate $\gamma_t = t^{-1}$. Notice that our setting does not imply that maximum summary size contains 200 datapoints: often over the iterations an already existing summary point may be selected again, resulting in smaller coresets.
 
-
-\begin{figure}[t!]
+\begin{figure}[!ht]
 	\centering 
 	\begin{subfigure}[b]{0.9\textwidth} 
 		\includegraphics[width=1.\textwidth]{\MyPath/figs/gauss_scatterplot.png}
@@ -68,7 +67,7 @@ We can however notice that, for coreset sizes growing beyond 60 points---despite
 \subsection{Bayesian logistic regression under mislabeling and feature noise}
 \label{subsec:logreg-expt}
 
-\begin{figure}[t!]
+\begin{figure}[!ht]
 	\begin{subfigure}[b]{0.9\textwidth} 
 		\centering
 		\includegraphics[width=.325\textwidth]{\MyPath/figs/adult07_10_25_False_False_ACCvssz.png}
@@ -128,7 +127,7 @@ The neural network is trained to learn an adaptive basis $z(\cdot)$ from $N$ dat
 We evaluate \bcores, \sparsevi{} and random sampling on two benchmark regression datasets~(detailed in~\cref{sec:data-details}). All coresets are initialized to a small batch of datapoints sampled uniformly at random from the dataset inliers. Over incremental construction, we interleave each minibatch selection and weights optimization step of the coreset with a training round for the neural network, constrained on the current coreset datapoints. Each such training round consists of $10^3$ minibatch gradient descent steps using the AdaGrad optimizer~\citep{duchi11}.
 Our neural architecture is comprised of two fully connected hidden layers, batch normalization and ReLU activation functions. The values of coreset size at initialization, batch size added per coreset iteration, and units at each neural network hidden layer are set respectively to 20, 10 and 30 for the~\textsc{Housing}, and 200, 100 and 100 for the~\textsc{Songs} dataset.
 
-\begin{figure}[t!]
+\begin{figure*}[!t]
 	\begin{subfigure}[b]{0.9\textwidth} 
 		\centering
 		\includegraphics[width=.45\textwidth]{\MyPath/figs/boston02_01_30_RMSEvssz.png}
@@ -144,7 +143,7 @@ Our neural architecture is comprised of two fully connected hidden layers, batch
 	\centering
 	\caption{Test RMSE vs coreset size for neural linear regression experiments averaged over 30 trials. Solid lines display the median RMSE, with shaded areas showing $25\textsuperscript{th}$ and $75\textsuperscript{th}$ percentiles. Dataset corruption rate $F$, and $\beta$ value used in \bcores{} for each experiment are shown on the figures. The bottom row plots illustrate the achieved predictive performance under no contamination.}
 	\label{fig:neural_plot}
-\end{figure}
+\end{figure*}
 
 
 \cref{fig:neural_plot}~(bottom row) shows that \bcores{} are competitive with the baselines in the absence of data corruption, achieving similar predictive performance over the entire range of tested coreset sizes. Under data poisoning~(top row), \bcores{} is the only method that offers monotonic decrease of test RMSE for increasing summary size from the beginning of the experiment. On the other hand, baselines present unreliable predictive performance for small coreset sizes: random sampling and \sparsevi{} are both prone to including corrupted data batches, whose misguiding information gets expressed on the flexible representations learnt by the neural network, requiring a larger summary size to reach the RMSE of \bcores.
@@ -161,7 +160,7 @@ We consider the scenario where a machine learning service provider aims to fit a
 In this study we use a subset of more than $60K$ datapoints from the \textsc{HospitalReadmissions} dataset (for further details see \cref{sec:data-details}). Using combinations of age, race and gender information of data contributors, we form a total of $165$ subpopulations within the training dataset. Data contamination is simulated identically to the experiment of \cref{subsec:logreg-expt}, while now we also consider the case of varying levels of contamination across the subpopulations. In particular, we form groups of roughly equal size where $0\%, 10\%$ and $20\%$ of the datapoints get replaced by outliers---this results in getting a dataset with approximately $10\%$ of its full set of datapoints corresponding to outliers.
 
 
-\begin{figure}[t!]
+\begin{figure*}[!t]
 	\begin{subfigure}[b]{0.9\textwidth} 
 		\centering
 		\includegraphics[width=.45\textwidth]{\MyPath/figs/group_diabetes06_10_01_False_ACCvsit.png}
@@ -177,12 +176,12 @@ In this study we use a subset of more than $60K$ datapoints from the \textsc{Hos
 	\centering
 	\caption{Predictive accuracy against number of groups~(left) and number of datapoints~(right) selected for inference. Compared group selection shemes are \bcores{}, selection according to Shapley values based ranking, and random selection. The experiment is repeated over $5$ trials, on a contaminated dataset containing a $10\%$ of crafted outliers distributed non-uniformly across groups~(top row), and a clean dataset~(bottom row).}
 	\label{fig:group_plot}
-\end{figure}
+\end{figure*}
 
 
 We evaluate the predictive accuracy achieved by doing inference on the data subset obtained after running $10$ iterations of the \bcores{} extension for groups (which gives a maximum of $10$ selected groups). We compare against (\emph{i}) a \emph{random sampler}, and (\emph{ii}) a baseline which ranks all groups according to their \emph{Shapley value} and selects the groups with the highest values. Shapley value is a concept originating in cooperative game theory~\citep{shapley53}, which has recently found applications in data valuation and outliers detection~\citep{ghorbani19}. In the context of our experiment, it quantifies what is the marginal contribution of each group to the predictive accuracy of the model at all possible group coalitions that can be formed. As this quantity is notoriously expensive to be computed in large datasets, we use a Monte Carlo estimator which samples $5K$ possible permutations of groups and for each permutation it computes marginals for coalitions formed by the first $20$ groups.\footnote{The latter truncation is supported by the observation that marginal contributions to the predictive accuracy are diminishing as the dataset size increases.}
 
-\begin{figure}[t!]
+\begin{figure*}[!t]
 	\begin{subfigure}[b]{.8\textwidth} 
 		\centering
 		\includegraphics[width=.9\textwidth]{\MyPath/figs/selected_groups.png}
@@ -190,7 +189,7 @@ We evaluate the predictive accuracy achieved by doing inference on the data subs
 	\centering
 	\caption{Attributes of selected groups after running $10$ iterations of \bcores{} with $\beta=0.6$ on the contaminated \textsc{HospitalReadmissions} dataset (repeated over $5$ random trials).}
 	\label{fig:selected_groups}
-\end{figure}
+\end{figure*}
 
 As illustrated in~\cref{fig:group_plot}, \bcores{} with $\beta=0.6$ offers the best solution to our problem, and is able to reach predictive accuracy exceeding $75\%$ by fitting a coreset on no more than $2$ groups. ~\cref{fig:selected_groups} displays the demographic information of selected groups. We can notice that subpopulations of female and older patients are more informative for the classification task, while Caucasian and African-American groups are preferred to smaller racial minorities. Importantly, \bcores{} is able to distill clean from contaminated groups. For used $\beta$ value we can see than over the set of trials only one group with outliers level of $10\%$ is allowed to enter a summary, which already contains $3$ uncontaminated groups.
 

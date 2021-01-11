@@ -30,22 +30,7 @@ based on samples from the coreset posterior $\pi_w$.
 \subsection{High-dimensional data}
 \label{sec:high_dimensional_data}
 
-\captionsetup[subfigure]{labelformat=empty}
-\begin{figure}[t!]
-	\centering 
-	\begin{subfigure}[b]{.45\textwidth} 
-		\scalebox{1}{\includegraphics[width=\textwidth]{\MyPath/figs/d500_pts_combined.png}}
-		\caption{(a)\label{fig:gaussian_coreset_points}}
-	\end{subfigure}
-	\hfill\qquad
-	\centering
-	\begin{subfigure}[b]{0.45\textwidth}
-		\scalebox{1}{\includegraphics[width=\textwidth]{\MyPath/figs/klbound.png}}
-		\caption{(b)\label{fig:klbound}}
-	\end{subfigure}
-	\caption{Gaussian mean inference under~pseudocoreset (\psvi)~against~standard coreset (\sparsevi) summarization for $N=1,000$  datapoints. (\subref{fig:gaussian_coreset_points})~Progression of~\psvi~vs.~\sparsevi~construction for coreset sizes $M=0, 1, 5, 12, 30, 100$, in 500 dimensions~(displayed are datapoint projections on 2 random dimensions).~\psvi~and~\sparsevi~coreset predictive $3\sigma$ ellipses are displayed in red and blue respectively, while the true posterior $3\sigma$ ellipse is shown in black.~\psvi~has the ability to immediately move pseudopoints towards the  true posterior mean, while \sparsevi~has to add a larger number of existing points in order to obtain a good posterior approximation. See \cref{fig:gauss_mean_500} for the quantitative KL comparison.
-		(\subref{fig:klbound})~Optimal coreset KL divergence lower bound from \cref{prop:original_coreset_fails} as a function of dimension with $\delta = 0.5$, and  coreset size $M$ evenly spaced from 0 to 100 in increments of 5.}
-\end{figure}
+
 
 
 Coresets, as formulated in~\cref{eq:coresets-vi}, are limited to using the
@@ -77,4 +62,21 @@ that the above bound requires the data to be high-dimensional such that $d >
 M$; if $d\leq M$ the proof technique used in~\cref{app:proofs-of-failure} results in a vacuous
 $\kl{\pi_{w^\star}}{\pi} = 0$ lower bound. 
 
+
+\captionsetup[subfigure]{labelformat=empty}
+\begin{figure}[t!]
+	\centering 
+	\begin{subfigure}[b]{.45\textwidth} 
+		\scalebox{1}{\includegraphics[width=\textwidth]{\MyPath/figs/d500_pts_combined.png}}
+		\caption{(a)\label{fig:gaussian_coreset_points}}
+	\end{subfigure}
+	\hfill\qquad
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\scalebox{1}{\includegraphics[width=\textwidth]{\MyPath/figs/klbound.png}}
+		\caption{(b)\label{fig:klbound}}
+	\end{subfigure}
+	\caption{Gaussian mean inference under~pseudocoreset (\psvi)~against~standard coreset (\sparsevi) summarization for $N=1,000$  datapoints. (\subref{fig:gaussian_coreset_points})~Progression of~\psvi~vs.~\sparsevi~construction for coreset sizes $M=0, 1, 5, 12, 30, 100$, in 500 dimensions~(displayed are datapoint projections on 2 random dimensions).~\psvi~and~\sparsevi~coreset predictive $3\sigma$ ellipses are displayed in red and blue respectively, while the true posterior $3\sigma$ ellipse is shown in black.~\psvi~has the ability to immediately move pseudopoints towards the  true posterior mean, while \sparsevi~has to add a larger number of existing points in order to obtain a good posterior approximation. See \cref{fig:gauss_mean_500} for the quantitative KL comparison.
+		(\subref{fig:klbound})~Optimal coreset KL divergence lower bound from \cref{prop:original_coreset_fails} as a function of dimension with $\delta = 0.5$, and  coreset size $M$ evenly spaced from 0 to 100 in increments of 5.}
+\end{figure}
 

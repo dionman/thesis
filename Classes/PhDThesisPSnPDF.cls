@@ -229,7 +229,7 @@ footnotes.}
 \DeclareOption*{
   \ClassWarning{PhDThesisPSnPDF}{Unknown or non-standard option
 '\CurrentOption'. I'll see if I can load it from the book class. If you get a
-warning unused global option(s): `\CurrentOption` then the option is not
+warning unused global option(s): `\CurrenOption` then the option is not
 supported!}
   \PassOptionsToClass{\CurrentOption}{book}
 }
@@ -292,6 +292,8 @@ supported!}
 % Tim Piessens \texttt{<Tim.Piessens@esat.kuleuven.ac.be>}.
 
 \RequirePackage{datetime}
+
+
 
 \newcount\PHD@hour \newcount\PHD@minute
 \PHD@hour=\time
@@ -602,6 +604,9 @@ supported!}
 
 \RequirePackage[unicode=true]{hyperref}
 
+\usepackage[dvipsnames]{xcolor}
+\definecolor{myorange}{RGB}{245,156,74}
+
 \if@print
   % For Print version
   \hypersetup{
@@ -646,10 +651,10 @@ supported!}
     breaklinks=true,
     linktocpage,
     colorlinks=true,
-    linkcolor=blue,
-    urlcolor=blue,
-    citecolor=blue,
-    anchorcolor=green
+    linkcolor=-myorange,
+    urlcolor=-myorange,
+    citecolor=-myorange,
+    anchorcolor=-myorange
   }
 
   \ifsetCustomMargin
