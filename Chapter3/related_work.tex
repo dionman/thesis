@@ -37,7 +37,7 @@ In other applications, datapoints are \emph{relational} and can be naturally rep
 Measuring the similarity of such data is significantly more challenging, since there is no definitive method.
 Deanonymization attacks on graphs have mostly been studied in the context of social networks and aimed to either align nodes between an auxiliary and an unknown targeted graph~\citep{narayanan2009anonymizing, sharad2014}, or quantify the leakage of private information of a graph node via its neighbors~\citep{zheleva09}.
 
-In the problem studied here, \emph{each individual's information is an entire graph}, rather than a node in a graph or a node attribute, and thus deanonymization is reduced to a graph matching or classification problem.
+In the problem studied here, \emph{each individual's information is an entire graph}, rather than a node in a graph or a node attribute, and thus deanonymization is reduced to a \emph{graph matching or classification} problem.
 To the best of our knowledge, this is the first attempt to deanonymize an individual's structured data by applying graph similarity metrics.
 Since we are looking at relational data, not microdata, standard theoretical results on microdata anonymization, such as differential privacy~\citep{dwork2006calibrating}, are not directly applicable.
 However, metrics related to structural similiarity, including $k-$anonymity, can be seamlessly generalized in this framework.
