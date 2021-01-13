@@ -7,15 +7,15 @@ Protecting the anonymity of personal mobility is notoriously difficult due to sp
 Numerous studies into location privacy have shown that, even when an individual's data are anonymized, they continue to possess unique patterns that can be exploited by a malicious adversary with access to auxiliary information.
 \textcite{Zang2011} analysed nationwide call-data records (\emph{CDR}s) and showed that releasing the $N$ most frequently visited places, so called \emph{top$-N$} data, correlated with publicly released side information, resulted in privacy risks, even for small values of $N$s.
 This finding underlines the need for reductions in spatial or temporal data fidelity before publication.
-\textcite{DeMontjoye2013} quantified the unicity of human mobility on a mobile phone dataset of approximately $1.5M$ users with intrinsic temporal resolution of one hour and a 15-month measurement period.
+Further, \textcite{DeMontjoye2013} quantified the unicity of human mobility on a mobile phone dataset of approximately $1.5M$ users with intrinsic temporal resolution of one hour and a 15-month measurement period.
 They found that four random spatio-temporal points suffice to uniquely identify $ 95\% $ of the traces.
 They also observe that the uniqueness of traces decreases as a power law of spatio-temporal granularity, stressing the hardness of achieving privacy via obfuscation of time and space information.
 
-Several inference attacks on longitudinal mobility are based on probabilistic models trained on individual traces and rely on the regularity of human mobility.
+Several inference attacks on longitudinal mobility are based on probabilistic models trained on individual traces, and rely on the regularity of human mobility.
 \textcite{deMulder08} developed a reidentification technique by building a Markov model for each individual in the training set, and then using this to reidentify individuals in the test set by likelihood maximisation.
 Similarly,~\textcite{Gambs2014} used Markov chains to model mobility traces in support of reidentification.
 
-\textcite{Naini2016a} explored the privacy impact of releasing statistics of individuals mobility traces in the form of histograms, instead of their actual location information. They demonstrated that even this statistical information suffices to successfully recover the identity of individuals in datasets of few hundred people, via matching labeled and unlabeled histograms of a population.
+\textcite{Naini2016a} explored the privacy impact of releasing statistics of individuals' mobility traces in the form of histograms, instead of their actual location information. They demonstrated that even this statistical information suffices to successfully recover the identity of individuals in datasets of few hundred people, via matching labeled and unlabeled histograms of a population.
 Other researchers have investigated the privacy threats stemming from information sharing on location-based social networks, including the impact of location semantics on the difficulty of reidentification~\citep{privacyAndTheCity} and location inference~\citep{Agir}.
 
 All the above-mentioned previous work assumes that locations are expressed using a universal symbol or global identifier, either corresponding to (potentially obfuscated) geographic coordinates, or pseudonymous stay points.
@@ -23,10 +23,10 @@ Hence, cross-referencing between individuals in the population is possible.
 This is inapplicable when location information is anonymized separately for each individual.
 \textcite{LinMobile} presented a user verification method in this setting.
 It is based on statistical profiles of individual indoor and outdoor mobility, including cell tower ID and WiFi access point information.
-In contrast, we employ network representations based solely on cell tower ID sequences without explicit time information.
+In contrast, here we employ network representations based solely on cell tower ID sequences without explicit time information.
 
 Often, studies in human mobility aim to model properties of a population, thus location data are published as aggregate statistics computed over the locations of individuals.
-This has traditionally been considered a secure way to obfuscate the sensitive information contained in individual location data, especially when released aggregates conform to $ k-$anonymity~\citep{sweeney2002k} principles.
+This has traditionally been considered a secure way to obfuscate the sensitive information contained in individual location data, especially when released aggregates conform to $ k-$anonymity principles~\citep{sweeney2002k}.
 However, recent results have questioned this assumption.
 \textcite{xu2017trajectory} recovered movement trajectories of individuals with accuracy levels of between $73\%$ and $91\%$ from aggregate location information computed from cellular location information involving $100,000$ users. Similarly, ~\textcite{pyrgelis2017does} performed a set of inference attacks on aggregate location time-series data and detected serious privacy loss, even when individual data are perturbed by differential privacy mechanisms before aggregation.
 
