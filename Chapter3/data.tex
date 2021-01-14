@@ -7,54 +7,13 @@ In this section we present an exploratory analysis of the dataset used in our ex
 We evaluate our methodology on the Device Analyzer dataset~\citep{Wagner2014}. Device Analyzer contains records of smartphone usage collected from over $ 30,000 $  study participants around the globe.
 Collected data include information about system status and parameters, running background processes, cellular and wireless connectivity.
 For privacy purposes, released \emph{cid} information is given a unique pseudonym separately for each user, and contains no geographic, or semantic, information concerning the location of users.
-Thus we cannot determine geographic proximity between the nodes and the location data of two users cannot be directly aligned.
+Thus we cannot determine geographic proximity between the nodes, and the location data of two users cannot be directly aligned.
 
 For our experiments, we analysed \emph{cid} information collected from $1,500$ handsets with the largest number of recorded location datapoints in the dataset.
 \cref{fig:num_of_days} shows the observation period for these handsets; note that the mean is greater than one year but there is lot of variance across the population.
 We selected these $1,500$ handsets in order to examine the reidentifiability of devices with rich longitudinal mobility profiles.
 This allowed us to study the various attributes of individual mobility affecting privacy in detail.
 As mentioned in the previous section, the cost of computing the adversarial posterior probability for the deanonymization of a given unlabeled network scales linearly with the population size.
-
-\subsection{Mobility networks construction\label{sec:mobility-net-construct}}
-
-\begin{figure*}[t]
-	\centering
-	\includegraphics[totalheight=8cm]{\MyPath/fig/model_selection_.pdf}
-	\caption{{Optimal order for increasing number of locations.}}
-	\label{fig:model_selection}
-\end{figure*}
-
-We began by selecting the optimal order of the network representations derived from the mobility trajectories of the $1,500$ handsets selected from the Device Analyzer dataset.
-We first parsed the \emph{cid} sequences from the mobility trajectories into mobility networks.
-In order to remove \emph{cid}s associated with movement, we only defined nodes for \emph{cid}s which were visited by the handset for at least 15 minutes.
-Movements from one \emph{cid} to another were then recorded as edges in the mobility network.
-
-As outlined in~\cref{sec:graph-k-anonymity}, we analysed the pathways of the Device Analyzer dataset during the entire observation period, applying the model selection method of~\textcite{scholtes2017network}.\footnote{\url{https://github.com/IngoScholtes/pathpy}}
-This method tests graphical models of varying orders and selects the optimal order by balancing the model complexity and the explanatory power of observations.
-
-We tested higher-order models up to order three. In the case of top$-20$ mobility networks, we found routine patterns in the mobility trajectories were best explained with models of order two for more than 20$\%$ of the users. However, when considering top$-100$, top$-200$, top$-500$ and full mobility networks, we found that the optimal model for our dataset has order one for more than $ 99\% $ of the users; see~\cref{fig:model_selection}. In other words, when considering mobility trajectories which visit less frequent locations in the graph, the overall increase in likelihood of the data for higher-order models cannot compensate for the complexity penalty induced by the larger state space. Hence, while there might still be regions in the graph which are best represented by a higher-order model, the optimal order describing the entire graph is one. Therefore we use a model of order one in the rest of this paper.
-
-\subsection{Data properties and statistics} \label{sec:data-stats}
-
-\begin{table*}[!t]
-	\centering 
-		\resizebox*{\textwidth}{!}{
-			\begin{tabular}{| c | c | c | c | c | c | c | c | c |}
-				\hline
-				\textbf{Networks} & \vtop{\hbox{\strut \;\;\;\textbf{\# of}}\hbox{\strut \textbf{networks}}}  &  \vtop{\hbox{\strut \textbf{Num. of}}\hbox{\strut \textbf{nodes,~avg.}}}  &  \vtop{\hbox{\strut \textbf{Edges,}}\hbox{\strut \;\;\;\textbf{avg.}}} & \vtop{\hbox{\strut \textbf{Density,}}\hbox{\strut \;\;\;\textbf{avg.}}} & \vtop{\hbox{\strut \;\;\;\;\;\;\textbf{Avg.}}\hbox{\strut \textbf{clust. coef.}}} & \vtop{\hbox{\strut \textbf{Diameter,}}\hbox{\strut \;\;\;\;\;\;\textbf{avg.}}}  & \vtop{\hbox{\strut \;\;\;\;\;\textbf{Avg.}}\hbox{\strut \textbf{short.~path}}} & \vtop{\hbox{\strut \textbf{Recurrence}}\hbox{\strut \;\;\;\;\;\textbf{rate~($\%$)}}}   \\
-				\hline
-				\text{top$-50$ locations}& $1,500$ & $49.9\pm1.3$  & $236.6\pm78.1$ & $0.19\pm0.06$ & $0.70\pm0.07$ & $3.42\pm0.86$  & $1.93\pm0.20$ & $84.7\pm5.6$\\
-				\hline
-				\text{top$-100$ locations}& $1,500$ & $98.3\pm7.9$   & $387.1\pm144.7$ & $0.08\pm0.03$ & $0.60\pm0.10$ & $4.67\pm1.48$  & $2.33\pm0.40$& $78.3\pm7.8$\\
-				\hline
-				\text{top$-200$ locations}& $1,500$ & $179.2\pm37.8$ & $548.2\pm246.1$ & $0.04\pm0.02$ & $0.47\pm0.12$ & $7.52\pm4.21$  & $3.07\pm1.18$ &$73.0\pm9.9$\\
-				\hline
-				\text{full } & $1,500$ & $334.6\pm235.8$  & $741.6\pm527.3$ & $0.02\pm0.02$ & $0.33\pm0.09$ & $15.98\pm10.18$  & $4.84\pm2.93$ & $68.8\pm12.3$\\
-				\hline
-			\end{tabular}	
-		}\caption{Summary statistics of mobility networks in the Device Analyzer dataset.}
-		\label{tab:summary-statistics}
-\end{table*}	
 
 \begin{figure*}[!t]
 	\centering
@@ -86,6 +45,49 @@ We tested higher-order models up to order three. In the case of top$-20$ mobilit
 	\label{fig:eda}
 \end{figure*}
 
+\subsection{Mobility networks construction\label{sec:mobility-net-construct}}
+
+\begin{figure*}[t]
+	\centering
+	\includegraphics[totalheight=8cm]{\MyPath/fig/model_selection_.pdf}
+	\caption{{Optimal order for increasing number of locations.}}
+	\label{fig:model_selection}
+\end{figure*}
+
+We began by selecting the optimal order of the network representations derived from the mobility trajectories of the $1,500$ handsets selected from the Device Analyzer dataset.
+We first parsed the \emph{cid} sequences from the mobility trajectories into mobility networks.
+In order to remove \emph{cid}s associated with movement, we only defined nodes for \emph{cid}s which were visited by the handset for at least 15 minutes.
+Movements from one \emph{cid} to another were then recorded as edges in the mobility network.
+
+As outlined in~\cref{sec:graph-k-anonymity}, we analysed the pathways of the Device Analyzer dataset during the entire observation period, applying the model selection method of~\textcite{scholtes2017network}.\footnote{\url{https://github.com/IngoScholtes/pathpy}}
+This method tests graphical models of varying orders and selects the optimal order by balancing the model complexity and the explanatory power of observations.
+
+We tested higher-order models up to order three. In the case of top$-20$ mobility networks, we found routine patterns in the mobility trajectories were best explained with models of order two for more than 20$\%$ of the users. However, when considering top$-100$, top$-200$, top$-500$ and full mobility networks, we found that the optimal model for our dataset has order one for more than $ 99\% $ of the users; see~\cref{fig:model_selection}. In other words, when considering mobility trajectories which visit less frequent locations in the graph, the overall increase in likelihood of the data for higher-order models cannot compensate for the complexity penalty induced by the larger state space. Hence, while there might still be regions in the graph which are best represented by a higher-order model, the optimal order describing the entire graph is one. Therefore we use a model of order one in the rest of this chapter.
+
+\subsection{Data properties and statistics} \label{sec:data-stats}
+
+\begin{table*}[!t]
+	\centering 
+		\resizebox*{\textwidth}{!}{
+			\begin{tabular}{| c | c | c | c | c | c | c | c | c |}
+				\hline
+				\textbf{Networks} & \vtop{\hbox{\strut \;\;\;\textbf{\# of}}\hbox{\strut \textbf{networks}}}  &  \vtop{\hbox{\strut \textbf{Num. of}}\hbox{\strut \textbf{nodes,~avg.}}}  &  \vtop{\hbox{\strut \textbf{Edges,}}\hbox{\strut \;\;\;\textbf{avg.}}} & \vtop{\hbox{\strut \textbf{Density,}}\hbox{\strut \;\;\;\textbf{avg.}}} & \vtop{\hbox{\strut \;\;\;\;\;\;\textbf{Avg.}}\hbox{\strut \textbf{clust. coef.}}} & \vtop{\hbox{\strut \textbf{Diameter,}}\hbox{\strut \;\;\;\;\;\;\textbf{avg.}}}  & \vtop{\hbox{\strut \;\;\;\;\;\textbf{Avg.}}\hbox{\strut \textbf{short.~path}}} & \vtop{\hbox{\strut \textbf{Recurrence}}\hbox{\strut \;\;\;\;\;\textbf{rate~($\%$)}}}   \\
+				\hline
+				\text{top$-50$ locations}& $1,500$ & $49.9\pm1.3$  & $236.6\pm78.1$ & $0.19\pm0.06$ & $0.70\pm0.07$ & $3.42\pm0.86$  & $1.93\pm0.20$ & $84.7\pm5.6$\\
+				\hline
+				\text{top$-100$ locations}& $1,500$ & $98.3\pm7.9$   & $387.1\pm144.7$ & $0.08\pm0.03$ & $0.60\pm0.10$ & $4.67\pm1.48$  & $2.33\pm0.40$& $78.3\pm7.8$\\
+				\hline
+				\text{top$-200$ locations}& $1,500$ & $179.2\pm37.8$ & $548.2\pm246.1$ & $0.04\pm0.02$ & $0.47\pm0.12$ & $7.52\pm4.21$  & $3.07\pm1.18$ &$73.0\pm9.9$\\
+				\hline
+				\text{full } & $1,500$ & $334.6\pm235.8$  & $741.6\pm527.3$ & $0.02\pm0.02$ & $0.33\pm0.09$ & $15.98\pm10.18$  & $4.84\pm2.93$ & $68.8\pm12.3$\\
+				\hline
+			\end{tabular}	
+		}\caption{Summary statistics of mobility networks in the Device Analyzer dataset.}
+		\label{tab:summary-statistics}
+\end{table*}	
+
+
+
 In~\cref{tab:summary-statistics} we provide a statistical summary of the original and the pruned versions of the mobility networks. We observe that allowing more locations in the network implies an increase in the variance of their statistics, and leads to smaller density, larger diameter and larger average shortest-path values.
 
 A \emph{recurrent edge traversal} in a mobility network occurs when a previously traversed edge is traversed for a second or subsequent time.
@@ -103,19 +105,6 @@ As shown in~\cref{fig:ccdf}, the parsed mobility network of a typical user is ch
 
 \subsection{Anonymity clusters on top$-N$  networks}\label{sec:anonymity-clusters}
 
-\begin{table*}[!t]
-	\centering
-		\resizebox*{0.7\textwidth}{!}{
-			\begin{tabular}{|c|c|c|c|c|c|c|}
-				\hline
-				\textbf{N}             & 4    & 5           & 6           & 7            & 8             & 9         \\ \hline
-				\textbf{\# undirected} & 11   & 34          & 156         & 1,044         & 12,346         & 274,668    \\ \hline
-				\textbf{N}             & 4    & \multicolumn{2}{c|}{5}    & \multicolumn{2}{c|}{6}       & 7         \\ \hline
-				\textbf{\# directed}   & 2,128 & \multicolumn{2}{c|}{9,608} & \multicolumn{2}{c|}{1,540,944} & 882,033,440 \\ \hline
-			\end{tabular}
-		}\caption{Sequences of non-isomorphic graphs for undirected and directed graphs of increasing size.}
-	\label{tab:graphsenumeration}
-\end{table*}
 
 We examine to what extent the heterogeneity of users mobility behaviour can be expressed in the topology of the state connectivity networks.
 For this purpose, we generate the isomorphism classes of the top$-N$ networks of our dataset for increasing network size $ N $.
@@ -124,6 +113,20 @@ This analysis demonstrates empirically the privacy implications of releasing ano
 
 Before presenting our findings on the Device Analyzer dataset, we will perform a theoretical upper bound analysis on the identifiability of a population, by finding the maximum number of people that can be distinguished by networks of size $ N $.
 This corresponds to the number of non-isomorphic graphs with $ N $ nodes.
+
+\begin{table*}[!t]
+	\centering
+	\resizebox*{0.7\textwidth}{!}{
+		\begin{tabular}{|c|c|c|c|c|c|c|}
+			\hline
+			\textbf{N}             & 4    & 5           & 6           & 7            & 8             & 9         \\ \hline
+			\textbf{\# undirected} & 11   & 34          & 156         & 1,044         & 12,346         & 274,668    \\ \hline
+			\textbf{N}             & 4    & \multicolumn{2}{c|}{5}    & \multicolumn{2}{c|}{6}       & 7         \\ \hline
+			\textbf{\# directed}   & 2,128 & \multicolumn{2}{c|}{9,608} & \multicolumn{2}{c|}{1,540,944} & 882,033,440 \\ \hline
+		\end{tabular}
+	}\caption{Sequences of non-isomorphic graphs for undirected and directed graphs of increasing size.}
+	\label{tab:graphsenumeration}
+\end{table*}
 
 Currently the most efficient way of enumerating  non-isomorphic graphs is by using the algorithm of~\textcite{McKay}, implemented in the package~\texttt{nauty}.\footnote{\url{http://pallini.di.uniroma1.it/}}~\cref{tab:graphsenumeration} presents the enumeration for undirected and directed non-isomorphic graphs of increasing size. We observe that there exist $12,346$ undirected graphs with $8$ nodes and $9,608$ directed graphs with $5$ nodes. In other words, finding the top$-8$ places for each person is the smallest number which could produce unique graphs for each person in our sample of $1,500$ individuals; this reduces to $5$ when directionality is taken into account. Moreover, we find that top$-12$ undirected and top$-8$ directed networks are sufficient to enable each human on the planet to be represented by a different graph, assuming world population of $7.6$B.
 

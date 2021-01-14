@@ -8,11 +8,10 @@ We then extract feature representations of these networks and embed them into a 
 Finally, in the vector space, we can define pairwise distances between the network embeddings (\cref{sec:graph-kernels}) and use them in a deanonymization scenario (\cref{sec:deanon-leakage}).  
 
 Our methodology is, in principle, applicable to many other categories of recurrent behavioural trajectories that can be abstracted as graphs, such web browsing sessions~\citep{olejnik14, yen12} or smartphone application usage sequences~\citep{Welke2016}.
-We leave such analysis as future work.
 
 \subsection{$k-$anonymity on graphs\label{sec:graph-k-anonymity}}
 
-Anonymity among networks refers to topological (or structural) equivalence. In our analysis we adopt the privacy framework of $k-$anonymity~\cite{sweeney2002k}, which we summarize as follows:
+Anonymity among networks refers to topological (or structural) equivalence. In our analysis we adopt the privacy framework of $k-$anonymity~\citep{sweeney2002k}, which we summarize as follows:
 
 \ndefn[\textbf{$k-$anonymity}]{
 	A microdata release of statistics, containing separate entries for a number of individuals in the population, satisfies the $k-$anonymity property, iff the information for each individual contained in the release is indistinguishable from at least $k-1$ other individuals whose information also appears in the release.
@@ -90,7 +89,7 @@ Distance functions decompose the graph into feature vectors (smaller substructur
 In the following, we introduce the notion of graph kernels and describe the graph similarity metrics used later in our experiments.
 
 We wish to compute the similarity between two graphs $ G, G' \in \mcG$. 
-To this end, according to the definitions of~\cref{subsec:b-kernels}, we will use graph kernel functions $ K(G, G') : \mcG \times \mcG \rightarrow \mcR^{+}$~\citep{Vishwanathan2010}, and their corresponding feature maps $\phi(G)$.
+To this end, according to the definitions of~\cref{sec:b-kernels}, we will use graph kernel functions $ K(G, G') : \mcG \times \mcG \rightarrow \mcR^{+}$~\citep{Vishwanathan2010}, and their corresponding feature maps $\phi(G)$.
 
 
 In order to ensure the result from the kernel lies in the interval $[-1, 1]$, we apply \emph{cosine normalization} as follows:
@@ -133,7 +132,7 @@ In the following, we briefly present some kernels in this category and explain h
 \vspace{1em}
 \noindent\textbf{Shortest-Path Kernel}
 
-The Shortest-Path (\emph{SP}) graph kernel~\citep{borgwardt2005} expresses the similarity between two graphs by counting the co-occuring shortest paths in the graphs.
+The Shortest-Path (\emph{SP}) graph kernel~\citep{borgwardt2005} expresses the similarity between two graphs by counting the co-occurring shortest paths in the graphs.
 It can be written in the form of~\cref{eq:rconv-features}, where each element $ s_i \in \mcS $ is a triplet $\big(a_{\text{start}}^i, a_{\text{end}}^i, n\big)$, where $ n $ is the length of the path and $ a_{\text{start}}^i, a_{\text{end}}^i $ the attributes of the starting and ending nodes.
 The shortest path set is computable in polynomial time using, for example, the Floyd-Warshall algorithm, with complexity $ O(|V|^4)$, where $ |V| $ is number of nodes in the network.
 
@@ -419,7 +418,7 @@ The shortest path set is computable in polynomial time using, for example, the F
 
 
 \textcite{Shervashidze2011} proposed an efficient method to construct a graph kernel utilizing the \mbox{Weisfeiler-Lehman} (\emph{WL}) test of isomorphism~\citep{weisfeiler1968reduction}.
-The idea of the \emph{WL} kernel is to measure co-occurences of subtree patterns across node attributed graphs.
+The idea of the \emph{WL} kernel is to measure co-occurrences of subtree patterns across node attributed graphs.
 
 Computation progresses over iterations as follows:
 %
@@ -442,7 +441,7 @@ The computational complexity of the kernel scales \emph{linearly} with the numbe
 \noindent\textbf{Deep Graph Kernels}
 
 Deep graph kernels (\emph{DK}s) are a unified framework that takes into account similarity relations at the level of atomic substructures in the kernel computation~\citep{yanardagV15}.
-Hence, these kernels can quantify \emph{similar substructure} co-occurence, offering more robust feature representations.
+Hence, these kernels can quantify \emph{similar substructure} co-occurrence, offering more robust feature representations.
 DKs are based on computing the following inner product:
 \[
 K(G, G') = \phi\left(G\right)^T M \phi\left(G'\right),
@@ -456,7 +455,7 @@ Here, $ M $ can be defined using the edit distance of the substructures, i.e.\ t
 
 \subsubsection{Hypothesis}
 
-\begin{figure}[!h]
+\begin{figure}[!t]
 	\centering
 	\begin{subfigure}[]{0.495\textwidth}
 		\centering		\includegraphics[height=4cm]{\MyPath/fig/1_firsthalf_.pdf}
@@ -483,25 +482,22 @@ Here, $ M $ can be defined using the edit distance of the substructures, i.e.\ t
 		\label{fig:evidence22}
 	\end{subfigure}
 	\caption{{Top$-20$ networks for two random users from the Device Analyzer dataset.
-  Depicted edges correspond to the $10\%$ most frequent transitions in the respective observation window.
-  The networks show a high degree of similarity between the mobility profiles of the same user over the two observation periods.
-  Moreover, the presence of single directed edges in the profile of \textbf{user 2} forms a discriminative pattern that allows us to distinguish \textbf{user\;2} from \textbf{user 1}.}}
+			Depicted edges correspond to the $10\%$ most frequent transitions in the respective observation window.
+			The networks show a high degree of similarity between the mobility profiles of the same user over the two observation periods.
+			Moreover, the presence of single directed edges in the profile of \textbf{user 2} forms a discriminative pattern that allows us to distinguish \textbf{user\;2} from \textbf{user 1}.}}
 	\label{fig:evidence}
 \end{figure}
-%\textcolor{red}{add a plot over a temporal graph of an individual justifying this hypothesis}
-
 
 The basic premise of our deanonymization approach can be postulated as follows:
 
-%\begin{tcolorbox}
 \emph{
 	The mobility of a person across different time periods is stochastic, but largely recurrent and stationary, and its expression at the level of the individual mobility network is discriminative enough to reduce a person's privacy within a population.}
-%\end{tcolorbox}
 
 For example, the daily commute to work corresponds to a relatively stable sequence of cell towers.
 This can be expressed in the mobility network of the user as a persistent subgraph and forms a characteristic behavioural pattern that can be exploited for deanonymization of mobility traces.
 Empirical evidence for our hypothesis is shown in~\cref{fig:evidence}.
 For ease of presentation, in the figure, nodes between the disparate observation periods of the users can be cross-referenced. We assume that cross-referencing is not possible in our attack scenario, as locations are independently pseudonymized.
+
 
 \subsubsection{Threat model \label{sec:threat-model}}
 
@@ -520,14 +516,14 @@ The intention of an adversary is to deanonymize a given test network $ G' \in \m
 
 An \textbf{uninformed adversary} has \emph{no information} about the networks of the population and, in the absence of any other side knowledge, the prior belief of the adversary about the identity of $ G' $ is a uniform distribution over all possible identities:
 \[
-	P\left(l_{G'}= l_{G_i}\right) = 1/|\mcL|, \mbox{ for every }  G_i \in \mcG_{\text{training}}.
+	P\left(l_{G'}= l_{G_i}\right) := 1/|\mcL|, \mbox{ for every }  G_i \in \mcG_{\text{training}}.
 \]
 
 An \textbf{informed adversary} has \emph{access to the population of training networks} and can compute the pairwise similarities of $ G' $ with each $ G_{i} \in \mathcal{G}_{\text{training}} $ using a kernel function $K$. Hence the adversary can update her belief for the possible identities in $ \mathcal{L} $ according to the values of $K$.
 Therefore, when the adversary attempts to deanonymize identities in the data, she assigns probabilities that follow a \emph{non-decreasing function} {of the computed pairwise similarity} of each label.
 Denoting this function by $f$, we can write the updated adversarial probability estimate for each identity as follows:
 \[
-	P_K\left(l_{G'} =l_{G_i}| \mcG_{\text{training}}\right) =  \frac{f\left(K(G_i, G')\right)}{\displaystyle \sum_{j\in \mcL}  f\left(K(G_j, G')\right)},   \mbox{ for every }  G_i \in \mcG_{\text{training}}.
+	P_K\left(l_{G'} =l_{G_i}| \mcG_{\text{training}}\right) :=  \frac{f\left(K(G_i, G')\right)}{\displaystyle \sum_{j\in \mcL}  f\left(K(G_j, G')\right)},   \mbox{ for every }  G_i \in \mcG_{\text{training}}.
 	\label{eq:adversarial_rule}
 \]
 
@@ -538,19 +534,19 @@ Denoting this function by $f$, we can write the updated adversarial probability 
 
 In the case of the uninformed adversary, the true label for any user is expected to have rank $ |\mcL|/2$. Under this policy, the amount of privacy for each user is proportional to the size of the population.
 
-In the case of the informed adversary, knowledge of $ \mcG_\text{training} $ and the use of $ K $ will induce some non-negative \emph{privacy loss} which will result in the expected rank of user to be smaller than $ |\mcL|/2$. The privacy loss can be quantified as follows:
+In the case of the informed adversary, knowledge of $ \mcG_\text{training} $ and the use of $ K $ will induce some non-negative \emph{privacy loss} which will result in the expected rank of user to be smaller than $ |\mcL|/2$. The privacy loss ($\mathsf{PL}$) can be quantified as follows:
 \[
-	PL\left(G';\mcG_{\text{training}}, K\right) = \frac{P_K\left(l_{G'}= l_{G'_\text{true}}|\mcG_{\text{training}}\right)}{P\left(l_{G'}= l_{G'_\text{true}}\right)} -1
+	\mathsf{PL}\left(G';\mcG_{\text{training}}, K\right) := \frac{P_K\left(l_{G'}= l_{G'_\text{true}}|\mcG_{\text{training}}\right)}{P\left(l_{G'}= l_{G'_\text{true}}\right)} -1
 	\label{eq:privloss}
 \]
 
 A privacy loss equal to zero reflects no information gain compared to an uninformed adversary with no access to graphs with disclosed identities.
 
 Let us assume that the users of our population generate distinct mobility networks.
-As will be supported with empirical evidence in the next section, this is often the case in real-world \emph{cid} datasets of few thousand users even for small networks sizes (e.g. for top$-20$ networks in our dataset).
+As will be supported with empirical evidence in the next section, this is often the case in real-world \emph{cid} datasets of few thousand users even for small network sizes (e.g. for top$-20$ networks in our dataset).
 Under the above premise, the maximal privacy loss occurs when the presented test network is an identical copy of a training network of the same user which exists in the data of the adversary, \ie\ $ G' \in \mcG_\text{training}$.
 This corresponds to a user deterministically repeating her mobility patterns over the observation period recorded in the test network.
-In such a scenario, we could think that isomorphism tests are the most natural way to compute similarity; however, isomorphism tests will be useless in real-world scenarios, since the stochastic nature and noise inherent in the mobility networks of a user would make them non-isomorphic.
+In such a scenario, we could think that isomorphism tests are the most natural way to compute similarity; however, isomorphism tests will be useless in real-world scenarios, since, on top of their high computational cost, the stochastic nature and noise inherent in the mobility networks of a user would make them non-isomorphic.
 Maximal privacy loss reflects the discriminative ability of the kernel and cannot be exceeded in real-world datasets, where the test networks are expected to be noisy copies of the training networks existing in our system.
 The step of comparing with the set of training networks adds computational complexity of $O(|\mcG_{\text{training}}|)$ to the similarity metric cost.
 

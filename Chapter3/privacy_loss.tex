@@ -1,4 +1,4 @@
-\section{Evaluation of privacy loss in longitudinal mobility traces}
+\section{Evaluation of privacy loss in longitudinal mobility traces}\label{sec:pl-evaluation}
 
 In this section we empirically quantify the privacy leakage implied by the information of longitudinal mobility networks for the population of users in the Device Analyzer dataset.
 For this purpose we undertake experiments in graph set matching using different kernel functions, and assume an adversary has access to a variety of mobility network information.
@@ -16,7 +16,7 @@ We choose the partition point separately for each user as a random number from t
 
 We computed the pairwise distances between training and test mobility networks using kernels from the categories described in~\cref{sec:methodology}.
 Node attributes are supported in the computation of Weisfeiler-Lehman and Shortest-Path kernel.
-Thus we augmented the individual mobility networks with categorical features to add some information about the different roles of nodes in users mobility routine.
+Thus we augmented the individual mobility networks with categorical features to add some information about the different roles of nodes in users' mobility routine.
 Such attributes are computed independently for each user on the basis of the topological information of each network.
 After experimenting with several schemes, we obtained the best performance on the kernels when dividing locations into three categories with respect to the frequency in which each node is visited by the user.
 Concretely, we computed the distribution of users visits to locations and added the following values to the nodes:
@@ -30,7 +30,7 @@ Concretely, we computed the distribution of users visits to locations and added 
 	\end{cases}
 \end{equation*}
 
-This scheme allowed a coarse, yet informative, characterisation of locations in users networks, which was robust to the variance in the frequency of visits between the two observation periods. In addition, we removed $40\%$ of edges with the smallest edge weights and retained only the largest connected component for each user.
+This scheme allowed a coarse, yet informative, characterisation of locations in users' networks, which was robust to the variance in the frequency of visits between the two observation periods. In addition, we removed $40\%$ of edges with the smallest edge weights and retained only the largest connected component for each user.
 
 
 Due to its linear complexity, computation of the Weisfeiler-Lehman kernel could scale over entire mobility networks.
@@ -51,11 +51,11 @@ We evaluated graph kernels functions from the following categories:
 The  Cumulative Density Functions (\emph{CDF}s) of the  true label rank for the best performing kernel of each category are presented in~\cref{fig:kernels_evaluation}.
 
 If mobility networks are unique, an \emph{ideal retrieval mechanism} would correspond to a curve that reaches 1 at rank one, indicating a system able to correctly deanonymize all traces by matching the closest training graph.
-This would be the case when users training and test networks are identical, thus the knowledge of the latter implies maximum privacy loss.
+This would be the case when users' training and test networks are identical, thus the knowledge of the latter implies maximum privacy loss.
 
 Our baseline, \emph{random}, is a strategy which reflects the policy of an adversary with \emph{zero knowledge} about the mobility networks of the users, who simply returns uniformly random orderings of the labels.
 The \emph{CDF} of true labels rank for \emph{random}  lies on the diagonal line.
-We observe that atomic structure based kernels significantly outperform the random baseline performance by defining a meaningful similarity ranking across the mobility networks.
+We observe that atomic substructure based kernels significantly outperform the random baseline performance by defining a meaningful similarity ranking across the mobility networks.
 
 \begin{figure}[!t]
 	\centering
@@ -84,7 +84,21 @@ Repetitions on pruned versions did not improve the performance and are not prese
 Based on the insights obtained from our experiment, we can make the following observations with respect to attributes of individual mobility and their impact on the identifiability of networks:
 %
 
-\begin{figure*}[]
+
+
+
+\begin{itemize}
+
+	\item \textbf{Transition pruning}: Including very rare transitions in longitudinal mobility does not add discriminative information.
+	We consistently obtained better results when truncating the long tail of edge weight distribution, which led us to analyze versions of the networks where $40\%$ of the weakest edges were removed.
+	\item \textbf{Frequency information of locations}: The frequency of visits to nodes in the mobility network allows better ranking by kernels which support node attributes, e.g.\ Weisfeiler-Lehman and Shortest-Path kernel.
+	This information should follow a coarse scheme, in order to compensate for the temporal variation of location popularity in mobility networks.
+	\item \textbf{Directionality of transitions}: Directionality generally enhances the identifiability of networks and guides the similarity computation when using Shortest-Path kernels.
+\end{itemize}
+
+\subsection{Quantification of privay loss}
+
+\begin{figure}[!t]
 	\centering
 	\begin{minipage}[b]{.45\textwidth}
 		\includegraphics[width=1.2\linewidth]{\MyPath/fig/rank_correct_.pdf}
@@ -96,22 +110,7 @@ Based on the insights obtained from our experiment, we can make the following ob
 		\centering \caption{{Privacy loss over the test data of our population for an adversary adopting the informed policy of~\eqref{eq:inverse_rank}. Median privacy loss is 2.52.}}
 		\label{fig:privloss}
 	\end{minipage}
-\end{figure*}
-
-
-\begin{itemize}
-	\item \textbf{Location pruning}: Reducing the number of nodes (locations) in a mobility network does not necessarily make it more privacy-preserving.
-	On the contrary, if location pruning is done by keeping the most frequently visited locations, it can enhance reidentification.
-	In our experiments we obtain similar, or even enhanced, performance for graph kernels when applying them on increasingly pruned networks with size down to $100$ locations.
-
-	\item \textbf{Transition pruning}: Including very rare transitions in longitudinal mobility does not add discriminative information.
-	We consistently obtained better results when truncating the long tail of edge weight distribution, which led us to analyze versions of the networks where $40\%$ of the weakest edges were removed.
-	\item \textbf{Frequency information of locations}: The frequency of visits to nodes in the mobility network allows better ranking by kernels which support node attributes, e.g.\ Weisfeiler-Lehman and Shortest-Path kernel.
-	This information should follow a coarse scheme, in order to compensate for the temporal variation of location popularity in mobility networks.
-	\item \textbf{Directionality of transitions}: Directionality generally enhances the identifiability of networks and guides the similarity computation when using Shortest-Path kernels.
-\end{itemize}
-
-\subsection{Quantification of privay loss}
+\end{figure}
 
 The Deep Shortest-Path kernel on top$-200$ networks offers the best ranking of identities for the test networks.
 As observed in~\cref{fig:rank_correct}, the mean of the true rank has been shifted from $ 750 $ to $ 140 $ for our population.
@@ -137,7 +136,7 @@ Hence, revealing the kernel values makes an adversarial attack easier.
 
 The demonstrated privacy leakage motivates the quest
 for defense mechanisms against this category of attacks.
-There are a variety of techniques which we could apply in order to \emph{reduce the recurring patterns of an individual's mobility network over time} and \emph{decrease the diversity of mobility networks across a population}, and therefore enhance the privacy inherent in these graphs.
+There are a variety of techniques which we could apply in order to \emph{reduce the recurring patterns of an individual's mobility network over time} and \emph{decrease the diversity of mobility networks across a population}, therefore enhancing the privacy inherent in these graphs.
 Examples include noise injection on network structure via several strategies: randomization of node attributes, perturbations of network edges, or node removal.
 It is currently unclear how effective such techniques will be, and what trade-off can be achieved between utility in mobility networks and the privacy guarantees offered to individuals whose data the graphs represent.
 Moreover, it seems appropriate to devise kernel-agnostic techniques, suitable for generic defense mechanisms.
@@ -145,5 +144,4 @@ For example, it is of interest to assess the resistance of our best similarity m
 
 We think this study is important for one further reason: kernel-based methods allow us to apply a rich toolbox
 of learning algorithms without accessing the original datapoints, or their feature vectors, but instead by using their kernel matrix.
-Thus studying the anonymity associated with kernels is valuable for ensuring that such learning systems do not leak privacy of the original data.
-%We leave this direction to future work.
+Thus studying the anonymity associated with kernels is valuable for ensuring that such learning systems do not leak the privacy of the original data.
