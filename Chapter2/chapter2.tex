@@ -163,7 +163,7 @@ In more recent work,~\textcite{campbell19neurips} casted Bayesian coresets to a 
 \section{Robust inference}
 \label{sec:brobust-inference}
 
-In this section, adopting an optimization view of Bayesian inference, we present robustness limitations of the standard Bayesian posterior on big data, and outline existing generalizations of the posterior that aim to robustify inference wrt mismatches between observed data and modelling assumptions. Setting these robustified posteriors as the target of our coreset approximations, in~\cref{chap:chap5} we will successfully address scenarios of large-scale inference under model misspecification.
+In this section, adopting an optimization view of Bayesian inference, we present robustness limitations of the standard Bayesian posterior on big data, and outline existing generalizations of the posterior that aim to robustify inference \wrt mismatches between observed data and modelling assumptions. Setting these robustified posteriors as the target of our coreset approximations, in~\cref{chap:chap5} we will successfully address scenarios of large-scale inference under model misspecification.
 
 \subsection{Standard Bayesian inference and lack of robustness in the large-data regime}
 In the context of Bayesian inference, we are interested in updating our beliefs about a vector of random variables $\theta \in \Theta$, initially expressed through a prior distribution $\pi_0(\theta)$, after observing a set of datapoints $ x:=(x_n)_{n=1}^{N} \in \mcX^N$.  Rewriting~\cref{eq:bbayes-rule}, the posterior on $\theta$ can be computed via the application of Bayes rule 
@@ -222,7 +222,7 @@ with $\beta>0$.
 In the remainder we refer to quantities defined in~\cref{eq:b-posterior,eq:b-loss} as the \emph{\bpost{}} and \emph{\blik{}} respectively. Noticeably, the individual terms $f_n(\theta)$  of the \blik{} %, which are known as the Tsallis scores~\citep{tsallis88}, are decomposed into a data-independent $c(\theta)$, and a data-dependent part $t_n(\theta)$.
 % := \frac{1}{\beta} \pi(x_n|\theta)^{\beta}$. 
 %The latter 
-allow attributing \emph{different strength of influence to each of the datapoints}, depending on their accordance with the model assumptions. As densities get raised to a suitable power $\beta$, outlying observations are exponentially downweighted. When $\beta \rightarrow 0$, the Bayes posterior of \cref{eq:zellner-rule,eq:bayes-rule} is recovered and all datapoints are treated equally.
+allow attributing \emph{different strength of influence to each of the datapoints}, depending on their accordance with the model assumptions. As densities get raised to a suitable power $\beta$, outlying observations are exponentially downweighted. When $\beta \rightarrow 0$, the Bayes' posterior of \cref{eq:zellner-rule,eq:bayes-rule} is recovered and all datapoints are treated equally.
 
 In the presentation above we focused on modeling observations $(x_n)_{n=1}^{N}$~(unsupervised learning). In the case of supervised learning on data pairs ${(x_n,y_n)}_{n=1}^{N} \in (\mcX \times \mcY)^N$, the respective expression for individual terms of \blik{}\footnote{In this context for simplicity we use notation $f_n(\cdot)$  to denote $f(y_n|x_n, \cdot)$.} is~\citep{basu98}
 \[
