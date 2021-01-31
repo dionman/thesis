@@ -166,7 +166,7 @@ In more recent work,~\textcite{campbell19neurips} casted Bayesian coresets to a 
 In this section, adopting an optimization view of Bayesian inference, we present robustness limitations of the standard Bayesian posterior on big data, and outline existing generalizations of the posterior that aim to robustify inference \wrt mismatches between observed data and modelling assumptions. Setting these robustified posteriors as the target of our coreset approximations, in~\cref{chap:chap5} we will successfully address scenarios of large-scale inference under model misspecification.
 
 \subsection{Standard Bayesian inference and lack of robustness in the large-data regime}
-In the context of Bayesian inference, we are interested in updating our beliefs about a vector of random variables $\theta \in \Theta$, initially expressed through a prior distribution $\pi_0(\theta)$, after observing a set of datapoints $ x:=(x_n)_{n=1}^{N} \in \mcX^N$.  Rewriting~\cref{eq:bbayes-rule}, the posterior on $\theta$ can be computed via the application of Bayes rule 
+In the context of Bayesian inference, we are interested in updating our beliefs about a vector of random variables $\theta \in \Theta$, initially expressed through a prior distribution $\pi_0(\theta)$, after observing a set of datapoints $ x:=(x_n)_{n=1}^{N} \in \mcX^N$.  Rewriting~\cref{eq:bbayes-rule}, the posterior on $\theta$ can be computed via the application of Bayes' rule 
 \[
 \pi(\theta|x) = \frac{1}{Z'}\pi(x|\theta)\pi_0(\theta),
 \label{eq:bayes-rule}
