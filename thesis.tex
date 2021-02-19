@@ -2,12 +2,13 @@
 \documentclass[a4paper,12pt,index,custombib]{Classes/PhDThesisPSnPDF} 
 %\documentclass[a4paper,11pt,print,index,custombib]{PhDThesisPSnPDF} 
 
+
 % ********************************** Preamble **********************************
 % Preamble: Contains packages and user-defined commands and settings
 \input{Preamble/preamble}
 
 % ************************ Thesis Information & Meta-data **********************
-% Thesis title and author information, refernce file for biblatex
+% Thesis title and author information, reference file for biblatex
 \input{thesis-info}
 
 % *****************************  Separate ******************************
@@ -66,27 +67,26 @@
 \printnomenclature[3cm]
 }
 % ********************************** Bibliography ******************************
-\begin{spacing}{0.9}
+\begin{spacing}{0.6}
 
-% To use the conventional natbib style referencing
-% Bibliography style previews: http://nodonn.tipido.net/bibstyle.php
-% Reference styles: http://sites.stat.psu.edu/~surajit/present/bib.htm
+	% To use the conventional natbib style referencing
+	% Bibliography style previews: http://nodonn.tipido.net/bibstyle.php
+	% Reference styles: http://sites.stat.psu.edu/~surajit/present/bib.htm
+	
+	%\bibliographystyle{apalike}
+	%\bibliographystyle{unsrt} % Use for unsorted references  
+	%\bibliographystyle{plainnat} % use this to have URLs listed in References
+	\cleardoublepage
+	%\bibliographystyle{abbrv}
+	%\printbibliography
 
-%\bibliographystyle{apalike}
-%\bibliographystyle{unsrt} % Use for unsorted references  
-%\bibliographystyle{plainnat} % use this to have URLs listed in References
-\cleardoublepage
-%\bibliographystyle{abbrv}
-%\printbibliography
-
-% If you would like to use BibLaTeX for your references, pass `custombib' as
-% an option in the document class. The location of 'reference.bib' should be
-% specified in the preamble.tex file in the  section.
-% Comment out the lines related to natbib above and uncomment the following line.
-\begin{refcontext}[sorting=nyt]
-\printbibliography[heading=bibintoc, title={Bibliography}]
-\end{refcontext}
-
+	% If you would like to use BibLaTeX for your references, pass `custombib' as
+	% an option in the document class. The location of 'reference.bib' should be
+	% specified in the preamble.tex file in the  section.
+	% Comment out the lines related to natbib above and uncomment the following line.
+	\begin{refcontext}[sorting=nyt]
+		\printbibliography[heading=bibintoc, title={Bibliography}]
+	\end{refcontext}
 
 \end{spacing}
 

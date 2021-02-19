@@ -1,3 +1,4 @@
+
 \usepackage{tikz}
 \usepackage{xifthen}
 \usepackage{xspace} %used at the end of macros to automatically determine whether spaces should be eaten or not
@@ -1373,23 +1374,20 @@
 % *****************************************************************************
 % *************************** Bibliography  and References ********************
 
-
 % Add `custombib' in the document class option to use this section
 \ifuseCustomBib
 %   \RequirePackage[square, sort, numbers, authoryear]{natbib} % CustomBib
 
 % If you would like to use biblatex for your reference management, as opposed to the default `natbibpackage` pass the option `custombib` in the document class. Comment out the previous line to make sure you don't load the natbib package. Uncomment the following lines and specify the location of references.bib file
 
-\RequirePackage[backend=biber, style=authoryear-comp, citestyle=authoryear-comp, sorting=ynt, natbib=true, maxbibnames=99,maxcitenames=2, uniquelist=false, uniquename=false,backref=true,dashed=false]{biblatex}
+
 %citestyle=authoryear, style=authoryear,
 \addbibresource{References/references.bib} %Location of references.bib only for biblatex, Do not omit the .bib extension from the filename.
 
 \usepackage{csquotes}
 \renewcommand\nameyeardelim{, }
-%\DeclareNameAlias{sortname}{last-first}
-\DeclareNameAlias{sortname}{first-last}
+\DeclareNameAlias{sortname}{given-family}
 \renewcommand*{\multinamedelim}{\addcomma\space}
-%\renewcommand*{\finalnamedelim}{\addcomma\space}
 \renewcommand*{\finalnamedelim}{ and }
 \setlength{\bibitemsep}{\baselineskip}
 \renewbibmacro{in:}{}
@@ -1398,22 +1396,61 @@
 \fi
 
 
-%\bibliographystyle{abbrv}
-%\usepackage{natbib}
-%\bibliography{dotbibfile}
-%\usepackage[english,hyperpageref]{backref}
-
-% To use the conventional natbib style referencing
-% Bibliography style previews: http://nodonn.tipido.net/bibstyle.php
-% Reference styles: http://sites.stat.psu.edu/~surajit/present/bib.htm
-
-%\bibliographystyle{apalike}
-%\bibliographystyle{unsrt} % Use for unsorted references  
-%\bibliographystyle{plainnat} % use this to have URLs listed in References
-
 \usepackage{hyperref}
 
 % debugging for non-unicode characters
 \DeclareUnicodeCharacter{0301}{*************************************}
 \DeclareUnicodeCharacter{0302}{*************************************}
 
+
+\DeclareCiteCommand{\cite}
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+	\printtext[bibhyperref]{\usebibmacro{cite}}}
+{\multicitedelim}
+{\usebibmacro{postnote}}
+
+\DeclareCiteCommand*{\cite}
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+	\printtext[bibhyperref]{\usebibmacro{citeyear}}}
+{\multicitedelim}
+{\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\parencite}[\mkbibparens]
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+	\printtext[bibhyperref]{\usebibmacro{cite}}}
+{\multicitedelim}
+{\usebibmacro{postnote}}
+
+\DeclareCiteCommand*{\parencite}[\mkbibparens]
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+	\printtext[bibhyperref]{\usebibmacro{citeyear}}}
+{\multicitedelim}
+{\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+	\printtext[bibhyperref]{ \usebibmacro{cite}}}
+{\multicitedelim}
+{\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\footcitetext}[\mkbibfootnotetext]
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+	\printtext[bibhyperref]{\usebibmacro{cite}}}
+{\multicitedelim}
+{\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\textcite}
+{\boolfalse{cbx:parens}}
+{\usebibmacro{citeindex}%
+	\printtext[bibhyperref]{\usebibmacro{textcite}}}
+{\ifbool{cbx:parens}
+	{\bibcloseparen\global\boolfalse{cbx:parens}}
+	{}%
+	\multicitedelim}
+{\usebibmacro{textcite:postnote}}

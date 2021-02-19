@@ -605,8 +605,8 @@ supported!}
 \RequirePackage[unicode=true]{hyperref}
 
 \usepackage[dvipsnames]{xcolor}
-\definecolor{myorange}{RGB}{245,156,74}
-
+\definecolor{mydarkblue}{rgb}{0,0.08,0.45}
+  
 \if@print
   % For Print version
   \hypersetup{
@@ -651,10 +651,10 @@ supported!}
     breaklinks=true,
     linktocpage,
     colorlinks=true,
-    linkcolor=-myorange,
-    urlcolor=-myorange,
-    citecolor=-myorange,
-    anchorcolor=-myorange
+    linkcolor=mydarkblue,
+    urlcolor=mydarkblue,
+    citecolor=mydarkblue,
+    anchorcolor=mydarkblue
   }
 
   \ifsetCustomMargin
@@ -1266,3 +1266,34 @@ wish to left align your text}
 			- \totalheightof{\usebox{\PHD@collegedate}}
 }
 }
+
+
+% *****************************************************************************
+% *************************** Bibliography  and References ********************
+
+
+% Add `custombib' in the document class option to use this section
+\ifuseCustomBib
+%   \RequirePackage[square, sort, numbers, authoryear]{natbib} % CustomBib
+
+% If you would like to use biblatex for your reference management, as opposed to the default `natbibpackage` pass the option `custombib` in the document class. Comment out the previous line to make sure you don't load the natbib package. Uncomment the following lines and specify the location of references.bib file
+
+\RequirePackage[backend=biber,style=authoryear,citestyle=authoryear,sorting=ynt,natbib=true,maxbibnames=99,maxcitenames=2, uniquelist=false, uniquename=false,backref=true,dashed=false,giveninits=true]{biblatex}
+%citestyle=authoryear, style=authoryear,
+
+
+\addbibresource{References/references.bib} %Location of references.bib only for biblatex, Do not omit the .bib extension from the filename.
+
+\usepackage{csquotes}
+\renewcommand\nameyeardelim{, }
+%\DeclareNameAlias{sortname}{last-first}
+\DeclareNameAlias{sortname}{given-family}
+\renewcommand*{\multinamedelim}{\addcomma\space}
+%\renewcommand*{\finalnamedelim}{\addcomma\space}
+\renewcommand*{\finalnamedelim}{ and }
+\setlength{\bibitemsep}{\baselineskip}
+\renewbibmacro{in:}{}
+
+\preto\fullcite{\AtNextCite{\defcounter{maxnames}{99}}}
+\fi
+

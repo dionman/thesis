@@ -340,7 +340,7 @@ Moreover, running a mechanism on a random subset of the datapoints implies stron
 
 \bnprop[Privacy Amplfication via Random Sampling~\citep{kasiviswanathan11,beimel13}]
 Let $ \mcM: \mcX \rightarrow \mcY$ be $(\veps, \delta)$-DP with $\veps \leq 1$ and $\upsilon: \mcX \rightarrow \mcX$, a random sampler returning a random ratio $q$ of the datapoints. Then $\mcM \circ \upsilon: \mcX \rightarrow \mcY$ is $(O(q\veps), q\delta)$-DP.
-\label{prop:bdp-postprocessing}
+\label{prop:bdp-sampling}
 \enprop
 
 DP composition theorems accumulate the total privacy cost over the application of a sequence of mechanisms. The moments accountant is a recently proposed technique, that allows computing tight bounds for $\veps$ and $\delta$, offering the following guarantees:
