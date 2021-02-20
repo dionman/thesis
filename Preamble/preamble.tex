@@ -1386,7 +1386,6 @@
 \renewcommand\nameyeardelim{, }
 \DeclareNameAlias{sortname}{family-given}
 \renewcommand*{\multinamedelim}{\addcomma\space}
-%\DeclareDelimFormat[textcite]{\multinamedelim}{\addsemicolon}
 \renewcommand*{\finalnamedelim}{ and }
 \setlength{\bibitemsep}{\baselineskip}
 \renewbibmacro{in:}{}
@@ -1447,15 +1446,15 @@
 \AtEveryCite{\usebibmacro{cite:init}}
 
 
-%\DeclareCiteCommand{\textcite}
-%{\boolfalse{cbx:parens}}
-%{\usebibmacro{citeindex}%
-%	\printtext[bibhyperref]{\usebibmacro{textcite}}}
-%{\ifbool{cbx:parens}
-%	{\bibcloseparen\global\boolfalse{cbx:parens}}
-%	{}%
-%	\multicitedelim}
-%{\usebibmacro{textcite:postnote}}
+\DeclareCiteCommand{\textcitecustom}
+{\boolfalse{cbx:parens}}
+{\usebibmacro{citeindex}%
+	\printtext[bibhyperref]{\usebibmacro{textcite}}}
+{\ifbool{cbx:parens}
+	{\bibcloseparen\global\boolfalse{cbx:parens}}
+	{}%
+	\multicitedelim}
+{\usebibmacro{textcite:postnote}}
 
 
 \newcommand{\textcitec}[1]{\textcolor{mydarkblue}{\textcite{#1}}}
