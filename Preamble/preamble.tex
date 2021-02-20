@@ -1,4 +1,3 @@
-
 \usepackage{tikz}
 \usepackage{xifthen}
 \usepackage{xspace} %used at the end of macros to automatically determine whether spaces should be eaten or not
@@ -1381,13 +1380,13 @@
 % If you would like to use biblatex for your reference management, as opposed to the default `natbibpackage` pass the option `custombib` in the document class. Comment out the previous line to make sure you don't load the natbib package. Uncomment the following lines and specify the location of references.bib file
 
 
-%citestyle=authoryear, style=authoryear,
 \addbibresource{References/references.bib} %Location of references.bib only for biblatex, Do not omit the .bib extension from the filename.
 
 \usepackage{csquotes}
 \renewcommand\nameyeardelim{, }
 \DeclareNameAlias{sortname}{family-given}
 \renewcommand*{\multinamedelim}{\addcomma\space}
+%\DeclareDelimFormat[textcite]{\multinamedelim}{\addsemicolon}
 \renewcommand*{\finalnamedelim}{ and }
 \setlength{\bibitemsep}{\baselineskip}
 \renewbibmacro{in:}{}
@@ -1445,12 +1444,19 @@
 {\multicitedelim}
 {\usebibmacro{postnote}}
 
-\DeclareCiteCommand{\textcite}
-{\boolfalse{cbx:parens}}
-{\usebibmacro{citeindex}%
-	\printtext[bibhyperref]{\usebibmacro{textcite}}}
-{\ifbool{cbx:parens}
-	{\bibcloseparen\global\boolfalse{cbx:parens}}
-	{}%
-	\multicitedelim}
-{\usebibmacro{textcite:postnote}}
+\AtEveryCite{\usebibmacro{cite:init}}
+
+
+%\DeclareCiteCommand{\textcite}
+%{\boolfalse{cbx:parens}}
+%{\usebibmacro{citeindex}%
+%	\printtext[bibhyperref]{\usebibmacro{textcite}}}
+%{\ifbool{cbx:parens}
+%	{\bibcloseparen\global\boolfalse{cbx:parens}}
+%	{}%
+%	\multicitedelim}
+%{\usebibmacro{textcite:postnote}}
+
+
+\newcommand{\textcitec}[1]{\textcolor{mydarkblue}{\textcite{#1}}}
+
