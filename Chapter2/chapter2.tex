@@ -7,7 +7,7 @@ This chapter aims to set the context for the remainder of this thesis. Various c
 \label{subsec:b-divergences}
 A critical component in constructing and evaluating inference algorithms is using a \emph{divergence measure}, that captures informatively how similar two probability distributions are. Statistical divergences are relaxations of distance functions, that (\emph{i})~are always non-negative, and (\emph{ii})~equal zero iff their arguments are identical---albeit they do not necessarily satisfy symmetry in their arguments, or the triangle inequality. 
 
-The most commonly used divergence measure in approximate inference---which will directly serve to define the objective quantifying the inferential quality of our summaries in \cref{chap:chap4}---is the \emph{Kullback-Leibler}~(KL) divergence, also named \emph{relative entropy}~\citep{kullback51,kullback59}. For a continuous random variable $\theta$ and probability density functions $\pi_1$ and $\pi_2$, the KL divergence is defined as 
+The most commonly used divergence measure in approximate inference---which will directly serve to define the objective quantifying the inferential quality of our sparse approximations in~\cref{chap:chap4,chap:chap5}---is the \emph{Kullback-Leibler}~(KL) divergence, also named \emph{relative entropy}~\citep{kullback51,kullback59}. For a continuous random variable $\theta$ and probability density functions $\pi_1$ and $\pi_2$, the KL divergence is defined as 
 \[
 \label{eq:bkl-def}
 \kl{\pi_1}{\pi_2} \defined \int \pi_1(\theta) \log\frac{\pi_1(\theta)}{\pi_2(\theta)} d\theta.
@@ -19,7 +19,7 @@ In particular, for two $d$-dimensional Gaussian distributions $\mcN_1(\mu_1, \Si
 
 %\section{Robust Inference}
 %\label{sec:b-robust-inference}
-In data setups that are likely to be contaminated by outliers, we get substantial performance improvements when enhancing our algorithms with \emph{robustness}. Relying on the KL divergence cannot sufficiently address this concern. A robustified divergence, termed \emph{\bdiv{}} or \emph{density power divergence}, was instead proposed in~\citep{basu98,eguchi01}, that is able to downweight outlying datapoints. Considering again the densities $\pi_1, \pi_2$, the \bdiv{} is defined as 
+In data setups that are likely to be contaminated by outliers, we get substantial performance improvements when enhancing our algorithms with statistical~\emph{robustness}. Relying on the KL divergence cannot sufficiently address this concern. A robustified divergence, termed~\emph{\bdiv{}} or \emph{density power divergence}, was instead proposed in~\citep{basu98,eguchi01}, that is able to downweight outlying datapoints. Considering again the densities $\pi_1, \pi_2$, the \bdiv{} is defined as 
 \[
 \betadistance{\pi_1}{\pi_2} \defined \frac{1}{\beta} \int \pi_1(\theta)^{1+\beta}d\theta - \frac{\beta+1}{\beta}\int \pi_1(\theta) \pi_2(\theta)^{\beta} d\theta + \int \pi_2(\theta)^{1+\beta}d\theta,
 \] 
@@ -47,7 +47,7 @@ The exponential family~\citep{wainwright08} is a broad class of probability dist
 	the \emph{log-partition function}.
 \end{ndefn}
 
-The parameter space of interest, referred to as the \emph{natural parameter space}, is the space $\Omega \subseteq \reals^d $ that contains all $\theta$ such that $Z(\theta)$ is finite. We say a family is \emph{regular} if $\Omega$ is open.
+The parameter space of interest, referred to as the \emph{natural parameter space}, is the space $\Omega \subseteq \reals^d $ that contains all $\theta$ such that $Z(\theta)$ is finite. We say that a family is \emph{regular} if $\Omega$ is open.
 
 An important property of exponential family densities is that the derivatives of the log-partition function $Z$ are related to the moments of the sufficient statistics as follows.
 
@@ -100,7 +100,7 @@ Let us write the posterior of~\cref{eq:bbayes-rule} in the following equivalent 
 \pi(\theta|x) = \frac{1}{Z} e^{-E(\theta)},
 \]
 where $E(\theta) \defined - \log \pi(\theta, x)$ is called the \emph{energy function}, and $ Z $ is the unknown normalization constant. Taking the Taylor series expansion of $\theta$ (up to order 2) around the mode $ {\htheta \defined \arg \underset{\theta}{\min} \;E(\theta)}$, we obtain the approximation 
-$ \hpi(\theta, x) = e^{-E(\htheta)}\exp\left((\theta - \htheta)^T\Lambda (\theta - \htheta)\right)$ where  $ \Lambda \defined -\grad^2 E(\theta)\Big|_{\theta = \htheta}$.
+$ \hpi(\theta, x) := e^{-E(\htheta)}\exp\left((\theta - \htheta)^T\Lambda (\theta - \htheta)\right)$ where  $ \Lambda \defined -\grad^2 E(\theta)\Big|_{\theta = \htheta}$.
 Hence we have
 \[
 \pi(\theta|X) \approx \frac{1}{Z}   \hpi(\theta, x)  \propto \mcN(\htheta, \Lambda^{-1}), 
@@ -118,15 +118,15 @@ In the absence of analytical formulae, integrals in the form of~\cref{eq:binfere
 \]
 \emph{Markov Chain Monte Carlo~(MCMC)}, the workhorse of approximate Bayesian inference, is a framework of established tools that pursue the above idea efficiently~\citep{geyer92, gilks05, robert05}. 
 
-MCMC offers approximations to expectations \wrt intractable probability distributions via simulating an ergodic random walk in the state space of the model, which admits the posterior distribution as its stationary distribution. As implied by the strong law of large numbers, the MC estimate---formed using (effectively independent) samples from the stationary distribution---converges to the true expecation almost surely as $s \rightarrow \infty$; this property makes MCMC methods theoretically appealing, as it endows the estimators with strong \emph{asymptotic exactness} guarantees. Moreover, if $g$ is a real function, using the central limit theorem, it can be shown that the standard error of a MC estimator scales asymptotically as $O(\frac{1}{\sqrt{S}})$, independent of the dimension of $\theta$. Differing in the way that the Monte Carlo chain is constructed, as well as the offered level of automation, several methods of MCMC inference have emerged, including the Metropolis-Hastings~\citep{andrieu03}, the Hamiltonian Monte-Carlo~\citep{neal11}, and the No-U-Turn-Sampler~(NUTS)~\citep{hoffman14}. NUTS will be used as a reference method to evaluate summarization performance in part of our experiments over~\cref{chap:chap4,chap:chap5}.
+MCMC offers approximations to expectations \wrt intractable probability distributions via simulating an ergodic random walk in the state space of the model, which admits the true posterior as its stationary distribution. As implied by the strong law of large numbers, the MC estimate---formed using (effectively independent) samples from the stationary distribution---converges to the true expecation almost surely as $s \rightarrow \infty$; this property makes MCMC methods theoretically appealing, as it endows the estimators with strong \emph{asymptotic exactness} guarantees. Moreover, if $g$ is a real function, using the central limit theorem, it can be shown that the standard error of a MC estimator scales asymptotically as $O(\frac{1}{\sqrt{S}})$, independently of the dimension of $\theta$. Differing in the way that the Monte Carlo chain is constructed, as well as the offered level of automation, several methods of MCMC inference have emerged, including the Metropolis-Hastings~\citep{andrieu03}, the Hamiltonian Monte-Carlo~\citep{neal11}, and the No-U-Turn-Sampler~(NUTS)~\citep{hoffman14}. NUTS will be used as a reference method to evaluate summarization performance in part of our experiments over~\cref{chap:chap4,chap:chap5}.
 
-Bounds on the number of MCMC iterations required until we obtain a satisfactory posterior approximation can hardly be automated, as they are highly problem-specific, and in practice heuristics are used to decide when sampling should stop. Typically each sample requires at least one evaluation of a function proportial to $\pi$, scaling at cost $\Theta(N)$ which becomes a burden in big data applications---on this account, methods operating on data subsets have been proposed, including~\citep{welling11,korattikara14,bardenet14}. Despite these shortcomings, in settings where data are high-dimensional, and likelihood surface lacks structure that could be exploited over inference, MCMC remains the gold standard for practitioners.
+The computation of bounds on the number of MCMC iterations required until we obtain a satisfactory posterior approximation can hardly be automated, as they are highly problem-specific, and in practice heuristics are used to decide when sampling should stop. Typically each sample requires at least one evaluation of a function proportial to $\pi$, scaling at cost $\Theta(N)$ which becomes a burden in big data applications---on this account, methods operating on data subsets have been proposed, including~\citep{welling11,korattikara14,bardenet14}. Despite these shortcomings, in settings where data are high-dimensional, and likelihood surface lacks structure that could be exploited over inference, MCMC remains the gold standard for practitioners.
 
 
 
 \subsection{Variational inference}
 \label{subsec:b-variational-inference}
-Variational inference~(VI)~\citep{jordan99,blei17} takes a fundamentally different approach to  address approximate inference.
+Variational inference~(VI)~\citep{jordan99,blei17} takes a fundamentally different approach to addressing approximate inference.
 The problem formulation underpinning all VI methods is to find a member $q^*$ within a family of tractable probability densities $Q$ that most closely matches our true posterior $\pi$ (typically in the KL-sense)
 \[
 \label{eq:bvi}
@@ -144,7 +144,7 @@ Since this term is not a function of $q$, it can be subtracted and the problem i
 q^{*}(\theta; x) \defined \arg \underset{q\in Q}{\min} \left(-\text{ELBO}(q, x)\right), \qquad
 \text{ELBO}(q, x) \defined \EE_{q}\left[\log \pi(x, \theta)\right] - \EE_q \left[\log q(\theta)\right].
 \]
-Via Jensen's inequality, ELBO can be shown to be a lower bound of the marginal log-likelihood of $x$ as expectation \wrt~$q$. As opposed to MCMC methods, \mbox{theoretical guarantees} for inferential results of the solution to~\cref{eq:bvi} can only be obtained for a few simple statistical models for the following main reasons: optimization methods in typically non-convex landscapes can often converge to bad local optima; also, depending on the statistical divergence and variational family used, VI might return miscalibrated posterior variance estimates~\citep[Chapter~10]{bishop06}.
+Via Jensen's inequality, the ELBO can be shown to be a lower bound of the marginal log-likelihood of $x$ as expectation \wrt~$q$. As opposed to MCMC methods, theoretical guarantees for inferential results of the solution to~\cref{eq:bvi} can only be obtained for a few simple statistical models for the following main reasons: optimization methods in typically non-convex landscapes can often converge to bad local optima; also, depending on the statistical divergence and variational family used, VI might return miscalibrated posterior variance estimates~\citep[Chapter~10]{bishop06}.
 
 The simplest family $Q$ that can be used for VI is the \emph{mean-field variational family} which relies on the simplifying assumption of independence among the coordinates of $\theta$, \ie~$q(\theta) \defined \Pi_{d=1}^{D}q_d(\theta_d)$.
 Our VI schemes in~\cref{chap:chap4,chap:chap5} propose approximations within the \emph{exponential family} instead, which generally allow less restricted posteriors. Additionally, they can circumvent the use of ELBO, and instead be directly applied on the original KL minimizing variational formulation of~\cref{eq:bvi}, since MC estimates of the gradient of the intractable log-evidence term can be extracted as per~\cref{prop:bgradZ}. 
@@ -153,27 +153,27 @@ Our VI schemes in~\cref{chap:chap4,chap:chap5} propose approximations within the
 \label{subsec:b-coresets}
 Owing to their requirement for multiple evaluations of the data (log-)likelihood---a computation scaling at $\Theta(N)$---MCMC and VI methods quickly become prohibitively expensive in the large-data regime. Various stochastic schemes have been proposed to circumvent this computation, evaluating the likelihood on random data minibatches: despite achieving computational savings and often being straightforward to implement, such schemes rarely offer guarantees on posterior approximation quality, and lack a rigorous principle over the minibatch selection step, hence retaining part of the redundancy of the full data collection in the extracted samples.
 
-Bayesian coresets~\citep{huggins16,campbell18,campbell19jmlr,campbell19neurips} make the assumption that the full dataset has some degree of inherent redundancy, and put forth the idea of scaling up inference via the application of a preprocessing step where \emph{part of the data gets retained under the criterion of likelihood approximation}. In the spirit of the first coresets proposed in the field of computational geometry~\citep{feldman11unified}, initial construction schemes for coreset-based \mbox{inference~\citep{huggins16,lucic17training}} utilize \emph{importance sampling} according to the datapoints' sensitivity, \ie~a non-negative quantity measuring the redundancy of each of the datapoints \wrt the statistical model of interest. Although providing theoretical gurantees for the approximation quality achieved by the coreset, importance sampling based constructions have typically two shortcomings: (\emph{i}) they rely on efficiently computable upper bounds of the sensitivity, and (\emph{ii}) they do not have a sense of a residual posterior error, hence are limited by common MC rates in approximating the full data likelihood, offering error $\eps = O(\frac{1}{\sqrt{M}})$ for coreset size $M$.
+Bayesian coresets~\citep{huggins16,campbell18,campbell19jmlr,campbell19neurips,zhang21} make the assumption that the full dataset has some degree of inherent redundancy, and put forth the idea of scaling up inference via the application of a preprocessing step where \emph{part of the data gets retained under the criterion of likelihood approximation}. In the spirit of the first coresets proposed in the field of computational geometry~\citep{feldman11unified}, initial construction schemes for coreset-based \mbox{inference~\citep{huggins16,lucic17training}} utilize \emph{importance sampling} according to the datapoints' sensitivity, \ie~a non-negative quantity measuring the redundancy of each of the datapoints \wrt the statistical model of interest. Although providing theoretical gurantees for the approximation quality achieved by the coreset, importance sampling based constructions have typically two shortcomings: (\emph{i}) they rely on efficiently computable upper bounds of the sensitivity, and (\emph{ii}) they do not have a sense of a residual posterior error, hence are limited by common MC rates in approximating the full data likelihood, offering error $\eps = O(\frac{1}{\sqrt{M}})$ for coreset size $M$.
 
-Reformulating coreset construction as sparse function approximation in a Hilbert space~(\emph{Hilbert coresets}), \textcites{campbell18,campbell19jmlr} introduced alternative optimization formulations for the problem. They showed that using inner-product inducing norms can lead to faster incremental construction schemes that, critically, can guide next datapoint selection by the direction of greatest impovement. Moreover, they made use of a coarse posterior approximation and random projections to efficiently compute Hilbert norms that capture the divergence between the coreset and the true posterior, and proposed faster sparse constructions under polytope and hypersphere constraints.
+Reformulating coreset construction as sparse function approximation in a Hilbert space~(\emph{Hilbert coresets}),~\textcitec{campbell18,campbell19jmlr} introduced alternative optimization formulations for the problem. They showed that using inner-product inducing norms can lead to faster incremental construction schemes that, critically, can guide next datapoint selection by the direction of greatest impovement. Moreover, they made use of a coarse posterior approximation and random projections to efficiently compute Hilbert norms that capture the divergence between the coreset and the true posterior, and proposed faster sparse constructions under polytope and hypersphere constraints.
 
-In more recent work,~\textcite{campbell19neurips} casted Bayesian coresets to a problem of sparse variational inference within an exponential family, named \emph{Riemannian coresets}. Riemannian coresets removed the requirement for fixing a coarse posterior that appears when computing the norm in practical Hilbert coreset constructions, achieving full automation and improvement of approximation (in KL) over a larger range of summary sizes.
+In more recent work,~\textcitec{campbell19neurips} casted Bayesian coresets to a problem of sparse variational inference within an exponential family, named \emph{Riemannian coresets}. Riemannian coresets removed the requirement for fixing a coarse posterior that appears when computing the norm in practical Hilbert coreset constructions, achieving full automation and improvement of approximation quality (measured through the KL divergence) over a larger range of summary sizes.
 
 
 \section{Robust inference}
 \label{sec:brobust-inference}
 
-In this section, adopting an optimization view of Bayesian inference, we present robustness limitations of the standard Bayesian posterior on big data, and outline existing generalizations of the posterior that aim to robustify inference \wrt mismatches between observed data and modelling assumptions. Setting these robustified posteriors as the target of our coreset approximations, in~\cref{chap:chap5} we will successfully address scenarios of large-scale inference under model misspecification.
+In this section, adopting an optimization perspective of Bayesian inference, we present robustness limitations of the standard Bayesian posterior on big data, and outline existing generalizations of the posterior that aim to robustify inference \wrt mismatches between observed data and modelling assumptions. Setting these robustified posteriors as the target of our coreset approximations, in~\cref{chap:chap5} we will successfully address scenarios of large-scale inference under model misspecification.
 
 \subsection{Standard Bayesian inference and lack of robustness in the large-data regime}
-In the context of Bayesian inference, we are interested in updating our beliefs about a vector of random variables $\theta \in \Theta$, initially expressed through a prior distribution $\pi_0(\theta)$, after observing a set of datapoints $ x:=(x_n)_{n=1}^{N} \in \mcX^N$.  Rewriting~\cref{eq:bbayes-rule}, the posterior on $\theta$ can be computed via the application of Bayes' rule 
+In the context of Bayesian inference, we are interested in updating our beliefs about a vector of random variables $\theta \in \Theta$, initially expressed through a prior distribution $\pi_0(\theta)$, after observing a set of datapoints $ x:=(x_n)_{n=1}^{N} \in \mcX^N$. Here we equivalently rewrite~\cref{eq:bbayes-rule} as
 \[
 \pi(\theta|x) = \frac{1}{Z'}\pi(x|\theta)\pi_0(\theta),
 \label{eq:bayes-rule}
 \] 
-where $Z'$ is a (typically intractable) normalization constant. %, and $\pi(x|\theta)$ is the likelihood of our observations according to an assumed statistical model.
-When datapoints \mbox{are conditio-} nally independent given $\theta$, the likelihood function gets factorized as \mbox{$\pi(x|\theta) = \Pi_{n=1}^{N}\pi(x_n|\theta)$.} An equivalent formulation of  the
-Bayesian posterior as a solution to a convex optimization problem over the density space was introduced by~\textcites{williams80,zellner88}, and used in various subsequent works including~\citep{zhu14, dai16, futami18}. Concretely,~\cref{eq:bayes-rule} can be recovered by solving the problem
+where $Z'$ is a normalization constant corresponding to the (typically intractable) marginal likelihood term $\pi(x)$. %, and $\pi(x|\theta)$ is the likelihood of our observations according to an assumed statistical model.
+When the datapoints $x$ are conditionally independent given $\theta$, the likelihood function gets factorized as \mbox{$\pi(x|\theta) = \Pi_{n=1}^{N}\pi(x_n|\theta)$.} An equivalent formulation of  the
+Bayesian posterior as a solution to a convex optimization problem over the density space was introduced by~\textcitec{williams80} and~\textcitec{zellner88}, and used in various subsequent works including~\citep{zhu14, dai16, futami18}. Concretely,~\cref{eq:bayes-rule} can be recovered by solving the problem
 \[
 \arg \underset{q(\theta) \in \mcP}{\min} \left(\kl{q(\theta)}{\pi_0(\theta)} -\sum_{n=1}^{N}\left[\int q(\theta) \log \pi(x_n|\theta)d\theta\right]\right),
 \label{eq:bayes-rule-opt}
@@ -222,7 +222,7 @@ with $\beta>0$.
 In the remainder we refer to quantities defined in~\cref{eq:b-posterior,eq:b-loss} as the \emph{\bpost{}} and \emph{\blik{}} respectively. Noticeably, the individual terms $f_n(\theta)$  of the \blik{} %, which are known as the Tsallis scores~\citep{tsallis88}, are decomposed into a data-independent $c(\theta)$, and a data-dependent part $t_n(\theta)$.
 % := \frac{1}{\beta} \pi(x_n|\theta)^{\beta}$. 
 %The latter 
-allow attributing \emph{different strength of influence to each of the datapoints}, depending on their accordance with the model assumptions. As densities get raised to a suitable power $\beta$, outlying observations are exponentially downweighted. When $\beta \rightarrow 0$, the Bayes' posterior of \cref{eq:zellner-rule,eq:bayes-rule} is recovered and all datapoints are treated equally.
+allow attributing \emph{different strength of influence to each of the datapoints}, depending on their accordance with the model assumptions. As densities get raised to a suitable power $\beta$, outlying observations are exponentially downweighted. When $\beta \rightarrow 0$, the Bayes' posterior of \cref{eq:bayes-rule,eq:zellner-rule} is recovered and all datapoints are treated equally.
 
 In the presentation above we focused on modeling observations $(x_n)_{n=1}^{N}$~(unsupervised learning). In the case of supervised learning on data pairs ${(x_n,y_n)}_{n=1}^{N} \in (\mcX \times \mcY)^N$, the respective expression for individual terms of \blik{}\footnote{In this context for simplicity we use notation $f_n(\cdot)$  to denote $f(y_n|x_n, \cdot)$.} is~\citep{basu98}
 \[
@@ -262,11 +262,11 @@ Every kernel is associated with a feature map $\phi$ as follows.
 \end{ndefn}
 A kernel representation might be lacking an explicit closed form, but can always be accessed via the inner product of~\cref{eq:bkernelrep}, which is the central object of interest in learning with kernels.
 
-Examples of widely-used kernel functions include
+Examples of widely-used kernel functions include:
 \begin{itemize}
-	\item The polynomial kernel $k(x,x') = \left(\langle x, x'\rangle + c\right)^d$.
+	\item The (inhomogeneous) polynomial kernel $k(x,x') = \left(\langle x, x'\rangle + c\right)^d$, where $ {c \geq 0}, {d \in \nats}$.
 	\item The Gaussian kernel $k(x,x') = \exp(-\gamma||x-x'||_{2}^2)$.
-	\item The Sigmoid kernel $k(x,x') = \tanh(\beta\langle x, x'\rangle + c)$.
+	\item Radial Basis Function~(RBF) kernels $k(x,x') = f(d(x,x'))$, where $d$ is a metric on $\mcX$ and $f$ is a function on $\reals^{+}$.
 \end{itemize}
 
 Kernel methods induce \emph{non-parametric} representations on the data, \ie~when given a set with $ N $ datapoints of dimension $d$, kernels effectively map each datapoint to an $N$-dimensional representation. %Although allowing representation power scaling with the number of datapoints, such methods often reach prohibitive computational cost.
@@ -299,7 +299,7 @@ In this way we get an unbiased finite-dimensional estimator of the inner product
 \section{Differential privacy}
 \label{sec:bdp}
 
-Differential privacy~(DP)~\citep{dwork2006calibrating,dwork14} is a formal framework quantifying the privacy threat that exists in the output of a data analysis task, due to changing an individual entry of a sensitive database. It considers a setting where the database is held by a trusted curator; and an untrusted analyst sends statistical queries to the curator and receives public responses via randomized algorithms, or mechanisms: DP enforces a stability property on the output distribution of these mechanisms that limits the disclosure of information about any individual record within the database, offering strong indistinguishability guarantees regardless of the side information that the analyst might possess~(even when the analyst knows all other records of the database). 
+Differential privacy~(DP)~\citep{dwork2006calibrating,dwork14} is a formal framework quantifying the privacy threat that exists in observing the output of a data analysis task carried out on a sensitive database, due to changing an individual entry of its input. The central model of DP considers a setting where the database is held by a trusted curator; and an untrusted analyst sends statistical queries to the curator and receives public responses via randomized algorithms, or \emph{mechanisms}: DP enforces a stability property on the output distribution of these mechanisms that limits the disclosure of information about any individual record within the database, offering strong indistinguishability guarantees regardless of the side information that the analyst might possess~(even when the analyst knows all other records of the database). 
 
 DP definition requires a notion of \emph{neighboring} databases.
 To define distance between two databases $x, x' \in \mcX$ of size $ N $ we use the Hamming distance
@@ -332,7 +332,7 @@ DP is equipped with a suite of properties that facilitate reasoning about privac
 A useful fact about DP algorithms is that a data analyst cannot weaken their privacy guarantees by doing any computation on their output that does not depend on the private input itself.
 
 \bnprop[Robustness to Post-Processing~\citep{dwork14}]
-	Let $ \mcM: \mcX \rightarrow \mcY$ be $(\veps, \delta)$-DP and $\psi:\mcY \rightarrow \mcY'$ be any function. Then $\psi \circ \mcM: \mcX \rightarrow \mcY'$ is $(\veps, \delta)$-DP.
+	Let $ {\mcM: \mcX \rightarrow \mcY}$ be $(\veps, \delta)$-DP and $\psi:\mcY \rightarrow \mcY'$ be any function. Then $\psi \circ \mcM: \mcX \rightarrow \mcY'$ is $(\veps, \delta)$-DP.
 	\label{prop:bdp-postprocessing}
 \enprop
 
