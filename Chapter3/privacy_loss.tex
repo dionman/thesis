@@ -5,27 +5,27 @@ For this purpose we undertake experiments in graph set matching using different 
 
 \subsection{Experimental setup}
 
-For our experiments we split the \emph{cid} sequences of each user into two sets: the \emph{training} sequences where user identities are disclosed to the adversary, and the \emph{test} sequences where user identities are undisclosed to the adversary but are used to quantify the success of the adversarial attack.
+For our experiments we split the \emph{cid} sequences of each user into two sets: the \emph{training} sequences where users' identities are disclosed to the adversary, and the \emph{test} sequences where user identities are undisclosed to the adversary, and are used to quantify the success of the adversarial attack.
 Therefore each user has two mobility networks: one derived from the training sequences, and one derived from the test sequences.
 The objective of the adversary is to successfully match every test mobility network with the training mobility network representing the same underlying user.
 To do so, the adversary computes the pairwise distances between training mobility networks and test mobility networks.
-We partitioned \emph{cid} sequences of each user by time, placing all \emph{cid}s before the partition point in the training set, and all \emph{cid}s after into the test set.
+We partitioned \emph{cid} sequences of each user by time, placing all \emph{cid}s before the partition point in the training set, and all subsequent \emph{cid}s into the test set.
 We choose the partition point separately for each user as a random number from the uniform distribution with range $ 0.3 $ to $ 0.7 $.
 
 \subsection{Mobility networks \& kernels}
 
 We computed the pairwise distances between training and test mobility networks using kernels from the categories described in~\cref{sec:methodology}.
 Node attributes are supported in the computation of Weisfeiler-Lehman and Shortest-Path kernel.
-Thus we augmented the individual mobility networks with categorical features to add some information about the different roles of nodes in users' mobility routine.
+Thus, in this part of the study, we augmented the individual mobility networks with categorical features, to add some information about the different roles of nodes in users' mobility routine.
 Such attributes are computed independently for each user on the basis of the topological information of each network.
 After experimenting with several schemes, we obtained the best performance on the kernels when dividing locations into three categories with respect to the frequency in which each node is visited by the user.
-Concretely, we computed the distribution of users visits to locations and added the following values to the nodes:
+Concretely, we computed the distribution of users' visits to locations and added the following values to the nodes:
 
 \begin{equation*}
 	a_{c=3}\left(v_i^u\right)=
 	\begin{cases}
-		 3, &  \mbox{if } v_i^u \in \mbox{top-20\%~locations of } u  \\
-		 2, &  \mbox{if } v_i^u  \notin \mbox{top-20}\%~\mbox{locations of }  u   \mbox{ and }  v_i^u \in \mbox{top}-80\%~\mbox{locations}\\
+		 3, &  \mbox{if } v_i^u \in \mbox{top$-20\%$ locations of } u  \\
+		 2, &  \mbox{if } v_i^u  \notin \mbox{top$-20\%$ locations of }  u   \mbox{ and }  v_i^u \in \mbox{top$-80\%$ locations}\\
 		 1, &  \mbox{otherwise}.
 	\end{cases}
 \end{equation*}
@@ -33,7 +33,7 @@ Concretely, we computed the distribution of users visits to locations and added 
 This scheme allowed a coarse, yet informative, characterisation of locations in users' networks, which was robust to the variance in the frequency of visits between the two observation periods. In addition, we removed $40\%$ of edges with the smallest edge weights and retained only the largest connected component for each user.
 
 
-Due to its linear complexity, computation of the Weisfeiler-Lehman kernel could scale over entire mobility networks.
+Due to its linear complexity, the computation of the Weisfeiler-Lehman kernel could scale over entire mobility networks.
 However, we had to reduce the network size in order to apply the Shortest-Path kernel.
 This was done using top$-N$ networks for varying size $N$.
 
@@ -54,7 +54,7 @@ If mobility networks are unique, an \emph{ideal retrieval mechanism} would corre
 This would be the case when users' training and test networks are identical, thus the knowledge of the latter implies maximum privacy loss.
 
 Our baseline, \emph{random}, is a strategy which reflects the policy of an adversary with \emph{zero knowledge} about the mobility networks of the users, who simply returns uniformly random orderings of the labels.
-The \emph{CDF} of true labels rank for \emph{random}  lies on the diagonal line.
+The \emph{CDF} of true labels' rank for \emph{random} lies on the diagonal line.
 We observe that atomic substructure based kernels significantly outperform the random baseline performance by defining a meaningful similarity ranking across the mobility networks.
 
 \begin{figure}[!t]
@@ -66,7 +66,7 @@ We observe that atomic substructure based kernels significantly outperform the r
 
 The best overall performance is achieved by the \emph{DSP} kernel on graphs pruned to $ 200 $ nodes.
 In particular, this kernel places the true identity among the closest 10 networks for $10\%$ of the individuals, and among the closest $ 200 $ networks for $ 80\%$ of the population.
-The Shortest-Path kernel has an intuitive interpretation in the case of mobility networks, since its atomic substructures take into account the hop distances among the locations in a user's mobility network and the popularity categories of the departing and arrival location.
+The Shortest-Path kernel has an intuitive interpretation in the case of mobility networks, since its atomic substructures take into account the hop distances among the locations in a user's mobility network and the popularity categories of the departing and arrival locations.
 The deep variant can also account for variation at the level of such substructures, which are more realistic when considering the stochasticity in the mobility patterns inherent to our dataset.
 
 The best performance of the Weisfeiler-Lehman kernel is achieved by its deep variant for $ h=2 $ iterations of the \emph{WL} test for a mobility network pruned to $200$ nodes.
@@ -77,9 +77,8 @@ Thus local structural patterns will be described by few features produced in the
 Furthermore, the feature space of the kernel increases very quickly as a function of $ h $, which leads to sparsity and low levels of similarity over the population of networks.
 
 Histograms of length $10^3$ were also computed for the unweighted and weighted degree distributions and passed through a Gaussian RBF kernel.
-We can see that the degree distribution gives almost a random ranking, as it is heavily dependent on the network size.
-When including the normalized edge weights, the \emph{WD} kernel only barely outperforms a random ranking.
-Repetitions on pruned versions did not improve the performance and are not presented for brevity.
+We can see that the unweighted degree distribution \emph{DD} gives almost a random ranking, as this kernel produces a very high-dimensional mapping, which is heavily dependent on the network size. When including the normalized edge weights, the \emph{WD} kernel only barely outperforms a random ranking.
+Repetitions on pruned versions, which partly mitigate dimensionality effects, did not significantly improve the performance and are not presented for brevity.
 
 Based on the insights obtained from our experiment, we can make the following observations with respect to attributes of individual mobility and their impact on the identifiability of networks:
 %
@@ -91,7 +90,7 @@ Based on the insights obtained from our experiment, we can make the following ob
 
 	\item \textbf{Transition pruning}: Including very rare transitions in longitudinal mobility does not add discriminative information.
 	We consistently obtained better results when truncating the long tail of edge weight distribution, which led us to analyze versions of the networks where $40\%$ of the weakest edges were removed.
-	\item \textbf{Frequency information of locations}: The frequency of visits to nodes in the mobility network allows better ranking by kernels which support node attributes, e.g.\ Weisfeiler-Lehman and Shortest-Path kernel.
+	\item \textbf{Frequency information of locations}: The frequency of visits to nodes in the mobility network allows better ranking by kernels which support node attributes, e.g.\ the Weisfeiler-Lehman and the Shortest-Path kernel.
 	This information should follow a coarse scheme, in order to compensate for the temporal variation of location popularity in mobility networks.
 	\item \textbf{Directionality of transitions}: Directionality generally enhances the identifiability of networks and guides the similarity computation when using Shortest-Path kernels.
 \end{itemize}
@@ -117,7 +116,7 @@ As observed in~\cref{fig:rank_correct}, the mean of the true rank has been shift
 In addition, the variance is much smaller: approximately $ 218 $, instead of $ 423 $ for the random ordering.
 
 The obtained ordering implies a significant decrease in user privacy, since the ranking can be leveraged by an adversary to determine the most likely matches between a training mobility network and a test mobility network.
-The adversary can estimate the true identity of a given test network $ G' $, as suggested in~\cref{sec:threat-model}, applying some simple probabilistic policy that uses pairwise similarity information. For example, let us examine the privacy loss implied by update rule in~\eqref{eq:adversarial_rule} for  \mbox{function $ f$}:
+The adversary can estimate the true identity of a given test network $ G' $, as suggested in~\cref{sec:threat-model}, applying some simple probabilistic policy that uses pairwise similarity information. For example, let us examine the privacy loss implied by the update rule in~\eqref{eq:adversarial_rule} for  \mbox{function $ f$}:
 
 \[
 f\left(K_{\text{DSP}}(G_i, G')\right) =\frac{1}{\text{rank}\left(K_{DSP}(G_i, G')\right)}.
@@ -143,5 +142,5 @@ Moreover, it seems appropriate to devise kernel-agnostic techniques, suitable fo
 For example, it is of interest to assess the resistance of our best similarity metric to noise, as the main purpose of deep graph kernels is to be robust to small dissimilarities at the substructure level.
 
 We think this study is important for one further reason: kernel-based methods allow us to apply a rich toolbox
-of learning algorithms without accessing the original datapoints, or their feature vectors, but instead by using their kernel matrix.
+of learning algorithms without accessing the original datapoints, or their feature vectors, but instead by querying their kernel matrix.
 Thus studying the anonymity associated with kernels is valuable for ensuring that such learning systems do not leak the privacy of the original data.

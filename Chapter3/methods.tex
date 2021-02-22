@@ -72,7 +72,7 @@ graph $G^{u}=\left(V^{u}, E^{u}, W^{u}\right)  \in \mcG$, with the same topology
 \vspace{.4cm}
 To facilitate comparisons of frequencies across networks of different sizes in our experiments, we normalize edge weights on each mobility network to sum \mbox{to 1}.
 
-In first-order networks, nodes correspond to distinct places the user visits.
+In first-order networks, nodes correspond to distinct places that the user visits.
 Given a high-frequency, timestamped sequence of location events for a user, distinct places can be extracted as small geographic regions where a user stays longer than a defined time interval, using existing clustering algorithms~\citep{kang2005extracting}.
 Nodes in the mobility network have no geographic or timing information associated with them.
 Nodes may have \emph{attributes} attached to them reflecting additional side information.
@@ -107,13 +107,13 @@ We briefly introduce these kernels in the remainder of the section.
 
 The degree distribution of nodes in the graph can be used to quantify the similarity between two graphs.
 For example, we can use a histogram of weighted or unweighted node degree as a feature vector.
-We can then compute the pairwise distance of two graphs by taking either the inner product of the feature vectors or passing them through a Gaussian radial basis function (RBF) kernel:
+We can then compute the pairwise distance of two graphs by taking either the inner product of the feature vectors, or passing them through a Gaussian Radial Basis Function kernel:
 \[ K(G,G') =\exp\left( -\frac{||\phi(G) - \phi(G')||^2}{2\sigma^2} \right).\]
-Here, the hyperparameters of the kernel are the variance $ \sigma $ (in case RBF is used) and the number of bins in the histogram.
+Here, the hyperparameters of the kernel are the variance $\sigma$~(in case RBF is used), and the number of bins in the histogram.
 
-\subsubsection{Kernel on graph atomic substructures}
+\subsubsection{Kernels on graph atomic substructures}
 
-Kernels can use counts on substructures, such as subtree patterns, shortest paths, walks or limited-size subgraphs.
+Kernels can use counts on substructures, such as subtree patterns, shortest paths, walks, or limited-size subgraphs.
 This family of kernels are called \emph{$R-$convolution graph kernels}~\citep{haussler}.
 In this way, graphs are represented as vectors with elements corresponding to the frequency of each such substructure over the graph.
 Hence, if
@@ -482,7 +482,7 @@ Here, $ M $ can be defined using the edit distance of the substructures, i.e.\ t
 		\label{fig:evidence22}
 	\end{subfigure}
 	\caption{{Top$-20$ networks for two random users from the Device Analyzer dataset.
-			Depicted edges correspond to the $10\%$ most frequent transitions in the respective observation window.
+			Depicted edges correspond to the highest $10$-th percentile of frequent transitions in the respective observation window.
 			The networks show a high degree of similarity between the mobility profiles of the same user over the two observation periods.
 			Moreover, the presence of single directed edges in the profile of \textbf{user 2} forms a discriminative pattern that allows us to distinguish \textbf{user\;2} from \textbf{user 1}.}}
 	\label{fig:evidence}
@@ -494,7 +494,7 @@ The basic premise of our deanonymization approach can be postulated as follows:
 	The mobility of a person across different time periods is stochastic, but largely recurrent and stationary, and its expression at the level of the individual mobility network is discriminative enough to reduce a person's privacy within a population.}
 
 For example, the daily commute to work corresponds to a relatively stable sequence of cell towers.
-This can be expressed in the mobility network of the user as a persistent subgraph and forms a characteristic behavioural pattern that can be exploited for deanonymization of mobility traces.
+This can be expressed in the mobility network of the user as a persistent subgraph, and forms a characteristic behavioural pattern that can be exploited for deanonymization of mobility traces.
 Empirical evidence for our hypothesis is shown in~\cref{fig:evidence}.
 For ease of presentation, in the figure, nodes between the disparate observation periods of the users can be cross-referenced. We assume that cross-referencing is not possible in our attack scenario, as locations are independently pseudonymized.
 

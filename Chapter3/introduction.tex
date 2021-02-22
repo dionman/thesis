@@ -10,19 +10,19 @@ Moreover, temporal resolution may also be deliberately decreased to improve anon
 
 In this chapter, \emph{we examine the degree to which reduced representations of mobility traces, without either semantically-meaningful location labels, or fine-grained temporal information, are identifying.}
 To do so, we represent location data for an individual as a mobility network, where nodes correspond to abstract locations and edges to their connectivity, \ie\ the respective transitions made by an individual between locations.
-We then examine whether or not these graphs reflect user-specific behavioural attributes that could act as a fingerprint, perhaps allowing the reidentification of the individual they represent.
+We then examine to what extent these graphs reflect user-specific behavioural attributes that could act as a fingerprint, perhaps allowing the reidentification of the individual they represent.
 In particular, we show how graph kernel distance functions~\citep{Vishwanathan2010} can be used to assist reidentification of anonymous mobility networks.
 This opens up new opportunities for both attack and defense.
 For example, patterns found in mobility networks could be used to support automated user verification, where the mobility network effectively acts as a behavioural signature of the legitimate user of the device.
 However, the technique could also be used to link together different user profiles which represent the same individual.
 
 Our approach differs from previous studies in location data deanonymization~\citep{Gambs2014, deMulder08, Naini2016a, Golle2009}, in that \emph{we aim to quantify the breach risk in preprocessed location data that do not disclose explicit geographic information}, and where instead locations are replaced with a set of user-specific pseudonyms.
-Moreover, we also do not assume specific timing information for the visits to abstract locations, \emph{merely ordering and duration of stays}.
+Moreover, we also do not assume specific timing information for the visits to abstract locations, \emph{merely ordering and coarse duration of stays}.
 
 We evaluate the power of our approach over a large dataset of traces from $1,500$ smartphones, where cell tower identifiers (\emph{cid}s) are used for localization.
 Our results show that the examined data reductions contain structural information which may uniquely identify users.
 This fact then supports the development of techniques to efficiently reidentify individual mobility profiles.
-Conversely, our analysis may also support the development of techniques to cluster into larger groups with similar mobility; such an approach may then be able to offer better anonymity guarantees.
+Conversely, our analysis may also support the development of techniques to indistinguishably cluster users into larger groups with similar mobility; such an approach may then be able to offer better anonymity guarantees.
 
 A summary of the contributions of this chapter is as follows:
 
@@ -31,7 +31,7 @@ A summary of the contributions of this chapter is as follows:
 \item We show that network representations of individual longitudinal mobility display distinct topology, even for a small number of nodes corresponding to the most frequently visited locations.
 
 \item We evaluate the sizes of identifiability sets formed in a large population of mobile users for increasing network size.
-Our empirical results demonstrate that all networks become quickly uniquely identifiable with less than $20$ locations.
+Our empirical results demonstrate that all networks become quickly uniquely identifiable in state spaces with less than $20$ locations.
 
 \item We propose kernel-based distance metrics to quantify mobility network similarity in the absence of semantically meaningful spatial labels or fine-grained temporal information.
 

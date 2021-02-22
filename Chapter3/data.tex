@@ -41,7 +41,7 @@ As mentioned in the previous section, the cost of computing the adversarial post
 		\caption{}
 		\label{fig:avg_edge_weight}
 	\end{subfigure}
-	\caption{Empirical statistical findings of the Device Analyzer dataset. (a)~Distribution of the observation period duration. (b)~Normalized histogram and probability density estimate of network size for the full mobility networks over the population. (c)~Complementary cumulative distribution function (\emph{CCDF}) for the node degree in the mobility network of a typical user from the population, displayed on log-log scale. (d)~Normalized histogram and probabilty density of average edge weight over the networks.}
+	\caption{Empirical statistical findings of the Device Analyzer dataset. (a)~Distribution of the observation period duration. (b)~Normalized histogram and empirical probability density estimate of network size for the full mobility networks over the population. (c)~Complementary cumulative distribution function (\emph{CCDF}) for the node degree in the mobility network of a typical user from the population, displayed on log-log scale. (d)~Normalized histogram and probabilty density of average edge weight over the networks.}
 	\label{fig:eda}
 \end{figure*}
 
@@ -59,7 +59,7 @@ We first parsed the \emph{cid} sequences from the mobility trajectories into mob
 In order to remove \emph{cid}s associated with movement, we only defined nodes for \emph{cid}s which were visited by the handset for at least 15 minutes.
 Movements from one \emph{cid} to another were then recorded as edges in the mobility network.
 
-As outlined in~\cref{sec:graph-k-anonymity}, we analysed the pathways of the Device Analyzer dataset during the entire observation period, applying the model selection method of~\textcite{scholtes2017network}.\footnote{\url{https://github.com/IngoScholtes/pathpy}}
+As outlined in~\cref{sec:graph-k-anonymity}, we analysed the pathways of the Device Analyzer dataset during the entire observation period, applying the model selection method of~\textcitecustom{scholtes2017network}.\footnote{\url{https://github.com/IngoScholtes/pathpy}}
 This method tests graphical models of varying orders and selects the optimal order by balancing the model complexity and the explanatory power of observations.
 
 We tested higher-order models up to order three. In the case of top$-20$ mobility networks, we found routine patterns in the mobility trajectories were best explained with models of order two for more than 20$\%$ of the users. However, when considering top$-100$, top$-200$, top$-500$ and full mobility networks, we found that the optimal model for our dataset has order one for more than $ 99\% $ of the users; see~\cref{fig:model_selection}. In other words, when considering mobility trajectories which visit less frequent locations in the graph, the overall increase in likelihood of the data for higher-order models cannot compensate for the complexity penalty induced by the larger state space. Hence, while there might still be regions in the graph which are best represented by a higher-order model, the optimal order describing the entire graph is one. Therefore we use a model of order one in the rest of this chapter.
@@ -100,13 +100,13 @@ Reducing the variance in network size will be proved helpful in cross-network si
 
 As shown in~\cref{fig:ccdf}, the parsed mobility network of a typical user is characterized by a \emph{heavy-tailed degree distribution}. We observe that a small number of locations have high degree and correspond to dominant states for a person's mobility routine, while a large number of locations are only visited a few times throughout the entire observation period and have a small degree.
 
- \cref{fig:avg_edge_weight} shows that the estimated probability distribution of average edge weight.
+ \cref{fig:avg_edge_weight} shows the estimated probability distribution of average edge weight.
  This peaks in the range from two to four, indicating that many transitions captured in the full mobility network are rarely repeated. However, most of the total weight of the network is attributed to the tail of this distribution, which corresponds to the edges that the user frequently repeats.
 
 \subsection{Anonymity clusters on top$-N$  networks}\label{sec:anonymity-clusters}
 
 
-We examine to what extent the heterogeneity of users mobility behaviour can be expressed in the topology of the state connectivity networks.
+We examine to what extent the heterogeneity of users' mobility behaviour can be expressed in the topology of the state connectivity networks.
 For this purpose, we generate the isomorphism classes of the top$-N$ networks of our dataset for increasing network size $ N $.
 We then compute the graph $k-$anonymity of the population and the corresponding identifiability set.
 This analysis demonstrates empirically the privacy implications of releasing anonymized users pathway information at increasing levels of granularity.
@@ -128,7 +128,7 @@ This corresponds to the number of non-isomorphic graphs with $ N $ nodes.
 	\label{tab:graphsenumeration}
 \end{table*}
 
-Currently the most efficient way of enumerating  non-isomorphic graphs is by using the algorithm of~\textcite{McKay}, implemented in the package~\texttt{nauty}.\footnote{\url{http://pallini.di.uniroma1.it/}}~\cref{tab:graphsenumeration} presents the enumeration for undirected and directed non-isomorphic graphs of increasing size. We observe that there exist $12,346$ undirected graphs with $8$ nodes and $9,608$ directed graphs with $5$ nodes. In other words, finding the top$-8$ places for each person is the smallest number which could produce unique graphs for each person in our sample of $1,500$ individuals; this reduces to $5$ when directionality is taken into account. Moreover, we find that top$-12$ undirected and top$-8$ directed networks are sufficient to enable each human on the planet to be represented by a different graph, assuming world population of $7.6$B.
+Currently the most efficient way of enumerating  non-isomorphic graphs is by using the algorithm of~\textcitecustom{McKay}, implemented in the package~\texttt{nauty}.\footnote{\url{http://pallini.di.uniroma1.it/}}~\cref{tab:graphsenumeration} presents the enumeration for undirected and directed non-isomorphic graphs of increasing size. We observe that there exist $12,346$ undirected graphs with $8$ nodes and $9,608$ directed graphs with $5$ nodes. In other words, finding the top$-8$ places for each person is the smallest number which could produce unique graphs for each person in our sample of $1,500$ individuals; this reduces to $5$ when directionality is taken into account. Moreover, we find that top$-12$ undirected and top$-8$ directed networks are sufficient to enable each human on the planet to be represented by a different graph, assuming world population of $7.6$B.
 
 Next we present the results of our analysis on the Device Analyzer data.
 As observed in~\cref{fig:k_an}, \emph{sparsity arises in a mobility network even for very small $ N $}.
@@ -179,6 +179,6 @@ This can be attributed to patterns that are widely shared (e.g.\ the trip from w
  \cref{fig:k_an_stats} shows some additional statistics of the anonymous isomorphic clusters formed for varying network sizes.
  Median anonymity becomes one for network sizes of five and eight in directed and undirected networks respectively; see~\cref{fig:k_an_med}.
  In~\cref{fig:anon_distribution} we observe that the population arranges into clusters with small anonymity even for very small network sizes: around $5\%$  of the users have at most $10$-anonymity when considering only five locations in their network, while this percentage increases to $80\%$ and $100\% $ for networks with $10$ and $15$ locations.
- This result confirms that anonymity is even harder when the directionality of edges are provided, since the space of directed networks is much larger than the space of the undirected networks with the same number of nodes.
+ This result confirms that anonymity is even harder when the directionality of edges is provided, since the space of directed networks is much larger than the space of the undirected networks with the same number of nodes.
 
- The above empirical results indicate that the diversity of individuals mobility is reflected in the network representations we use, thus we can meaningfully proceed to discriminative tasks on the population of mobility networks.
+ The above empirical results indicate that the diversity of individuals' mobility is reflected in the network representations we use, thus we can meaningfully proceed to discriminative tasks on the population of mobility networks.
