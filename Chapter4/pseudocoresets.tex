@@ -40,7 +40,7 @@ A Bayesian pseudocoreset takes the form
 where $u\defined (u_m)_{m=1}^M$ are $M$ pseudodata points $u_m\in\reals^d$, $(w_m)_{m=1}^M$ are nonnegative weights,
 $f : \reals^d \times \Theta \to \reals$ is a potential function parametrized by a pseudodata point,
 and $Z(u, w)$ is the corresponding normalization constant rendering $\pi_{u, w}$ a probability density. In the setting of Bayesian posterior inference,
-$u_m$ will take the same form as the data, while the potentials are the log-likelihood functions, \ie $f(u_m, \theta) = \log \pi(u_m | \theta)$.
+$u_m$ will take the same form as the data, while the potentials are the log-likelihood functions, \ie~$f(u_m, \theta) = \log \pi(u_m | \theta)$.
 We construct a coreset by minimizing the KL divergence over both the pseudodata locations and weights, 
 \[
 u^\star, w^\star = \argmin_{\substack{u\in\reals^{d \times M}}, w\in\reals^M_+}\,\, \kl{\pi_{u,w}}{\pi}. 
@@ -83,14 +83,11 @@ that gradients can be expressed using moments of the pseudodata and original dat
 In particular, 
 the gradients of the KL divergence with respect to the weights $ w$ and to a single pseudodata location $u_m$ are 
 \[
-& \nabla_w\mathrm{D}_{\mathrm{KL}} = - \cov_{u,w}[\tf ,f^T1 - \tf^Tw], \,\,
+& \nabla_w\mathrm{D}_{\mathrm{KL}} = - \cov_{u,w}\left[\tf ,f^T1 - \tf^Tw\right], \,\,
 &\nabla_{u_m}\mathrm{D}_{\mathrm{KL}} = -w_m\cov_{u,w}\left[h(u_m), f^T1 - \tf^Tw\right],
 \label{eq:dkl_duw}
 \]
 where $h(\cdot, \theta) \defined \nabla_u f(\cdot, \theta)$, and the $\theta$ argument is again suppressed for brevity.
-
-
-
 
 
 
@@ -189,7 +186,7 @@ and we need not compute
 the entire vector $g_s\in\reals^N$ per sample $s$, but rather only those $B\ll N$ indices in the minibatch $\mcB$,
 resulting in a cost of $O(B)$.
 Aside from that, all computations involving $\tg_s\in\reals^M$ and $\tildeh_{m,s}\in\reals^d$ are at most $O(Md)$.
-Each of these computations are repeated $S$ times over the coreset posterior samples.
+Each of these computations is repeated $S$ times over the coreset posterior samples.
 
 
 

@@ -2,7 +2,7 @@
 \label{sec:experiments}
 In this section, we evaluate the posterior approximation quality achieved by
 pseudocoreset VI~(\psvi) compared against uniform random subsampling~(\uniform), Hilbert
-coresets~(\giga, \textcite{campbell18}) and \sparsevi~greedy coreset
+coresets~(\giga, \textcitecustom{campbell18}) and \sparsevi~greedy coreset
 construction~\citep{campbell19neurips}.  For black-box constructions of \sparsevi~and \psvi~we used $S =
 100$ Monte Carlo samples per gradient estimation. For \giga~we used a
 100-dimensional random projection from a Gaussian approximate posterior $\hpi$
@@ -167,7 +167,7 @@ model.
 		\label{sfig:musicpriv}
 	\end{subfigure}
 	\hfill\qquad
-	\caption{Approximate posterior quality over decreasing differential privacy guarantees for private pseudocoresets of varying size~(\dpsvi) plotted against private variational inference~(\dpvi, \textcite{jalko17}). $\delta$ is always kept fixed at $ 1/N$. Markers on the right end of each plot display the errorbar of approximation achieved by the corresponding nonprivate posteriors. Results are displayed over 5 trials for each construction.}
+	\caption{Approximate posterior quality over decreasing differential privacy guarantees for private pseudocoresets of varying size~(\dpsvi) plotted against private variational inference~(\dpvi, \textcitecustom{jalko17}). $\delta$ is always kept fixed at $ 1/N$. Markers on the right end of each plot display the errorbar of approximation achieved by the corresponding nonprivate posteriors. Results are displayed over 5 trials for each construction.}
 	\label{fig:dklvseps} 
 \end{figure*}
 
