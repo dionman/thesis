@@ -8,19 +8,17 @@ In this section we present \bcores, our unified solution to the robustness and s
 \label{subsec:sparse-b-posterior}
 
 
-Scaling up the computation of the robust \bpost~defined in~\cref{eq:b-posterior} in the regime of massive datasets for non-conjugate models is challenging:
-%~Closed form computation of~\bdiv{} is not possible for a large number of statistical models. Moreover, 
-similarly to the standard Bayesian posterior~\cref{eq:bayes-rule}, applying Markov chain Monte Carlo~(MCMC) methods to sample from the~\bpost{}, implies a computational cost scaling at order $\Theta(N)$. 
+Scaling up the computation of the robust \bpost~defined in~\cref{eq:b-posterior} in the regime of massive datasets for non-conjugate models is challenging: similarly to the standard Bayesian posterior~\cref{eq:bayes-rule}, applying Markov chain Monte Carlo methods to sample from the~\bpost{}, implies a computational cost scaling at order $\Theta(N)$. 
 
 Bayesian coresets~\citep{huggins16,campbell19jmlr} have been recently proposed as a method to circumvent the computational cost for the purposes of approximate inference via summarizing the original dataset  $(x_n)_{n=1}^{N}$ with a small learnable subset of weighted datapoints $(x_m, w_m)_{m=1}^{M}$, where  $(w_m)_{m=1}^{M} \in \reals^{M}_{+},\; M \ll N$. 
 Substituting~\cref{eq:b-loss} in~\cref{eq:b-posterior}, allows us to explicitly introduce a weights vector $ w \in \reals_{\geq 0}^{N}$ in the posterior, and rewrite the latter in the general form
 \[
 \pi_{\beta,w}(\theta|x) 
-= \frac{1}{Z(\beta, w)}  \exp\left(\sum_{n=1}^{N}w_nf_n(\theta)\right)\pi_0(\theta).
+= \frac{1}{Z(\beta, w)}  \exp\left(\sum_{n=1}^{N}w_nf_n(\theta)\right)\pi_0(\theta),
 \label{eq:bcore-posterior}
 \]
-%In the last line the data-independent part of the Tsallis score has been absorbed in the uknown log-partition function of the distribution.
-In the case of the \bpost{} on the full dataset~\cref{eq:b-posterior}, we have $w=\vecone \in\reals^{N}$; for coreset posteriors this vector acts as a learnable parameter and attains a non-trivial sparse value, with non-zero entries corresponding to the elements of the full dataset that are selected over the summarization.
+where $(f_n(\theta))_{n=1}^{N}$ correspond to the \blik~terms, $\pi_0$ is the prior, and $Z(\beta, w)$ is the marginal likelihood (which in the general case corresponds to an intractable constant). 
+In the case of the \bpost{} on the full dataset~\cref{eq:b-posterior}, we have $w=1 \in\reals^{N}$; for coreset posteriors this vector acts as a learnable parameter and attains a non-trivial sparse value, with non-zero entries corresponding to the elements of the full dataset that are selected over the summarization.
 
 Although Bayesian coresets can dramatically reduce inference time, they inherit the susceptibility of Bayesian posterior to data mismatch in the large data regime: even though the number of points used in inference gets reduced, these points are now weighted, hence the remark of~\cref{eq:missmatch_with_N} can carry over in coresets posterior. 
 
@@ -30,16 +28,15 @@ w^{*} = \arg \min_{w\in\reals^{N}} \kl{\pi_{\beta,w}}{\pi_{\beta}}
 \quad
 \text{s.t.}
 \quad
-w \geq 0,\; ||w||_0 \leq M,
+w \geq 0,\; ||w||_0 \leq M.
 \label{eq:coreset-vi}
 \]
-%where $\plainkl$ is the KL divergence. 
 In the following we denote expectations and covariances under $\theta \sim \pi_{\beta,w}(\theta|x)$ as $\EE_{\beta,w}$ and $\cov_{\beta,w}$ respectively. Then the KL divergence is written as
 \[
 \kl{\pi_{\beta,w}}{\pi_{\beta}}:=\EE_{\beta, w} \left[\log\frac{\pi_{\beta,w}}{\pi_\beta}\right].
 \label{eq:kld}
 \]
-In our formulation it is easy to observe that posteriors of~\cref{eq:bcore-posterior} form a set of \emph{exponential family distributions}~\citep{wainwright08}, with natural parameters $w \in \reals_{\geq 0}^N$, sufficient statistics $(f_n(\theta))_{n=1}^{N}$, and log-partition function $\log Z(\beta, w)$. Following~\textcite{campbell19neurips}, the objective can be expanded as 
+In our formulation it is easy to observe that posteriors of~\cref{eq:bcore-posterior} form a set of \emph{exponential family distributions}~\citep{wainwright08}, with natural parameters $w \in \reals_{\geq 0}^N$, sufficient statistics $(f_n(\theta))_{n=1}^{N}$, and log-partition function $\log Z(\beta, w)$. Following~\textcitec{campbell19neurips}, the objective can be expanded as 
 \[
 \kl{\pi_{\beta,w}}{\pi_{\beta}} =& \log Z(\beta) - \log Z(\beta, w) 
                                     - \sum_{n=1}^{N}\EE_{\beta,w}\left[f_n(\theta)- w_n f_n(\theta)\right],
@@ -110,16 +107,16 @@ where $f:=\left[f_1(\theta) \ldots f_N(\theta)\right]^T$.%, $f':=\left[f'_1(\the
 
 
 To scale up coreset construction on massive datasets we use stochastic gradient descent on minibatches $\mcB \sim \distUnifSubset([N], B)$, with $B \ll N$.
-The covariance of~\cref{eq:dkl-grad} required for exact gradient computation of the variational objective is generally not available in analytical form. Hence, for our black-box coreset construction we approximate this quantity via Monte Carlo estimates, using samples of the unknown parameters from the coreset posterior iterates. These samples can be efficiently obtained with complexity $O(M)$ (not scaling with dataset size $N$) due to the sparsity of the coreset posterior over the procedure. The proposed black-box construction makes no assumptions on the statistical model other than having tractable \blik{}s. We employ a two-step incremental scheme, with complexity of order $O\left(M(M+B)ST\right)$, where $S$ is the number of samples from the coreset posterior, and $T$ is the total number of iterations over coreset points weights optimization. The full incremental construction is outlined in \cref{alg:bcores}.
+The covariance of~\cref{eq:dkl-grad} required for exact gradient computation of the variational objective is generally not available in analytical form. Hence, for our black-box coreset construction we approximate this quantity via Monte Carlo estimates, using samples of the unknown parameters from the coreset posterior iterates. These samples can be efficiently obtained with complexity $O(M)$ (not scaling with dataset size $N$) due to the sparsity of the coreset posterior over the incremental construction procedure. The proposed black-box construction makes no assumptions on the statistical model other than having tractable \blik{}s. We employ a two-step incremental scheme, with complexity of order $O\left(M(M+B)ST\right)$, where $S$ is the number of samples from the coreset posterior, and $T$ is the total number of iterations over coreset points weights optimization. The full incremental construction is outlined in \cref{alg:bcores}.
 
 
 \subsubsection{Next datapoint selection}
-We first select the next datapoint to include in our coreset summary, via a greedy selection criterion. Although maximizing decrease in KL locally via~\cref{eq:dkl-grad}, seems to be the natural greedy choice here, using the information-geometric argument presented in~\textcite{campbell19neurips}, we use instead the following correlation maximization criterion:
+We first select the next datapoint to include in our coreset summary, via a greedy selection criterion. Although maximizing decrease in KL locally via~\cref{eq:dkl-grad}, seems to be the natural greedy choice here, considering that weights get optimized in the subsequent step of the algorithm and using the information-geometric argument presented in~\textcitec{campbell19neurips}, we rely instead on the following correlation maximization criterion:
 \[
-x_{m} = \arg \underset{x_m \in \mcI \cup \mcB }{\max}
+x_{m} = \arg \underset{x_n \in \mcI \cup \mcB }{\max}
 \begin{cases}
-	\left|\corr_{\beta,w}\left[f_m, \frac{N}{B}1^Tf - w^T f\right]\right| & w_m>0 \\
-	\corr_{\beta,w}\left[f_m, \frac{N}{B}1^Tf - w^T f\right] & w_m=0,
+	\left|\corr_{\beta,w}\left[f_n, \frac{N}{B}1^Tf - w^T f\right]\right| & w_n>0 \\
+	\corr_{\beta,w}\left[f_n, \frac{N}{B}1^Tf - w^T f\right] & w_n=0,
 \end{cases}
 \label{eq:greedy-select}
 \]
@@ -149,7 +146,7 @@ f_N(\theta_r)
 \end{comment}
 
 \subsubsection{Coreset points reweighting}
-After adding a new datapoint, we update the coreset weight vector $w\in\reals_{\geq 0}$ via $T$ steps of projected stochastic gradient descent, using the Monte Carlo estimate of~\cref{eq:dkl-grad} per line~\ref{lst:line:mc-grad} of~\cref{alg:bcores}.
+After adding a new datapoint to the summary, we update the coreset weight vector $w\in\reals_{\geq 0}$ via $T$ steps of projected stochastic gradient descent, using the Monte Carlo estimate of~\cref{eq:dkl-grad} per line~\ref{lst:line:mc-grad} of~\cref{alg:bcores}.
 \begin{comment}
 \[
 \hat{\nabla}_w := -\frac{1}{S} \sum_{s=1}^{S} g_s \left(\frac{N}{B}1^Tg_s - w^T g_s\right) \in \reals_{d}, 
@@ -160,4 +157,4 @@ where $g_s$ are defined as in~\cref{eq:sampled-potentials}.
 \vspace{.2cm}
 \par 
 \textbf{Summarization of observations groups and batches.}
-Apart from working at the individual datapoints level, our scheme also enables summarizing batches and groups of observations. Acquiring efficiently informative batches of datapoints can replace random minibatch selection commonly used in stochastic optimization for large-scale model training. This extension can also be quite useful in situations where datapoints are partitioned in clusters, e.g. according to demographic information. For example, when gender and age features are available in datasets capturing users movies habits, collected datapoints can be binned accordingly, and our group summarization technique will allow extracting informative combinations of demographic groups that can jointly summarize the entire population's information. The robustness properties of \bcores{} in such applications can aid removing group bias, and rejecting groups with large fractions of outliers. \cref{alg:bcores} is again directly applicable, where $g_s$ vectors are now summed over the corresponding datapoints of each batch or group.
+Apart from working at the individual datapoints' level, our scheme also enables summarizing batches and groups of observations. Acquiring efficiently informative batches of datapoints can replace random minibatch selection commonly used in stochastic optimization for large-scale model training. This extension can also be quite useful in situations where datapoints are partitioned in clusters, e.g. according to demographic information. For example, when gender and age features are available in datasets capturing users' movies habits, collected datapoints can be binned accordingly, and our group summarization technique will allow extracting informative combinations of demographic groups that can jointly summarize the entire population's information. The robustness properties of \bcores{} in such applications can aid removing group bias, and rejecting groups with large fractions of outliers. \cref{alg:bcores} is again directly applicable, where $g_s$ vectors are now summed over the corresponding datapoints of each batch or group.
