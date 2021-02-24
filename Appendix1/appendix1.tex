@@ -45,7 +45,7 @@ and
 	Y = \left[X_n : n\notin \mcI\right] \in \reals^{d\times (N-M)}, \quad
 	X = \left[X_n : n\in \mcI\right] \in \reals^{d\times M},
 	\]
-	we have that for any $w\in \reals_+^M$ for those indices $\mcI$,
+	we have that, for any $w\in \reals_+^M$, for those indices $\mcI$,
 	\[
 	\kl{\pi_w}{\pi} 
 	\geq & \frac{1}{2(N+1)}1^TY^TY1 
@@ -187,7 +187,7 @@ we need expressions for $\cov[f_n,f_m]$,
 $\cov[\tf_n,f_m]$, 
 $\cov[h(u_i), f_n]$, and
 $\cov[h(u_i), \tf_n]$.
-Following~\textcite{campbell19neurips}, we have that
+Following~\textcitec{campbell19neurips}, we have that
 \[ 
 \cov[f_n ,f_m]  &=  v_n^T \Psi v_m + \frac{1}{2} \tr{\Psi^T \Psi} \\
 \cov[\tf_n ,f_m]  &=  \tv_n^T \Psi v_m + \frac{1}{2} \tr{\Psi^T \Psi}. 
@@ -256,19 +256,22 @@ To scale up computation on large datasets, in our experiment we made use of stoc
 
 \subsubsection{Additional plots}
 \label{app:linreg_plots_appendix}
-\begin{figure}[t]
+
+Here we present some more plots demonstating the dependence of Hilbert coresets' approximation quality on the dimension of random projections in the Bayesian linear regression setting presented in~\cref{fig:linreg_300}. We remind that the dimension used at this experiment and throughout the entire experiments section was set to 100. Increasing this number is typically expensive to obtain in practice. As demonstrated in~\cref{fig:hilbert_varying_projdim}, getting higher projection dimension enables better posterior approximation in the problem for both \gigao~and~\gigar. However, \psvi~remains competitive in the small coreset regime, even for Hilbert coresets with extremely large projection dimensionality, demonstrating the information-geometric limitations that Hilbert coreset constructions are known to face~\citep{campbell19neurips}.
+
+\begin{figure}[!t]
 	\centering
-	\begin{subfigure}[b]{.29\textwidth}
+	\begin{subfigure}[]{.295\textwidth}
 		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/linregKLDvsCstSize_200.png}}%
 		\caption{$\text{project. dim.}=200$}
 	\end{subfigure}\hfill\qquad
 	\centering
-	\begin{subfigure}[b]{.29\textwidth}
+	\begin{subfigure}[]{.295\textwidth}
 		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/linregKLDvsCstSize_2000.png}}%
 		\caption{$\text{project. dim.}=2,000$}
 	\end{subfigure}\hfill\qquad
 	\centering
-	\begin{subfigure}[b]{.29\textwidth}
+	\begin{subfigure}[]{.295\textwidth}
 		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/linregKLDvsCstSize_10000.png}}%
 		\caption{$\text{project. dim.}=10,000$}
 	\end{subfigure}
@@ -276,7 +279,6 @@ To scale up computation on large datasets, in our experiment we made use of stoc
 	\label{fig:hilbert_varying_projdim}
 \end{figure}
 
-Here we present some more plots demonstating the dependence of Hilbert coresets approximation quality on the dimension of random projections in the Bayesian linear regression setting presented in~\cref{fig:linreg_300}. We remind that the dimension used at this experiment and throughout the entire experiments section was set to 100. Increasing this number is typically expensive to obtain in practice. As demonstrated in~\cref{fig:hilbert_varying_projdim}, getting higher projection dimension enables better posterior approximation in the problem for both \gigao~and~\gigar. However, \psvi~remains competitive in the small coreset regime, even for Hilbert coresets with extremely large projection dimensionality, demonstrating the information-geometric limitations that Hilbert coreset constructions are known to face~\cite{campbell19neurips}.
 
 
 \subsection{Bayesian logistic regression}
@@ -298,7 +300,7 @@ The aim of inference is to compute the posterior over the latent parameter $ \th
 Log-likelihood of each datapoint can be expressed as
 \[
 \begin{split}
-f_n(x_n, y_n|\theta)  
+f_n := f(x_n, y_n|\theta)  
 =&\ind{[y_n=-1]}\log \left( 1 - \frac{1}{1+e^{-z_n^T \theta}}\right) 
 - \ind{[y_n=1]} \log \left( 1+ e^{-z_n^T \theta}  \right) \\
 =&-\log\left( 1 + \exp(-y_n z_n^T\theta)\right).
@@ -316,12 +318,10 @@ Hence in pseudocoreset construction we can optimize pseudodata point locations w
 \]
 
 
-
 \subsubsection{Datasets description}
 \label{app:logreg_data_details}
-For logistic regression experiments, we used subsampled and full versions of datasets presented in~\cref{table:datasets_details}: a synthetic dataset with $ x\in \reals^2 $ sampled \iid from a $\distNorm{(0, I)}$ and $ y\in\{-1,1\} $ sampled from respective logistic likelihood with $ \theta =[3, 3, 0]^T$ (\textsc{Synthetic}); a phishing websites dataset reduced to $ D=10 $ via PCA (\textsc{Phishing}); a chemical reactivity dataset with  real-valued features corresponding to its first $ 10 $ and $ 100 $ principal components (\textsc{ChemReact} and \textsc{ChemReact100} respectively); a dataset with $ 50 $ real-valued features associated with whether each of $ 100K $ customers of a bank will make a specific transaction (\textsc{Transactions}); and a dataset for music analysis, where we consider \emph{"classical vs all"} genre classification task (\textsc{Music}). Original versions of the four latter datasets are available online respectively at~\href{https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/binary.html}{https://www.csie.ntu.edu.tw/\~{}cjlin/libsvm tools/datasets/binary.html},  \href{http://komarix.org/ac/ds/}{http://komarix.org/ac/ds},  \href{https://www.kaggle.com/c/santander-customer-transaction-prediction/data}{https://www.kaggle.com/c/santan der-customer-transaction-prediction/data}, and \href{https://github.com/mdeff/fma}{https://github.com/mdeff/fma}. 
 
-\begin{table}[!t]
+\begin{table}[!htp]
 	\begin{center}
 		\begin{tabular}{|l|l|l|}
 			\hline
@@ -339,30 +339,31 @@ For logistic regression experiments, we used subsampled and full versions of dat
 	\label{table:datasets_details}
 \end{table}
 
+For logistic regression experiments, we used subsampled and full versions of datasets presented in~\cref{table:datasets_details}: a synthetic dataset with $ x\in \reals^2 $ sampled \iid from a $\distNorm{(0, I)}$ and $ y\in\{-1,1\} $ sampled from respective logistic likelihood with $ \theta =[3, 3, 0]^T$ (\textsc{Synthetic}); a phishing websites dataset reduced to $ D=10 $ via PCA (\textsc{Phishing}); a chemical reactivity dataset with  real-valued features corresponding to its first $ 10 $ and $ 100 $ principal components (\textsc{ChemReact} and \textsc{ChemReact100} respectively); a dataset with $ 50 $ real-valued features associated with whether each of $ 100K $ customers of a bank will make a specific transaction (\textsc{Transactions}); and a dataset for music analysis, where we consider \emph{"classical vs all"} genre classification task (\textsc{Music}). Original versions of the four latter datasets are available online respectively at~\href{https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/binary.html}{https://www.csie.ntu.edu.tw/\~{}cjlin/libsvm tools/datasets/binary.html},  \href{http://komarix.org/ac/ds/}{http://komarix.org/ac/ds},  \href{https://www.kaggle.com/c/santander-customer-transaction-prediction/data}{https://www.kaggle.com/c/santan der-customer-transaction-prediction/data}, and \href{https://github.com/mdeff/fma}{https://github.com/mdeff/fma}. 
+
+
+
 \subsubsection{Small-scale experiments}
 \label{app:small_scale_appendix}
+
 In the small-scale experiment, the number of overall gradient updates was
 set to $T = 1,500$, while minibatch size was set to  $B = 400$. Learning rate schedule for \sparsevi~and \psvi~was ${\gamma_t = 0.1t^{-1}}$. Results presented in~\cref{fig:smallscale_ls_blogreg_dkl} indicate that~\psvi~achieves superior quality to~\sparsevi~for small coreset sizes, and is competitive to~\gigao, while the latter unrealistically uses true posterior samples to tune a weighting function required over construction.
 
-
-\begin{figure*}[!t]
+\begin{figure*}[!tp]
 	\centering
-	\begin{subfigure}[b]{.29\textwidth}
+	\begin{subfigure}[]{.29\textwidth}
 		\caption*{\textsc{Synthetic}}
-		\vspace*{-0.3cm}
-		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/synth_lr_KLDvssz.png}}%
+		\centerline{\includegraphics[width=1.25\columnwidth]{\MyPath/figs/synth_lr_KLDvssz.png}}%
 	\end{subfigure}\hfill\qquad
 	\centering
-	\begin{subfigure}[b]{.29\textwidth}
+	\begin{subfigure}[]{.29\textwidth}
 		\caption*{\textsc{Phishing}}
-		\vspace*{-0.3cm}
-		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/phishing_KLDvssz.png}}%
+		\centerline{\includegraphics[width=1.25\columnwidth]{\MyPath/figs/phishing_KLDvssz.png}}%
 	\end{subfigure}\hfill\qquad
 	\centering
-	\begin{subfigure}[b]{.29\textwidth}
+	\begin{subfigure}[]{.29\textwidth}
 		\caption*{\textsc{ChemReact}}
-		\vspace*{-0.3cm}
-		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/ds1_KLDvssz.png}}%
+		\centerline{\includegraphics[width=1.25\columnwidth]{\MyPath/figs/ds1_KLDvssz.png}}%
 	\end{subfigure}
 	\caption{Comparison of (pseudo)coreset approximate posterior
 		quality vs  coreset
@@ -374,89 +375,63 @@ set to $T = 1,500$, while minibatch size was set to  $B = 400$. Learning rate sc
 \label{app:reproducibility}
 In this subsection we provide additional details for reproducibility of the experimental setup for the Bayesian Logistic Regression experiment presented in~\cref{sec:experiments}.  
 
-\paragraph{Posterior approximation metrics, coreset gradients and learning rates} Posterior approximation quality was estimated via computing KL divergence between Gaussian distributions fitted on coreset and full data posteriors via Laplace approximation. For both \sparsevi~and \psvi, gradients were estimated using samples drawn from a Laplace approximation fitted on current coreset weights
+\paragraph{Posterior approximation metrics, coreset gradients and learning rates} 
+Posterior approximation quality was estimated via computing KL divergence between Gaussian distributions fitted on coreset and full data posteriors via Laplace approximation. For both \sparsevi~and \psvi, gradients were estimated using samples drawn from a Laplace approximation fitted on current coreset weights
 and points. To optimize initial learning rates for \sparsevi~and \psvi, we did a grid search over ${\{0.1, 1, 10\}}$.
 
-\paragraph{Differential privacy loss accounting and hyperparameter selection}  In the differential privacy experiment, we were not concerned with the extra privacy cost of hyperparameter optimization task.  Estimation of differential privacy cost at all experiments was based on TensorFlow privacy implementation of moments accountant for the subsampled Gaussian mechanism.\footnote{\href{https://github.com/tensorflow/privacy}{https://github.com/tensorflow/privacy}} 
+\paragraph{Differential privacy loss accounting and hyperparameter selection}  
+\renewcommand{\thempfootnote}{\arabic{mpfootnote}}
+  \begin{minipage}{\linewidth}
+In the differential privacy experiment, we were not concerned with the extra privacy cost of hyperparameter optimization task.  Estimation of differential privacy cost at all experiments was based on TensorFlow privacy implementation of moments accountant for the subsampled Gaussian mechanism.\footnote{\href{https://github.com/tensorflow/privacy}{https://github.com/tensorflow/privacy}} 
 For \dpsvi~we used the best learning hyperparameters found for \psvi~on the corresponding dataset. The demonstrated range of privacy budgets was generated by decreasing the variance $ \sigma $ of additive Gaussian noise and keeping the rest of hyperparameters involved in privacy accounting fixed.  
-Regarding \dpvi, over our experiments we also kept subsampling ratio fixed. We based our implementation of \dpvi~on authors code,\footnote{\href{https://github.com/DPBayes/DPVI-code}{https://github.com/DPBayes/DPVI-code}} adapting noise calibration according to the adjacency relation used in~\cref{sec:dp-pseudocoresets}, and the standard differential privacy definition~\citep{dwork14}. In our experiment, we used the AdaGrad optimizer, with learning rate $0.01$, number of iterations $2,000$, and minibatch size $200$. Gradient clipping values for \dpvi~results presented in~\cref{fig:dklvseps}, for \textsc{Transactions}, \textsc{ChemReact100}, and \textsc{Music} datasets were tuned via grid search over ${\{1, 5, 10, 50\}}$. The values of gradient clipping constant giving best privacy profiles for each dataset, used in~\cref{fig:dklvseps}, were 10, 5, and 5 respectively. 
-
+Regarding \dpvi, over our experiments we also kept the subsampling ratio fixed. We based our implementation of \dpvi~on authors' code,\footnote{\href{https://github.com/DPBayes/DPVI-code}{https://github.com/DPBayes/DPVI-code}} adapting noise calibration according to the adjacency relation used in~\cref{sec:dp-pseudocoresets}, and the standard differential privacy definition~\citep{dwork14}. In our experiment, we used the AdaGrad optimizer, with learning rate $0.01$, number of iterations $2,000$, and minibatch size $200$. Gradient clipping values for \dpvi~results presented in~\cref{fig:dklvseps}, for \textsc{Transactions}, \textsc{ChemReact100}, and \textsc{Music} datasets were tuned via grid search over ${\{1, 5, 10, 50\}}$. The values of gradient clipping constant giving best privacy profiles for each dataset, used in~\cref{fig:dklvseps}, were 10, 5, and 5 respectively. 
+\end{minipage}
 
 
 \subsubsection{Additional plots}
 \label{app:cpu_timings}
 
-\begin{figure*}[!t]
+\begin{figure*}[t]
 	\centering
-	\begin{subfigure}[b]{.29\textwidth}
+	\begin{subfigure}[]{.29\textwidth}
 		\caption*{\textsc{Synthetic}}
-		\vspace*{-0.3cm}
-		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/synth_lr_KLDvscput.png}}%
+		%\vspace*{-0.3cm}
+		\centerline{\includegraphics[width=1.2\columnwidth]{\MyPath/figs/synth_lr_KLDvscput.png}}%
 	\end{subfigure}\hfill\qquad
 	\centering
-	\begin{subfigure}[b]{.29\textwidth}
+	\begin{subfigure}[]{.29\textwidth}
 		\caption*{\textsc{Phishing}}
-		\vspace*{-0.3cm}
-		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/phishing_KLDvscput.png}}%
+		%\vspace*{-0.3cm}
+		\centerline{\includegraphics[width=1.2\columnwidth]{\MyPath/figs/phishing_KLDvscput.png}}%
 	\end{subfigure}\hfill\qquad
 	\centering
-	\begin{subfigure}[b]{.29\textwidth}
+	\begin{subfigure}[]{.29\textwidth}
 		\caption*{\textsc{ChemReact}}
-		\vspace*{-0.3cm}
-		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/ds1_KLDvscput.png}}%
+		%\vspace*{-0.3cm}
+		\centerline{\includegraphics[width=1.2\columnwidth]{\MyPath/figs/ds1_KLDvscput.png}}%
 	\end{subfigure}\hfill\qquad
 	\centering
-	\begin{subfigure}[b]{.29\textwidth}
+	\begin{subfigure}[]{.29\textwidth}
 		\caption*{\textsc{Transactions}}
-		\vspace*{-0.3cm}
-		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/wsanta100K_KLDvscput.png}}%
+		%\vspace*{-0.3cm}
+		\centerline{\includegraphics[width=1.2\columnwidth]{\MyPath/figs/wsanta100K_KLDvscput.png}}%
 	\end{subfigure}\hfill\qquad
 	\centering
-	\begin{subfigure}[b]{.29\textwidth}
+	\begin{subfigure}[]{.29\textwidth}
 		\caption*{\textsc{ChemReact100}}
-		\vspace*{-0.3cm}
-		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/wds1100_KLDvscput.png}}%
+		%\vspace*{-0.3cm}
+		\centerline{\includegraphics[width=1.2\columnwidth]{\MyPath/figs/wds1100_KLDvscput.png}}%
 	\end{subfigure}\hfill\qquad
 	\centering
-	\begin{subfigure}[b]{.29\textwidth}
+	\begin{subfigure}[]{.29\textwidth}
 		\caption*{\textsc{Music}}
-		\vspace*{-0.3cm}
-		\centerline{\includegraphics[width=1.15\columnwidth]{\MyPath/figs/wfma_KLDvscput.png}}%
+		%\vspace*{-0.3cm}
+		\centerline{\includegraphics[width=1.2\columnwidth]{\MyPath/figs/wfma_KLDvscput.png}}%
 	\end{subfigure}\hfill\qquad
 	\caption{Comparison of \psvi~and \sparsevi~approximate posterior quality vs CPU time requirements for logistic regression experiment of~\cref{sec:experiments}.}
 	\label{fig:30logreg_dkl_cput}
 \end{figure*}
 
-\begin{figure*}[!t]
-	\centering
-	\begin{subfigure}[b]{\textwidth}
-		\centering
-		\caption*{\textsc{Synthetic}}
-		\vspace*{-0.3cm}
-		\includegraphics[width=0.495\textwidth, height=3.1cm]{\MyPath/tempfigs/synthlriter.png} \hfill 
-		\includegraphics[width=0.495\textwidth, height=3.1cm]{\MyPath/tempfigs/synthlrsz.png}%
-	\end{subfigure}\hfill\qquad
-	\begin{subfigure}[b]{\textwidth}
-		\centering
-		\caption*{\textsc{Phishing}}
-		\vspace*{-0.3cm}
-		\includegraphics[width=0.495\textwidth, height=3.1cm]{\MyPath/tempfigs/phishingiter.png} \hfill
-		\includegraphics[width=0.495\textwidth, height=3.1cm]{\MyPath/tempfigs/phishingsz.png}%
-	\end{subfigure}\hfill\qquad
-	\begin{subfigure}[b]{\textwidth}
-		\centering
-		\caption*{\textsc{ChemReact}}
-		\vspace*{-0.3cm}
-		\includegraphics[width=0.495\textwidth, height=3.1cm]{\MyPath/tempfigs/ds1iter.png}
-		\hfill
-		\includegraphics[width=0.495\textwidth, height=3.1cm]{\MyPath/tempfigs/ds1sz.png}%
-	\end{subfigure}
-	\caption{Comparison of incremental \psvi~and \sparsevi~approximate posterior
-		quality vs iterations of incremental construction~(\emph{left}) and  coreset
-		size~(\emph{right}) for logistic regression on small-scale experiment. With dashed lines is displayed the posterior quality achieved
-		by incremental \psvi~and \sparsevi~constructions using gradients computed on random data subsets of size $256$.}
-	\label{fig:logreg_dkl}
-\end{figure*}
 
 \paragraph{Evaluation of CPU time requirements} Experiments were performed on a CPU cluster node with a 2x Intel Xeon Gold 6142 and 12GB RAM. In the case of \psvi~the computation of coreset sizes from 1 to 100 was parallelized per single size over 32 cores in total. \cref{fig:30logreg_dkl_cput} shows posterior approximation error vs required CPU time for all coreset construction algorithms over logistic regression on the small-scale and large-scale datasets. As opposed to existing incremental coreset construction schemes, batch construction of \psvi~reduces the dependence between coreset size and processing cost: for \sparsevi~$\Theta(M^2)$ gradient computations are required, as this method builds up a coreset one point at a time; in contrast, \psvi~requires $\Theta(M)$ gradients since it learns all pseudodata points jointly. Although each gradient step of \psvi~is more expensive, practically this implies a steeper decrease in approximation error over processing time compared to \sparsevi. In the case of differentially private \psvi,~some extra CPU requirements are added due to the subsampled Gaussian mechanism computations.
 
@@ -466,10 +441,38 @@ We evaluated coreset construction methods on Bayesian logistic regression. We us
 for \sparsevi~and incremental \psvi~were drawn from a Laplace approximation using current
 coreset weights and points. We implemented~\sparsevi~and incremental~\psvi~via computing gradients on the full dataset, as well as using stochastic gradients on subsets of size $B=256$ for lowering computational cost. 
 
-Results presented in~\cref{fig:logreg_dkl} demonstrate that incremental \psvi~achieves consistently the smallest posterior approximation error, offering improvement
-compared to \sparsevi~and even achieving better performance than \gigao. %, without the requirement for specifying a weighting function.  
-We observe that stochastic gradients implementation~(dashed lines) reaches a plateau at higher values of KL compared to full gradients~(solid lines), but still achieves performance comparable with~\gigao.
+Results presented in~\cref{fig:logreg_dkl} demonstrate that incremental \psvi~achieves consistently the smallest posterior approximation error, offering improvement compared to \sparsevi~and even achieving better performance than \gigao. We observe that stochastic gradients' implementation~(dashed lines) reaches a plateau at higher values of KL compared to full gradients~(solid lines), but still achieves performance comparable with~\gigao.
 
+\begin{figure*}[!htp]
+	\centering
+	\begin{subfigure}[]{\textwidth}
+		\centering
+		\caption*{\textsc{Synthetic}}
+		\vspace*{-0.2cm}
+		\includegraphics[width=0.495\textwidth]{\MyPath/tempfigs/synthlriter.png} \hfill 
+		\includegraphics[width=0.495\textwidth]{\MyPath/tempfigs/synthlrsz.png}%
+	\end{subfigure}\hfill\qquad
+	\begin{subfigure}[]{\textwidth}
+		\centering
+		\caption*{\textsc{Phishing}}
+		\vspace*{-0.2cm}
+		\includegraphics[width=0.495\textwidth]{\MyPath/tempfigs/phishingiter.png} \hfill
+		\includegraphics[width=0.495\textwidth]{\MyPath/tempfigs/phishingsz.png}%
+	\end{subfigure}\hfill\qquad
+	\begin{subfigure}[]{\textwidth}
+		\centering
+		\caption*{\textsc{ChemReact}}
+		\vspace*{-0.2cm}
+		\includegraphics[width=0.495\textwidth]{\MyPath/tempfigs/ds1iter.png}
+		\hfill
+		\includegraphics[width=0.495\textwidth]{\MyPath/tempfigs/ds1sz.png}%
+	\end{subfigure}
+	\caption{Comparison of incremental \psvi~and \sparsevi~approximate posterior
+		quality vs iterations of incremental construction~(\emph{left}) and  coreset
+		size~(\emph{right}) for logistic regression on small-scale experiment. With dashed lines is displayed the posterior quality achieved
+		by incremental \psvi~and \sparsevi~constructions using gradients computed on random data subsets of size $256$.}
+	\label{fig:logreg_dkl}
+\end{figure*}
 
 
 
