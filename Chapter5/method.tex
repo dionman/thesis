@@ -133,7 +133,7 @@ x_{m} = \arg \underset{x_n \in \mcI \cup \mcB }{\max}
 \end{cases}
 \label{eq:greedy-select}
 \]
-where we denoted by $\mcI$ the set of coreset points.
+where we denoted by $\mcI$ the set of coreset points. This criterion is invariant to scaling each potential $f_n$ by any positive constant, and selects the potential that has the largest correlation with the current residual error $\frac{N}{B}1^Tf - w^Tf$. 
 The correlations for coreset and minibatch datapoints are empirically approximated  as in lines~\ref{lst:line:core-corr} and~\ref{lst:line:batch-corr} of~\cref{alg:bcores} respectively.
 \begin{comment}
 \[
