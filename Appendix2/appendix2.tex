@@ -103,7 +103,7 @@ The set function $d$ of~\cref{eq:setfunction_d} is non-submodular.
 \enprop
 
 \begin{proof}
-For convenience let's focus on the case of Gaussian mean inference for the classic Bayesian posterior, where the objective can be written in closed form. Our argument will in principle carry over for arbitrary $\beta$s and statistical models. We recall from~\cref{eq:KL_from_coreset_post_to_exact} that
+For convenience let's focus on the case of Gaussian mean inference for the classic Bayesian posterior, where the objective can be handily written in closed form. Our argument will in principle carry over for arbitrary $\beta$s and statistical models. We recall from~\cref{eq:KL_from_coreset_post_to_exact} that
 \[ d(S) &=-\frac{1}{2} \left[ -d\log \left( \frac{1+ N}{1+\frac{N}{M}||\mcI_{S}||_1}\right) - d  + d \left( \frac{1+ N}{1+\frac{N}{M}||\mcI_{S}||_1}\right)
 +  (1+N)(\mu_{1} - \mu_{w})^T (\mu_{1} - \mu_{w})\right] \notag  \\
 			&=-\frac{1}{2}  (1+N)||\mu_{1} - \mu_{w}||_2^2,
@@ -118,7 +118,7 @@ Let's consider a set of observations containing two mirror observations $x_0, -x
 =& 2d(S\cup\{x_0\}) - 2 d(\mcX) =  2d(S\cup\{x_0\}) \notag 
 <0,
 \]
-where we have used the symmetry of the objective \wrt the observations and the fact that $d(S)=d(\mcX)=0$.
+where we have used the symmetry of the objective \wrt the observations for this statistical model and the fact that $d(S)=d(\mcX)=0$.
 \end{proof}
 
 
