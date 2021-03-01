@@ -69,8 +69,8 @@ where we suppress the $(\theta)$ for brevity where clear from context.
 Denote $\EE_{u,w}$ and $\cov_{u,w}$ to be the expectation and covariance operator for the pseudocoreset posterior $\pi_{u,w}$.
 Then we may write the KL divergence in \cref{eq:pseudo-coreset-vi}  as
 \[
-  \kl{\pi_{u,w}}{\pi} = &\EE_{u,w}[\log \pi_{u,w}(\theta)] - \EE_{u,w}[\log \pi(\theta)] \\
- = &\log Z(1) - \log Z(u, w)
+  \kl{\pi_{u,w}}{\pi} = &\EE_{u,w}[\log \pi_{u,w}(\theta)] - \EE_{u,w}[\log \pi(\theta)] \notag \\
+ = &\log Z(1) - \log Z(u, w) 
 - 1^T\EE_{u,w} [f] +  w^T\EE_{u,w} [\tf],
 \label{eq:kl-expanded}
 \]
