@@ -49,7 +49,7 @@ and
 	\[
 	\kl{\pi_w}{\pi} 
 	\geq & \frac{1}{2(N+1)}1^TY^TY1 
-	+1^TY^TX\left(\frac{1}{N+1} - \frac{w}{1+1^Tw}\right)\\
+	+1^TY^TX\left(\frac{1}{N+1} - \frac{w}{1+1^Tw}\right) \notag \\
 	&+\frac{N+1}{2}\!\!\left(\frac{1}{N+1}\! -\! \frac{w}{1+1^Tw}\right)^T\!\!\!\!\!X^T\!X\!\left(\frac{1}{N+1} \!-\! \frac{w}{1+1^Tw}\right).
 	\]
 	Relaxing the nonnegativity constraint, replacing $w/(1+1^Tw)$ with a generic $x\in\reals^M$, and 
@@ -71,7 +71,7 @@ and
 	Thus, the probability that \emph{all} $Z_{\mcI}$ are large is
 	\[
 	\Pr\left(\min_{\mcI \subseteq [N], |\mcI| = M} Z_{\mcI} > \epsilon\right) 
-	\geq &1 - {N\choose M}\Pr\left(Z_{\mcI} \leq \epsilon\right)\\
+	\geq &1 - {N\choose M}\Pr\left(Z_{\mcI} \leq \epsilon\right) \notag \\
 	= &1 - {N\choose M}F_{d-M}(\epsilon),
 	\]
 	where $F_{k}$ is the CDF for the $\chi^2$ distribution with $k$ degrees of freedom.
@@ -104,13 +104,13 @@ For any function $a : \Theta \to \reals$,
 we have that
 \[
 \nabla_w\EE\left[a(\theta)\right] 
-= &\int\nabla_w\left(\exp\left(w^T\tf(\theta) - \log Z(u,w)\right)\right)a(\theta)\pi_0(\theta)\dee\theta\\
+= &\int\nabla_w\left(\exp\left(w^T\tf(\theta) - \log Z(u,w)\right)\right)a(\theta)\pi_0(\theta)\dee\theta \notag \\
 = &\EE\left[\left(\tf(\theta)-\nabla_w\log Z(u,w)\right)a(\theta)\right].
 \]
 Next, we compute the gradient of the log normalization constant via
 \[
 \nabla_w\log Z(u,w)
-= &\int\frac{1}{Z(u,w)}\nabla_w\left(\exp\left(w^T\tf(\theta)\right)\right)\pi_0(\theta)\dee\theta\\
+= &\int\frac{1}{Z(u,w)}\nabla_w\left(\exp\left(w^T\tf(\theta)\right)\right)\pi_0(\theta)\dee\theta \notag \\
 = &\EE\left[\tf(\theta)\right].
 \]
 Combining, we have

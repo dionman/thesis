@@ -63,7 +63,7 @@ f_n(\theta) \propto e^{-\beta\left(y_n-\theta^Tz(x_n)\right)^2/(2\sigma^2)}.
 %To simplify notation 
 Let $\mcC$ be the output of the coreset applied on a dataset $\mcD$. Hence, in regression problems, the predictive posterior on a test data pair $(x_t, y_t)$ via a coreset is approximated as follows
 \[
-\pi(y_t|x_t, \mcD) & \approx \pi(y_t|x_t, \mcC)  \\
+\pi(y_t|x_t, \mcD) & \approx \pi(y_t|x_t, \mcC)  \notag  \\
 &= \int \pi(y_t|x_t,  \theta) \pi(\theta|\mcC) d\theta.  
 \label{eq:coreset-postpred}
 \]
@@ -74,6 +74,53 @@ the predictive posterior is a Gaussian given by the following formula
 & = \distNorm \left(y_t; \mu_w^T z(x_t), \sigma^2 + z(x_t)^T \Sigma_w z(x_t)\right).
 \label{eq:neurlinr-pred-posterior}
 \]
+
+\section{Characterization of Riemannian coresets' combinatorial optimization ojective}
+\label{sec:submodularity-characterization}
+
+When optimizing a set function, the property of submodularity is often deemed appealing as it can allow using fast greedy selection policies with provable optimality guarantees~\citep{nemhauser78,bach13}. The optimization problem corresponding to our next datapoint selection step~\cref{eq:opt1} can be equivalently rewritten as follows
+
+\[
+ m^{\star} = \arg \max_{m\in [N]} - \kl{\pi_{\beta,w \assign w \cup \{x_{m}\}}}{\pi_{\beta}}.  \label{eq:opt1app} 
+\]
+Hence---ignoring the coreset datapoints' reweighting step which is treated separately---it is of interest to characterize the properties of the objective function $d:2^{|\mcX|} \rightarrow \reals$
+\[
+d(S):=-\kl{\pi_{\beta,\frac{N}{M}\mcI_{S}}}{\pi_\beta},
+\label{eq:setfunction_d}
+\]
+where $S$ is set of $M$ datapoints appearing with non-zero weight in the coreset. 
+
+The following proposition gives a tight condition for submodularity, capturing its characteristic property of \emph{diminishing returns} for increasing set size
+
+\bnprop \label{prop:subm_with_2ndorder_diff}
+The set function $d$ is submodular if and only if for all $S\subseteq\mcX$ and $x_j, x_k \in \mcX \setminus S$, we have $d(S\cup\{x_j\}) - d(S) \geq d(S\cup\{x_j, x_k\}) - d(S\cup\{x_k\})$.
+\enprop
+
+In the next proposition, we demonstrate a problem instance where the necessary and sufficient condition of~\cref{prop:subm_with_2ndorder_diff} for $d$ is violated, hence proving that our objective is \emph{non-submodular} under no further assumptions.
+ 
+\bnprop \label{prop:not-submodular}
+The set function $d$ of~\cref{eq:setfunction_d} is non-submodular.
+\enprop
+
+\begin{proof}
+For convenience let's focus on the case of Gaussian mean inference for the classic Bayesian posterior, where the objective can be written in closed form. Our argument will in principle carry over for arbitrary $\beta$s and statistical models. We recall from~\cref{eq:KL_from_coreset_post_to_exact} that
+\[ d(S) &=-\frac{1}{2} \left[ -d\log \left( \frac{1+ N}{1+\frac{N}{M}||\mcI_{S}||_1}\right) - d  + d \left( \frac{1+ N}{1+\frac{N}{M}||\mcI_{S}||_1}\right)
++  (1+N)(\mu_{1} - \mu_{w})^T (\mu_{1} - \mu_{w})\right] \notag  \\
+			&=-\frac{1}{2}  (1+N)||\mu_{1} - \mu_{w}||_2^2,
+\] 
+where
+\[
+\mu_{1}=\frac{1}{1+N}\left( \sum_{n=1}^{N} x_{n}\right), \quad \mu_{w}=\frac{1}{1+N} \frac{N}{M}\left( \sum_{x_i \in S} x_{i}\right).
+\]
+Let's consider a set of observations containing two mirror observations $x_0, -x_0$, such that $x_0 \neq \mu_1$. Then clearly
+\[
+&d(S\cup\{x_0\}) - d(S) - d(S\cup\{x_0, -x_0\}) + d(S\cup\{-x_0\}) \notag\\
+=& 2d(S\cup\{x_0\}) - 2 d(\mcX) =  2d(S\cup\{x_0\}) \notag 
+<0,
+\]
+where we have used the symmetry of the objective \wrt the observations and the fact that $d(S)=d(\mcX)=0$.
+\end{proof}
+
 
 \section{Datasets details}
 \label{sec:data-details}
