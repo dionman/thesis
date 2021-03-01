@@ -103,7 +103,7 @@ The set function $d$ of~\cref{eq:setfunction_d} is non-submodular.
 \enprop
 
 \begin{proof}
-For convenience let's focus on the case of Gaussian mean inference for the classic Bayesian posterior, where the objective can be handily written in closed form. Our argument will in principle carry over for arbitrary $\beta$s and statistical models (under the condition that the variational objective is symmetric to the coreset points). We recall from~\cref{eq:KL_from_coreset_post_to_exact} that
+For convenience let's focus on the case of Gaussian mean inference for the classic Bayesian posterior, where the objective can be handily written in closed form. Similar arguments will in principle carry over for arbitrary $\beta$s and statistical models. We recall from~\cref{eq:KL_from_coreset_post_to_exact} that
 \[ d(S) &=-\frac{1}{2} \left[ -d\log \left( \frac{1+ N}{1+\frac{N}{M}||\mcI_{S}||_1}\right) - d  + d \left( \frac{1+ N}{1+\frac{N}{M}||\mcI_{S}||_1}\right)
 +  (1+N)(\mu_{1} - \mu_{w})^T (\mu_{1} - \mu_{w})\right] \notag  \\
 			&=-\frac{1}{2}  (1+N)||\mu_{1} - \mu_{w}||_2^2,
@@ -112,13 +112,13 @@ where
 \[
 \mu_{1}=\frac{1}{1+N}\left( \sum_{n=1}^{N} x_{n}\right), \quad \mu_{w}=\frac{1}{1+N} \frac{N}{M}\left( \sum_{x_i \in S} x_{i}\right).
 \]
-Let's consider a set of observations containing two mirror observations $x_0, -x_0$, such that $x_0 \neq \mu_1$. Then clearly
+Let's consider a set of observations containing two mirrored observations $x_0, -x_0$, such that $x_0 \neq \mu_1$. Then clearly
 \[
 &d(S\cup\{x_0\}) - d(S) - d(S\cup\{x_0, -x_0\}) + d(S\cup\{-x_0\}) \notag\\
-= & 2d(S\cup\{x_0\}) - 2 d(\mcX) =  2d(S\cup\{x_0\})  
+= & d(S\cup\{x_0\}) + d(S\cup\{-x_0\})- 2 d(\mcX) = d(S\cup\{x_0\}) + d(S\cup\{-x_0\})
 <0,
 \]
-where we have used the symmetry of the objective \wrt the observations for this statistical model and the fact that $d(S)=d(\mcX)=0$.
+where we have used the fact that $d(S)=d(\mcX)=0$.
 \end{proof}
 
 
