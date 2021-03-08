@@ -19,14 +19,28 @@ In particular, for two $d$-dimensional Gaussian distributions $\mcN_1(\mu_1, \Si
 
 %\section{Robust Inference}
 %\label{sec:b-robust-inference}
-In data setups that are likely to be contaminated by outliers, we get substantial performance improvements when enhancing our algorithms with statistical~\emph{robustness}. Relying on the KL divergence cannot sufficiently address this concern. A robustified divergence, termed~\emph{\bdiv{}} or \emph{density power divergence}, was instead proposed in~\citep{basu98,eguchi01}, that is able to downweight outlying datapoints. Considering again the densities $\pi_1, \pi_2$, the \bdiv{} is defined as 
+In data setups that are likely to be contaminated by outliers, we get substantial inferential performance improvements when enhancing our algorithms with statistical~\emph{robustness}. Relying on the KL divergence cannot sufficiently address this concern, as this divergence attaches great importance to correctly capturing the tail behaviour of the observations. A robustified divergence, termed~\emph{\bdiv{}} or \emph{density power divergence}, was instead proposed in~\citep{basu98,eguchi01}, that is able to downweight outlying datapoints. Considering again the densities $\pi_1, \pi_2$, the \bdiv{} is defined as 
 \[
-\betadistance{\pi_1}{\pi_2} \defined \frac{1}{\beta} \int \pi_1(\theta)^{1+\beta}d\theta - \frac{\beta+1}{\beta}\int \pi_1(\theta) \pi_2(\theta)^{\beta} d\theta + \int \pi_2(\theta)^{1+\beta}d\theta,
+\betadistance{\pi_1}{\pi_2} \defined \frac{1}{\beta(\beta+1)} \displaystyle \int \left( \pi_1(\theta)^{1+\beta} - (\beta+1) \pi_1(\theta) \pi_2(\theta)^{\beta}  +  \beta \pi_2(\theta)^{1+\beta} \right)d\theta,
 \] 
 for $\beta > 0$.
 
 One can easily show that the \bdiv{} converges to the KL divergence when $\beta \rightarrow 0$.
-Both divergences are asymmetric and do not satisfy the triangle inequality. 
+Both divergences are asymmetric and do not satisfy the triangle inequality. Moreover, both divergences are instances of the family of Bregman divergences~\citep{amari16,banerjee05,cichocki10}, \ie{} a class of dissimilary measures that can be expressed as $d_\phi(p, q) = \phi(p) - \phi(q) - \langle \grad\phi(q), p-q \rangle$ using a strictly convex, differentiable function $\phi: \mcK \rightarrow \reals$, for all $p, q$ in a convex set $\mcK \subseteq	\reals^d$. In the case of two probability density functions $\pi_1, \pi_2$ the Bregman divergence admits the form $D_\phi(\pi_1, \pi_2) = \displaystyle\int \left[\phi(\pi_1(\theta)) - \phi(\pi_2(\theta)) - \phi'(\pi_2(\theta))(\pi_1(\theta)-\pi_2(\theta))\right]d\theta$. The convex functions defining the corresponding divergences are presented in~\cref{table:bregman-reductions}.
+
+\begin{table}[!t]
+	\begin{center}
+		\begin{tabular}{|l|l|l|}
+			\hline
+			\textsc{Divergence}     & $\phi(\xi)$     \\ \hline
+			\text{Kullback-Leibler} & $ \xi \log\xi $   \\ \hline 
+			\text{\bdiv{}}  & $\frac{1}{\beta(\beta+1)}\xi^{\beta+1} - \frac{1}{\beta} \xi + \frac{1}{\beta+1}, \;\; \beta > 0$  \\ \hline
+		\end{tabular}
+	\end{center}
+	\caption{Reductions of relative entropy and density power to Bregman divergences on the domain of probability density functions.}
+	\label{table:bregman-reductions}
+\end{table}
+
 
 \section{Exponential families}
 \label{sec:b-expfam}
@@ -118,7 +132,7 @@ In the absence of analytical formulae, integrals in the form of~\cref{eq:binfere
 \]
 \emph{Markov Chain Monte Carlo~(MCMC)}, the workhorse of approximate Bayesian inference, is a framework of established tools that pursue the above idea efficiently~\citep{geyer92, gilks05, robert05}. 
 
-MCMC offers approximations to expectations \wrt intractable probability distributions via simulating an ergodic random walk in the state space of the model, which admits the true posterior as its stationary distribution. As implied by the strong law of large numbers, the MC estimate---formed using (effectively independent) samples from the stationary distribution---converges to the true expecation almost surely as $s \rightarrow \infty$; this property makes MCMC methods theoretically appealing, as it endows the estimators with strong \emph{asymptotic exactness} guarantees. Moreover, if $g$ is a real function, using the central limit theorem, it can be shown that the standard error of a MC estimator scales asymptotically as $O(\frac{1}{\sqrt{S}})$, independently of the dimension of $\theta$. Differing in the way that the Monte Carlo chain is constructed, as well as the offered level of automation, several methods of MCMC inference have emerged, including the Metropolis-Hastings~\citep{andrieu03}, the Hamiltonian Monte-Carlo~\citep{neal11}, and the No-U-Turn-Sampler~(NUTS)~\citep{hoffman14}. NUTS will be used as a reference method to evaluate summarization performance in part of our experiments over~\cref{chap:chap4,chap:chap5}.
+MCMC offers approximations to expectations \wrt intractable probability distributions via simulating an ergodic random walk in the state space of the model, which admits the true posterior as its stationary distribution. As implied by the strong law of large numbers, the MC estimate---formed using (effectively independent) samples from the stationary distribution---converges to the true expectation almost surely as $s \rightarrow \infty$; this property makes MCMC methods theoretically appealing, as it endows the estimators with strong \emph{asymptotic exactness} guarantees. Moreover, if $g$ is a real function, using the central limit theorem, it can be shown that the standard error of a MC estimator scales asymptotically as $O(\frac{1}{\sqrt{S}})$, independently of the dimension of $\theta$. Differing in the way that the Monte Carlo chain is constructed, as well as the offered level of automation, several methods of MCMC inference have emerged, including the Metropolis-Hastings~\citep{andrieu03}, the Hamiltonian Monte-Carlo~\citep{neal11}, and the No-U-Turn-Sampler~(NUTS)~\citep{hoffman14}. NUTS will be used as a reference method to evaluate summarization performance in part of our experiments over~\cref{chap:chap4,chap:chap5}.
 
 The computation of bounds on the number of MCMC iterations required until we obtain a satisfactory posterior approximation can hardly be automated, as they are highly problem-specific, and in practice heuristics are used to decide when sampling should stop. Typically each sample requires at least one evaluation of a function proportial to $\pi$, scaling at cost $\Theta(N)$ which becomes a burden in big data applications---on this account, methods operating on data subsets have been proposed, including~\citep{welling11,korattikara14,bardenet14}. Despite these shortcomings, in settings where data are high-dimensional, and likelihood surface lacks structure that could be exploited over inference, MCMC remains the gold standard for practitioners.
 
