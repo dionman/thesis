@@ -23,7 +23,7 @@ In data setups that are likely to be contaminated by outliers, we get substantia
 \[
 \betadistance{\pi_1}{\pi_2} \defined \frac{1}{\beta(\beta+1)} \displaystyle \int \left( \pi_1(\theta)^{1+\beta} - (\beta+1) \pi_1(\theta) \pi_2(\theta)^{\beta}  +  \beta \pi_2(\theta)^{1+\beta} \right)d\theta,
 \] 
-for $\beta > 0$.
+for $\beta \in \reals\setminus\{-1, 0\}$.
 
 One can easily show that the \bdiv{} converges to the KL divergence when $\beta \rightarrow 0$.
 Both divergences are asymmetric and do not satisfy the triangle inequality. Moreover, both divergences are instances of the family of Bregman divergences~\citep{amari16,banerjee05,cichocki10}, \ie{} a class of dissimilary measures that can be expressed as $d_\phi(p, q) = \phi(p) - \phi(q) - \langle \grad\phi(q), p-q \rangle$ using a strictly convex, differentiable function $\phi: \mcK \rightarrow \reals$, for all $p, q$ in a convex set $\mcK \subseteq	\reals^d$. In the case of two probability density functions $\pi_1, \pi_2$ the Bregman divergence admits the form $D_\phi(\pi_1, \pi_2) = \displaystyle\int \left[\phi(\pi_1(\theta)) - \phi(\pi_2(\theta)) - \phi'(\pi_2(\theta))(\pi_1(\theta)-\pi_2(\theta))\right]d\theta$. The convex functions defining the corresponding divergences are presented in~\cref{table:bregman-reductions}.
