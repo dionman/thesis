@@ -214,7 +214,7 @@ Hence, due to the large $N$ in the exponent, small changes in $\pi_\textsubscrip
 
 \subsection{Robustified generalized Bayesian posteriors}
 
-Robust inference methods aim to adapt~\cref{eq:bayes-rule,eq:bayes-rule-opt,eq:zellner-rule} to formulations that can address the case of observations departing from model assumptions, as often happening in practice, e.g. due to misspecified shapes of data distributions and number of components, or due to the presence of outliers. In such formulations~\citep{dawid16, jewson18, fujisawa08, eguchi01}, Bayesian updates rely on utilising robust divergences instead of the KL divergence, to express the losses over the data. 
+Robust inference methods aim to adapt~\cref{eq:bayes-rule,eq:bayes-rule-opt,eq:zellner-rule} to formulations that can address the case of observations departing from model assumptions, as often happening in practice, e.g. due to misspecified shapes of data distributions and number of components, or due to the presence of outliers. In such formulations~\citep{dawid16, jewson18, fujisawa08, eguchi01}, Bayesian updates rely on utilising robust divergences instead of the KL divergence, to express the losses over the observed data. 
 
 From the definition of KL divergence~\cref{eq:bkl-def}, we can equivalently rewrite \cref{eq:bayes-rule-opt} as
 \[
@@ -291,23 +291,23 @@ Kernel methods induce \emph{non-parametric} representations on the data, \ie~whe
 
 Kernel methods appeal to large-scale learning due to their non-parametric nature: their representation power scales with the number of datapoints, hence they can learn complex, highly non-linear structure from the data; however, their time and memory cost scales adversely with the dataset size. Random features~\citep{rahimi08} remedy poor complexity scaling issues via utilising \emph{parametric finite-dimensional} data representations. We motivate this concept via an application arising in Hilbert coreset constructions~\citep{campbell19jmlr}.
 
-Denote by $ f(\theta) \defined \sum_{n=1}^{N} \log\pi(x_n|\theta) $ the log-likelihood function of a dataset $x \defined {(x_n)}_{n=1}^{N}$, and by $ f(\theta,w) \defined \sum_{n=1}^{N} w_n\log\pi(x_n|\theta)$ the corresponding log-likelihood of a Hilbert coreset $(w_n, x_n)_{n=1}^{N}$ constructed on the data, where $(w_n)_{n=1}^{N}$ is a vector of sparse, non-negative weights. The quality of posterior approximation that this coreset offers can be quantified using a $L^2$ norm on the log-likelihoods under a weighting distribution $\hpi$ that has the same support with the true posterior $\pi$ 
+Denote by $ f_n(\theta) \defined \sum_{n=1}^{N} \log\pi(x_n|\theta) $ the log-likelihood function of a dataset $x \defined {(x_n)}_{n=1}^{N}$, and by $ f(\theta,w) \defined \sum_{n=1}^{N} w_n\log\pi(x_n|\theta)$ the corresponding log-likelihood of a Hilbert coreset $(w_n, x_n)_{n=1}^{N}$ constructed on the data, where $(w_n)_{n=1}^{N}$ is a vector of sparse, non-negative weights---using the simplified notation $f(\theta)$ for the full data log-likelihood. The quality of posterior approximation that this coreset offers can be quantified using a $L^2$ norm on the log-likelihoods under a weighting distribution $\hpi$ that has the same support with the true posterior $\pi$ 
 \[
 ||f(\theta, w) - f(\theta)||_{\hpi,2} \defined \EE_{\hpi} \left[ (f(\theta) - f(\theta, w))^2\right],
 \]
 and induced inner product
 \[
 \label{eq:binner-prod-hc}
-\langle f(x_n), f(x_m) \rangle_{\hpi, 2} \defined \EE_{\hpi}\left[f(x_n, \theta), f(x_m, \theta)\right].
+\langle f_n(\theta), f_m(\theta) \rangle_{\hpi, 2} \defined \EE_{\hpi}\left[f_n(\theta), f_m(\theta)\right].
 \]
 The weighting distribution $\hpi$ can be selected from a set of cheap posterior approximations, for example using Laplace's method, or running a few rounds of an MCMC algorithm. In the general case, the norm of~\cref{eq:binner-prod-hc} is not available in closed form, hence a random projection can be used instead to approximate it according to the following steps:
 \begin{enumerate}
 	\item Sample $J$ values for $\theta$ from the weighting distribution $(\htheta_j)_{j=1}^{J} \distiid \hpi$.
-	\item For $n=1 \ldots N$ compute a $J$-dimensional projection $ \hf(x_n) \defined \sqrt{\frac{1}{J}}[f(x_n, \htheta_1) \ldots f(x_n, \htheta_J)]$.
+	\item For $n=1 \ldots N$ compute a $J$-dimensional projection $ \hf_n(\theta) \defined \sqrt{\frac{1}{J}}[f_n(\htheta_1) \ldots f_n(\htheta_J)]$.
 \end{enumerate}
 In this way we get an unbiased finite-dimensional estimator of the inner products
 \[
-\langle f(x_n), f(x_m) \rangle_{\hpi, 2}  \approx \hf(x_n)^T \hf(x_m).
+\langle f_n(\theta), f_m(\theta) \rangle_{\hpi, 2}  \approx \hf_n(\theta)^T \hf_m(\theta).
 \]
 
 
@@ -335,7 +335,7 @@ A weaker definition of DP allows that the guarantee of~\cref{def:b-dp-definition
 
 The most common mechanisms that enable releasing numerical queries $f$ under DP rely on randomization via injecting additive noise. The amount of noise is calibrated to the \emph{global sensitivity} of the query, which is defined as 
 \[
-\Delta_p(f) = \underset{x \approx x'}{\max} ||f(x)-f(x')||_p.
+\Delta_p(f) := \underset{x \approx x'}{\max} ||f(x)-f(x')||_p.
 \]
 To achieve $(\veps, \delta)$-DP one can use the Gaussian Mechanism, which returns
 \[
