@@ -1,5 +1,6 @@
 \chapter{Background Material}
 \label{chap:chap2}
+\newcommand*{\PathChapter}{../Chapter2}%
 
 This chapter aims to set the context for the remainder of this thesis. Various concepts pertaining to this thesis, including Bayesian inference, exponential family distributions and differential privacy, are briefly introduced in the following.
 
@@ -244,6 +245,29 @@ In the presentation above we focused on modeling observations $(x_n)_{n=1}^{N}$~
 f_n(\theta):= -\frac{\beta+1}{\beta}\pi(y_n|x_n,\theta)^{\beta} +  \int_{\mcY} \pi(\psi|x_n,\theta)^{1+\beta}d\psi.
 \label{eq:sl-lik-terms}
 \] 
+
+\textbf{Illustrations}~~
+In the remainder of this section we illustrate the effects of adapting the used statistical divergence when doing inference on a dataset that contains outliers. In a similar vein to~\citep{jewson18}, we juxtapose the inference results of classical and robust posterior on simple statistical models aiming to fit a Gaussian probability distribution on one-dimensional observations.  
+
+\begin{figure*}[!t]
+	\begin{subfigure}[t]{0.49\textwidth} 
+	\centering
+	\includegraphics[width=.99\textwidth]{\PathChapter/figs/influence.png}
+	\caption{\centering {}}
+	\label{fig:influence}
+	\end{subfigure}	
+	\begin{subfigure}[t]{0.49\textwidth} 
+	\centering
+	\includegraphics[width=.99\textwidth]{\PathChapter/figs/influence.png}
+	\caption{\centering {}}
+	\label{fig:influence-b}
+	\end{subfigure}	
+	\caption{Effects of changing statistical divergence when conducting inference on datasets containing outliers. (\subref{fig:influence})~The influence of individual datapoints under the Kullback-Leibler and the $\beta$-divergence: the concavity of influence under the $\beta$-divergence illustrates the robustness of the inferred posterior to outliers.}
+	\label{fig:robust-inference}
+\end{figure*}
+
+~\cref{fig:influence} demonstrates the \emph{influence} of individual observations with varying magnitude on the posterior for a Gaussian with unknown mean and variance. The influence is measured using the Fisher--Rao metric introduced in~\citep{kurtek15}. For this experiment, $10K$ observations were sampled from a Student $t(3)$ distribution, while observations with negative coordinates were omitted from the presented plot due to symmetry. We can notice that the KL divergence allows unbounded influence, indicating the brittleness of inference on the tails of the observed distribution. In contrast, when moving away from the mean, $\beta$-divergences are initially characterised by a regime of increasing influence until reaching a maximum (dependent on the selected robustness hyperparameter), which is then succeeded by influence attenuating down to zero at the tails of the data distribution. At the same time, this experiment makes clear that for decision problems involving the tails of the observations, KL might be the divergence of choice, as the power density divergence would downweight the importance of datapoints lying far from the mean.   
+
 
 \section{Representing data}
 \label{sec:b-representing-data}
