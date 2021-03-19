@@ -244,7 +244,7 @@ f_n(\theta):= -\frac{\beta+1}{\beta}\pi(y_n|x_n,\theta)^{\beta} +  \int_{\mcY} \
 \] 
 
 \textbf{Illustrations}~~
-In the remainder of this section we illustrate the effects of adapting the used statistical divergence when doing inference on a dataset that contains outliers. In a similar vein to~\citep{jewson18}, we juxtapose the inference results of classical and robust posterior on simple statistical models aiming to fit a Gaussian probability distribution to one-dimensional observations.  
+In the remainder of this section we illustrate the effects of adapting the used statistical divergence when doing inference on a dataset that contains outliers. In a similar vein to~\citep{jewson18}, we juxtapose the inference results of classical and robust posterior on simple statistical models aiming to fit a Gaussian probability distribution of unknown mean and variance $\mcN(\mu, \sigma)$ to one-dimensional observations.  
 
 \begin{figure*}[!t]
 	\begin{subfigure}[t]{0.49\textwidth} 
@@ -255,15 +255,17 @@ In the remainder of this section we illustrate the effects of adapting the used 
 	\end{subfigure}	
 	\begin{subfigure}[t]{0.49\textwidth} 
 	\centering
-	\includegraphics[width=.99\textwidth]{\PathChapter/figs/influence.png}
+	\includegraphics[width=.99\textwidth]{\PathChapter/figs/density.png}
 	\caption{\centering {}}
-	\label{fig:influence-b}
+	\label{fig:gaussian-density}
 	\end{subfigure}	
-	\caption{Effects of altering the statistical divergence when conducting inference on datasets containing outliers. (\subref{fig:influence})~The influence of individual datapoints under the Kullback-Leibler and the $\beta$-divergence: the concavity of influence under the $\beta$-divergence illustrates the robustness of the inferred posterior to outliers.}
+	\caption{Effects of altering the statistical divergence when conducting inference on datasets containing outliers. (\subref{fig:influence})~The influence of individual datapoints under the Kullback-Leibler and the $\beta$-divergence: the concavity of influence under the $\beta$-divergence illustrates the robustness of the inferred posterior to outliers.~(\subref{fig:gaussian-density})~Posterior estimates of Gaussian density on observations containing a small fraction for outliers under classical and robustified inference.}
 	\label{fig:robust-inference}
 \end{figure*}
 
-~\cref{fig:influence} demonstrates the \emph{influence} of individual observations with varying magnitude on the posterior for a Gaussian with unknown mean and variance. The influence is measured using the Fisher--Rao metric introduced in~\citep{kurtek15}. For this experiment, $10K$ observations were sampled from a Student $t(3)$ distribution, while observations with negative coordinates were omitted from the presented plot due to symmetry. We can notice that the KL divergence allows unbounded influence, indicating the brittleness of inference on the tails of the observed distribution. In contrast, moving away from the mean, individual datapoints' influence under the $\beta$-divergences is initially characterised by a regime of increase until reaching a maximum (which depends on the selected robustness hyperparameter), succeeded by attenuation down to zero at the tails of the data distribution. At the same time, this experiment makes clear that for decision problems relying on the tail information of the observations, KL might be the divergence of choice, as the power density divergence would downweight the importance of datapoints lying far from the mean.   
+~\cref{fig:influence} demonstrates the \emph{influence} of individual observations with varying magnitude on the inferred posterior. The influence is measured using the Fisher--Rao metric introduced in~\citep{kurtek15}. For this experiment, $10K$ observations were sampled from a Student $t(3)$ distribution, while observations with negative coordinates were omitted from the presented plot due to symmetry. We can notice that the KL divergence allows unbounded influence, indicating the brittleness of inference on the tails of the observed distribution. In contrast, moving away from the mean, individual datapoints' influence under the $\beta$-divergences is initially characterised by a regime of increase until reaching a maximum (which depends on the selected robustness hyperparameter), succeeded by attenuation down to zero at the tails of the data distribution. At the same time, this experiment makes clear that for decision problems critically relying on the tail information of the observations, KL might be the divergence of choice, as the power density divergence would downweight the importance of datapoints lying far from the mean. 
+
+\cref{fig:gaussian-density} shows the posterior density estimation for classical and robustified Bayesian inference on $1K$ datapoints sampled from a contaminated distribution $0.99\times\mcN(0,1)+0.01\times\mcN(5,25)$. The posterior under the KL divergence tries to explain the long tails of the observations---which are the effects of the contaminating component---eventually overestimating the variance of the data distribution. On the other hand, using the density power divergence with $\beta=0.5$ over inference allows us to declare the long tails as outliers, and provides more accurate modeling of the inliers' component.
 
 
 \section{Representing data}
