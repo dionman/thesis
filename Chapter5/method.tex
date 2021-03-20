@@ -20,7 +20,7 @@ Substituting~\cref{eq:b-loss} in~\cref{eq:b-posterior}, allows us to explicitly 
 where $(f_n(\theta))_{n=1}^{N}$ correspond to the \blik~terms, $\pi_0$ is the prior, and $Z(\beta, w)$ is the marginal likelihood (which in the general case corresponds to an intractable constant). 
 In the case of the \bpost{} on the full dataset~\cref{eq:b-posterior}, we have $w=1 \in\reals^{N}$; for coreset posteriors this vector acts as a learnable parameter and attains a non-trivial sparse value, with non-zero entries corresponding to the elements of the full dataset that are selected over the summarization.
 
-Although Bayesian coresets can dramatically reduce inference time, they inherit the susceptibility of Bayesian posterior to data mismatch in the large data regime: even though the number of points used in inference gets reduced, these points are now weighted, hence the remark of~\cref{eq:missmatch_with_N} can carry over in coresets posterior. 
+Although Bayesian coresets can dramatically reduce inference time, they inherit the susceptibility of Bayesian posterior to model-data mismatch in the large data regime: even though the number of points used in inference gets reduced, these points are now weighted, hence the remark of~\cref{eq:missmatch_with_N} can carry over in coresets posterior. 
 
 The recent formulation of Riemannian coresets~\citep{campbell19neurips} has framed the problem of coreset construction as variational inference in a sparse exponential family. Our method provides a natural extension of this framework to robust divergences. Here we aim to approximate data posterior via a \emph{sparse \bpost}, which can be expressed as follows
 \[
