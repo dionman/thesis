@@ -5,7 +5,7 @@ Beyond better summarizations of high-dimensional data, pseudocoresets enable the
 generation of a data summarization that ensures the statistical privacy of individual datapoints under the model of (approximate) \emph{differential privacy}. In this setting, a trusted
  curator holds an aggregate dataset of $N$ datapoints, $x\in\mcX^N$, $\mcX\subseteq \reals^d$, and 
 builds and releases a pseudocoreset $(u, w)$, $u\in\mcX^M$, $w\in\reals_+^M$ via
-a randomized mechanism satisfying \cref{def:dp-definition}~\citep{dwork06, ourdata}.
+a randomized mechanism satisfying \cref{def:dp-definition}~\citep{dwork06,ourdata}.
 \ndefn[($\veps, \delta$)-Differentially Private Coreset]{
 	Fix $\veps \geq 0, \delta \in [0,1]$. A pseudocoreset construction algorithm
         $ \mcM: \mcX^N \rightarrow \reals_+^M\times\mcX^M $  is  ($\veps, \delta$)-differentially private if for every pair of 

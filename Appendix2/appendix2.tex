@@ -92,9 +92,9 @@ where $S$ is set of $M$ datapoints appearing with non-zero weight in the coreset
 
 The following proposition gives a tight condition for submodularity, capturing its characteristic property of \emph{diminishing returns} for increasing set size
 
-\bnprop \label{prop:subm_with_2ndorder_diff}
+\ndefn[Submodularity]{ \label{prop:subm_with_2ndorder_diff}
 The set function $d$ is submodular if and only if for all $S\subseteq\mcX$ and $x_j, x_k \in \mcX \setminus S$, we have $d(S\cup\{x_j\}) - d(S) \geq d(S\cup\{x_j, x_k\}) - d(S\cup\{x_k\})$.
-\enprop
+}
 
 In the next proposition, we demonstrate a problem instance where the necessary and sufficient condition of~\cref{prop:subm_with_2ndorder_diff} for $d$ is violated, hence proving that our objective is \emph{non-submodular} under no further assumptions.
  
