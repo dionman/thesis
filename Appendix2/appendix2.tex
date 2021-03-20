@@ -75,7 +75,7 @@ the predictive posterior is a Gaussian given by the following formula
 \label{eq:neurlinr-pred-posterior}
 \]
 
-\section{Characterization of Riemannian coresets' combinatorial optimization ojective}
+\section{Characterization of Riemannian coresets' combinatorial optimization objective}
 \label{sec:submodularity-characterization}
 
 When optimizing a set function, the property of submodularity is often deemed appealing as it can allow using fast greedy selection policies with provable optimality guarantees~\citep{nemhauser78,bach13}. The optimization problem corresponding to our next datapoint selection step~\cref{eq:opt1} can be equivalently rewritten as follows
@@ -110,7 +110,7 @@ For convenience let's focus on the case of Gaussian mean inference for the class
 \] 
 where
 \[
-\mu_{1}=\frac{1}{1+N}\left( \sum_{n=1}^{N} x_{n}\right), \quad \mu_{w}=\frac{1}{1+N} \frac{N}{M}\left( \sum_{x_i \in S} x_{i}\right).
+\mu_{1}=\frac{1}{1+N} \sum_{n=1}^{N} x_{n}, \quad \mu_{w}=\frac{1}{1+N} \frac{N}{M} \sum_{x_i \in S} x_{i}.
 \]
 Let's consider a set of observations containing two mirrored observations $x_0, -x_0$, such that $x_0 \neq \mu_1$. Then clearly
 \[
