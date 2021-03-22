@@ -83,27 +83,27 @@ When optimizing a set function, the property of submodularity is often deemed ap
 \[
  m^{\star} = \arg \max_{m\in [N]} - \kl{\pi_{\beta,w \assign w \cup \{x_{m}\}}}{\pi_{\beta}}.  \label{eq:opt1app} 
 \]
-Hence---ignoring the coreset datapoints' reweighting step which is treated separately---it is of interest to characterize the properties of the objective function $d:2^{|\mcX|} \rightarrow \reals$
+Hence---ignoring the coreset datapoints' reweighting step which is treated separately---it is of interest to characterize the properties of the objective function $d:2^{|\mcX|} \rightarrow \reals_{\leq 0}$
 \[
 d(S):=-\kl{\pi_{\beta,\frac{N}{M}\mcI_{S}}}{\pi_\beta},
 \label{eq:setfunction_d}
 \]
 where $S$ is set of $M$ datapoints appearing with non-zero weight in the coreset. 
 
-The following proposition gives a tight condition for submodularity, capturing its characteristic property of \emph{diminishing returns} for increasing set size
+Below we give a tight condition for submodularity via second-order differences, which captures its characteristic property of \emph{diminishing returns} for increasing set size
 
 \ndefn[Submodularity]{ \label{prop:subm_with_2ndorder_diff}
 The set function $d$ is submodular if and only if for all $S\subseteq\mcX$ and $x_j, x_k \in \mcX \setminus S$, we have $d(S\cup\{x_j\}) - d(S) \geq d(S\cup\{x_j, x_k\}) - d(S\cup\{x_k\})$.
 }
 
-In the next proposition, we demonstrate a problem instance where the necessary and sufficient condition of~\cref{prop:subm_with_2ndorder_diff} for $d$ is violated, hence proving that our objective is \emph{non-submodular} under no further assumptions.
+In the next proposition, we demonstrate a problem instance where the necessary and sufficient condition of~\cref{prop:subm_with_2ndorder_diff} is violated for $d$ considered in~\cref{eq:setfunction_d}, hence proving that our objective is \emph{non-submodular} under no further assumptions.
  
 \bnprop \label{prop:not-submodular}
 The set function $d$ of~\cref{eq:setfunction_d} is non-submodular.
 \enprop
 
 \begin{proof}
-For convenience let's focus on the case of Gaussian mean inference for the classic Bayesian posterior, where the objective can be handily written in closed form. Similar arguments will in principle carry over for arbitrary $\beta$s and statistical models. We recall from~\cref{eq:KL_from_coreset_post_to_exact} that
+For convenience let's focus on the case of Gaussian mean inference for the classical Bayesian posterior~($\beta \rightarrow 0$), where the objective can be handily written in closed form. Similar arguments will in principle carry over for arbitrary $\beta$s and statistical models. We recall from~\cref{eq:KL_from_coreset_post_to_exact} that
 \[ d(S) &=-\frac{1}{2} \left[ -d\log \left( \frac{1+ N}{1+\frac{N}{M}||\mcI_{S}||_1}\right) - d  + d \left( \frac{1+ N}{1+\frac{N}{M}||\mcI_{S}||_1}\right)
 +  (1+N)(\mu_{1} - \mu_{w})^T (\mu_{1} - \mu_{w})\right] \notag  \\
 			&=-\frac{1}{2}  (1+N)||\mu_{1} - \mu_{w}||_2^2,
