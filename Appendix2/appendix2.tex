@@ -54,7 +54,7 @@ Assuming a prior $\theta \dist \distNorm(\mu_0, \sigma_0^2 I)$, the coreset post
 &\mu_w := \Sigma_w \left( \sigma_0^{-2} I \mu_0 + \sigma^{-2} \sum_{m=1}^{M} w_m y_m z(x_m) \right).
 \label{eq:neurlinr-corest-posterior-params}
 \]
-By substitution to~\cref{eq:sl-lik-terms} and ommiting constants,
+By substitution to~\cref{eq:sl-lik-terms} and omitting constants,
 the \blik{} terms for our adaptive basis linear regression are written as 
 \[
 f_n(\theta) \propto e^{-\beta\left(y_n-\theta^Tz(x_n)\right)^2/(2\sigma^2)}.
@@ -78,7 +78,7 @@ the predictive posterior is a Gaussian given by the following formula
 \section{Characterization of Riemannian coresets' combinatorial optimization objective}
 \label{sec:submodularity-characterization}
 
-When optimizing a set function, the property of submodularity is often deemed appealing as it can allow using fast greedy selection policies with provable optimality guarantees~\citep{nemhauser78,bach13}. The optimization problem corresponding to our next datapoint selection step~\cref{eq:opt1} can be equivalently rewritten as follows
+When optimizing a set function, the property of submodularity is often deemed appealing as it can allow using fast greedy selection policies with provable optimality guarantees~\citep{nemhauser78,bach13}. The optimization problem corresponding to our next datapoint selection step of~\cref{eq:opt1} can be equivalently rewritten as follows
 
 \[
  m^{\star} = \arg \max_{m\in [N]} - \kl{\pi_{\beta,w \assign w \cup \{x_{m}\}}}{\pi_{\beta}}.  \label{eq:opt1app} 
@@ -112,7 +112,7 @@ where
 \[
 \mu_{1}=\frac{1}{1+N} \sum_{n=1}^{N} x_{n}, \quad \mu_{w}=\frac{1}{1+N} \frac{N}{M} \sum_{x_i \in S} x_{i}.
 \]
-Let's consider a set of observations containing two mirrored observations $x_0, -x_0$, such that $x_0 \neq \mu_1$. Then clearly
+Let's consider a set of observations containing two mirrored datapoints $x_0, -x_0$, such that $x_0 \neq \mu_1$. Then clearly
 \[
 &d(S\cup\{x_0\}) - d(S) - d(S\cup\{x_0, -x_0\}) + d(S\cup\{-x_0\}) \notag\\
 = & d(S\cup\{x_0\}) + d(S\cup\{-x_0\})- 2 d(\mcX) = d(S\cup\{x_0\}) + d(S\cup\{-x_0\})

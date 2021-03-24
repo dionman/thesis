@@ -5,7 +5,7 @@
 \definecolor{mydarkblue}{rgb}{0,0.08,0.45}
 \newcommand{\MYhref}[3][mydarkblue]{\href{#2}{\color{#1}{#3}}}%
 
-We examine the inferential results achieved by our method under 3 statistical models, in scenarios capturing different types of mismatch between modeling assumptions and reality. The data contamination models used in following experiments are reminiscent of \emph{Huber's $\eps$-contamination model}~\citep{huber92}, which postulates that observed data are generated from a mixture of distributions of the form $(1-\eps)\cdot G+ \eps\cdot Q$, where $\eps \in (0,1)$,  $G$ is a distribution of inliers captured by the assumed statistical model, and $Q$ is an arbitrary distribution of outliers. This model has found use in several recent studies on robust statistical estimators suitable for underlying data distributions with minimal assumptions~\citep{wei17, chen18}.
+We examine the inferential results achieved by our method under 3 statistical models, in scenarios capturing different types of mismatch between modeling assumptions and reality. The data contamination models used in the following experiments are reminiscent of \emph{Huber's $\eps$-contamination model}~\citep{huber92}, which postulates that observed data are generated from a mixture of distributions of the form $(1-\eps)\cdot G+ \eps\cdot Q$, where $\eps \in (0,1)$,  $G$ is a distribution of inliers captured by the assumed statistical model, and $Q$ is an arbitrary distribution of outliers. This model has found use in several recent studies on robust statistical estimators suitable for underlying data distributions with minimal assumptions~\citep{wei17, chen18}.
 
 \bcores{} is compared against a uniformly random sampling baseline, and stochastic batch implementations of two existing Riemannian coreset methods: 
 \benum[label={(\roman*)}]
@@ -37,7 +37,7 @@ We consider the case of structured data contamination existing in the observatio
 	\centering 
 	\begin{subfigure}[ht]{0.96\textwidth} 
 		\includegraphics[width=1.\textwidth]{\MyPath/figs/gauss_scatterplot.png}
-		\caption{\label{fig:beta_gaussian_coreset_points}}
+		\caption{(a)\label{fig:beta_gaussian_coreset_points}}
 	\end{subfigure}
 	\hfill\qquad
 	\begin{subfigure}[ht]{0.96\textwidth} 
@@ -49,7 +49,7 @@ We consider the case of structured data contamination existing in the observatio
 		\centering
 		\hfill
 		\includegraphics[width=.32\textwidth]{\MyPath/figs/f30KLDvsCstSize.png}
-		\caption{\label{fig:gauss_kld}}
+		\caption{(b)\label{fig:gauss_kld}}
 	\end{subfigure}	
 	\centering
 	\caption{(a)~Scatterplot of the observed datapoints projected on two random axes, overlaid by the corresponding coreset points and predictive posterior $3\sigma$ ellipses for increasing coreset size (from left to right). Exact posterior (illustrated in black) is computed on the dataset after removing the group of outliers. From top to bottom, the level of structured contamination increases. Classic Riemannian coresets are prone to model misspecification, adding points from the outlying component, while \bcores{} adds points only from the uncontaminated subpopulation yielding better posterior estimation. (b) Reverse KL divergence between coreset and true posterior (the latter computed on clean data), averaged over $5$ trials. Solid lines display the median KL divergence, with shaded areas showing $25\textsuperscript{th}$ and $75\textsuperscript{th}$ percentiles of KL divergence.}
@@ -62,7 +62,7 @@ All computations involved in the coreset construction and posterior evaluation i
 
 Moreover, in the case of contaminated datasets, baseline coresets are quite confident in their wrong predictive posteriors: they keep assigning the same weight to all observations and hence do not adjust their posterior uncertainty estimates, in spite of having to describe contradicting data. In contrast,~\bcores{} discards samples from the outlying group and can confidently explain the inliers, despite the smaller effective sample size: indeed,~\cref{fig:gauss_kld} shows that the achieved KL divergence from the exact posterior is at same order of magnitude regardless of failure probability. 
 
-We can however notice that, for coreset sizes growing beyond 60 points---despite remaining consistently better compared to the baselines---\bcores{} starts to present some instability over trials in contaminated dataset instances. This effect is attributed to the small value of the $\beta$ hyperparameter  selected for the demonstration (so that this value can successfully model the case of clean data). As a result, eventually some outliers might be allowed to enter the summary for large coreset sizes. The instability can be resolved by increasing $\beta$ according to the observations' failure probability, and will be further discussed in~\cref{sec:sensitivity} 
+We can however notice that, for coreset sizes growing beyond 60 points---despite remaining consistently better compared to the baselines---\bcores{} starts to present some instability over trials in contaminated dataset instances. This effect is attributed to the small value of the $\beta$ hyperparameter  selected for the demonstration (so that this value can successfully model the case of clean data). As a result, eventually some outliers might be allowed to enter the summary for large coreset sizes. The instability can be resolved by increasing $\beta$ according to the observations' failure probability, and will be further discussed in~\cref{sec:sensitivity}. 
 
 
 \subsection{Bayesian logistic regression under mislabeling and feature noise}
@@ -79,7 +79,7 @@ x_n \\
 \]
 The closed form of \blik{} terms required in our construction is computed in~\cref{sec:logreg-lik}. 
 
-Data corruption is simulated by generating outliers in the input and output space similarly to~\citep{futami18}: For corruption rate $F$, we sample two random subsets of size $F\cdot N$ from the training data.  For the datapoints in the first subset, we replace the value of half of the features with Gaussian noise sampled \iid from $\distNorm(0,5)$; for the datapoints in the other subset, we flip the binary label. Over construction we use Laplace approximation~\citep{mackay03} to efficiently draw samples from the (non-conjugate) coreset posterior, while over evaluation coreset posterior samples are obtained via NUTS~\citep{hoffman14}. We evaluate the accuracy over the test set, predicting labels according to the maximum log-likelihood rule under the posterior $\theta$ sampling distribution. The learning rate schedule was set to $\gamma_t=c_0 t^{-1}$, with $c_0$ set to 1 for \sparsevi{} and \bcores{}, and 0.1 for \psvi. 
+Data corruption is simulated by generating unstructured outliers in the input and output space similarly to~\citep{futami18}: For corruption rate $F$, we sample two random subsets of size $F\cdot N$ from the training data.  For the datapoints in the first subset, we replace the value of half of the features with Gaussian noise sampled \iid from $\distNorm(0,5)$; for the datapoints in the other subset, we flip the binary label. Over construction we use the Laplace approximation to efficiently draw samples from the (non-conjugate) coreset posterior, while over evaluation coreset posterior samples are obtained via NUTS~\citep{hoffman14}. We evaluate the accuracy over the test set, predicting labels according to the maximum log-likelihood rule for $\theta$s sampled from the coreset posterior distribution. The learning rate schedule was set to $\gamma_t=c_0 t^{-1}$, with $c_0$ set to 1 for \sparsevi{} and \bcores{}, and 0.1 for \psvi. 
 The values for hyperparameter $\beta$ and learning rates $\gamma_t$ were chosen via cross-validation. 
 
 \begin{figure}[!tp]
@@ -180,7 +180,7 @@ In this study we use a subset of more than $60K$ datapoints from the \textsc{Hos
 \end{figure*}
 
 
-We evaluate the predictive accuracy achieved by doing inference on the data subset obtained after running $10$ iterations of the \bcores{} extension for groups (which gives a maximum of $10$ selected groups). We compare against (\emph{i}) a \emph{random sampler}, and (\emph{ii}) a baseline which ranks all groups according to their \emph{Shapley value} and selects the groups with the highest ranks. Shapley value is a concept originating in cooperative game theory~\citep{shapley53}, which has recently found applications in data valuation and outliers detection~\citep{ghorbani19}. In the context of our experiment, it quantifies what is the marginal contribution of each group to the predictive accuracy of the model at all possible group coalitions that can be formed. As this quantity is notoriously expensive to be computed in large datasets, we use a Monte Carlo estimator which samples $5K$ possible permutations of groups and for each permutation it computes marginals for coalitions formed by the first $20$ groups.\footnote{The latter truncation is supported by the observation that marginal contributions to the predictive accuracy are diminishing as the dataset size increases.}
+We evaluate the predictive accuracy achieved by doing inference on the data subset obtained after running $10$ iterations of the \bcores{} extension for groups (which gives a maximum of $10$ selected groups). We compare against (\emph{i}) a \emph{random sampler}, and (\emph{ii}) a baseline which ranks all groups according to their \emph{Shapley value} and selects the groups with the highest ranks. Shapley value is a concept originating in cooperative game theory~\citep{shapley53}, which has recently found applications in data valuation and outliers detection~\citep{ghorbani19}. In the context of our experiment, it quantifies what is the marginal contribution of each group to the predictive accuracy of the model at all possible group coalitions that can be formed. As this quantity is notoriously expensive to be computed in large datasets, we use a Monte Carlo estimator which samples $5K$ possible permutations of groups, and for each permutation it computes marginals for coalitions formed by the first $20$ groups.\footnote{The latter truncation is supported by the observation that marginal contributions to the predictive accuracy are diminishing as the dataset size increases.}
 
 \begin{figure*}[!t]
 	\begin{subfigure}[b]{.8\textwidth} 
