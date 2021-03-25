@@ -247,8 +247,10 @@ f_m(\theta) = -\frac{1}{2\sigma^2}\left(y_m - \theta^T u_m\right)^2.
 \]
 Hence, we obtain for the pseudocoreset posterior
 \[
-&\pi_{u,w} = \distNorm(\mu_{u,w}, \Sigma_{u,w}), \quad \text{where} \\
-\quad  \Sigma_{u,w} = \left(\sigma_0^{-2}I + \sigma^{-2}\right.&\left.\sum_{m=1}^{M}w_m u_m u_m^T \right)^{-1},
+\pi_{u,w} = \distNorm(\mu_{u,w}, \Sigma_{u,w}), \quad \text{where} 
+\]
+\[
+\quad  \Sigma_{u,w} = \left(\sigma_0^{-2}I + \sigma^{-2}\sum_{m=1}^{M}w_m u_m u_m^T \right)^{-1},
 \quad
 \mu_{u,w} = \Sigma_{u,w}\left(\sigma_{0}^{-2}I\mu_0 + \sigma^{-2}\sum_{m=1}^{M}w_m y_m u_m\right).
 \]
