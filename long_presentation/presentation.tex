@@ -302,7 +302,7 @@
 		\item  $\circ$ Coreset size $ M $, \emph{optimal} coreset posterior $\pi_{w^\star}$ 
 		\item $\blacktriangleright$ Then $\forall M<d$ with high probability
 		\begin{align*}
-		\kl{\pi_{w^\star}}{\pi} \geq \frac{1}{2}\frac{N-M}{1+N} F(d-M, M, N)
+		\kl{\pi_{w^\star}}{\pi} \geq \frac{1}{2}\frac{N-M}{1+N} F^{-1}(d-M, M, N)
 		\end{align*}
 		(RHS visualized in next slide)
 		\end{itemize}
@@ -420,6 +420,8 @@
 		\end{tcolorbox}
 		\normalsize
 	\end{itemize}
+		\pause
+		\item $\blacktriangleright$ Computational complexity $O((Md+B)ST)$
 \end{frame}
 
 \begin{frame}
@@ -511,14 +513,14 @@
 					\includegraphics[width=0.9\textwidth,angle=5]{figs/crowds.jpg}
 				\end{figure}
 				
-				\vspace{-.35cm} 
+				\vspace{-.4cm} 
 				
 				\begin{figure}
 					\includegraphics[width=0.9\textwidth,angle=-5]{figs/Four-No-Three.jpg}
-					\caption*{The Hierarchy of Disagreement by Paul Graham}
+					\caption*{\scriptsize{The Hierarchy of Disagreement by Paul Graham}}
 				\end{figure}
 				
-				\vspace{-.35cm} 
+				\vspace{-.4cm} 
 				
 				\begin{figure}
 					\includegraphics[width=0.9\textwidth,angle=-5]{figs/spam.jpg}
@@ -754,7 +756,7 @@
 \begin{frame}
 	\frametitle{Experiment IV: Infomative Subpopulation Combinations for Budgeted Inference on Diabetes Patients' Readmissions}
 	\centering
-	\includegraphics[width=.49\textwidth]{figs/selected_groups.png}	
+	\includegraphics[width=.58\textwidth]{figs/selected_groups.png}	
 	\begin{itemize}
 		\item $\blacktriangleright$ Older age Caucasian/Afro-American female group population is most informative ~\citep{ghorbani19}
 		\item $\blacktriangleright$ More effective selection compared to data Shapley~\citep{shapley53}
@@ -763,7 +765,7 @@
 
 
 \begin{frame}
-	\frametitle{Conclusions}
+	\frametitle{Summarizing $\beta$-Cores}
 	\centering
 	We introduced a \\ \textbf{general-purpose  black-box} \\ Variational Inference method that \pause
 	\begin{itemize}
@@ -776,7 +778,20 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{\textbf{Thank you!}}
+	\frametitle{Future directions}
+	\vspace{-1.7cm}
+	\flushright \includegraphics[width=.49\textwidth]{figs/terra-incognita.png}	
+	\begin{itemize}
+	\item $\circ$ Compressions for models with \emph{structured likelihoods}, e.g. point processes
+	\item $\circ$ Human-centric summaries for scalable inference~(\emph{right-to-be-forgotten, fairness, interpretability constraints})
+	\item $\circ$ \emph{Implicit DP amplification} due to data adaptive sampling
+	\item $\circ$ Compressions for \emph{meta-learning}
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Thank you!}
 	\centering
 	\large{\textbf{Papers}}:\\ {https://proceedings.neurips.cc/paper/2020/\\file/ab452534c5ce28c4fbb0e102d4a4fb2e-Paper.pdf}\\{https://arxiv.org/abs/2008.13600}\\
 	\vspace{1cm}
