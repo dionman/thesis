@@ -283,7 +283,7 @@
 	\frametitle{Bayesian Coresets}
 	$\circ$ \textbf{Riemannian Coresets}~\citep{campbell19neurips}
 	\begin{figure}
-		\includegraphics[width=1.\linewidth]{figs/sparsevi_posterior.png}
+		\includegraphics[width=\linewidth]{figs/coreset-posterior-ii.png}
 	\end{figure}
 	$\circ$ \textbf{Sparse Variational Inference}
 	\begin{align*}
@@ -352,13 +352,13 @@
 \begin{frame}
 	\frametitle{Applications of summarization: (Pseudo)data as \emph{"approximate sufficient statistics"}}
 	\begin{itemize}
-		\item For scalability
+		\item $\circ$ For scalability
 		\begin{itemize}
 			\item $\blacktriangleright$ Linear regression, clustering, herding, priors for DGMs~\citep{bachem15,bachem17}
 			\item $\blacktriangleright$ Nystr\"{o}m method, leverage scores for computing with kernels~\citep{drineas05,musco17,agrawal19},
 			\item $\blacktriangleright$ Inducing (pseudo-)input methods in Gaussian processes~\citep{snelson05,titsias09,bauer16}
 		\end{itemize}
-		\item For privacy
+		\item $\circ$ For privacy
 		\begin{itemize}
 				\item $\blacktriangleright$ Kernel mean embeddings, sparse regression~\citep{zhou08,balog18}
 		\end{itemize}
@@ -763,7 +763,7 @@
 	\end{itemize}
 \end{frame}
 
-
+\begin{comment}
 \begin{frame}
 	\frametitle{Summarizing $\beta$-Cores}
 	\centering
@@ -776,6 +776,7 @@
 		\item $\blacktriangleright$ points to an \emph{\textbf{efficient large-scale data subpopulations acquisition}}
 	\end{itemize}
 \end{frame}
+\end{comment}
 
 \begin{frame}
 	\frametitle{Future directions}
@@ -784,7 +785,7 @@
 	\begin{itemize}
 	\item $\circ$ Compressions for models with \emph{structured likelihoods}, e.g. point processes
 	\item $\circ$ Human-centric summaries for scalable inference~(\emph{right-to-be-forgotten, fairness, interpretability constraints})
-	\item $\circ$ \emph{Implicit DP amplification} due to data adaptive sampling
+	%\item $\circ$ \emph{Implicit DP amplification} due to data adaptive sampling
 	\item $\circ$ Compressions for \emph{meta-learning}
 	\end{itemize}
 \end{frame}
@@ -793,8 +794,6 @@
 \begin{frame}
 	\frametitle{Thank you!}
 	\centering
-	\large{\textbf{Papers}}:\\ {https://proceedings.neurips.cc/paper/2020/\\file/ab452534c5ce28c4fbb0e102d4a4fb2e-Paper.pdf}\\{https://arxiv.org/abs/2008.13600}\\
-	\vspace{1cm}
 	\includegraphics[width=3.6cm,height=1.8cm]{figs/github-logo.png}\\
 	\texttt{https://github.com/trevorcampbell/\\pseudocoresets-experiments}\\ \texttt{https://github.com/dionman/beta-cores}
 \end{frame}
