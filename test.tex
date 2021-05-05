@@ -1,0 +1,118 @@
+\documentclass[a4paper,12pt,index,custombib]{Classes/PhDThesisPSnPDF} 
+
+\DeclareOption{tchypersetup}{\hypersetup{colorlinks=true, allcolors=SubtleColor, pdfborder={0 0 0}}}
+\DeclareOption{blackhypersetup}{\hypersetup{colorlinks=false, allcolors=black, pdfborder={0 0 0}}}
+
+%autonum
+\newif\ifuseautonum
+\useautonumfalse
+\DeclareOption{autonum}{\useautonumtrue}
+
+\ProcessOptions
+
+\ifuseautonum \usepackage{autonum} \fi
+
+\DeclareCiteCommand{\cite}
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+	\printtext[bibhyperref]{\usebibmacro{cite}}}
+{\multicitedelim}
+{\usebibmacro{postnote}}
+
+\DeclareCiteCommand*{\cite}
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+	\printtext[bibhyperref]{\usebibmacro{citeyear}}}
+{\multicitedelim}
+{\usebibmacro{postnote}}
+
+
+\DeclareCiteCommand{\parencite}[\mkbibparens]
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+	\printtext[bibhyperref]{\usebibmacro{cite}}}
+{\multicitedelim}
+{\usebibmacro{postnote}}
+
+\DeclareCiteCommand*{\parencite}[\mkbibparens]
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+	\printtext[bibhyperref]{\usebibmacro{citeyear}}}
+{\multicitedelim}
+{\usebibmacro{postnote}}
+
+
+
+
+\newcommand{\textcitec}[1]{\textcolor{mydarkblue}{\textcite{#1}}}
+
+\RequirePackage[unicode=true]{hyperref}
+
+\usepackage[dvipsnames]{xcolor}
+\definecolor{mydarkblue}{rgb}{0,0.08,0.45}
+
+\if@print
+% For Print version
+\hypersetup{
+	final=true,
+	plainpages=false,
+	pdfstartview=FitV,
+	pdftoolbar=true,
+	pdfmenubar=true,
+	bookmarksopen=true,
+	bookmarksnumbered=true,
+	breaklinks=true,
+	linktocpage,
+	colorlinks=true,
+	linkcolor=black,
+	urlcolor=black,
+	citecolor=black,
+	anchorcolor=black
+}
+\ifsetCustomMargin
+% Margin to be define in preamble using geometry package
+\else
+\RequirePackage[paper=\PHD@papersize,hmarginratio=1:1,
+vmarginratio=1:1,scale=0.75,bindingoffset=5mm]{geometry}
+\fi
+
+\if@twoside
+\hypersetup{pdfpagelayout=TwoPageRight}
+\else
+\hypersetup{pdfpagelayout=OneColumn}
+\fi
+
+\else
+% For PDF Online version
+\hypersetup{
+	final=true,
+	plainpages=false,
+	pdfstartview=FitV,
+	pdftoolbar=true,
+	pdfmenubar=true,
+	bookmarksopen=true,
+	bookmarksnumbered=true,
+	breaklinks=true,
+	linktocpage,
+	colorlinks=true,
+	linkcolor=mydarkblue,
+	urlcolor=mydarkblue,
+	citecolor=mydarkblue,
+	anchorcolor=mydarkblue
+}
+
+
+
+\begin{document}
+
+\begingroup
+Large-scale data does offer one reprieve to the analyst: it often exhibits a significant degree of redundancy. Most datapoints are 
+not unique or particularly informative for modeling and exploration. Based on this notion, data summarization methods have been developed  
+that provide the practitioner with a compressed---but still statistically representative---version of the large dataset for analysis.
+Summarizations have been developed for a variety of purposes, e.g., reducing the cost of computing with kernel matrices via Nystr{\"o}m-type approximations~\citep{drineas05,musco17,agrawal19} or sparse pseudo-input parameterizations for Gaussian processes~\citep{williams01,csato02,snelson05,titsias09},
+Bayesian inference~\parencite{huggins16,huggins17,campbell18,campbell19jmlr}, maximum likelihood 
+parameter estimation~\citep{dumouchel99,madigan02}, 
+linear regression~\citep{zhou08,guhaniyogi15},
+geometric shape approximation \citep{agarwal05},
+clustering \citep{feldman11,lucic16,bachem15,braverman16}, and dimensionality reduction \citep{feldman16}.
+\end{document}          
