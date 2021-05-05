@@ -1,17 +1,16 @@
 \documentclass[a4paper,12pt,index,custombib]{Classes/PhDThesisPSnPDF} 
 
 \usepackage{csquotes}
-%\renewcommand\nameyeardelim{, }
-%\DeclareNameAlias{sortname}{family-given}
-%\renewcommand*{\multinamedelim}{\addcomma\space}
-%\renewcommand*{\finalnamedelim}{ and }
-%\setlength{\bibitemsep}{\baselineskip}
-%\renewbibmacro{in:}{}
+\renewcommand\nameyeardelim{, }
+\DeclareNameAlias{sortname}{family-given}
+\renewcommand*{\multinamedelim}{\addcomma\space}
+\renewcommand*{\finalnamedelim}{ and }
+\setlength{\bibitemsep}{\baselineskip}
+\renewbibmacro{in:}{}
 
+\addbibresource{References/references.bib} %Location of references.bib only for biblatex, Do not omit the .bib extension from the filename.
 
 \preto\fullcite{\AtNextCite{\defcounter{maxnames}{99}}}
-
-
 
 
 % debugging for non-unicode characters
@@ -154,8 +153,6 @@ vmarginratio=1:1,scale=0.75,bindingoffset=5mm]{geometry}
 	citecolor=mydarkblue,
 	anchorcolor=mydarkblue
 }
-
-
 
 
 \begin{document}
