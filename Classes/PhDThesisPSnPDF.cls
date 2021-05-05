@@ -1279,15 +1279,15 @@ wish to left align your text}
 % If you would like to use biblatex for your reference management, as opposed to the default `natbibpackage` pass the option `custombib` in the document class. Comment out the previous line to make sure you don't load the natbib package. Uncomment the following lines and specify the location of references.bib file
 
 
-\RequirePackage[backend=biber,style=authoryear-comp,citestyle=authoryear-comp,sorting=ynt,natbib=true,maxbibnames=99,maxcitenames=2, uniquelist=false, uniquename=false,backref=true,dashed=false,giveninits=true]{biblatex}
+\RequirePackage[backend=biber,style=authoryear-comp,citestyle=authoryear-comp,sorting=ynt,natbib=true,maxbibnames=99,maxcitenames=2, uniquelist=false,uniquename=false,backref=true,dashed=false,giveninits=true]{biblatex}
 
 \addbibresource{References/references.bib} %Location of references.bib only for biblatex, Do not omit the .bib extension from the filename.
 
 \usepackage{csquotes}
-\renewcommand\nameyeardelim{, }
+\renewcommand\nameyeardelim{,\addspace}
 \DeclareNameAlias{sortname}{family-given}
-\renewcommand*{\multinamedelim}{\addcomma\space}
-\renewcommand*{\finalnamedelim}{ and }
+\renewcommand*{\multinamedelim}{\addcomma\addspace}
+\renewcommand*{\finalnamedelim}{\addspace and \addspace }
 \setlength{\bibitemsep}{\baselineskip}
 \renewbibmacro{in:}{}
 

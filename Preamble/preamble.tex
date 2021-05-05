@@ -1384,13 +1384,15 @@
 
 \addbibresource{References/references.bib} %Location of references.bib only for biblatex, Do not omit the .bib extension from the filename.
 
+
 \usepackage{csquotes}
-\renewcommand\nameyeardelim{, }
-\DeclareNameAlias{sortname}{family-given}
-\renewcommand*{\multinamedelim}{\addcomma\space}
-\renewcommand*{\finalnamedelim}{ and }
-\setlength{\bibitemsep}{\baselineskip}
-\renewbibmacro{in:}{}
+%\renewcommand\nameyeardelim{, }
+%\DeclareNameAlias{sortname}{family-given}
+%\renewcommand*{\multinamedelim}{\addcomma\space}
+%\renewcommand*{\finalnamedelim}{ and }
+%\setlength{\bibitemsep}{\baselineskip}
+%\renewbibmacro{in:}{}
+
 
 \preto\fullcite{\AtNextCite{\defcounter{maxnames}{99}}}
 \fi
@@ -1406,42 +1408,42 @@
 {\usebibmacro{prenote}}
 {\usebibmacro{citeindex}%
 	\printtext[bibhyperref]{\usebibmacro{cite}}}
-{\multicitedelim}
+{;}
 {\usebibmacro{postnote}}
 
 \DeclareCiteCommand*{\cite}
 {\usebibmacro{prenote}}
 {\usebibmacro{citeindex}%
 	\printtext[bibhyperref]{\usebibmacro{citeyear}}}
-{\multicitedelim}
+{;}
 {\usebibmacro{postnote}}
 
 \DeclareCiteCommand{\parencite}[\mkbibparens]
 {\usebibmacro{prenote}}
 {\usebibmacro{citeindex}%
 	\printtext[bibhyperref]{\usebibmacro{cite}}}
-{\multicitedelim}
+{;}
 {\usebibmacro{postnote}}
 
 \DeclareCiteCommand*{\parencite}[\mkbibparens]
 {\usebibmacro{prenote}}
 {\usebibmacro{citeindex}%
 	\printtext[bibhyperref]{\usebibmacro{citeyear}}}
-{\multicitedelim}
+{;}
 {\usebibmacro{postnote}}
 
 \DeclareCiteCommand{\footcite}[\mkbibfootnote]
 {\usebibmacro{prenote}}
 {\usebibmacro{citeindex}%
 	\printtext[bibhyperref]{ \usebibmacro{cite}}}
-{\multicitedelim}
+{;}
 {\usebibmacro{postnote}}
 
 \DeclareCiteCommand{\footcitetext}[\mkbibfootnotetext]
 {\usebibmacro{prenote}}
 {\usebibmacro{citeindex}%
 	\printtext[bibhyperref]{\usebibmacro{cite}}}
-{\multicitedelim}
+{;}
 {\usebibmacro{postnote}}
 
 \AtEveryCite{\usebibmacro{cite:init}}
@@ -1455,10 +1457,34 @@
 {\ifbool{cbx:parens}
 	{\bibcloseparen\global\boolfalse{cbx:parens}}
 	{}%
-	\multicitedelim}
+	;}
 {\usebibmacro{textcite:postnote}}
 
 
 \newcommand{\textcitec}[1]{\textcolor{mydarkblue}{\textcite{#1}}}
+
+\RequirePackage[unicode=true]{hyperref}
+
+\usepackage[dvipsnames]{xcolor}
+\definecolor{mydarkblue}{rgb}{0,0.08,0.45}
+
+
+% For PDF Online version
+\hypersetup{
+	final=true,
+	plainpages=false,
+	pdfstartview=FitV,
+	pdftoolbar=true,
+	pdfmenubar=true,
+	bookmarksopen=true,
+	bookmarksnumbered=true,
+	breaklinks=true,
+	linktocpage,
+	colorlinks=true,
+	linkcolor=mydarkblue,
+	urlcolor=mydarkblue,
+	citecolor=mydarkblue,
+	anchorcolor=mydarkblue
+}
 
 

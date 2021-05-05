@@ -17,8 +17,7 @@ Bayesian coreset approximation of the form
 \[
 \pi_w(\theta) \defined \frac{1}{Z(w)} \exp\left(\sum_{n=1}^N w_n f(x_n, \theta)\right)\pi_0(\theta)
 \]
-for $w\in\reals^N$, $w\geq 0$ may be used in most popular posterior inference schemes \citep{neal11,kucukelbir17,ranganath14}.
-If the number of nonzero entries $\|w\|_0$ of $w$ is small, this results in a significant reduction in computational burden.
+for $w\in\reals^N$, $w\geq 0$ may be used in most popular posterior inference schemes~\citep{neal11,kucukelbir17,ranganath14}. If the number of nonzero entries $\|w\|_0$ of $w$ is small, this results in a significant reduction in computational burden.
 Recent work has formulated the problem of constructing a  Bayesian coreset of size $M\in\nats$ as sparse variational inference~\citep{campbell19neurips},
 \[
 & w^\star = \argmin_{w\in\reals^N} \kl{\pi_w}{\pi}\label{eq:coresets-vi} \quad \quad
