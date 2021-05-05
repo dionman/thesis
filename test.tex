@@ -1,5 +1,59 @@
 \documentclass[a4paper,12pt,index,custombib]{Classes/PhDThesisPSnPDF} 
 
+\usepackage{csquotes}
+%\renewcommand\nameyeardelim{, }
+%\DeclareNameAlias{sortname}{family-given}
+%\renewcommand*{\multinamedelim}{\addcomma\space}
+%\renewcommand*{\finalnamedelim}{ and }
+%\setlength{\bibitemsep}{\baselineskip}
+%\renewbibmacro{in:}{}
+
+
+\preto\fullcite{\AtNextCite{\defcounter{maxnames}{99}}}
+
+
+
+
+% debugging for non-unicode characters
+\DeclareUnicodeCharacter{0301}{*************************************}
+\DeclareUnicodeCharacter{0302}{*************************************}
+
+
+\DeclareCiteCommand{\cite}
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+	\printtext[bibhyperref]{\usebibmacro{cite}}}
+{\multicitedelim}
+{\usebibmacro{postnote}}
+
+\DeclareCiteCommand*{\cite}
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+	\printtext[bibhyperref]{\usebibmacro{citeyear}}}
+{\multicitedelim}
+{\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\parencite}[\mkbibparens]
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+	\printtext[bibhyperref]{\usebibmacro{cite}}}
+{\multicitedelim}
+{\usebibmacro{postnote}}
+
+\DeclareCiteCommand*{\parencite}[\mkbibparens]
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+	\printtext[bibhyperref]{\usebibmacro{citeyear}}}
+{\multicitedelim}
+{\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+	\printtext[bibhyperref]{ \usebibmacro{cite}}}
+{\multicitedelim}
+
+
 \DeclareOption{tchypersetup}{\hypersetup{colorlinks=true, allcolors=SubtleColor, pdfborder={0 0 0}}}
 \DeclareOption{blackhypersetup}{\hypersetup{colorlinks=false, allcolors=black, pdfborder={0 0 0}}}
 
@@ -103,16 +157,8 @@ vmarginratio=1:1,scale=0.75,bindingoffset=5mm]{geometry}
 
 
 
-\begin{document}
 
-\begingroup
-Large-scale data does offer one reprieve to the analyst: it often exhibits a significant degree of redundancy. Most datapoints are 
-not unique or particularly informative for modeling and exploration. Based on this notion, data summarization methods have been developed  
-that provide the practitioner with a compressed---but still statistically representative---version of the large dataset for analysis.
-Summarizations have been developed for a variety of purposes, e.g., reducing the cost of computing with kernel matrices via Nystr{\"o}m-type approximations~\citep{drineas05,musco17,agrawal19} or sparse pseudo-input parameterizations for Gaussian processes~\citep{williams01,csato02,snelson05,titsias09},
-Bayesian inference~\parencite{huggins16,huggins17,campbell18,campbell19jmlr}, maximum likelihood 
-parameter estimation~\citep{dumouchel99,madigan02}, 
-linear regression~\citep{zhou08,guhaniyogi15},
-geometric shape approximation \citep{agarwal05},
-clustering \citep{feldman11,lucic16,bachem15,braverman16}, and dimensionality reduction \citep{feldman16}.
+\begin{document}
+\noindent
+for $w\in\mathbb{R}^N$, $w\geq 0$ may be used in most popular posterior inference schemes~\citep{neal11,kucukelbir17,ranganath14}. If the number of nonzero entries $\|w\|_0$ of $w$ is small, this results in a significant reduction in computational burden.
 \end{document}          
