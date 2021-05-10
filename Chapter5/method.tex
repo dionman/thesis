@@ -124,7 +124,7 @@ In~\cref{eq:opt1} we have introduced the notation $\pi_{\beta,w \assign w \cup \
 \subsubsection{Next datapoint selection}
 We first select the next datapoint to include in our coreset summary~\cref{eq:opt1}, via a greedy selection criterion. Although maximizing the decrease in KL locally via~\cref{eq:dkl-grad}, seems to be the natural greedy choice here, this would incur the impractical cost of resampling from the coreset posterior \emph{for all potential expansions} of the coreset with a new datapoint. Moreover, even if we can tolerate this cost, adding a single unweighted datapoint is likely to induce a negligible effect on the coreset posterior, especially in massive dataset settings. Submodularity of the objective would be a clearly attractive property, as it could possibly point to a cheap greedy strategy with provable optimality guarantees---however, our analysis in~\cref{sec:submodularity-characterization} demonstrates that this property is generally not satisfied for our problem. 
 
-Hence, considering that the weight of the updated coreset non-zero support will be optimized in the subsequent step~\cref{eq:opt2} of the algorithm, and using the information-geometric argument presented in~\textcitec{campbell19neurips}, we finally rely instead on the following correlation maximization criterion:
+Hence, considering that the weight of the non-zero support for the updated coreset will be optimized in the subsequent step~\cref{eq:opt2} of the algorithm, and using the information-geometric argument presented in~\textcitec{campbell19neurips}, we finally rely instead on the following correlation maximization criterion:
 \[
 x_{m} = \arg \underset{x_n \in \mcI \cup \mcB }{\max}
 \begin{cases}

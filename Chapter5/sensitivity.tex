@@ -1,4 +1,4 @@
-\subsection{Further analysis}
+\subsection{Effecting of varying the robustness hyperparameter}
 \label{sec:sensitivity}
 
 \begin{figure}[!tp]
@@ -48,6 +48,6 @@
 	\label{fig:beta_sens}
 \end{figure}
 
-In this section we perform an empirical analysis of the effects on robustness of inference caused by varying the value of the divergence hyperparameter $\beta \in (0,1)$. As can be observed in~\cref{fig:betas_gaussian}, in the case of Gaussian mean inference under structured contamination, setting $\beta$ to large values ($\beta \geq 0.3$) implies a more conservative summarization scheme and more rigid coreset posteriors, that do not allow good approximation quality, however maintain similar performance and small variance for increasing size of the contaminated component. For smaller $\beta$s, the KL divergence between the approximate and the true posterior can reach lower minima; nonetheless, eventually the coreset quality might present larger variance, as the summarization becomes prone to adding outliers. At the remaining experiments,~\cref{fig:betas_logreg,fig:betas_neurlinreg}, where inference takes place in the presence of unstructured outliers, the effects of varying the robustness hyperparameter are less pronounced. More noticeably, the remark of increased variance for small $\beta$ remains valid with observable effects both in the logistic and the neural linear regression experiments.
+In this section we perform an empirical analysis of the effects on robustness of inference that can be caused by varying the value of the divergence hyperparameter $\beta \in (0,1)$. As observed in~\cref{fig:betas_gaussian}, in the case of Gaussian mean inference under structured contamination, setting $\beta$ to large values ($\beta \geq 0.3$) implies more conservative summarization schemes and more rigid coreset posteriors, that do not allow achieving optimal approximation quality; however these scheme also enable maintaining similar performance and small variance across trials for increasing size of the contaminated component. For smaller $\beta$s, the KL divergence between the approximate and the true posterior can reach lower minima; nonetheless, eventually the coreset quality might present larger variance, as the summarization becomes prone to adding outliers. At the remaining experiments,~\cref{fig:betas_logreg,fig:betas_neurlinreg}, where inference takes place in the presence of unstructured outliers, the effects of varying the robustness hyperparameter are less pronounced. More noticeably, the remark of increased variance for small $\beta$ remains valid with observable effects both in the logistic and the neural linear regression experiments.
 
 

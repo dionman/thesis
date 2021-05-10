@@ -22,7 +22,7 @@ After experimenting with several schemes, we obtained the best performance on th
 Concretely, we computed the distribution of users' visits to locations and added the following values to the nodes:
 
 \begin{equation*}
-	a_{c=3}\left(v_i^u\right)=
+	a_{c=3}\left(v_i^u\right):=
 	\begin{cases}
 		 3, &  \mbox{if } v_i^u \in \mbox{top$-20\%$ locations of } u  \\
 		 2, &  \mbox{if } v_i^u  \notin \mbox{top$-20\%$ locations of }  u   \mbox{ and }  v_i^u \in \mbox{top$-80\%$ locations}\\
@@ -119,7 +119,7 @@ The obtained ordering implies a significant decrease in user privacy, since the 
 The adversary can estimate the true identity of a given test network $ G' $, as suggested in~\cref{sec:threat-model}, applying some simple probabilistic policy that uses pairwise similarity information. For example, let us examine the privacy loss implied by the update rule in~\eqref{eq:adversarial_rule} for  \mbox{function $ f$}:
 
 \[
-f\left(K_{\text{DSP}}(G_i, G')\right) =\frac{1}{\text{rank}\left(K_{DSP}(G_i, G')\right)}.
+f\left(K_{\text{DSP}}(G_i, G')\right) :=\frac{1}{\text{rank}\left(K_{DSP}(G_i, G')\right)}.
 \label{eq:inverse_rank}
 \]
 
