@@ -135,9 +135,9 @@ In the absence of analytical formulae, integrals in the form of~\cref{eq:binfere
 \]
 \emph{Markov Chain Monte Carlo~(MCMC)}, the workhorse of approximate Bayesian inference, is a framework of established tools that pursue the above idea efficiently~\citep{geyer92, gilks05, robert05}. 
 
-MCMC offers approximations to expectations \wrt intractable probability distributions via simulating an ergodic random walk in the state space of the model, which admits the true posterior as its stationary distribution. As implied by the strong law of large numbers, the MC estimate---formed using (effectively independent) samples from the stationary distribution---converges to the true expectation almost surely as $s \rightarrow \infty$; this property makes MCMC methods theoretically appealing, as it endows the estimators with strong \emph{asymptotic exactness} guarantees. Moreover, if $g$ is a real function, using the central limit theorem, it can be shown that the standard error of a MC estimator scales asymptotically as $O(\frac{1}{\sqrt{S}})$, independently of the dimension of $\theta$. Differing in the way that the Monte Carlo chain is constructed, as well as the offered level of automation, several methods of MCMC inference have emerged, including the Metropolis-Hastings~\citep{andrieu03}, the Hamiltonian Monte-Carlo~\citep{neal11}, and the No-U-Turn-Sampler~(NUTS)~\citep{hoffman14}. NUTS will be used as a reference method to evaluate summarization performance in part of our experiments over~\cref{chap:chap4,chap:chap5}.
+MCMC offers approximations to expectations \wrt intractable probability distributions via simulating an ergodic random walk in the state space of the model, which admits the true posterior as its stationary distribution. As implied by the strong law of large numbers, the MC estimate---formed using (effectively independent) samples from the stationary distribution---converges to the true expectation almost surely as $s \rightarrow \infty$; this property makes MCMC methods theoretically appealing, as it endows the estimators with strong \emph{asymptotic exactness} guarantees. Moreover, if $g$ is a real function, using the central limit theorem, it can be shown that the standard error of a MC estimator scales asymptotically as $O(\frac{1}{\sqrt{S}})$, independently of the dimension of $\theta$. Differing in the way that the Monte Carlo chain is constructed, as well as the offered level of automation, several methods of MCMC inference have emerged, including the Metropolis-Hastings~\citep{andrieu03}, the Hamiltonian Monte Carlo~\citep{neal11}, and the No-U-Turn-Sampler~(NUTS)~\citep{hoffman14}. NUTS will be used as a reference method to evaluate summarization performance in part of our experiments over~\cref{chap:chap4,chap:chap5}.
 
-The computation of bounds on the number of MCMC iterations required until we obtain a satisfactory posterior approximation can hardly be automated, as they are highly problem-specific, and in practice heuristics are used to decide when sampling should stop. Typically each sample requires at least one evaluation of a function proportial to $\pi$, scaling at cost $\Theta(N)$ which becomes a burden in big data applications---on this account, methods operating on data subsets have been proposed, including~\citep{welling11,korattikara14,bardenet14}. Despite these shortcomings, in settings where data are high-dimensional, and likelihood surface lacks structure that could be exploited over inference, MCMC remains the gold standard for practitioners.
+The computation of bounds on the number of MCMC iterations required until we obtain a satisfactory posterior approximation can hardly be automated, as they are highly problem-specific, and in practice heuristics are used to decide when sampling should stop. Typically each sample requires at least one evaluation of a function proportional to $\pi$, scaling at cost $\Theta(N)$ which becomes a burden in big data applications---on this account, methods operating on data subsets have been proposed, including~\citep{welling11,korattikara14,bardenet14}. Despite these shortcomings, in settings where data are high-dimensional, and likelihood surface lacks structure that could be exploited over inference, MCMC remains the gold standard for practitioners.
 
 
 
@@ -202,16 +202,16 @@ where $\mcP$ is the valid density space, while the Bayesian posterior can be exp
 In the last expression, $\hpi(x):=\frac{1}{N}\sum_{n=1}^{N}\delta(x-x_n)$ is the empirical distribution of the observed datapoints and $\delta$ is the Dirac delta function. The exponent $\xent{\hpi(x)}{\pi(x|\theta)}:=-\sum_{n=1}^{N}\log\pi(x_n|\theta)$
 corresponds (up to a constant) to the \emph{cross-entropy}, which is  equal to the empirical average of negative log-likelihoods of the datapoints, and quantifies the expected loss incurred by our estimates for the model parameters $\theta$ over the available observations, under the Kullback-Leibler divergence.
 
-When $N$ is large, the Bayesian posterior is strongly affected by perturbations in the observed data space. To develop an intuition on this, assuming that the true and observed data distributions admit densities $\pi_\theta$ and $\pi_\textsubscript{obs}$ respectively, we can rewrite an approximation of~\cref{eq:zellner-rule} via the KL divergence as in~\citep{miller19}
+When $N$ is large, the Bayesian posterior is strongly affected by perturbations in the observed data space. To develop an intuition on this, assuming that the true and observed data distributions admit densities $\pi_\theta$ and $\pi_\text{obs}$ respectively, we can rewrite an approximation of~\cref{eq:zellner-rule} via the KL divergence as in~\citep{miller19}
 \[
 \pi(\theta|x) 
 & \propto  \exp\left(\sum_{n=1}^{N}\log\pi(x_n|\theta)\right) \pi_0(\theta)
-\doteq	 \exp\left(N \int \pi_\textsubscript{obs} \log \pi_\theta\right) \pi_0(\theta) \notag \\
-&:= \exp\left(-N \kl{\pi_\textsubscript{obs}}{\pi_\theta}\right) \pi_0(\theta),
+\doteq	 \exp\left(N \int \pi_\text{obs} \log \pi_\theta\right) \pi_0(\theta) \notag \\
+&:= \exp\left(-N \kl{\pi_\text{obs}}{\pi_\theta}\right) \pi_0(\theta),
 \label{eq:missmatch_with_N}
 \]
 where $\doteq$ denotes  agreement to first order in exponent.\footnote{\ie~$a_n \doteq b_n$ iff $(1/n)\log(a_n/b_n) \rightarrow 0$}
-Hence, due to the large $N$ in the exponent, small changes in $\pi_\textsubscript{obs}$ will have a large impact on the posterior.
+Hence, due to the large $N$ in the exponent, small changes in $\pi_\text{obs}$ will have a large impact on the posterior.
 
 \subsection{Robustified generalized Bayesian posteriors}
 
@@ -259,7 +259,7 @@ In the remainder of this section we illustrate the effects of adapting the used 
 	\caption{\centering {}}
 	\label{fig:gaussian-density}
 	\end{subfigure}	
-	\caption{Effects of altering the statistical divergence when conducting inference on datasets containing outliers. (\subref{fig:influence})~The influence of individual datapoints under the Kullback-Leibler and the $\beta$-divergence: the concavity of influence under the $\beta$-divergence illustrates the robustness of the inferred posterior to outliers.~(\subref{fig:gaussian-density})~Posterior estimates of Gaussian density on observations containing a small fraction for outliers under classical and robustified inference.}
+	\caption{Effects of altering the statistical divergence when conducting inference on datasets containing outliers. (\subref{fig:influence})~Influence of individual datapoints under the Kullback-Leibler and the $\beta$-divergence: the concavity of influence under the $\beta$-divergence illustrates the robustness of the inferred posterior to outliers.~(\subref{fig:gaussian-density})~Posterior estimates of Gaussian density on observations containing a small fraction for outliers under classical and robustified inference.}
 	\label{fig:robust-inference}
 \end{figure*}
 
@@ -314,7 +314,7 @@ Kernel methods induce \emph{non-parametric} representations on the data, \ie~whe
 
 Kernel methods appeal to large-scale learning due to their non-parametric nature: their representation power scales with the number of datapoints, hence they can learn complex, highly non-linear structure from the data; however, their time and memory cost scales adversely with the dataset size. Random features~\citep{rahimi08} remedy poor complexity scaling issues via utilising \emph{parametric finite-dimensional} data representations. We motivate this concept via an application arising in Hilbert coreset constructions~\citep{campbell19jmlr}.
 
-Denote by $ f_n(\theta) \defined \sum_{n=1}^{N} \log\pi(x_n|\theta) $ the log-likelihood function of a dataset $x \defined {(x_n)}_{n=1}^{N}$, and by $ f(\theta,w) \defined \sum_{n=1}^{N} w_n\log\pi(x_n|\theta)$ the corresponding log-likelihood of a Hilbert coreset $(w_n, x_n)_{n=1}^{N}$ constructed on the data, where $(w_n)_{n=1}^{N}$ is a vector of sparse, non-negative weights---using the simplified notation $f(\theta)$ for the full data log-likelihood. The quality of posterior approximation that this coreset offers can be quantified using a $L^2$ norm on the log-likelihoods under a weighting distribution $\hpi$ that has the same support with the true posterior $\pi$ 
+Denote by $ f_n(\theta) \defined \sum_{n=1}^{N} \log\pi(x_n|\theta) $ the log-likelihood function of a dataset $x \defined {(x_n)}_{n=1}^{N}$, and by $ f(\theta,w) \defined \sum_{n=1}^{N} w_n\log\pi(x_n|\theta)$ the corresponding log-likelihood of a Hilbert coreset $(w_n, x_n)_{n=1}^{N}$ constructed on the data, where $(w_n)_{n=1}^{N}$ is a vector of sparse, non-negative weights---using the simplified notation $f(\theta)$ for the full data log-likelihood. The quality of posterior approximation that this coreset offers can be quantified using an $L^2$ norm on the log-likelihoods under a weighting distribution $\hpi$ that has the same support with the true posterior $\pi$ 
 \[
 ||f(\theta, w) - f(\theta)||_{\hpi,2} \defined \EE_{\hpi} \left[ (f(\theta) - f(\theta, w))^2\right],
 \]
