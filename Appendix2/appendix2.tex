@@ -78,7 +78,7 @@ the predictive posterior is a Gaussian given by the following formula
 \section{Characterization of Riemannian coresets' combinatorial optimization objective}
 \label{sec:submodularity-characterization}
 
-When optimizing a set function, the property of submodularity is often deemed appealing as it can allow using fast greedy selection policies with provable optimality guarantees~\citep{nemhauser78,bach13}. The optimization problem corresponding to our next datapoint selection step of~\cref{eq:opt1} can be equivalently rewritten as follows
+When optimizing a set function, the property of submodularity is often deemed appealing as it can allow using fast greedy selection policies with provable suboptimality guarantees~\citep{nemhauser78,bach13}. The optimization problem corresponding to our next datapoint selection step of~\cref{eq:opt1} can be equivalently rewritten as follows
 
 \[
  m^{\star} = \arg \max_{m\in [N]} - \kl{\pi_{\beta,w \assign w \cup \{x_{m}\}}}{\pi_{\beta}}.  \label{eq:opt1app} 
