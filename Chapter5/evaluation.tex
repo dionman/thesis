@@ -7,14 +7,14 @@
 
 We examine the inferential results achieved by our method under 3 statistical models, in scenarios capturing different types of mismatch between modeling assumptions and reality. The data contamination models used in the following experiments are reminiscent of \emph{Huber's $\eps$-contamination model}~\citep{huber92}, which postulates that observed data are generated from a mixture of distributions of the form $(1-\eps)\cdot G+ \eps\cdot Q$, where $\eps \in (0,1)$,  $G$ is a distribution of inliers captured by the assumed statistical model, and $Q$ is an arbitrary distribution of outliers. This model has found use in several recent studies on robust statistical estimators suitable for underlying data distributions with minimal assumptions~\citep{wei17, chen18}.
 
-\bcores{} is compared against a uniformly random sampling baseline, and stochastic batch implementations of two existing Riemannian coreset methods: 
+\bcores{} is compared against a uniform random sampling baseline, and stochastic batch implementations of two existing Riemannian coreset methods: 
 \benum[label={(\roman*)}]
 	\item \sparsevi~\citep{campbell19neurips}, which builds up a coreset according to an incremental scheme similar to ours, considering the standard likelihood function terms evaluated on the dataset points, and 
 	\item \psvi~\citep{psvi}, the method introduced in~\cref{chap:chap4}, which runs a batch optimization on a set of pseudopoints, and uses standard likelihood evaluations to jointly learn the pseudopoints' weights and locations, so that the extracted summary resembles the statistics of the full dataset. 
 \eenum
 
 
-We default the number of iterations in the optimization loop over gradient-based coreset constructions to $ T = 500$, using a learning rate $ \gamma_t \propto t^{-1}$ and $S=100$ random projections per gradient computation. For consistency with the compared baselines, we evaluate inference results obtained by \bcores{} using the classical Bayesian posterior from~\cref{eq:bayes-rule} conditioned on the corresponding robustified data summary. Additional details on used benchmark datasets are presented in~\cref{sec:data-details}. 
+We default the number of iterations in the optimization loop over gradient-based coreset constructions to $ T = 500$, using a learning rate $ \gamma_t \propto t^{-1}$ and $S=100$ random projections per gradient computation. From~\cref{subsec:gauss-expt} to~\cref{sec:active-selection}, the values for $\beta$ are selected via cross-validation on a held-out dataset. For consistency with the compared baselines, we evaluate inference results obtained by \bcores{} using the classical Bayesian posterior from~\cref{eq:bayes-rule} conditioned on the corresponding robustified data summary. Additional details on used benchmark datasets are presented in~\cref{sec:data-details}. 
 
 \subsection{Simulated Gaussian mean inference under stuctured data contamination}
 \label{subsec:gauss-expt}
@@ -80,7 +80,7 @@ x_n \\
 The closed form of \blik{} terms required in our construction is computed in~\cref{sec:logreg-lik}. 
 
 Data corruption is simulated by generating unstructured outliers in the input and output space similarly to~\citep{futami18}: For corruption rate $F$, we sample two random subsets of size $F\cdot N$ from the training data.  For the datapoints in the first subset, we replace the value of half of the features with Gaussian noise sampled \iid from $\distNorm(0,5)$; for the datapoints in the other subset, we flip the binary label. Over construction we use the Laplace approximation to efficiently draw samples from the (non-conjugate) coreset posterior, while over evaluation coreset posterior samples are obtained via NUTS~\citep{hoffman14}. We evaluate the accuracy over the test set, predicting labels according to the maximum log-likelihood rule for $\theta$s sampled from the coreset posterior distribution. The learning rate schedule was set to $\gamma_t=c_0 t^{-1}$, with $c_0$ set to 1 for \sparsevi{} and \bcores{}, and 0.1 for \psvi. 
-The values for hyperparameter $\beta$ and learning rates $\gamma_t$ were chosen via cross-validation. 
+The values for and learning rates $\gamma_t$ were chosen via cross-validation. 
 
 \begin{figure}[!tp]
 	\begin{subfigure}[]{0.995\textwidth} 
